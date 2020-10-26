@@ -3,10 +3,10 @@ Thanks to [this](https://harfangk.github.io/2016/09/18/manage-dotfiles-with-a-gi
 
 ## Restoring
 '''
-alias -s dotfiles="/usr/bin/git --git-dir $HOME/.dotfiles/ --work-tree=$HOME" 
-git clone --bare https://www.github.com/etrnal70/ditsdots.git $HOME/.dotfiles
-dotfiles checkout
-dotfiles config --local status.showUntrackedFiles no
+alias -s dotfiles="/usr/bin/git --git-dir $HOME/.dotfiles/ --work-tree=$HOME"  
+git clone --bare https://www.github.com/etrnal70/ditsdots.git $HOME/.dotfiles  
+dotfiles checkout  
+dotfiles config --local status.showUntrackedFiles no  
 '''
 
 ## TODO
@@ -18,8 +18,8 @@ dotfiles config --local status.showUntrackedFiles no
 
 
 # Setup
-*DE* : Gnome 3.38 + pop_shell tiling
-*Shell* : zsh
-*Terminal* : kitty + tmux
-*Editor* : neovim
+**DE** : Gnome 3.38 + pop_shell tiling  
+**Shell** : zsh  
+**Terminal** : kitty + tmux  
+**Editor** : neovim  
 
