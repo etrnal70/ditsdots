@@ -15,8 +15,8 @@ let g:coc_global_extensions = [
  \ 'coc-git',
  \ 'coc-highlight',
  \ 'coc-flutter',
- \ 'coc-fzf-preview',
  \ 'coc-actions',
+ \ 'coc-texlab',
  \ 'coc-db',
  \ 'coc-eslint'] 
 
@@ -95,17 +95,6 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-xmap if <Plug>(coc-funcobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-omap ic <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
-
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
 
@@ -132,23 +121,3 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
-"---------------------Coc-Fzf------------------------------------
-nnoremap <silent> <C-p> :CocCommand fzf-preview.DirectoryFiles<CR>
-nnoremap <silent> <Leader>fg :CocCommand fzf-preview.GitFiles<CR>
-nnoremap <silent> <Leader>b :CocCommand fzf-preview.Buffers<CR>
-nnoremap <silent> <Leader>fv :CocCommand fzf-preview.VistaCtags<CR>
-nnoremap <silent> <Leader>g :CocCommand fzf-preview.GitActions<CR>
-nnoremap <silent> <Leader>gs :CocCommand fzf-preview.GitStatus<CR>
-
-set shell=/bin/bash
-let $SHELL = "/bin/bash"
-" Use vim-devicons
-let g:fzf_preview_use_dev_icons = 1
-
-" devicons character width
-let g:fzf_preview_dev_icon_prefix_string_length = 3
-
-" Devicons can make fzf-preview slow when the number of results is high
-" By default icons are disable when number of results is higher that 5000
-let g:fzf_preview_dev_icons_limit = 3000

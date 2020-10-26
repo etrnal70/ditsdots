@@ -14,7 +14,7 @@ eval "$(starship init bash)"
 
 # fnm
 export PATH="$HOME/.fnm:$PATH"
-# fnm env --multi | source
+fnm env --multi | source
 
 # custom script
 export PATH="$HOME/script:$PATH"

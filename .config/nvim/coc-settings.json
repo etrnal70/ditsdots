@@ -14,7 +14,6 @@
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
   "tsserver.implicitProjectConfig.checkJs": true,
-  "tailwindCSS.emmetCompletions": true,
   "codeLens.enable": true,
   "suggest.completionItemKindLabels": {
     "keyword": "\uf1de",
@@ -42,11 +41,5 @@
     "snippet": "\ue60b",
     "typeParameter": "\uf728",
     "default": "\uf29c"
-  },
-  "coc.preferences.formatOnSaveFiletypes": [
-    "css",
-    "html",
-    "markdown",
-    "json"
-  ]
+  }
 }

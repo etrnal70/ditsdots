@@ -3,17 +3,41 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",      -- one of "all", "language", or a list of languages
   highlight = {
     enable = true,              -- false will disable the whole extension
-    disable = {"ruby", "dart"},  -- list of language that will be disabled
+    disable = {"ruby"},  -- list of language that will be disabled
   },
-  refactor = {
-    highlight_definitions = {enable = true},
-    highlight_current_scope = {enable = false},
-    smart_rename = {
-        enable = true,
+  textobjects = {
+    select = {
+      enable = true,
         keymaps = {
-            smart_rename = "grr",
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@conditional.outer",
+        ["ic"] = "@conditional.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
+        ["as"] = "@statement.outer",
+        ["am"] = "@statement.outer",
         }
-    }
+    },
+    move = {
+      enable = true,
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
   },
 }
 EOF
