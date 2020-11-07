@@ -30,7 +30,7 @@ export PATH=$HOME/bin:/usr/local/bin:/usr/bin:$PATH
 eval "$(starship init zsh)"
 
 # fnm
-eval "$(fnm env --multi)"
+eval "$(fnm env)"
 
 # Rust Cargo
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -52,10 +52,15 @@ export PATH="$HOME/script:$PATH"
 # pip
 export PATH="$HOME/.local/bin:$PATH"
 
-# ditsdots
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+# CMake
+export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 # FzF Keybinding
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 
+# ditsdots
+alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+
+alias nv="nvim"
+alias nvmin="nvim -u ~/.config/nvim/mini.vim"
