@@ -11,10 +11,8 @@ dotfiles config --local status.showUntrackedFiles no
 
 ## TODO
 - [ ] Moar README
-- [ ] restore script
-- [ ] vimspector debug script
-- [ ] Post-install script
-- [ ] Minimal vim script for C/C++ low-level use
+- [ ] Arch install script
+- [x] Minimal vim script (done for now, wait for stable native nvim lsp)
 
 
 # Setup
