@@ -1,4 +1,6 @@
 {
+  "coc.preferences.useQuickfixForLocations": true,
+  "coc.preferences.formatOnType": true,
   "html.autoClosingTags": true,
   "tsserver.npm": "/usr/bin/npm",
   "tsserver.locale": "/usr/lib/node_modules/typescript/bin/tsserver",

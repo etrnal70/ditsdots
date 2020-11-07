@@ -1,15 +1,9 @@
-"-------------------Vim-Plug--------------------------
 call plug#begin()
 
 " Git related plugin
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-
-" Telescope.nvim
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-lua/telescope.nvim'
 
 " Looks and feel
 Plug 'ryanoasis/vim-devicons'
@@ -35,41 +29,21 @@ Plug 'puremourning/vimspector'
 Plug 'kkoomen/vim-doge'
 
 " Misc plugins
+Plug 'iamcco/markdown-preview.nvim'
 Plug 'itchyny/lightline.vim'
 Plug 'jsfaint/gen_tags.vim'
 Plug 'matze/vim-move'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Chiel92/vim-autoformat'
-Plug 'tyru/open-browser.vim'
 Plug 'sheerun/vim-polyglot'
 
 " Language-specific plugin
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'previm/previm'
 Plug 'mhinz/vim-crates'
 
 call plug#end()
 
-
-"---------------KEYBOARD MAPPING---------------------
-let mapleader = ","
-
-" Move window
-map sh <C-w>h
-map sk <C-w>k
-map sj <C-w>j
-map sl <C-w>l
-
-nnoremap <A-k> :resize +2<CR>
-nnoremap <A-j> :resize -2<CR>
-nnoremap <A-h> :vertical resize -2<CR>
-nnoremap <A-l> :vertical resize +2<CR>
-
-inoremap <A-l> <esc>la
-inoremap <A-h> <esc>i
-
 "---------------GENERAL SETTINGS--------------------
-
 set encoding=utf-8
 set wildmenu
 set wildoptions=pum
@@ -96,23 +70,15 @@ set nofoldenable
 set backspace=indent,eol,start
 filetype plugin indent on
 
-"--------------------THEME-----------------------
-set termguicolors
-colorscheme toast
-set background=dark
-
-" Make vim respect terminal color 
-highlight Normal guibg=none
-highlight NonText guibg=none
-
-"Hide tilde sign for empty line
-set fcs=eob:\  
-
-" Reduce vertical split limiter
-hi VertSplit ctermbg=NONE guibg=NONE
-
-"============= Load File ===================
-source ~/.config/nvim/statusline.vim
-source ~/.config/nvim/treesitter.vim
-source ~/.config/nvim/coc.vim
-source ~/.config/nvim/plugins.vim
+"------------------SOURCE-------------------------
+source ~/.config/nvim/plugins/keymaps.vim
+source ~/.config/nvim/plugins/theme.vim
+source ~/.config/nvim/plugins/statusline.vim
+source ~/.config/nvim/plugins/coc.vim
+source ~/.config/nvim/plugins/coc-fzf.vim
+source ~/.config/nvim/plugins/treesitter.vim
+source ~/.config/nvim/plugins/vimspector.vim
+source ~/.config/nvim/plugins/dadbod.vim
+source ~/.config/nvim/plugins/crates.vim
+source ~/.config/nvim/plugins/vim-move.vim
+source ~/.config/nvim/plugins/gen-tags.vim

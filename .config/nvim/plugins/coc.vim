@@ -1,21 +1,19 @@
 " coc config
 let g:coc_global_extensions = [
+ \ 'coc-actions',
  \ 'coc-pairs',
  \ 'coc-json',
  \ 'coc-java',
  \ 'coc-rust-analyzer',
  \ 'coc-tsserver',
  \ 'coc-emmet',
- \ 'coc-json',
  \ 'coc-vimlsp',
- \ 'coc-sql',
+ \ 'coc-fzf-preview',
  \ 'coc-sh',
- \ 'coc-gitignore',
  \ 'coc-html',
- \ 'coc-git',
  \ 'coc-highlight',
+ \ 'coc-yaml',
  \ 'coc-flutter',
- \ 'coc-actions',
  \ 'coc-texlab',
  \ 'coc-db',
  \ 'coc-eslint'] 
@@ -80,7 +78,7 @@ nmap <leader>f  <Plug>(coc-format-selected)
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  autocmd FileType typescript,json,jsx setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder.
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end

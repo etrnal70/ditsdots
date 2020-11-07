@@ -1,6 +1,8 @@
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",      -- one of "all", "language", or a list of languages
+  ensure_installed = {
+    "c", "rust", "cpp", "dart", "verilog", "bash", "toml" , "lua"
+  },      -- one of "all", "language", or a list of languages
   highlight = {
     enable = true,              -- false will disable the whole extension
     disable = {"ruby"},  -- list of language that will be disabled
