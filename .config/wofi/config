@@ -1,0 +1,11 @@
+term=kitty
+show=run
+show_all=true
+width=35%
+layer=overlay
+lines=5
+dynamic_lines=true
+allow_images=true
+image_size=17
+insensitive=true
+display_generic=true

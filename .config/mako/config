@@ -1,0 +1,19 @@
+markup=1
+actions=1
+default-timeout=7000
+
+# Format
+icons=1
+background-color=#2e3440
+text-color=#FFFFFF
+border-color=#2e3440
+border-size=3
+width=370
+height=200
+padding=10
+margin=10,25,10
+
+[urgency=high]
+text-color=#CD3F45
+border-color=#CD3F45
+ignore-timeout=1
