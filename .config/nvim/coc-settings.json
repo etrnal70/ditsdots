@@ -16,6 +16,7 @@
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
   "tsserver.implicitProjectConfig.checkJs": true,
+  "latex.build.onSave": true,
   "codeLens.enable": true,
   "suggest.completionItemKindLabels": {
     "keyword": "\uf1de",

@@ -13,7 +13,7 @@ Plug 'jsit/toast.vim'
 " Dadbod for database plugin
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
-Plug 'kristijanhusak/vim-dadbod-completion'
+" Plug 'kristijanhusak/vim-dadbod-completion'
 
 " coc.nvim for LSP 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -29,7 +29,7 @@ Plug 'puremourning/vimspector'
 Plug 'kkoomen/vim-doge'
 
 " Misc plugins
-Plug 'iamcco/markdown-preview.nvim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 'itchyny/lightline.vim'
 Plug 'jsfaint/gen_tags.vim'
 Plug 'matze/vim-move'
