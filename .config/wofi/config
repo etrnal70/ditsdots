@@ -1,5 +1,5 @@
 term=kitty
-show=run
+show=drun
 show_all=true
 width=35%
 layer=overlay

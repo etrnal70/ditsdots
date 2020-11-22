@@ -18,7 +18,7 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi
+set $menu wofi -a
 
 ### Output configuration
 #
@@ -59,9 +59,9 @@ exec swayidle -w \
 #
 # Keyboard 
 #
-input "type:keyboard" {
-  xkb_options caps:escape
-}
+#input "type:keyboard" {
+#  xkb_options caps:escape
+#}
 
 ### Key bindings
 #
@@ -72,7 +72,7 @@ input "type:keyboard" {
 
     # Kill focused window
     # bindsym $mod+Shift+q kill
-    bindsym Mod1+grave kill
+    bindsym Mod1+Tab kill
 
     # Start your launcher
     bindsym $mod+slash exec $menu
@@ -235,8 +235,19 @@ client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 # Gaps
 gaps inner 17
 
+# Screenshot
+bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
 
-# Special keybinding
+### Clamshell mode
+# Set laptops creen
+set $laptop_screen 'eDP-1'
+# Set sleep script
+set $sleep sleep 3 && systemctl suspend
+
+bindswitch --reload --locked lid:on exec '[$(swaymsg -t get_outputs | grep name | wc -l) == 1] && ($sleep) || (notify-send 'Clamshell mode - Laptop screen off' && swaymsg output $laptop_screen disable)'
+bindswitch --reload --locked lid:off output $laptop_screen enable
+
+### Special keybinding
 bindsym XF86AudioRaiseVolume exec /usr/bin/pulseaudio-ctl up
 bindsym XF86AudioLowerVolume exec /usr/bin/pulseaudio-ctl down
 bindsym XF86AudioMute exec /usr/bin/pulseaudio-ctl mute
@@ -246,6 +257,14 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86MonBrightnessUp exec pkexec brillo -A 3
 bindsym XF86MonBrightnessDown exec pkexec brillo -U 3
+
+### Another special keybinding
+bindsym $mod+Mod1+7 exec playerctl previous
+bindsym $mod+Mod1+8 exec playerctl play-pause
+bindsym $mod+Mod1+9 exec playerctl next
+bindsym $mod+Mod1+0 exec /usr/bin/pulseaudio-ctl down
+bindsym $mod+Mod1+minus exec /usr/bin/pulseaudio-ctl mute
+bindsym $mod+Mod1+equal exec /usr/bin/pulseaudio-ctl up
 
 ###########################
 include /etc/sway/config.d/*
