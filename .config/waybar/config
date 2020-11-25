@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
     "modules-center": ["tray"],
-    "modules-right": ["idle_inhibitor", "pulseaudio", "network", "battery", "battery#bat2", "clock"],
+    "modules-right": ["custom/weather", "pulseaudio", "network", "battery", "idle_inhibitor", "clock"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -29,7 +29,7 @@
     },
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ ",
-        "format-disconnected": "Disconnected ",
+        "format-disconnected": "Disconnected  ",
         "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
         "unknown-tag": "N/A",
         "interval": 2,
@@ -93,11 +93,11 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-wifi": "{essid}   ",
+        "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
+        "format-linked": "{ifname} (No IP)  ",
+        "format-disconnected": "睊",
+        "format-alt": "{ifname}: {ipaddr}/{cidr} | ({signalStrength}%)"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
@@ -108,11 +108,11 @@
         "format-source": "{volume}% ",
         "format-source-muted": "",
         "format-icons": {
-            "headphone": "",
+            "headphone": " ",
             "hands-free": "",
             "headset": "",
-            "phone": "",
-            "portable": "",
+            "phone": " ",
+            "portable": " ",
             "car": "",
             "default": ["", "", ""]
         },
@@ -121,13 +121,22 @@
     "custom/media": {
         "format": "{icon} {}",
         "return-type": "json",
-        "max-length": 40,
+        "max-length": 35,
         "format-icons": {
-            "spotify": "",
-            "default": "🎜"
+            "spotify": "  ",
+            "default": "  "
         },
         "escape": true,
-        // "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+        //"exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
         "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    }
+    },
+    "custom/weather": {
+        "format": "{}",
+        "format-alt": "{alt}: {}",
+        "format-alt-click": "click-right",
+        "interval": 1800,
+        "return-type": "json",
+        "exec": "~/.config/waybar/modules/weather.sh",
+        "exec-if": "ping wttr.in -c1"
+    },
 }

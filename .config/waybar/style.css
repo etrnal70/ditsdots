@@ -2,14 +2,14 @@
     border: none;
     border-radius: 0;
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-family: Roboto, "Font Awesome 5 Free";
     font-size: 13px;
     min-height: 0;
 }
 
 window#waybar {
     background-color: rgba(0, 0, 0, 0.55);
-    opacity: 0.85;
+    opacity: 1.0;
     /*border-bottom: 3px solid rgba(100, 114, 125, 0.5);*/
     color: #ffffff;
     transition-property: background-color;
@@ -43,6 +43,7 @@ window#waybar.chromium {
     background-color: transparent;
     color: #ffffff;
     border-bottom: 3px solid transparent;
+    opacity: 0.85;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
@@ -64,6 +65,7 @@ window#waybar.chromium {
 #mode {
     background-color: #64727D;
     border-bottom: 3px solid #ffffff;
+    opacity: 0.85;
 }
 
 #clock,
@@ -80,7 +82,7 @@ window#waybar.chromium {
 #idle_inhibitor,
 #mpd {
     padding: 0 10px;
-    margin: 0 4px;
+    margin: 0 0px;
     color: #ffffff;
 }
 
@@ -154,14 +156,22 @@ label:focus {
     background-color: #66cc99;
     color: #2a5c45;
     min-width: 100px;
+    opacity: 0.8;
 }
 
 #custom-media.custom-spotify {
     background-color: #66cc99;
+    opacity: 0.8;
 }
 
 #custom-media.custom-vlc {
     background-color: #ffa000;
+    opacity: 0.8;
+}
+
+#custom-weather {
+  min-width: 25px;
+  padding: 0 2px;
 }
 
 #temperature {

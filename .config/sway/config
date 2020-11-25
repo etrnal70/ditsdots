@@ -59,9 +59,9 @@ exec swayidle -w \
 #
 # Keyboard 
 #
-#input "type:keyboard" {
-#  xkb_options caps:escape
-#}
+input "type:keyboard" {
+  xkb_options caps:escape
+}
 
 ### Key bindings
 #
