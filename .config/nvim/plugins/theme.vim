@@ -1,4 +1,9 @@
 "--------------------THEME-----------------------
+" Custom highlight group
+augroup toast 
+  autocmd colorscheme toast hi link CocHintSign Comment
+augroup end
+
 set termguicolors
 colorscheme toast
 set background=dark
@@ -15,8 +20,3 @@ hi VertSplit ctermbg=NONE guibg=NONE
 
 " Disable SignColumn background
 hi SignColumn ctermbg=NONE guibg=NONE
-
-" Custom highlight group
-augroup toast 
-  autocmd colorscheme toast hi clear CocHintSign | hi link CocHintSign Comment
-augroup end

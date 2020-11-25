@@ -1,23 +1,44 @@
 call plug#begin()
 
+" LSP
 Plug 'neovim/nvim-lspconfig'    
 Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-lua/diagnostic-nvim'
+Plug 'steelsojka/completion-buffers'
+Plug 'nvim-treesitter/completion-treesitter'
+Plug 'nvim-lua/lsp_extensions.nvim'
+Plug 'nvim-lua/lsp-status.nvim'
 
+" Git related plugin
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+
+" Telescope
 Plug 'nvim-lua/popup.nvim'          
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/telescope.nvim'
 
+" Theme
 Plug 'ryanoasis/vim-devicons'       
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'jsit/toast.vim'
 
+"Treesitter
 Plug 'nvim-treesitter/nvim-treesitter'     
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
+" Debugger
 Plug 'puremourning/vimspector'      
 
+" Documentation
 Plug 'kkoomen/vim-doge'             
+
+" Misc plugins
+Plug 'itchyny/lightline.vim'
+Plug 'jsfaint/gen_tags.vim'
+Plug 'matze/vim-move'
+Plug 'jiangmiao/auto-pairs'
+Plug 'mhinz/vim-crates'
 
 call plug#end()
 
@@ -48,30 +69,12 @@ set nofoldenable
 set backspace=indent,eol,start
 filetype plugin indent on
 
-"===============FIXME:Config================
-"completion-nvim
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing message extra message when using completion
-set shortmess+=c
-
-" Omnifunc
-set omnifunc=v:lua.vim.lsp.onmifunc
-
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
-let g:completion_matching_smart_case = 1
-let g:completion_trigger_character = ['.', '::']
-
 "============= Load File ===================
 source ~/.config/nvim/plugins/keymaps.vim
 source ~/.config/nvim/plugins/theme.vim
-source ~/.config/nvim/plugins/statusline.vim
 source ~/.config/nvim/plugins/lsp.vim
-source ~/.config/nvim/plugins/treesitter.vim
+source ~/.config/nvim/plugins/min-statusline.vim
+luafile ~/.config/nvim/lua/treesitter.lua
 source ~/.config/nvim/plugins/telescope.vim
 source ~/.config/nvim/plugins/vim-move.vim
+source ~/.config/nvim/plugins/crates.vim

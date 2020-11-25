@@ -14,44 +14,34 @@ function! Git_branch() abort
   if fugitive#head() !=# ''
     return   " " . fugitive#head()
   else
-    return "\uf468"
+     return ''
   endif
 endfunction
 
-function! ErrorStatus() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if get(info, 'error', 0)
-    return info['error'] . "  🛑"
+function! LspDiagnostics() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').diagnostics()")
   endif
 
-  return "0  🛑"
-endfunction 
+  return ''
+endfunction
 
-function! WarningStatus() abort
-  let info = get(b:, 'coc_diagnostic_info', {})
-  if get(info, 'warning', 0)
-    return info['warning'] . "  ⚠️"
+function! LspMessages() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').messages()")
   endif
 
-  return "0  ⚠️"
-endfunction 
+  return ''
+endfunction
 
-"function! StatusDiagnostic() abort
-"  let info = get(b:, 'coc_diagnostic_info', {})
-"
-"  if get(info, 'error', 0)
-"    return info['error'] . "  🛑"
-"  endif
-"
-"  if get(info, 'warning', 0)
-"    return info['warning'] . "  ⚠️"
-"  endif
-"
-"  return "✅"
-"endfunction
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
 
-" TESTING
-" ==========================================================================================
+  return ''
+endfunction
+" ================ Theme =========================
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
 
 let s:bg = ["NONE", "NONE"] 
@@ -61,7 +51,6 @@ let s:bn = ["#98c379", 51]
 let s:bi = ["#61afef", 82]
 let s:br = ["#e06c75", 11]
 let s:bv = ["#e5c07b", 9]
-
 
 let s:p.normal.middle = [ [ s:fg, s:bg ] ]
 let s:p.normal.right = [ [ s:fg, s:bg ], [ s:fg, s:bg ] ]
@@ -85,13 +74,13 @@ let s:p.tabline.tabsel = [ [ s:bg, s:fg ] ]
 let g:lightline#colorscheme#minimal#palette = lightline#colorscheme#flatten(s:p)
 
 
-"=======================================================================================
-" Taking inspiration from https://github.com/juacq97/dotfiles/blob/master/minimal.vim
+
 let g:lightline = { 'colorscheme' : 'minimal' }
 let g:lightline.active = { 
       \ 'left': [ ['mode', 'readonly'],['git_branch'], ['filename_with_icon', 'modified']],
-      \ 'right': [['lineinfo'], ['testing_status', 'error_diagnostic', 'warning_diagnostic'] ]
+      \ 'right': [['lineinfo'],['lsp_status']]
       \ }
+
 " let g:lightline.separator = { 'left': "  ", 'right': "  " }
 let g:lightline.subseparator = { 'left': '', 'right': '' }
 " let g:lightline.tabline_separator = { 'left': " ", 'right': "" }
@@ -118,6 +107,7 @@ let g:lightline.component = {
         \ 'vim_logo': "\ue7c5 ",
         \ 'git_branch': '%{Git_branch()}',
         \ 'filename_with_parent': '%t',
-        \ 'warning_diagnostic' : '%{WarningStatus()}',
-        \ 'error_diagnostic' : '%{ErrorStatus()}',
+        \ 'lsp_diagnostics' : '%{LspDiagnostics()}',
+        \ 'lsp_messages' : '%{LspMessages()}',
+        \ 'lsp_status' : '%{LspStatus()}',
         \ }
