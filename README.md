@@ -12,11 +12,12 @@ dotfiles config --local status.showUntrackedFiles no
 ## TODO
 - [ ] Moar README
 - [ ] Arch install script
-- [x] Minimal vim script (done for now, wait for stable native nvim lsp)
+- [ ] Full migration to native LSP
+- [ ] Port neovim config to Lua
 
 
 # Setup
-**DE** : Gnome 3.38 + pop_shell tiling  
+**DE** : sway-git  
 **Shell** : zsh  
 **Terminal** : kitty + tmux  
 **Editor** : neovim  
