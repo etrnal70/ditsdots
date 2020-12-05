@@ -1,11 +1,11 @@
 term=kitty
-show=drun
 show_all=true
-width=35%
+width=20%
 layer=overlay
 lines=5
 dynamic_lines=true
 allow_images=true
-image_size=17
+always_parse_args=true
+image_size=20
 insensitive=true
 display_generic=true

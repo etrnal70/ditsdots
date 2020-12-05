@@ -75,7 +75,10 @@ input "type:keyboard" {
     bindsym Mod1+Tab kill
 
     # Start your launcher
-    bindsym $mod+slash exec $menu
+    bindsym $mod+comma exec $menu --show=drun
+    
+    # Execute command
+    bindsym $mod+period exec ~/.config/script/wofi-power.sh
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -217,7 +220,7 @@ bar {
 focus_follows_mouse no
 
 # Window Border
-default_border pixel 3
+default_border pixel 2
 default_floating_border normal
 
 set $cl_high #FFFFFF
@@ -248,10 +251,10 @@ bindswitch --reload --locked lid:on exec '[$(swaymsg -t get_outputs | grep name 
 bindswitch --reload --locked lid:off output $laptop_screen enable
 
 ### Special keybinding
-bindsym XF86AudioRaiseVolume exec /usr/bin/pulseaudio-ctl up
-bindsym XF86AudioLowerVolume exec /usr/bin/pulseaudio-ctl down
-bindsym XF86AudioMute exec /usr/bin/pulseaudio-ctl mute
-bindsym XF86AudioMicMute exec /usr/bin/pulseaudio-ctl mute-input
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% 
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
@@ -262,9 +265,9 @@ bindsym XF86MonBrightnessDown exec pkexec brillo -U 3
 bindsym $mod+Mod1+7 exec playerctl previous
 bindsym $mod+Mod1+8 exec playerctl play-pause
 bindsym $mod+Mod1+9 exec playerctl next
-bindsym $mod+Mod1+0 exec /usr/bin/pulseaudio-ctl down
-bindsym $mod+Mod1+minus exec /usr/bin/pulseaudio-ctl mute
-bindsym $mod+Mod1+equal exec /usr/bin/pulseaudio-ctl up
+bindsym $mod+Mod1+0 exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym $mod+Mod1+minus exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym $mod+Mod1+equal exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 
 ###########################
 include /etc/sway/config.d/*
