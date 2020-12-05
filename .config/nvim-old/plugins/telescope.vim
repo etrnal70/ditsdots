@@ -38,3 +38,4 @@ nnoremap <silent><Leader>lt <cmd>lua require'telescope.builtin'.treesitter{}<CR>
 nnoremap <silent><Leader>lq <cmd>lua require'telescope.builtin'.quickfix{}<CR>
 nnoremap <silent><Leader>lh <cmd>lua require'telescope.builtin'.oldfiles{}<CR>
 nnoremap <silent><Leader>lm <cmd>lua require'telescope.builtin'.marks{}<CR>
+nnoremap <silent><Leader>lg <cmd>lua require'telescope.builtin'.git_commits{}<CR>

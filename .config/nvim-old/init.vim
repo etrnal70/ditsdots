@@ -18,6 +18,11 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 " coc.nvim for LSP 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" Telescope
+Plug 'nvim-lua/popup.nvim'          
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/telescope.nvim'
+
 " Treesitter
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -71,14 +76,15 @@ set backspace=indent,eol,start
 filetype plugin indent on
 
 "------------------SOURCE-------------------------
-source ~/.config/nvim/plugins/keymaps.vim
-source ~/.config/nvim/plugins/theme.vim
-source ~/.config/nvim/plugins/statusline.vim
-source ~/.config/nvim/plugins/coc.vim
-source ~/.config/nvim/plugins/coc-fzf.vim
-source ~/.config/nvim/plugins/treesitter.vim
-source ~/.config/nvim/plugins/vimspector.vim
-source ~/.config/nvim/plugins/dadbod.vim
-source ~/.config/nvim/plugins/crates.vim
-source ~/.config/nvim/plugins/vim-move.vim
-source ~/.config/nvim/plugins/gen-tags.vim
+source ~/.config/nvim-old/plugins/keymaps.vim
+source ~/.config/nvim-old/plugins/theme.vim
+source ~/.config/nvim-old/plugins/statusline.vim
+source ~/.config/nvim-old/plugins/coc.vim
+source ~/.config/nvim-old/plugins/telescope.vim
+source ~/.config/nvim-old/plugins/coc-fzf.vim
+source ~/.config/nvim-old/plugins/treesitter.vim
+source ~/.config/nvim-old/plugins/vimspector.vim
+source ~/.config/nvim-old/plugins/dadbod.vim
+source ~/.config/nvim-old/plugins/crates.vim
+source ~/.config/nvim-old/plugins/vim-move.vim
+source ~/.config/nvim-old/plugins/gen-tags.vim

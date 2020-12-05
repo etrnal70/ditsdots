@@ -1,11 +1,4 @@
-" bash          npm install -g bash-language-server
-" ccls          <package manager> install ccls
-" dockerfile    npm install -g dockerfile-language-server-nodejs
-" rust          <package manager> install rust-analyzer
-" texlab        <package manager> install texlab
-
-" Inspired by github.com/sentriz/dotfiles
-lua <<EOF
+require('completion')
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -17,6 +10,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
+local protocol   = require('vim.lsp.protocol')
 local lsp        = require('lspconfig')
 local configs    = require('lspconfig/configs')
 local util       = require('lspconfig/util')
@@ -28,21 +22,58 @@ local map = function(type, key, value)
 end
 
 local custom_attach = function(client)
+  protocol.CompletionItemKind = {
+		'';             -- Text          = 1;
+		'ƒ';             -- Method        = 2;
+		'ƒ';             -- Function      = 3;
+		'';             -- Constructor   = 4;
+		'識';            -- Field         = 5;
+		'𝝬';             -- Variable      = 6;
+		'';             -- Class         = 7;
+		'ﰮ';             -- Interface     = 8;
+		'';             -- Module        = 9;
+		'Property';      -- Property      = 10;
+		'Unit';          -- Unit          = 11;
+		'Value';         -- Value         = 12;
+		'了';            -- Enum          = 13;
+		'';             -- Keyword       = 14;
+		'﬌';             -- Snippet       = 15;
+		'Color';         -- Color         = 16;
+		'';             -- File          = 17;
+		'Reference';     -- Reference     = 18;
+		'';             -- Folder        = 19;
+		'';             -- EnumMember    = 20;
+		'';             -- Constant      = 21;
+		'';             -- Struct        = 22;
+		'Event';         -- Event         = 23;
+		'Operator';      -- Operator      = 24;
+		'TypeParameter'; -- TypeParameter = 25;
+	}
+
+  if client.config.flags then
+    client.config.flags.allow_incremental_sync = true
+  end
+
   print("Starting LSP ...")
-  completion.on_attach(client)
+  completion.on_attach(client) 
   require "lsp-status".on_attach(client)
 
-  map('n','c-]','<cmd>lua vim.lsp.buf.definition()<CR>')
+  map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
   map('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
-  map('n','gD','<cmd>lua vim.lsp.buf.implementation()<CR>')
-  map('n','c-k','<cmd>lua vim.lsp.buf.signature_help()<CR>')
-  map('n','1gD','<cmd>lua vim.lsp.buf.type_definition()<CR>')
+  map('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
+  map('n','gh','<cmd>lua vim.lsp.buf.signature_help()<CR>')
+  map('n','gy','<cmd>lua vim.lsp.buf.type_definition()<CR>')
   map('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-  map('n','g0','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-  map('n','gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-  map('n','gd','<cmd>lua vim.lsp.buf.declaration()<CR>')
+  map('n','gs','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+  map('n','gw','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
+  map('n','gc','<cmd>lua vim.lsp.buf.declaration()<CR>')
   map('n','ff','<cmd>lua vim.lsp.buf.formatting()<CR>')
   map('n','<leader>a','<cmd>lua vim.lsp.buf.code_action()<CR>')
+
+  vim.cmd[[sign define LspDiagnosticsSignError text=▲  texthl=LspDiagnosticsSignError linehl= numhl=]]
+  vim.cmd[[sign define LspDiagnosticsSignWarning text=◆ texthl=LspDiagnosticsSignWarning linehl= numhl=]]
+  vim.cmd[[sign define LspDiagnosticsSignInformation text=⌘ texthl=LspDiagnosticsSignInformation linehl= numhl=]]
+  vim.cmd[[sign define LspDiagnosticsSignHint text=❖ texthl=LspDiagnosticsSignHint linehl= numhl=]]
 
   if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
     vim.cmd [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions.inlay_hints').request { aligned = false, prefix = " » " }]]
@@ -51,18 +82,47 @@ local custom_attach = function(client)
   vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 end
 
--- rust-analyzer and ccls
 local lsp_status = require "lsp-status"
 lsp_status.register_progress()
+local custom_capabilities = lsp_status.capabilities
+custom_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- -- bash -- --
 configs.custom_bash = {
-    default_config = {
-        cmd = {"bash-language-server", "start"},
+    default_config = { cmd = {"bash-language-server", "start"},
         filetypes = {"sh"},
         root_dir = util.path.dirname,
-        on_attach = custom_attach
+        on_attach = custom_attach,
     },
+}
+
+-- -- dart -- --
+configs.custom_dart = {
+  default_config = {
+    cmd = { "dart", "./snapshots/analysis_server.dart.snapshot", "--lsp" },
+    filetypes = { "dart" },
+    init_options = {
+      closingLabels = true, 
+      onlyAnalyzerProjectsWithOpenFiles = false,
+      flutterOutline = false,
+      outline = false,
+      suggestFromUnimportedLibraries = true,
+    },
+    root_dir = util.root_pattern("pubspec.yml"),
+      on_attach = custom_attach,
+      capabilities = custom_capabilities
+  }
+}
+
+-- -- tsserver -- -- 
+configs.custom_tsserver = {
+  default_config = {
+    cmd = { "typescript-language-server", "--stdio" },
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+    root_dir = util.root_pattern( "package.json", "tsconfig.json", ".git" ),
+    on_attach = custom_attach,
+    capabilities = custom_capabilities
+  }
 }
 
 -- -- rust -- --
@@ -75,7 +135,7 @@ configs.custom_rust = {
       ["rust-analyzer"] = {}
     },
     on_attach = custom_attach,
-    capabilities = lsp_status.capabilities
+    capabilities = custom_capabilities
   }
 }
 
@@ -86,7 +146,7 @@ configs.custom_ccls = {
     filetypes = { "c", "cpp", "objc", "objcpp" },
     root_dir = util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
     on_attach = custom_attach,
-    capabilities = lsp_status.capabilities
+    capabilities = custom_capabilities
   },
 }
 
@@ -150,6 +210,8 @@ lsp.custom_rust.setup({})
 lsp.custom_bash.setup({})
 lsp.custom_docker.setup({})
 lsp.custom_texlab.setup({})
+lsp.custom_dart.setup({})
+lsp.custom_tsserver.setup({})
 
 do
   local method = "textDocument/publishDiagnostics"
@@ -167,43 +229,3 @@ do
     end
   end
 end
-
-EOF
-
-"=======================Misc===============================
-"completion-nvim
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-
-" Avoid showing message extra message when using completion
-set shortmess+=c
-
-" Automatic omnifunc
-" inoremap . .<c-x><c-o>
-
-let g:completion_chain_complete_list = {
-  \ 'default' : [
-  \   { 'complete_items' : ['path','lsp','treesitter','buffer']},
-  \ ]}
-
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-let g:completion_enable_snippet = 'vim-vsnip'
-let g:completion_sorting = "none"
-let g:completion_trigger_on_delete = 1
-let g:completion_matching_ignore_case = 1
-let g:completion_matching_smart_case = 1
-let g:completion_timer_cycle = 100
-let g:completion_trigger_character = ['.', '::']
-
-sign define LspDiagnosticsSignError text=▲  texthl=LspDiagnosticsSignError linehl= numhl=
-sign define LspDiagnosticsSignWarning text=◆ texthl=LspDiagnosticsSignWarning linehl= numhl=
-sign define LspDiagnosticsSignInformation text=⌘ texthl=LspDiagnosticsSignInformation linehl= numhl=
-sign define LspDiagnosticsSignHint text=❖ texthl=LspDiagnosticsSignHint linehl= numhl=
-
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
-" Use completion-nvim in every buffer
-autocmd BufEnter * lua require'completion'.on_attach()

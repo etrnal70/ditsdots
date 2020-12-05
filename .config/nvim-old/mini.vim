@@ -2,11 +2,15 @@ call plug#begin()
 
 " LSP
 Plug 'neovim/nvim-lspconfig'    
+Plug 'nvim-lua/lsp_extensions.nvim'
+Plug 'nvim-lua/lsp-status.nvim'
+
+" Completion
 Plug 'nvim-lua/completion-nvim'
 Plug 'steelsojka/completion-buffers'
 Plug 'nvim-treesitter/completion-treesitter'
-Plug 'nvim-lua/lsp_extensions.nvim'
-Plug 'nvim-lua/lsp-status.nvim'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 " Git related plugin
 Plug 'airblade/vim-gitgutter'
@@ -34,6 +38,7 @@ Plug 'puremourning/vimspector'
 Plug 'kkoomen/vim-doge'             
 
 " Misc plugins
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'itchyny/lightline.vim'
 Plug 'jsfaint/gen_tags.vim'
 Plug 'matze/vim-move'
@@ -76,5 +81,6 @@ source ~/.config/nvim/plugins/lsp.vim
 source ~/.config/nvim/plugins/min-statusline.vim
 luafile ~/.config/nvim/lua/treesitter.lua
 source ~/.config/nvim/plugins/telescope.vim
+source ~/.config/nvim/plugins/nvim-tree.vim
 source ~/.config/nvim/plugins/vim-move.vim
 source ~/.config/nvim/plugins/crates.vim
