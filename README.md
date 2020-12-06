@@ -10,6 +10,7 @@ dotfiles config --local status.showUntrackedFiles no
 ```
 
 ## TODO
+- [ ] Rethinking dotfiles management (makefile?)
 - [ ] Moar README
 - [ ] Arch install script
 - [x] Full migration to native LSP
