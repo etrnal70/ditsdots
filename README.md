@@ -12,8 +12,8 @@ dotfiles config --local status.showUntrackedFiles no
 ## TODO
 - [ ] Moar README
 - [ ] Arch install script
-- [ ] Full migration to native LSP
-- [ ] Port neovim config to Lua
+- [x] Full migration to native LSP
+- [x] Port neovim config to Lua
 
 
 # Setup

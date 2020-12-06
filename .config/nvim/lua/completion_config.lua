@@ -23,8 +23,8 @@ vim.g.completion_sorting = 'none'
 vim.g.completion_trigger_on_delete = 1
 vim.g.completion_matching_ignore_case = 1
 vim.g.completion_matching_smart_case = 1
-vim.g.completion_timer_cycle = 200
-vim.g.completion_trigger_keyword_length = 0
+vim.g.completion_timer_cycle = 500
+vim.g.completion_trigger_keyword_length = 1
 vim.g.completion_confirm_key = '<CR>'
 
 vim.g.completion_trigger_character = {'::','.'}
