@@ -8,15 +8,6 @@ git clone --bare https://www.github.com/etrnal70/ditsdots.git $HOME/.dotfiles
 dotfiles checkout  
 dotfiles config --local status.showUntrackedFiles no  
 ```
-
-## TODO
-- [ ] Rethinking dotfiles management (makefile?)
-- [ ] Moar README
-- [ ] Arch install script
-- [x] Full migration to native LSP
-- [x] Port neovim config to Lua
-
-
 # Setup
 **DE** : sway-git  
 **Shell** : zsh  
