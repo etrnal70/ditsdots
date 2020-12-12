@@ -1,10 +1,10 @@
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {
-    "c", "rust", "cpp", "dart", "verilog", "bash", "toml" , "lua"
-  },      -- one of "all", "language", or a list of languages
+    "c", "rust", "cpp",  "dart", "verilog", "bash", "toml" , "lua", "css", "html", "typescript", "javascript", "json"
+  },
   highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = {},  -- list of language that will be disabled
+    enable = true, 
+    disable = {},  
   },
   textobjects = {
     select = {
@@ -42,5 +42,6 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
-vim.api.nvim_command('set foldmethod=expr')
-vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
+-- Still unstable
+-- vim.api.nvim_command('set foldmethod=expr')
+-- vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')

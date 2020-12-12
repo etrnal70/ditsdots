@@ -35,20 +35,23 @@ return require('packer').startup(function()
   use 'neovim/nvim-lspconfig'
   use 'nvim-lua/lsp_extensions.nvim'
   use 'nvim-lua/lsp-status.nvim'
+  use {'RishabhRD/nvim-lsputils'}
+  use {'RishabhRD/popfix', run = "make"}
   
   -- Completion
   use 'nvim-lua/completion-nvim'
   use 'steelsojka/completion-buffers'
   use 'nvim-treesitter/completion-treesitter'
-  -- use 'SirVer/ultisnips'
-  -- use 'honza/vim-snippets'
+  use 'kristijanhusak/vim-dadbod-completion'
   use 'hrsh7th/vim-vsnip'
   use 'hrsh7th/vim-vsnip-integ'
 
   -- Telescope
-  use 'nvim-lua/popup.nvim'    
-  use 'nvim-lua/plenary.nvim'
-  use 'nvim-lua/telescope.nvim'
+  use {
+    'nvim-lua/telescope.nvim',
+    requires = {'nvim-lua/popup.nvim','nvim-lua/plenary.nvim'}
+  }
+  use 'nvim-telescope/telescope-fzy-native.nvim'
 
   -- Theme and Icons
   use 'kyazdani42/nvim-web-devicons'
@@ -66,10 +69,24 @@ return require('packer').startup(function()
   use 'tpope/vim-fugitive'
   use 'junegunn/gv.vim'
 
+  -- Debugger
+  use 'puremourning/vimspector'
+
+  -- Language-related
+  use 'dart-lang/dart-vim-plugin'
+  use 'cespare/vim-toml'
+
   -- Misc
-  -- use 'ervandew/supertab'
+  use 'glepnir/galaxyline.nvim'
+  use {
+    'tpope/vim-dadbod',
+    requires = {'kristijanhusak/vim-dadbod-ui'}
+  }
+  use 'metakirby5/codi.vim'             -- Universal REPL
+  use 'rafcamlet/nvim-luapad'           -- Lua REPL
+  use 'lervag/vimtex'
+  use 'norcalli/nvim-colorizer.lua'
   use 'kyazdani42/nvim-tree.lua'
-  use 'itchyny/lightline.vim'
   use 'jsfaint/gen_tags.vim'
   use 'matze/vim-move'
   use 'jiangmiao/auto-pairs'

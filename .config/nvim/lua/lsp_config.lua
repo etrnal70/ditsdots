@@ -1,27 +1,37 @@
 require('completion')
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = {
-          spacing = 3,
-        },
-        signs = true,
-        update_in_insert = true,
-    }
-)
-
 local protocol   = require('vim.lsp.protocol')
 local lsp        = require('lspconfig')
 local configs    = require('lspconfig/configs')
 local util       = require('lspconfig/util')
 local completion = require('completion')
-local status     = require('lsp-status')
+
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false,
+        signs = true,
+        update_in_insert = false,
+	underline = false,
+    }
+)
+
+-- Use custom implementation from nvim-lsputils for some parts
+vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
 
 local map = function(type, key, value)
 	vim.fn.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
 end
 
 local custom_attach = function(client)
+  print("Starting LSP...")
+
   protocol.CompletionItemKind = {
 		'';   -- Text          = 1;
 		'';   -- Method        = 2;
@@ -48,14 +58,13 @@ local custom_attach = function(client)
 		'鬒';  -- Event         = 23;
 		'Ψ';   -- Operator      = 24;
 		'';   -- TypeParameter = 25;
-	}
+  }
 
   if client.config.flags then
     client.config.flags.allow_incremental_sync = true
   end
 
-  print("Starting LSP ...")
-  completion.on_attach(client) 
+  completion.on_attach(client)
   require "lsp-status".on_attach(client)
 
   map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
@@ -74,10 +83,13 @@ local custom_attach = function(client)
   vim.cmd[[sign define LspDiagnosticsSignWarning text=◆ texthl=LspDiagnosticsSignWarning linehl= numhl=]]
   vim.cmd[[sign define LspDiagnosticsSignInformation text=⌘ texthl=LspDiagnosticsSignInformation linehl= numhl=]]
   vim.cmd[[sign define LspDiagnosticsSignHint text=❖ texthl=LspDiagnosticsSignHint linehl= numhl=]]
+  
+  -- Rust inlay hints
+  -- if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
+  --  vim.cmd [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions.inlay_hints').request { aligned = false, prefix = " » " }]]
+  -- end
 
-  if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
-    vim.cmd [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions.inlay_hints').request { aligned = false, prefix = " » " }]]
-  end
+  -- Dart label
 
   vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 end
@@ -96,13 +108,24 @@ configs.custom_bash = {
     },
 }
 
+-- -- sumneko-lua -- --
+configs.custom_lua = {
+  default_config = {
+    cmd = {"lua-language-server", "-E"},
+    filetypes = {"lua"},
+    root_dir = util.path.dirname,
+    on_attach = custom_attach,
+    capabilities = custom_capabilities
+  }
+}
+
 -- -- dart -- --
 configs.custom_dart = {
   default_config = {
     cmd = { "dart", "./snapshots/analysis_server.dart.snapshot", "--lsp" },
     filetypes = { "dart" },
     init_options = {
-      closingLabels = true, 
+      closingLabels = true,
       onlyAnalyzerProjectsWithOpenFiles = false,
       flutterOutline = false,
       outline = false,
@@ -114,7 +137,7 @@ configs.custom_dart = {
   }
 }
 
--- -- tsserver -- -- 
+-- -- tsserver -- --
 configs.custom_tsserver = {
   default_config = {
     cmd = { "typescript-language-server", "--stdio" },
@@ -132,7 +155,11 @@ configs.custom_rust = {
     filetypes = {"rust"},
     root_dir = util.root_pattern("Cargo.toml", "rust-project.json"),
     settings = {
-      ["rust-analyzer"] = {}
+	["rust-analyzer"] = {
+	    checkOnSave = {
+	      enable = false,
+	    }
+	}
     },
     on_attach = custom_attach,
     capabilities = custom_capabilities
@@ -193,7 +220,8 @@ default_config = {
           onSave = true
         },
         forwardSearch = {
-          args = {},
+          executable = "zathura",
+          args = {"--synctex-forward", "%1:1:%f", "%p", "-pvc"},
           onSave = true
         },
         lint = {
@@ -205,6 +233,7 @@ default_config = {
 }
 
 lsp.custom_ccls.setup({})
+lsp.custom_lua.setup({})
 lsp.custom_cmake.setup({})
 lsp.custom_rust.setup({})
 lsp.custom_bash.setup({})

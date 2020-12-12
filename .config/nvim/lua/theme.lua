@@ -1,9 +1,8 @@
-vim.api.nvim_command('set termguicolors')
-vim.api.nvim_command('colorscheme toast')
+vim.cmd('set termguicolors')
+vim.cmd('colorscheme toast')
 vim.o.background = 'dark'
 
-vim.api.nvim_command('highlight Normal guibg=none')
-vim.api.nvim_command('highlight NonText guibg=none')
-vim.api.nvim_command('highlight SignColumn ctermbg=none guibg=none')
-vim.api.nvim_command('highlight VertSplit ctermbg=none guibg=none')
-
+vim.cmd('highlight Normal guibg=NONE')
+vim.cmd('highlight NonText guibg=NONE')
+vim.cmd('highlight SignColumn ctermbg=NONE guibg=NONE')
+vim.cmd('highlight VertSplit ctermbg=NONE guibg=NONE')
