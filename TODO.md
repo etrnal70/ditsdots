@@ -7,12 +7,12 @@ Bunch of things to do to make my life easier
 
 ## Desktop
  - [ ] Neomutt
-  - [ ] Setup neomutt
-  - [ ] Email checker script
-  - [ ] Create waybar entries
+   - [ ] Setup neomutt
+   - [ ] Email checker script
+   - [ ] Create waybar entries
  - [ ] Level indicator for volume (use wob)
  - [ ] nnn
 
 ## Shell
  - [ ] Add more scripts for development
-  - [ ] FzF moar things
+   - [ ] FzF moar things
