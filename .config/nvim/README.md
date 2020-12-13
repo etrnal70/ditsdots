@@ -2,7 +2,7 @@
 Issues preventing from fully switch to native LSP
 
  - [ ] Lack of replacement
-  - [ ] TailwindCSS
+   - [ ] TailwindCSS
  - [ ] Some LSP require special handling
  - [ ] Unstable neovim state (see Todo)
 
