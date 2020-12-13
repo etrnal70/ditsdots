@@ -14,4 +14,4 @@ dotfiles config --local status.showUntrackedFiles no
 **Terminal** : kitty + tmux  
 **Editor** : neovim  
 
-![Desktop](/home/hanifrmdhn/pic.png)
+![Desktop](https://github.com/etrnal70/ditsdots/blob/master/pic.png)
