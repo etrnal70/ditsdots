@@ -2,6 +2,7 @@
 vim.g.mapleader = ','
 
 require('init')
+require('statusline')
 require('keymaps')
 require('theme')
 require('vsnip')
@@ -25,24 +26,25 @@ gl.ttyfast = true
 gl.clipboard = 'unnamedplus'
 gl.mouse = 'n'
 
-gl.autoindent = true
-gl.smartindent = true
-gl.breakindent = true
+buf.autoindent = true
+buf.smartindent = true
+win.breakindent = true
 gl.joinspaces = false
 vim.api.nvim_command('set breakindentopt=shift:2,min:40,sbr')
 
 gl.lbr = true
-gl.updatetime = 100
+gl.updatetime = 300
 
 buf.shiftwidth = 2
-gl.softtabstop = 2
-gl.smarttab = true
-gl.expandtab = true
+buf.softtabstop = 2
+buf.tabstop = 2
+-- buf.smarttab = true
+buf.expandtab = true
 
 gl.laststatus = 2
 win.number = true
 win.relativenumber = true
-gl.pumheight = 5
+gl.pumheight = 4
 
 win.foldenable = false
 

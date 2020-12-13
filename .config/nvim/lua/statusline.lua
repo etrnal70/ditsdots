@@ -1,4 +1,3 @@
-local lsp = require('lsp-status')
 local gl = require('galaxyline')
 local gls = gl.section
 gl.short_line_list = {'LuaTree','dbui'}
@@ -14,33 +13,9 @@ local colors = {
   magenta = '#d16d9e',
   grey = '#c0c0c0',
   blue = '#61afef',
-  red = '#ec5f67'
+  red = '#ec5f67',
+  black = '#000000'
 }
-
-function table_to_string(tbl)
-    local result = "{"
-    for k, v in pairs(tbl) do
-        -- Check the key type (ignore any numerical keys - assume its an array)
-        if type(k) == "string" then
-            result = result.."[\""..k.."\"]".."="
-        end
-
-        -- Check the value type
-        if type(v) == "table" then
-            result = result..table_to_string(v)
-        elseif type(v) == "boolean" then
-            result = result..tostring(v)
-        else
-            result = result.."\""..v.."\""
-        end
-        result = result..","
-    end
-    -- Remove leading commas from the result
-    if result ~= "" then
-        result = result:sub(1, result:len()-1)
-    end
-    return result.."}"
-end
 
 local buffer_not_empty = function()
   if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
@@ -65,7 +40,7 @@ gls.left[2] = {
       local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
       return alias[vim.fn.mode()]
     end,
-    separator = '  ',
+    separator = ' ',
     separator_highlight = {colors.yellow,function()
       if not buffer_not_empty() then
         return colors.bg
@@ -77,7 +52,7 @@ gls.left[2] = {
 }
 gls.left[3] = {
   GitIcon = {
-    provider = function() return '  ' end,
+    provider = function() return ' ' end,
     condition = require('galaxyline.provider_vcs').check_git_workspace,
     highlight = {colors.orange,colors.bg},
   }
@@ -89,14 +64,19 @@ gls.left[4] = {
     highlight = {colors.grey,colors.bg},
   }
 }
-gls.left[5] ={
+gls.left[5] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+gls.left[6] ={
   FileIcon = {
     provider = 'FileIcon',
     condition = buffer_not_empty,
     highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.bg},
   },
 }
-gls.left[6] = {
+gls.left[7] = {
   FileName = {
     provider = {'FileName'},
     condition = buffer_not_empty,
@@ -116,35 +96,34 @@ end
 
 gls.right[1] = {
   LspMessage = {
-    provider = function()
-	local tbl = lsp.messages()
-	local res = table_to_string(tbl)
-	return res
+    provider = function () 
+      local res = require('lsp-status').status()
+      return res
     end,
     icon = '',
     highlight = {colors.grey,colors.bg}
   }
 }
+-- gls.right[2] = {
+--   DiagnosticError = {
+--     provider = 'DiagnosticError',
+--     icon = '  ',
+--     highlight = {colors.red,colors.bg}
+--   }
+-- }
+-- gls.right[3] = {
+--   Space = {
+--     provider = function () return ' ' end
+--   }
+-- }
+-- gls.right[4] = {
+--   DiagnosticWarn = {
+--     provider = 'DiagnosticWarn',
+--     icon = '  ',
+--     highlight = {colors.yellow,colors.bg},
+--   }
+-- }
 gls.right[2] = {
-  DiagnosticError = {
-    provider = 'DiagnosticError',
-    icon = '  ',
-    highlight = {colors.red,colors.bg}
-  }
-}
-gls.right[3] = {
-  Space = {
-    provider = function () return ' ' end
-  }
-}
-gls.right[4] = {
-  DiagnosticWarn = {
-    provider = 'DiagnosticWarn',
-    icon = '  ',
-    highlight = {colors.yellow,colors.bg},
-  }
-}
-gls.right[5] = {
   LineInfo = {
     provider = 'LineColumn',
     separator = ' | ',
@@ -152,7 +131,7 @@ gls.right[5] = {
     highlight = {colors.grey,colors.bg},
   },
 }
-gls.right[6] = {
+gls.right[3] = {
   Space = {
     provider = function () return ' ' end
   }

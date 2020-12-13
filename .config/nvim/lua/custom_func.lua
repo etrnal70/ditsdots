@@ -25,3 +25,6 @@ function s_tab_complete()
         return rt('<S-Tab>')
     end
 end
+
+-----------------------------------------------------------------------
+-- Custom LSP Message
