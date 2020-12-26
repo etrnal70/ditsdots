@@ -8,6 +8,16 @@ Plug 'junegunn/gv.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'jsit/toast.vim'
 
+"Telescope
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope/telescope-fzy-native.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+
+"Treesitter
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
 " coc.nvim for LSP 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -20,13 +30,13 @@ Plug 'sheerun/vim-polyglot'
 
 " Language-specific plugin
 Plug 'mhinz/vim-crates'
-Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
 let mapleader=","
 set encoding=utf-8
 set wildmenu
+set wildoptions=pum
 set lazyredraw
 set ttyfast
 set clipboard+=unnamedplus
@@ -47,14 +57,22 @@ set updatetime=300
 set completeopt=longest,menuone
 set nofoldenable
 set backspace=indent,eol,start
-set scl=yes
-syntax enable
+set pumheight=5
 filetype plugin indent on
+
+augroup toast 
+  autocmd colorscheme toast hi clear CocHintSign | hi link CocHintSign Comment
+augroup end
 
 colorscheme toast
 set background=dark
 hi Normal guibg=NONE ctermbg=NONE
 hi SignColumn ctermbg=NONE guibg=NONE
+
+
+if !has('gui_running')
+  set t_Co=256
+endif
 
 "-------------------Keymaps--------------------
 " Move window
@@ -235,102 +253,6 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-"-----------------------CoC-FzF---------------------------------
-nnoremap <silent><Leader>lp :CocCommand fzf-preview.ProjectFiles<CR>
-nnoremap <silent><Leader>lf :CocCommand fzf-preview.DirectoryFiles<CR>
-nnoremap <silent><Leader>lg :CocCommand fzf-preview.GitFiles<CR>
-nnoremap <silent><Leader>ls :CocCommand fzf-preview.ProjectGrep<CR>
-nnoremap <silent><Leader>lb :CocCommand fzf-preview.AllBuffers<CR>
-nnoremap <silent><Leader>lq :CocCommand fzf-preview.QuickFix<CR>
-nnoremap <silent><Leader>lh :CocCommand fzf-preview.OldFiles<CR>
-nnoremap <silent><Leader>lh :CocCommand fzf-preview.OldFiles<CR>
-
-let g:fzf_preview_floating_window_rate = 0.8
-
-" fzf command default options
-let g:fzf_preview_default_fzf_options = { '--reverse': v:true, '--preview-window': 'wrap' }
-
-" Add fzf quit mapping
-let g:fzf_preview_quit_map = 1
-
-" jump to the buffers by default, when possible
-let g:fzf_preview_buffers_jump = 0
-
-" Commands used for fzf preview.
-" The file name selected by fzf becomes {}
-let g:fzf_preview_command = 'bat --color=always --plain {-1}' " Installed bat
-
-" g:fzf_binary_preview_command is executed if this command succeeds, and g:fzf_preview_command is executed if it fails
-let g:fzf_preview_if_binary_command = '[[ "$(file --mime {})" =~ binary ]]'
-
-" Commands used for binary file
-let g:fzf_binary_preview_command = 'echo "{} is a binary file"'
-
-" Commands used to get the file list from project
-let g:fzf_preview_filelist_command = 'rg --files --hidden --follow --no-messages -g \!"* *"' " Installed ripgrep
-
-" Commands used to get the file list from git reposiroty
-let g:fzf_preview_git_files_command = 'git ls-files --exclude-standard'
-
-" Commands used to get the file list from current directory
-let g:fzf_preview_directory_files_command = 'rg --files --hidden --follow --no-messages -g \!"* *"'
-
-" Commands used to get the git status file list
-let g:fzf_preview_git_status_command = "git status --short --untracked-files=all | awk '{if (substr($0,2,1) !~ / /) print $2}'"
-
-" Commands used for git status preview.
-let g:fzf_preview_git_status_preview_command =  "[[ $(git diff -- {-1}) != \"\" ]] && git diff --color=always -- {-1} || " .
-\ "[[ $(git diff --cached -- {-1}) != \"\" ]] && git diff --cached --color=always -- {-1} || " .
-\ g:fzf_preview_command
-
-" Commands used for project grep
-let g:fzf_preview_grep_cmd = 'rg --line-number --no-heading --color=never'
-
-" MRU and MRW cache directory
-let g:fzf_preview_cache_directory = expand('~/.cache/vim/fzf_preview')
-
-" If this value is not 0, disable mru and mrw
-let g:fzf_preview_disable_mru = 0
-
-" Commands used for current file lines
-let g:fzf_preview_lines_command = 'bat --color=always --plain --number' " Installed bat
-
-" Commands used for preview of the grep result
-let g:fzf_preview_grep_preview_cmd = expand('<sfile>:h:h') . '/bin/preview_fzf_grep'
-
-" Cache directory for mru and mrw
-let g:fzf_preview_cache_directory = expand('~/.cache/vim/fzf_preview')
-
-" Keyboard shortcuts while fzf preview is active
-let g:fzf_preview_preview_key_bindings = ''
-" let g:fzf_preview_preview_key_bindings = 'ctrl-d:preview-page-down,ctrl-u:preview-page-up,?:toggle-preview'
-
-" Specify the color of fzf
-let g:fzf_preview_fzf_color_option = ''
-
-" Set the processes when selecting an element with fzf
-let g:fzf_preview_custom_processes = {}
-" For example, set split to ctrl-s
-" let g:fzf_preview_custom_processes['open-file'] = fzf_preview#remote#process#get_default_processes('open-file')
-" on coc extensions
-" let g:fzf_preview_custom_processes['open-file'] = fzf_preview#remote#process#get_default_processes('open-file', 'coc')
-" let g:fzf_preview_custom_processes['open-file']['ctrl-s'] = g:fzf_preview_custom_processes['open-file']['ctrl-x']
-" call remove(g:fzf_preview_custom_processes['open-file'], 'ctrl-x')
-
-" Use as fzf preview-window option
-let g:fzf_preview_fzf_preview_window_option = ''
-" let g:fzf_preview_fzf_preview_window_option = 'up:30%'
-
-" Use vim-devicons
-let g:fzf_preview_use_dev_icons = 1
-
-" devicons character width
-let g:fzf_preview_dev_icon_prefix_string_length = 3
-
-" Devicons can make fzf-preview slow when the number of results is high
-" By default icons are disable when number of results is higher that 5000
-let g:fzf_preview_dev_icons_limit = 3000
-
 "================Vim-Move======================
 let g:move_key_modifier = 'A-S'
 
@@ -373,20 +295,6 @@ function! WarningStatus() abort
   return "0  ⚠️"
 endfunction 
 
-"function! StatusDiagnostic() abort
-"  let info = get(b:, 'coc_diagnostic_info', {})
-"
-"  if get(info, 'error', 0)
-"    return info['error'] . "  🛑"
-"  endif
-"
-"  if get(info, 'warning', 0)
-"    return info['warning'] . "  ⚠️"
-"  endif
-"
-"  return "✅"
-"endfunction
-
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
 
 let s:bg = ["NONE", "NONE"] 
@@ -418,7 +326,6 @@ let s:p.tabline.right = [ [ s:fg, s:bg ] ]
 let s:p.tabline.tabsel = [ [ s:bg, s:fg ] ]
 
 let g:lightline#colorscheme#minimal#palette = lightline#colorscheme#flatten(s:p)
-
 
 "=======================================================================================
 " Taking inspiration from https://github.com/juacq97/dotfiles/blob/master/minimal.vim
@@ -456,3 +363,108 @@ let g:lightline.component = {
         \ 'warning_diagnostic' : '%{WarningStatus()}',
         \ 'error_diagnostic' : '%{ErrorStatus()}',
         \ }
+
+"===================================== LUA ===========================================
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {
+    "c", "rust", "cpp",  "dart", "verilog", "bash", "toml" , "lua", "css", "html", "typescript", "javascript", "json"
+  },
+  highlight = {
+    enable = true, 
+    use_languagetree = true,
+    disable = {},  
+  },
+  textobjects = {
+    select = {
+      enable = true,
+        keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@conditional.outer",
+        ["ic"] = "@conditional.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
+        ["as"] = "@statement.outer",
+        ["am"] = "@statement.outer",
+        }
+    },
+    move = {
+      enable = true,
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
+  }
+}
+
+require('telescope').load_extension('fzy_native')
+
+local tele = require('telescope')
+
+vim.cmd[[noremap <silent><C-f> <cmd>lua require'telescope.builtin'.find_files{}<CR>]]
+vim.cmd[[nnoremap <silent><C-p> <cmd>lua require'telescope.builtin'.git_files{}<CR>]]
+vim.cmd[[noremap <silent><Leader>ls <cmd>lua require'telescope.builtin'.live_grep{}<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lb <cmd>lua require'telescope.builtin'.buffers{}<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lt <cmd>lua require'telescope.builtin'.treesitter{}<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lq <cmd>lua require'telescope.builtin'.quickfix{}<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lh <cmd>lua require'telescope.builtin'.oldfiles{}<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lm <cmd>lua require'telescope.builtin'.marks{}<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lg <cmd>lua require'telescope.builtin'.git_commits{}<CR>]]
+
+tele.setup{
+  defaults = {
+    extensions = {
+	fzy_native = {
+	    override_generic_sorter = false,
+            override_file_sorter = true,
+	}
+    },
+    vimgrep_arguments = {
+      'rg',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case'
+    },
+    -- Let's try buffer preview for fanciness
+    file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
+    grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new, 
+    qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+    --
+    prompt_prefix= " 🔍 ",
+    color_devicons = true,
+    layout_strategy = "flex",
+    preview_cutoff = 120,
+    windblend = 0.2,
+    results_height = 1,
+    results_width = 0.8,
+    file_ignore_patterns = {"__pycache__/*","__init__.py", "%.env", "node_modules/*", "scratch/.*"},
+    file_sorter = require'telescope.sorters'.get_fuzzy_file,
+    generic_sorter = require'telescope.sorters'.get_generic_fuzzy_sorter,
+    set_env = {['COLORTERM'] = 'truecolor'},
+    shorten_path = true,
+    mappings = {
+      i = {
+        ["<C-j>"] = require('telescope.actions').move_selection_next,
+        ["<C-k>"] = require('telescope.actions').move_selection_previous,
+      },
+    },
+  }
+}
+
+EOF
