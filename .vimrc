@@ -239,9 +239,10 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 nnoremap <silent><Leader>lp :CocCommand fzf-preview.ProjectFiles<CR>
 nnoremap <silent><Leader>lf :CocCommand fzf-preview.DirectoryFiles<CR>
 nnoremap <silent><Leader>lg :CocCommand fzf-preview.GitFiles<CR>
-nnoremap <silent><Leader>ls :CocCommand fzf-preview.ProjectGrep
+nnoremap <silent><Leader>ls :CocCommand fzf-preview.ProjectGrep<CR>
 nnoremap <silent><Leader>lb :CocCommand fzf-preview.AllBuffers<CR>
 nnoremap <silent><Leader>lq :CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent><Leader>lh :CocCommand fzf-preview.OldFiles<CR>
 nnoremap <silent><Leader>lh :CocCommand fzf-preview.OldFiles<CR>
 
 let g:fzf_preview_floating_window_rate = 0.8

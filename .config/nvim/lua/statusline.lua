@@ -34,7 +34,7 @@ gls.left[2] = {
     provider = function()
       local mode_color = {n = colors.green, i = colors.blue, v=colors.orange, [''] = colors.green, V = colors.yellow,
       			  c = colors.red, no = colors.magenta,s = colors.orange,S=colors.orange,[''] = colors.orange,
-			  ic = colors.yellow,R = colors.purple,Rv = colors.purple,cv = colors.red,ce=colors.red,[''] = colors.orange, 
+			  ic = colors.yellow,R = colors.purple,Rv = colors.purple,cv = colors.red,ce=colors.red,[''] = colors.orange,
 			  r = colors.cyan,rm = colors.cyan, ['r?'] = colors.cyan,['!']  = colors.red,t = colors.red }
       vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
       local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
@@ -104,6 +104,7 @@ gls.right[1] = {
     highlight = {colors.grey,colors.bg}
   }
 }
+
 -- gls.right[2] = {
 --   DiagnosticError = {
 --     provider = 'DiagnosticError',
@@ -123,6 +124,8 @@ gls.right[1] = {
 --     highlight = {colors.yellow,colors.bg},
 --   }
 -- }
+
+
 gls.right[2] = {
   LineInfo = {
     provider = 'LineColumn',

@@ -1,3 +1,4 @@
+local vim = vim
 
 vim.g.mapleader = ','
 
@@ -29,11 +30,11 @@ gl.mouse = 'n'
 buf.autoindent = true
 buf.smartindent = true
 win.breakindent = true
-gl.joinspaces = false
+gl.joinspaces = true
 vim.api.nvim_command('set breakindentopt=shift:2,min:40,sbr')
 
 gl.lbr = true
-gl.updatetime = 300
+gl.updatetime = 1000
 
 buf.shiftwidth = 2
 buf.softtabstop = 2
@@ -44,11 +45,13 @@ buf.expandtab = true
 gl.laststatus = 2
 win.number = true
 win.relativenumber = true
-gl.pumheight = 4
+
+gl.pumheight = 5
 
 win.foldenable = false
 
-vim.api.nvim_command('set formatoptions+=cqrnj')
-vim.api.nvim_command('set formatoptions-=ato')
+vim.cmd('set formatoptions+=cqrnj')
+vim.cmd('set formatoptions-=ato')
+vim.cmd('noswapfile')
 
-vim.api.nvim_command('set backspace=indent,eol,start')
+vim.cmd('set backspace=indent,eol,start')

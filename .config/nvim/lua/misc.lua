@@ -60,3 +60,18 @@ set.lua_tree_icons = {
 
 vim.cmd('nnoremap <F2> :LuaTreeToggle<CR>')
 vim.cmd('highlight LuaTreeFolderIcon guifg=gray')
+
+-- Colorizer.lua
+local colorizer = require('colorizer')
+colorizer.setup({'*';},{names = false; RRGGBBAA = true;})
+
+-- gitsigns.nvim
+require('gitsigns').setup{
+  signs = {
+    add          = {hl = 'DiffAdd'   , text = '│'},
+    change       = {hl = 'DiffChange', text = '│'},
+    delete       = {hl = 'DiffDelete', text = '_'},
+    topdelete    = {hl = 'DiffDelete', text = '‾'},
+    changedelete = {hl = 'DiffChange', text = '~'},
+  }
+}

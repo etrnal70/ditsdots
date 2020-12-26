@@ -24,6 +24,7 @@ zstyle ':autocomplete:list-choices:*' max-lines 20%
 
 # Default
 export PATH=$HOME/bin:/usr/local/bin:/usr/bin:$PATH
+export LC_ALL="en_US.UTF-8"
 
 # Starship
 eval "$(starship init zsh)"
@@ -60,6 +61,10 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 #Python lib
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
 
+# nnn
+export NNN_PLUG='f:finder;o:fzopen;p:preview-tui;d:diffs;t:preview-tabbed;v:vidthumb;i:imgview;'
+export NNN_FIFO=/tmp/nnn.fifo
+
 # Wayland related
 export QT_QPA_PLATFORM=wayland-egl
 export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
@@ -76,7 +81,7 @@ source /usr/share/fzf/completion.zsh
 # ditsdots
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
-alias nv="nvim -u ~/.config/nvim-old/init.vim"
+alias nvc="nvim -u ~/.config/nvim/fallback.vim"
 alias cls="clear"
 alias gpo="git push origin"
 alias wifi-menu="nmtui-connect"

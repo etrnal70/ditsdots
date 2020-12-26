@@ -8,10 +8,12 @@ local completion = require('completion')
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
+        virtual_text =  {
+	  spacing = 3,
+	},
         signs = true,
-        update_in_insert = false,
-	underline = false,
+        update_in_insert = faalse,
+	      underline = false,
     }
 )
 
@@ -79,10 +81,10 @@ local custom_attach = function(client)
   map('n','ff','<cmd>lua vim.lsp.buf.formatting()<CR>')
   map('n','<leader>a','<cmd>lua vim.lsp.buf.code_action()<CR>')
 
-  vim.cmd[[sign define LspDiagnosticsSignError text=▲  texthl=LspDiagnosticsSignError linehl= numhl=]]
-  vim.cmd[[sign define LspDiagnosticsSignWarning text=◆ texthl=LspDiagnosticsSignWarning linehl= numhl=]]
-  vim.cmd[[sign define LspDiagnosticsSignInformation text=⌘ texthl=LspDiagnosticsSignInformation linehl= numhl=]]
-  vim.cmd[[sign define LspDiagnosticsSignHint text=❖ texthl=LspDiagnosticsSignHint linehl= numhl=]]
+  vim.cmd[[sign define LspDiagnosticsSignError text=🔥  texthl=LspDiagnosticsSignError linehl= numhl=]]
+  vim.cmd[[sign define LspDiagnosticsSignWarning text=⚠️ texthl=LspDiagnosticsSignWarning linehl= numhl=]]
+  vim.cmd[[sign define LspDiagnosticsSignInformation text=✨ texthl=LspDiagnosticsSignInformation linehl= numhl=]]
+  vim.cmd[[sign define LspDiagnosticsSignHint text=💡 texthl=LspDiagnosticsSignHint linehl= numhl=]]
   
   -- Rust inlay hints
   -- if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
@@ -96,6 +98,13 @@ end
 
 local lsp_status = require "lsp-status"
 lsp_status.register_progress()
+lsp_status.config({
+    indicator_errors = '🔥',
+    indicator_warnings = '⚠️',
+    indicator_info = '✨',
+    indicator_hint = '💡',
+    indicator_ok = '🟢',
+})
 local custom_capabilities = lsp_status.capabilities
 custom_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -122,18 +131,33 @@ configs.custom_lua = {
 -- -- dart -- --
 configs.custom_dart = {
   default_config = {
-    cmd = { "dart", "./snapshots/analysis_server.dart.snapshot", "--lsp" },
+    cmd = { "dart", "/opt/dart-sdk/bin/snapshots/analysis_server.dart.snapshot", "--lsp" },
     filetypes = { "dart" },
     init_options = {
       closingLabels = true,
       onlyAnalyzerProjectsWithOpenFiles = false,
-      flutterOutline = false,
-      outline = false,
+      flutterOutline = true,
+      outline = true,
       suggestFromUnimportedLibraries = true,
     },
-    root_dir = util.root_pattern("pubspec.yml"),
-      on_attach = custom_attach,
-      capabilities = custom_capabilities
+    root_dir = util.root_pattern("pubspec.yaml"),
+    on_attach = custom_attach,
+    capabilities = custom_capabilities
+  }
+}
+
+-- TODO
+-- -- mpls -- --
+configs.custom_mpls = {
+  default_config = {
+    filetypes = { "python" },
+    init_options = {
+      analysisUpdates = true,
+      asyncStartup = true,
+    },
+    root_dir = util.root_pattern("."),
+    on_attach = custom_attach,
+    capabilities = custom_capabilities
   }
 }
 
@@ -148,7 +172,7 @@ configs.custom_tsserver = {
   }
 }
 
--- -- rust -- --
+-- -- rust-analyzer -- --
 configs.custom_rust = {
   default_config = {
     cmd = { "rust-analyzer" },
@@ -156,9 +180,10 @@ configs.custom_rust = {
     root_dir = util.root_pattern("Cargo.toml", "rust-project.json"),
     settings = {
 	["rust-analyzer"] = {
-	    checkOnSave = {
-	      enable = false,
-	    }
+	    checkOnSave = { enable = false },
+	    inlayHints = { enable = false },
+	    lens = { enable = false },
+	    trace = { server = { "verbose" } }
 	}
     },
     on_attach = custom_attach,
@@ -234,6 +259,7 @@ default_config = {
 
 lsp.custom_ccls.setup({})
 lsp.custom_lua.setup({})
+lsp.custom_mpls.setup({})
 lsp.custom_cmake.setup({})
 lsp.custom_rust.setup({})
 lsp.custom_bash.setup({})

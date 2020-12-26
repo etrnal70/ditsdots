@@ -1,3 +1,4 @@
+local vim = vim
 local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
 
 if not packer_exists then
@@ -48,7 +49,7 @@ return require('packer').startup(function()
 
   -- Telescope
   use {
-    'nvim-lua/telescope.nvim',
+    'nvim-telescope/telescope.nvim',
     requires = {'nvim-lua/popup.nvim','nvim-lua/plenary.nvim'}
   }
   use 'nvim-telescope/telescope-fzy-native.nvim'
@@ -56,6 +57,7 @@ return require('packer').startup(function()
   -- Theme and Icons
   use 'kyazdani42/nvim-web-devicons'
   use 'jsit/toast.vim'
+  use 'sainnhe/gruvbox-material'
 
   -- Treesitter
   use 'nvim-treesitter/nvim-treesitter'
@@ -65,7 +67,8 @@ return require('packer').startup(function()
   use 'kkoomen/vim-doge'
 
   -- Git
-  use 'airblade/vim-gitgutter'
+  -- use 'airblade/vim-gitgutter'
+  use 'lewis6991/gitsigns.nvim'
   use 'tpope/vim-fugitive'
   use 'junegunn/gv.vim'
 
@@ -82,6 +85,11 @@ return require('packer').startup(function()
     'tpope/vim-dadbod',
     requires = {'kristijanhusak/vim-dadbod-ui'}
   }
+  use {
+    'iamcco/markdown-preview.nvim',
+    run = "cd app && yarn install"
+  }
+  use 'lukas-reineke/format.nvim'
   use 'metakirby5/codi.vim'             -- Universal REPL
   use 'rafcamlet/nvim-luapad'           -- Lua REPL
   use 'lervag/vimtex'

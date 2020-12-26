@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
     "modules-center": ["tray"],
-    "modules-right": ["memory","cpu", "pulseaudio", "network", "battery", "clock"],
+    "modules-right": ["memory","cpu", "pulseaudio", "network", "battery", "clock", "idle_inhibitor"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -82,10 +82,10 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{capacity}% {icon}",
+        "format": "{icon}",
         "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
+        "format-alt": "{capacity}% | {time} {icon}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""]

@@ -8,6 +8,7 @@
   "diagnostic.infoSign": "◉",
   "diagnostic.enable": true,
   "diagnostic.signPriority": 10,
+  "rust-analyzer.serverPath": "/usr/bin/rust-analyzer",
   "diagnostic.highlightOffset": 9999999,
   "diagnostic.refreshOnInsertMode": true,
   "codeLens.enable": false,
