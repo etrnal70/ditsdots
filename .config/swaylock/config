@@ -1,1 +1,13 @@
-image=~/Downloads/arch.jpg
+clock
+effect-blur=20x20
+indicator
+indicator-radius=130
+timestr=%H : %M
+datestr=%A, %d %b
+text-color=FFFFFF
+ring-color=00000000
+inside-color=00000000
+separator-color=00000000
+line-color=00000000
+fade-in=1
+image=~/.config/walls/ny.png

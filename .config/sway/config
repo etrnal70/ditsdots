@@ -23,12 +23,14 @@ set $menu wofi -a
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Downloads/ny.png fill
+output * bg ~/.config/walls/ny.png fill
 #
 # Example configuration:
 #
-output eDP-1 resolution 1366x768 position 0,0
-output DP-3 resolution 1920x1080 position 1366,0
+output eDP-1 scale 1.21
+output eDP-1 resolution 1920x1080 position 0,528
+output DP-2 resolution 1920x1080 position 1586,340
+output HDMI-A-1 resolution 1920x1080 position 3506,21 transform 270
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -56,6 +58,12 @@ exec swayidle -w \
 #
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
+input "1739:33521:SYNA3071:00_06CB:82F1_Touchpad" {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
 
 #
 # Keyboard 
@@ -79,7 +87,7 @@ input "type:keyboard" {
     bindsym $mod+comma exec $menu --show=drun
     
     # Execute command
-    bindsym $mod+period exec ~/.config/script/wofi-power.sh
+    bindsym $mod+period exec ~/.config/sway/script/wofi-power.sh
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -253,6 +261,22 @@ gaps inner 17
 # Screenshot
 bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
 
+# Theme
+# Curor
+set $my_cursor_size 30
+set $my_cursor VimixCursors-White
+
+seat seat0 xcursor_theme $my_cursor $my_cursor_size
+
+# GTK
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+  gsettings set $gnome-schema gtk-theme Arc-Dark
+  gsettings set $gnome-schema cursor-theme vimix-cursors-white
+  gsettings set $gnome-schema cursor-size $my_cursor_size
+}
+
 ### Clamshell mode
 # Set laptops creen
 set $laptop_screen 'eDP-1'
@@ -270,10 +294,10 @@ bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
-# bindsym XF86MonBrightnessUp exec pkexec brillo -A 3
-# bindsym XF86MonBrightnessDown exec pkexec brillo -U 3
-bindsym $mod+Mod1+5 exec brillo -A 3
-bindsym $mod+Mod1+6 exec brillo -U 3
+bindsym XF86MonBrightnessUp exec brightnessctl s +10%
+bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
+bindsym $mod+Mod1+5 exec exec brightnessctl s +10%
+bindsym $mod+Mod1+6 exec brightnessctl s 10%-
 
 ### Another special keybinding
 bindsym $mod+Mod1+7 exec playerctl previous
