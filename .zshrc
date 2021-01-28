@@ -61,14 +61,7 @@ export LC_ALL="en_US.UTF-8"
 eval "$(starship init zsh)"
  
 # fnm
-if type fnm > /dev/null; then
-
-  fnm() {
-    unset -f fnm
-    eval "$(fnm env)"
-    fnm $@
-  }
-fi
+eval "$(fnm env)"
 
 # Rust Cargo
 export PATH="$HOME/.cargo/bin:$PATH"
@@ -125,7 +118,7 @@ export MOZ_ENABLE_WAYLAND=1
 export LIBVA_DRIVER_NAME=i965 # Workaround for buggy NEO driver
  
 # FzF
-export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --theme=OneHalfDark --color=always --style=header,grid,numbers,snip --line-range :300 {}' --height 60%"
+export FZF_DEFAULT_OPTS="--ansi --height 40% --layout=reverse --border"
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
  
@@ -136,11 +129,25 @@ export OPENCV_LOG_LEVEL=ERROR
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 alias cfnv="cd ~/.config/nvim && nvim"
-alias ls="exa"
+alias ls="exa -l"
 alias nvc="nvim -u ~/.config/nvim/fallback.vim"
 alias cls="clear"
 alias gpo="git push origin"
 alias wifi-menu="nmtui-connect"
+alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+
+# Ultralist
+alias u="ultralist"
+alias uc="ultralist l due:agenda group:context"
+alias up="ultralist l due:agenda group:project"
+alias tod="ultralist l group:project due:tod"
+alias tom="ultralist l group:project due:tom"
+alias mon="ultralist l group:project due:mon"
+alias tue="ultralist l group:project due:tue"
+alias wed="ultralist l group:project due:wed"
+alias thu="ultralist l group:project due:thu"
+alias fri="ultralist l group:project due:fri"
+alias c="ultralist l completed:tod"
 
 # Manual trigger for WebRTC screensharing
 alias webrtcss="/usr/lib/xdg-desktop-portal -r"
