@@ -101,8 +101,8 @@ window#waybar.chromium {
 
 @keyframes blink {
     to {
-        background-color: #ffffff;
-        color: #000000;
+        background-color: rgba(0, 0, 0, 0.55);
+        color: rgba(0, 0, 0, 0.55);
     }
 }
 
@@ -168,6 +168,15 @@ label:focus {
 #custom-weather {
   min-width: 25px;
   padding: 0 2px;
+}
+
+#custom-caps_status {
+  background-color: #ffa000;
+  animation-name: blink;
+  animation-duration: 1.0s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
 }
 
 #temperature {

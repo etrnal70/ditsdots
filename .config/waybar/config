@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
     "modules-center": ["tray"],
-    "modules-right": ["custom/caps_status", "pulseaudio", "network", "battery", "clock", "idle_inhibitor"],
+    "modules-right": ["custom/caps_status", "custom/update","pulseaudio", "network", "battery", "clock", "idle_inhibitor"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -145,6 +145,11 @@
       "exec" : "~/.config/waybar/modules/caps_status.sh",
       "format": "{}",
       "interval": 2,
+    },
+    "custom/update" : {
+      "exec" : "~/.config/waybar/modules/update_check.sh",
+      "format": "{}",
+      "interval": 7200,
     },
     "custom/weather": {
         "format": "{}",

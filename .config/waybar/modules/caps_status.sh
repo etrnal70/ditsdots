@@ -2,7 +2,7 @@
 status="$(cat /sys/class/leds/input4::capslock/brightness)"
 
 if [ "$status" = "1" ]; then 
-  echo '⚠️ ' 
+  echo ' 🔒 ' 
 else
   echo ''
 fi
