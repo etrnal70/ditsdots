@@ -1,57 +1,75 @@
 local vim = vim
 
-vim.g.mapleader = ','
+vim.g.mapleader = ' '
 
 require('init')
-require('statusline')
-require('keymaps')
 require('theme')
-require('vsnip')
-require('completion_config')
-require('telescope_config')
 require('lsp_config')
-require('treesitter')
+require('git_config')
 require('misc')
 
+-- TODO : Wait for upstream fix for vim.o
 local gl = vim.o
 local buf = vim.bo
 local win = vim.wo
 
-vim.api.nvim_command('set encoding=utf-8')
+-- vim.api.nvim_command('set encoding=utf-8')
+gl.encoding = 'utf-8'
 
-gl.hidden = true
-gl.wildmenu = true
-gl.wildoptions = 'pum'
-gl.lazyredraw = true
-gl.ttyfast = true
-gl.clipboard = 'unnamedplus'
-gl.mouse = 'n'
+gl.hidden = true                -- Hide unloaded buffer
+gl.lazyredraw = true            -- Don't redraw easily
+gl.ttyfast = true               -- Performance related
+gl.clipboard = 'unnamedplus'    -- Enable system-wide clipboard
+gl.mouse = 'n'                  -- Mouse only on normal mode
+gl.updatetime = 250             -- Editor update time in ms
+-- gl.foldenable = true            -- Prevent folding upon opening file
+vim.cmd('set foldenable')
 
+gl.splitright = true            -- Vertical split always on the right
+gl.splitbelow = true            -- Horizontal split always on the bottom
+
+gl.ignorecase = true            -- Search are case-insensitive
 buf.autoindent = true
 buf.smartindent = true
 win.breakindent = true
 gl.joinspaces = true
-vim.api.nvim_command('set breakindentopt=shift:2,min:40,sbr')
 
-gl.lbr = true
-gl.updatetime = 1000
+-- vim.api.nvim_command('set breakindentopt=shift:2,min:40,sbr')
+gl.breakindentopt = 'shift:2,min:40,sbr'
+gl.lbr = true                   -- Enable line break
+gl.wrap = true
 
-buf.shiftwidth = 2
-buf.softtabstop = 2
-buf.tabstop = 2
--- buf.smarttab = true
-buf.expandtab = true
 
-gl.laststatus = 2
-win.number = true
-win.relativenumber = true
+-- buf.shiftwidth = 4
+-- buf.softtabstop = 4
+-- buf.tabstop = 4
+-- gl.smarttab = true
+-- gl.expandtab = true
+-- win.signcolumn = 'auto:1'
+vim.cmd('set shiftwidth=2')
+vim.cmd('set softtabstop=2')
+vim.cmd('set tabstop=2')
+vim.cmd('set expandtab')
+vim.cmd('set smarttab')
+vim.cmd('set signcolumn=auto:1')   -- Signcolumn auto and set minimum width of 1
 
-gl.pumheight = 5
+gl.laststatus = 2           -- Always show statusline
+win.number = true           -- Enable number column
+win.relativenumber = true   -- Make number column relative
 
-win.foldenable = false
+gl.wildmenu = true          -- Use wildmenu
+gl.wildoptions = 'pum'      -- Use popup style for wildmenu
+gl.pumheight = 4            -- Set popup height to 4 entry
+gl.pumblend = 3             -- Make popup menu translucent
 
 vim.cmd('set formatoptions+=cqrnj')
 vim.cmd('set formatoptions-=ato')
-vim.cmd('noswapfile')
+-- vim.cmd('set noswapfile')           -- Tbh swap file are disturbing af
+gl.swapfile = false
+gl.backup = false
+gl.writebackup = false
+buf.undofile = true                 -- Use undofile for persistent undo
+gl.undodir = '$HOME/.nvim/undo'     -- Undofile location
 
-vim.cmd('set backspace=indent,eol,start')
+-- vim.cmd('set backspace=indent,eol,start')   -- For good backspace
+gl.backspace = 'indent,eol,start'

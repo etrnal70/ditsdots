@@ -1,22 +1,228 @@
 local cmd = vim.cmd
 
-cmd('set termguicolors')
+-- #######################################
+-- #####         Colorscheme         #####
+-- #######################################
+vim.o.termguicolors = true  -- Use GUI colors in terminal
 
 cmd('colorscheme toast')
-vim.o.background = 'dark'
+vim.o.background = 'dark'   -- Set background to dark
 
-cmd('highlight Normal guibg=NONE')
+cmd('highlight Normal guibg=NONE')    -- Make background transparent
 cmd('highlight NonText guibg=NONE')
 cmd('highlight SignColumn ctermbg=NONE guibg=NONE')
 cmd('highlight VertSplit ctermbg=NONE guibg=NONE')
+cmd('highlight Pmenu ctermbg=NONE guibg=#292927')
 
-cmd('highlight LspDiagnosticsDefaultWarning guifg=Orange')
-cmd('highlight LspDiagnosticsDefaultError guifg=Red')
+-- LSP Diagnostic color
+cmd('highlight LspDiagnosticsDefaultWarning guifg=#fca903')
+cmd('highlight LspDiagnosticsDefaultError guifg=#e53935')
 cmd('highlight LspDiagnosticsDefaultHint guifg=LightGrey')
 cmd('highlight LspDiagnosticsDefaultInformation guifg=LightBlue')
 
+-- Gitsigns color
 cmd('highlight DiffAdd cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
 cmd('highlight DiffChange cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
 cmd('highlight DiffDelete cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
 
 cmd('highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
+cmd('highlight LineNr guifg=#3f3f3f')
+
+
+-- #######################################
+-- #####         Statusline          #####
+-- #######################################
+local gl = require('galaxyline')
+local gls = gl.section
+local status = require('lsp_status')
+gl.short_line_list = {'LuaTree','dbui'}
+
+-- Define colors
+local colors = {
+  bg = nil,
+  yellow = '#fabd2f',
+  cyan = '#008080',
+  darkblue = '#081633',
+  green = '#98c379',
+  orange = '#FF8800',
+  purple = '#5d4d7a',
+  magenta = '#d16d9e',
+  grey = '#c0c0c0',
+  blue = '#61afef',
+  red = '#ec5f67',
+  black = '#000000'
+}
+
+local buffer_not_empty = function()
+  if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
+    return true
+  end
+  return false
+end
+
+-- Statusline positioning
+gls.left[1] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+
+gls.left[2] = {
+  ViMode = {
+    provider = function()
+      local mode_color = {
+        n = colors.green, 
+        i = colors.blue, 
+        v =colors.orange, 
+        [''] = colors.green, 
+        V = colors.yellow,
+      	c = colors.red, 
+        no = colors.magenta,
+        s = colors.orange,
+        S = colors.orange,
+        [''] = colors.orange,
+	ic = colors.yellow,
+        R = colors.purple,
+        Rv = colors.purple,
+        cv = colors.red,
+        ce = colors.red,
+        [''] = colors.orange,
+	r = colors.cyan,rm = colors.cyan, 
+        ['r?'] = colors.cyan,
+        ['!'] = colors.red,
+        t = colors.red 
+      }
+      vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
+      local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
+      return alias[vim.fn.mode()]
+    end,
+    separator = ' ',
+    separator_highlight = {colors.yellow,function()
+      if not buffer_not_empty() then
+        return colors.bg
+      end
+      return colors.bg
+    end},
+    highlight = {colors.magenta,colors.bg,'bold'},
+  },
+}
+
+gls.left[3] = {
+  GitIcon = {
+    provider = function() return ' ' end,
+    condition = require('galaxyline.provider_vcs').check_git_workspace,
+    highlight = {colors.orange,colors.bg},
+  }
+}
+
+gls.left[4] = {
+  GitBranch = {
+    provider = 'GitBranch',
+    condition = require('galaxyline.provider_vcs').check_git_workspace,
+    highlight = {colors.grey,colors.bg},
+  }
+}
+
+gls.left[5] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+
+gls.left[6] ={
+  FileIcon = {
+    provider = 'FileIcon',
+    condition = buffer_not_empty,
+    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.bg},
+  },
+}
+
+gls.left[7] = {
+  FileName = {
+    provider = {'FileName'},
+    condition = buffer_not_empty,
+    separator = '',
+    separator_highlight = {colors.bg,colors.bg},
+    highlight = {colors.white,colors.bg}
+  }
+}
+
+local checkwidth = function()
+  local squeeze_width  = vim.fn.winwidth(0) / 2
+  if squeeze_width > 40 then
+    return true
+  end
+  return false
+end
+
+-- LSP Status (WIP)
+gls.right[1] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+  -- LspMessage = {
+  --   provider = status.update_text(),
+  --   icon = '',
+  --   highlight = {colors.grey,colors.bg}
+  -- }
+}
+
+gls.right[2] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+
+gls.right[3] = {
+  DiagnosticError = {
+    provider = 'DiagnosticError',
+    icon = '  ',
+    highlight = {colors.red,colors.bg}
+  }
+}
+
+gls.right[4] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+
+gls.right[5] = {
+  DiagnosticWarn = {
+    provider = 'DiagnosticWarn',
+    icon = '  ',
+    highlight = {colors.yellow,colors.bg},
+  }
+}
+
+gls.right[6] = {
+  LineInfo = {
+    provider = 'LineColumn',
+    separator = ' | ',
+    separator_highlight = {colors.grey,colors.bg},
+    highlight = {colors.grey,colors.bg},
+  },
+}
+gls.right[7] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+
+gls.short_line_left[1] = {
+  FileIcon = {
+    provider = 'FileIcon',
+    condition = buffer_not_empty,
+    highlight = {colors.grey,colors.bg}
+  },
+}
+
+gls.short_line_left[2] = {
+  FileName = {
+    provider = {'FileName'},
+    condition = buffer_not_empty,
+    separator = '',
+    separator_highlight = {colors.bg,colors.bg},
+    highlight = {colors.white,colors.bg}
+  }
+}
