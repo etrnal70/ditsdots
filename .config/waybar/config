@@ -1,13 +1,13 @@
 {
     "layer": "bottom", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 30, // Waybar height (to be removed for auto height)
+    "height": 26, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
 
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
-    "modules-center": ["tray"],
-    "modules-right": ["custom/caps_status", "custom/update","pulseaudio", "network", "battery", "clock", "idle_inhibitor"],
+    "modules-center": [],
+    "modules-right": ["custom/caps_status", "custom/update","pulseaudio", "network", "battery", "clock","tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -64,7 +64,7 @@
     },
     "tray": {
         // "icon-size": 21,
-        "spacing": 10
+        "spacing": 7
     },
     "clock": {
         // "timezone": "America/New_York",
@@ -148,6 +148,7 @@
     },
     "custom/update" : {
       "exec" : "~/.config/waybar/modules/update_check.sh",
+      "exec-if": "yay",
       "format": "{}",
       "interval": 7200,
     },
