@@ -69,7 +69,9 @@ input "1739:33521:SYNA3071:00_06CB:82F1_Touchpad" {
 # Keyboard 
 #
 input "type:keyboard" {
-  xkb_options caps:escape
+  # Pressing both Shift toggle CapsLock
+  # Use capslock as escape
+  xkb_options shift:both_capslock,caps:escape
 }
 
 ### Key bindings
@@ -87,7 +89,7 @@ input "type:keyboard" {
     bindsym $mod+comma exec $menu --show=drun
     
     # Execute command
-    bindsym $mod+period exec ~/.config/sway/script/wofi-power.sh
+    # bindsym $mod+period exec ~/.config/sway/script/wofi-power.sh
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
