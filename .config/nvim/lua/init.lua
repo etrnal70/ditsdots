@@ -62,10 +62,10 @@ return require('packer').startup(function()
   use {
     'nvim-telescope/telescope.nvim',
     requires = {
-      'nvim-lua/popup.nvim',
-      'nvim-lua/plenary.nvim', 
-      'nvim-telescope/telescope-fzy-native.nvim',
-      {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim'}},
+      'nvim-lua/popup.nvim',    -- Telescope requirement
+      'nvim-lua/plenary.nvim',  -- Telescope requirement
+      'nvim-telescope/telescope-fzy-native.nvim',   -- fzy algorithm support
+      {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim'}},  -- Frecency algorithm support
     }
   }
 
@@ -78,14 +78,12 @@ return require('packer').startup(function()
     requires = {
       'nvim-treesitter/nvim-treesitter-textobjects',  -- Define custom textobjects
       'nvim-treesitter/nvim-treesitter-refactor',     -- Refactoring 
-      'nvim-treesitter/nvim-tree-docs'                -- Docstring generator
+      'nvim-treesitter/nvim-tree-docs',               -- Docstring generator
+      'nvim-treesitter/playground',                   -- See treesitter details
     },
     run = function() vim.cmd [[TSUpdate]] end,
   }
   use 'vigoux/architext.nvim'                         -- TS-based structural editing
-
-  -- Documentation
-  use 'kkoomen/vim-doge'
 
   -- Git
   use 'lewis6991/gitsigns.nvim'   -- Gutter sign
@@ -105,7 +103,7 @@ return require('packer').startup(function()
   -- }
 
   -- Language-related
-  use 'akinsho/flutter-tools.nvim'
+  use 'akinsho/flutter-tools.nvim'      -- Flutter development extensions
   use 'dart-lang/dart-vim-plugin'
   use 'cespare/vim-toml'
   use 'ziglang/zig.vim'
@@ -115,7 +113,9 @@ return require('packer').startup(function()
   use {'tpope/vim-dadbod',              -- Database capability
     requires = {'kristijanhusak/vim-dadbod-ui'}
   }   
-  use 'tpope/vim-commentary'            -- Commentary plugin
+  use 'windwp/nvim-autopairs'           -- Autopair
+  use 'eugen0329/vim-esearch'           -- Project wide search-and-replace
+  use 'b3nj5m1n/kommentary'             -- Commentary plugin
   use 'tpope/vim-dispatch'              -- Async job control
   use 'machakann/vim-sandwich'          -- Surround plugin
   use 'szw/vim-maximizer'               -- Maximize buffer
@@ -123,16 +123,16 @@ return require('packer').startup(function()
     'iamcco/markdown-preview.nvim',
     run = {"cd app && npm install"},
   }
-  use 'mhartington/formatter.nvim'       -- Formatter
-  use {'lervag/vimtex', ft = 'tex'}     -- AiO TeU plugin
+  use 'mhartington/formatter.nvim'      -- Formatter
+  use {'lervag/vimtex', ft = 'tex'}     -- AiO TeX plugin
   use 'norcalli/nvim-colorizer.lua'     -- Color highlighting
-  use {'kyazdani42/nvim-tree.lua',      --  Directory tree
+  use {'kyazdani42/nvim-tree.lua',      -- Directory tree
     event = 'VimEnter *'  --SRPEAD THE UGANDAN MESSAGE
   } 
   use 'jsfaint/gen_tags.vim'            -- Generate gtags
   use 'matze/vim-move'                  -- To move lines easily
   use {'mhinz/vim-crates', ft = 'toml'} -- Get updated Rust crates version
-  use 'rafcamlet/nvim-luapad'           -- REPL for Lua dev
+  use 'rafcamlet/nvim-luapad'           -- REPL for Lua development
   use 'bfredl/nvim-luadev'              -- For lua development in Neovim
 end
 )

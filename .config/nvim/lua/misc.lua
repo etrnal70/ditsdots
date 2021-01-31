@@ -33,6 +33,13 @@ cmd[[inoremap <A-h> <esc>i]]
 set.move_key_modifier = 'A-S'
 
 -- #####################################
+-- #####        Kommentary         #####
+-- #####################################
+-- Comment line/range using gc
+-- For unsupported language, define it below
+require('kommentary.config').config["rust"] = {"// ", {"/* ", " */"}}
+
+-- #####################################
 -- #####      vim-maximizer        #####
 -- #####################################
 -- Maxiize/minimize active buffer size
@@ -40,6 +47,25 @@ set.maximizer_set_default_mapping = 0
 set.maximizer_set_mapping_with_bang = 0
 cmd[[nnoremap <silent><leader>m :MaximizerToggle!<CR>]]
 cmd[[vnoremap <silent><leader>m :MaximizerToggle!<CR>gv]]
+
+-- #####################################
+-- #####      nvim-autopairs       #####
+-- #####################################
+-- Auto closing bracket
+require('nvim-autopairs').setup({
+  pairs_map = {
+    ["'"] = "'",
+    ['"'] = '"',
+    ['('] = ')',
+    ['['] = ']',
+    ['{'] = '}',
+    ['`'] = '`',
+  },
+  disable_filetype = {"TelescopePrompt"},
+  break_line_filetype = nil,
+  html_break_line_filetype = {'html' , 'vue' , 'typescriptreact' , 'svelte' , 'javascriptreact'},
+  ignored_nex_char = "%w",
+})
 
 -- #####################################
 -- #####         Telescope         #####
@@ -50,15 +76,15 @@ require('telescope').load_extension('frecency')
 
 local tele = require('telescope')
 
-vim.cmd[[noremap <silent><Leader>f <cmd>lua require'telescope.builtin'.find_files({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>p <cmd>lua require'telescope.builtin'.git_files({})<CR>]]
+vim.cmd[[noremap <silent><Leader>lf <cmd>lua require'telescope.builtin'.find_files({})<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lgf <cmd>lua require'telescope.builtin'.git_files({})<CR>]]
 vim.cmd[[noremap <silent><Leader>ls <cmd>lua require'telescope.builtin'.live_grep({})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lb <cmd>lua require'telescope.builtin'.buffers({initial_mode = "normal"})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lt <cmd>lua require'telescope.builtin'.treesitter({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lq <cmd>lua require'telescope.builtin'.quickfix({})<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lq <cmd>lua require'telescope.builtin'.quickfix({initial_mode = "normal"})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lh <cmd>lua require'telescope.builtin'.oldfiles({})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lm <cmd>lua require'telescope.builtin'.marks({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lg <cmd>lua require'telescope.builtin'.git_commits({})<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lgc <cmd>lua require'telescope.builtin'.git_commits({})<CR>]]
 
 tele.setup{
   defaults = {
@@ -239,8 +265,15 @@ require'nvim-treesitter.configs'.setup {
       },
     },
   },
+  -- See treesitter details. For development only
+  playground = {
+    enable = false,
+    disable = {},
+    updatetime = 25,
+    persist_queries = false,
+  },
 }
--- Use treesitter fold capability
+-- Use treesitter fold capability (Still unstable, so disable for now)
 -- vim.api.nvim_command('set foldmethod=expr')
 -- vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
 
