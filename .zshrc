@@ -39,9 +39,10 @@ zinit wait lucid light-mode for \
     zinit-zsh/z-a-as-monitor \
     zinit-zsh/z-a-patch-dl \
     zinit-zsh/z-a-bin-gem-node \
-    zdharma/fast-syntax-highlighting \
+    zsh-users/zsh-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
-    zsh-users/zsh-completions
+    zsh-users/zsh-completions \
+    marlonrichert/zsh-autocomplete
 
 ### End of Zinit's installer chunk
 
@@ -52,6 +53,8 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':autocomplete:*' min-input 2
+zstyle ':completion:*' verbose no
 
 # Default
 export PATH=/usr/local/bin:/usr/bin:$PATH
@@ -124,9 +127,10 @@ source /usr/share/fzf/completion.zsh
  
 # Misc
 export OPENCV_LOG_LEVEL=ERROR
+export EDITOR=nvim
  
 # ditsdots
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias df="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 alias cfnv="cd ~/.config/nvim && nvim"
 alias ls="exa -l"
