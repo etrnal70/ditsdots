@@ -1,9 +1,0 @@
-zsh
-noto-fonts-emoji
-zathura
-kitty
-fnm
-
-flutter
-dart
-
