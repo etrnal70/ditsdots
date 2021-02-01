@@ -130,7 +130,7 @@ export OPENCV_LOG_LEVEL=ERROR
 export EDITOR=nvim
  
 # ditsdots
-alias df="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias dfs="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 alias cfnv="cd ~/.config/nvim && nvim"
 alias ls="exa -l"
