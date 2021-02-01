@@ -5,7 +5,9 @@ local cmd = vim.cmd
 -- #######################################
 vim.o.termguicolors = true  -- Use GUI colors in terminal
 
-cmd('colorscheme toast')
+cmd('colorscheme one-nvim')
+vim.g.one_nvim_transparent_bg = true  -- Enable one-nvim transparency support
+
 vim.o.background = 'dark'   -- Set background to dark
 
 cmd('highlight Normal guibg=NONE')    -- Make background transparent

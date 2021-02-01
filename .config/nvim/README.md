@@ -14,7 +14,6 @@ Revisit again for holiday. January will be fun
  - [ ] Fix some bugs (global settings not applied) [PR](https://github.com/neovim/neovim/pull/13479)
  - [x] Statusline from pure Lua
  - [x] Custom handler for statusline LSP message(workaround)
- - [ ] Reorganize config stucture
+ - [x] Reorganize config stucture
  - [x] Add more LSP config
- - [ ] Fork toast.vim (Add treesitter support + custom hl group)
  - [ ] Watch for augroup and autocmd [PR](https://github.com/neovim/neovim/pull/12378)

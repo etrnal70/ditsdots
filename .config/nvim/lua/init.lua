@@ -71,7 +71,7 @@ return require('packer').startup(function()
 
   -- Theme and Icons
   use 'kyazdani42/nvim-web-devicons'
-  use 'jsit/toast.vim'
+  use 'Th3Whit3Wolf/one-nvim'
 
   -- Treesitter
   use {'nvim-treesitter/nvim-treesitter',
