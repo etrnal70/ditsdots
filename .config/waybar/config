@@ -1,13 +1,13 @@
 {
     "layer": "bottom", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
+    "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 26, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
 
     // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "sway/mode", "custom/media"],
-    "modules-center": [],
-    "modules-right": ["custom/caps_status", "custom/update","pulseaudio", "network", "battery", "clock","tray"],
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["tray"],
+    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/neomutt","pulseaudio","network","battery","clock"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -64,7 +64,7 @@
     },
     "tray": {
         // "icon-size": 21,
-        "spacing": 7
+        "spacing": 4
     },
     "clock": {
         // "timezone": "America/New_York",
@@ -79,8 +79,8 @@
     "battery": {
         "states": {
             // "good": 95,
-            "warning": 30,
-            "critical": 15
+            "warning": 35,
+            "critical": 20
         },
         "format": "{icon}",
         "format-charging": "{capacity}% ",
@@ -95,7 +95,7 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": " ",
+        "format-wifi": "",
         "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
         "format-linked": "{ifname} (No IP)  ",
         "format-disconnected": "睊",
@@ -129,6 +129,14 @@
       "interval": 30,
       "format": "{used:0.1f}G "
     },
+    "wlr/taskbar": {
+      "format": "{title}",
+      "icon-size": 14,
+      // "icon-theme": "Numix-Circle",
+      "tooltip-format": "{title}",
+      "on-click": "activate",
+      "on-click-middle": "close"
+    },
     "custom/media": {
         "format": "{icon} {}",
         "return-type": "json",
@@ -143,22 +151,34 @@
     },
     "custom/caps_status" : {
       "exec" : "~/.config/waybar/modules/caps_status.sh",
+      "return-type": "json",
       "format": "{}",
-      "interval": 2,
+      "interval": 1,
     },
     "custom/update" : {
       "exec" : "~/.config/waybar/modules/update_check.sh",
-      "exec-if": "yay",
-      "format": "{}",
-      "interval": 7200,
+      "exec-if": "exit 0",
+      "return-type": "json",
+      "format": " {} 📦",
+      "interval": 3600,
+      "signal": 8,
+      "tooltip": true,
     },
-    "custom/weather": {
-        "format": "{}",
-        "format-alt": "{alt}: {}",
-        "format-alt-click": "click-right",
-        "interval": 1800,
-        "return-type": "json",
-        "exec": "~/.config/waybar/modules/weather.sh",
-        "exec-if": "ping wttr.in -c1"
+    "custom/neomutt" : {
+      "exec" : "~/.config/waybar/modules/sync_mail.sh",
+      "exec-if": "exit 0",
+      "return-type": "json",
+      "format": " {} 📬",
+      "interval": 1800,
+      "signal": 8,
+      "tooltip": true,
+    },
+    "custom/github": {
+      "format": " {}  ",
+      "return-type": "json",
+      "interval": 120,
+      "exec": "~/.config/waybar/modules/github.sh",
+      "on-click": "xdg-open https://github.com/notifications",
+      "tooltip": true
     },
 }

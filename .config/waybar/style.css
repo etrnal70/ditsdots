@@ -2,12 +2,12 @@
     border: none;
     border-radius: 0;
     font-family: Roboto, "Font Awesome 5 Free";
-    font-size: 13px;
+    font-size: 12px;
     min-height: 0;
 }
 
 window#waybar {
-    background-color: rgba(0, 0, 0, 0.55);
+    background-color: rgba(0, 0, 0, 0.00);
     opacity: 1.0;
     /*border-bottom: 3px solid rgba(100, 114, 125, 0.5);*/
     color: #ffffff;
@@ -38,10 +38,10 @@ window#waybar.chromium {
 }
 
 #workspaces button {
-    padding: 0 5px;
+    padding: 0 3px;
     background-color: transparent;
     color: #ffffff;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     opacity: 0.85;
 }
 
@@ -85,8 +85,13 @@ window#waybar.chromium {
     color: #ffffff;
 }
 
+#clock.backup {
+    background-color: rgba(30,30,30,0.7);
+}
+
 #clock {
-    background-color: #607D8B;
+    color: #000000;
+    background-color: #FFFFFF;
 }
 
 #battery {
@@ -171,12 +176,26 @@ label:focus {
 }
 
 #custom-caps_status {
-  background-color: #ffa000;
+  padding: 0 3px;
+  background-color: transparent;
+  color: #FFFFFF;
   animation-name: blink;
-  animation-duration: 1.0s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate-reverse;
+  border-bottom: 2px solid #FF1744;
+}
+
+#custom-github {
+  padding: 0 3px;
+  border-bottom: 2px solid #039BE5;
+}
+
+#custom-update {
+  padding: 0 3px;
+  border-bottom: 2px solid #4CAF50;
+}
+
+#custom-neomutt {
+  padding: 0 3px;
+  border-bottom: 2px solid #F0932B;
 }
 
 #temperature {
