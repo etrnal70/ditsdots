@@ -38,8 +38,6 @@ return require('packer').startup(function()
   } 
   
   -- Completion
-  -- Note : Currently nvim-compe give the best result as of now
-  -- Watching both plugins development
   use {
     'hrsh7th/nvim-compe',
     requires = {
@@ -47,16 +45,6 @@ return require('packer').startup(function()
       'hrsh7th/vim-vsnip-integ'
     } 
   } 
-  -- use {
-  --   'nvim-lua/completion-nvim',  
-  --   requires = {
-  --     'hrsh7th/vim-vsnip',              -- Snippet support
-  --     'hrsh7th/vim-vsnip-integ',
-  --     'steelsojka/completion-buffers',           -- Buffer as completion source
-  --     'nvim-treesitter/completion-treesitter',   -- Treesitter as completion source
-  --     'kristijanhusak/vim-dadbod-completion',    -- Database completion for vim-dadbod
-  --   } 
-  -- } 
 
   -- Fuzzy-finder
   use {
@@ -87,8 +75,10 @@ return require('packer').startup(function()
 
   -- Git
   use 'lewis6991/gitsigns.nvim'   -- Gutter sign
-  -- use 'tpope/vim-fugitive'        -- Integrated git function wrapper
-  use 'lambdalisue/gina.vim'      -- Async git wrapper
+  use 'tpope/vim-fugitive'        -- Integrated git function wrapper
+  use {'TimUntersberger/neogit',  -- Magit port for neovim
+    requires = {'nvim-lua/plenary.nvim' }
+  }
   use 'rhysd/git-messenger.vim'   -- Show commit message in floating win
   use 'rhysd/committia.vim'       -- Show diff in commit buffer
   -- use 'pwntester/octo.nvim'       -- GitHub integration
@@ -134,5 +124,4 @@ return require('packer').startup(function()
   use {'mhinz/vim-crates', ft = 'toml'} -- Get updated Rust crates version
   use 'rafcamlet/nvim-luapad'           -- REPL for Lua development
   use 'bfredl/nvim-luadev'              -- For lua development in Neovim
-end
-)
+end)

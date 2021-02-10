@@ -8,6 +8,13 @@ require('lsp_config')
 require('git_config')
 require('misc')
 
+local function add(value, str, sep)
+  sep = sep or ","
+  str = str or ""
+  value = type(value) == "table" and table.concat(value, sep) or value
+  return str ~= "" and table.concat({value, str}, sep) or value
+end
+
 -- TODO : Wait for upstream fix for vim.o
 local gl = vim.o
 local buf = vim.bo
@@ -15,6 +22,7 @@ local win = vim.wo
 
 -- vim.api.nvim_command('set encoding=utf-8')
 gl.encoding = 'utf-8'
+gl.showmode = false
 
 gl.hidden = true                -- Hide unloaded buffer
 gl.lazyredraw = true            -- Don't redraw easily
@@ -27,6 +35,20 @@ vim.cmd('set foldenable')
 
 gl.splitright = true            -- Vertical split always on the right
 gl.splitbelow = true            -- Horizontal split always on the bottom
+gl.fillchars =
+  add {
+  "vert:▕",
+  "fold: ",
+  "eob: ",
+  "diff:",
+  "msgsep:‾",
+  "foldopen:▾",
+  "foldsep:│",
+  "foldclose:▸"
+}
+
+gl.list = true
+gl.listchars = "tab:  "
 
 gl.ignorecase = true            -- Search are case-insensitive
 buf.autoindent = true
@@ -39,7 +61,7 @@ gl.breakindentopt = 'shift:2,min:40,sbr'
 gl.lbr = true                   -- Enable line break
 gl.wrap = true
 
-
+gl.list = true -- Invisible chars
 -- buf.shiftwidth = 4
 -- buf.softtabstop = 4
 -- buf.tabstop = 4

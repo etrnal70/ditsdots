@@ -52,7 +52,8 @@ cmd[[vnoremap <silent><leader>m :MaximizerToggle!<CR>gv]]
 -- #####      nvim-autopairs       #####
 -- #####################################
 -- Auto closing bracket
-require('nvim-autopairs').setup({
+local npairs = require('nvim-autopairs')
+npairs.setup({
   pairs_map = {
     ["'"] = "'",
     ['"'] = '"',
@@ -81,6 +82,7 @@ vim.cmd[[nnoremap <silent><Leader>lgf <cmd>lua require'telescope.builtin'.git_fi
 vim.cmd[[noremap <silent><Leader>ls <cmd>lua require'telescope.builtin'.live_grep({})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lb <cmd>lua require'telescope.builtin'.buffers({initial_mode = "normal"})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lt <cmd>lua require'telescope.builtin'.treesitter({})<CR>]]
+vim.cmd[[nnoremap <silent><Leader>lc <cmd>lua require'telescope.builtin'.tags({})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lq <cmd>lua require'telescope.builtin'.quickfix({initial_mode = "normal"})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lh <cmd>lua require'telescope.builtin'.oldfiles({})<CR>]]
 vim.cmd[[nnoremap <silent><Leader>lm <cmd>lua require'telescope.builtin'.marks({})<CR>]]

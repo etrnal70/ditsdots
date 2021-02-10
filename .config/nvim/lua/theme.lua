@@ -1,35 +1,37 @@
-local cmd = vim.cmd
+local cmd = vim.api.nvim_command
 
 -- #######################################
 -- #####         Colorscheme         #####
 -- #######################################
 vim.o.termguicolors = true  -- Use GUI colors in terminal
-
-cmd('colorscheme one-nvim')
-vim.g.one_nvim_transparent_bg = true  -- Enable one-nvim transparency support
-
 vim.o.background = 'dark'   -- Set background to dark
 
-cmd('highlight Normal guibg=NONE')    -- Make background transparent
-cmd('highlight NonText guibg=NONE')
-cmd('highlight SignColumn ctermbg=NONE guibg=NONE')
-cmd('highlight VertSplit ctermbg=NONE guibg=NONE')
-cmd('highlight Pmenu ctermbg=NONE guibg=#292927')
+vim.g.one_nvim_transparent_bg = true  -- Enable one-nvim transparency support
+cmd('colorscheme one-nvim')
+
+cmd('autocmd ColorScheme * highlight Normal guibg=NONE')    -- Make background transparent
+cmd('autocmd ColorScheme * highlight NonText guibg=NONE')
+cmd('autocmd ColorScheme * highlight SignColumn guibg=NONE')
+cmd('autocmd ColorScheme * highlight StatusLine guibg=NONE')
+cmd('autocmd ColorScheme * highlight VertSplit guifg=#3F3F3F guibg=NONE')
+cmd('autocmd ColorScheme * highlight Pmenu guibg=#292927')
+
+-- one-nvim specific fix
+cmd('autocmd ColorScheme * highlight IncSearch guifg=NONE guibg=#D19A66')  -- highlight matching char when search
 
 -- LSP Diagnostic color
-cmd('highlight LspDiagnosticsDefaultWarning guifg=#fca903')
-cmd('highlight LspDiagnosticsDefaultError guifg=#e53935')
-cmd('highlight LspDiagnosticsDefaultHint guifg=LightGrey')
-cmd('highlight LspDiagnosticsDefaultInformation guifg=LightBlue')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultWarning guifg=#fca903')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultError guifg=#e53935')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultHint guifg=LightGrey')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultInformation guifg=LightBlue')
 
 -- Gitsigns color
-cmd('highlight DiffAdd cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
-cmd('highlight DiffChange cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
-cmd('highlight DiffDelete cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
+cmd('autocmd ColorScheme * highlight DiffAdd cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
+cmd('autocmd ColorScheme * highlight DiffChange cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
+cmd('autocmd ColorScheme * highlight DiffDelete cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
 
-cmd('highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
-cmd('highlight LineNr guifg=#3f3f3f')
-
+cmd('autocmd ColorScheme * highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
+cmd('autocmd ColorScheme * highlight LineNr guifg=#323232')
 
 -- #######################################
 -- #####         Statusline          #####
@@ -42,16 +44,17 @@ gl.short_line_list = {'LuaTree','dbui'}
 -- Define colors
 local colors = {
   bg = nil,
-  yellow = '#fabd2f',
+  yellow = '#FABD2F',
   cyan = '#008080',
   darkblue = '#081633',
-  green = '#98c379',
+  green = '#98C379',
   orange = '#FF8800',
-  purple = '#5d4d7a',
-  magenta = '#d16d9e',
-  grey = '#c0c0c0',
-  blue = '#61afef',
-  red = '#ec5f67',
+  purple = '#5D4D7A',
+  magenta = '#D16D9E',
+  grey = '#C0C0C0',
+  dark_grey = '#757575',
+  blue = '#61AFEF',
+  red = '#EC5F67',
   black = '#000000'
 }
 
@@ -178,7 +181,7 @@ gls.right[2] = {
 gls.right[3] = {
   DiagnosticError = {
     provider = 'DiagnosticError',
-    icon = '  ',
+    icon = ' ',
     highlight = {colors.red,colors.bg}
   }
 }
@@ -192,7 +195,7 @@ gls.right[4] = {
 gls.right[5] = {
   DiagnosticWarn = {
     provider = 'DiagnosticWarn',
-    icon = '  ',
+    icon = ' ',
     highlight = {colors.yellow,colors.bg},
   }
 }
@@ -200,14 +203,14 @@ gls.right[5] = {
 gls.right[6] = {
   LineInfo = {
     provider = 'LineColumn',
-    separator = ' | ',
+    separator = '  ',
     separator_highlight = {colors.grey,colors.bg},
-    highlight = {colors.grey,colors.bg},
+    highlight = {colors.dark_grey,colors.bg},
   },
 }
 gls.right[7] = {
-  Space = {
-    provider = function () return ' ' end
+  BigSpace = {
+    provider = function () return '        ' end
   }
 }
 

@@ -3,7 +3,6 @@ local protocol   = require('vim.lsp.protocol')
 local nvim_lsp   = require('lspconfig')
 local configs    = require('lspconfig/configs')
 local util       = require('lspconfig/util')
--- local completion = require('completion') --completion-nvim
 local flutter 	 = require('flutter-tools')
 
 -- Diagnostic Configuration
@@ -71,8 +70,6 @@ local custom_attach = function(client)
 	if client.config.flags then
 		client.config.flags.allow_incremental_sync = true
 	end
-
-	-- completion.on_attach(client) --completion-nvim
 
   -- LSP Keymapping
 	map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
@@ -174,7 +171,6 @@ end
 -- ###############################
 -- #####      Completion     #####
 -- ###############################
--- require('completion')  -- completion-nvim
 require('custom_func')
 
 local set = vim.g
@@ -198,58 +194,64 @@ cmd[[nmap S <Plug>(vsnip-cut-text)]]
 cmd[[xmap S <Plug>(vsnip-cut-text)]]
 
 -- Use Tab and S-Tab to scroll completion
-cmd[[imap <expr><TAB> v:lua.tab_complete()]]
-cmd[[smap <expr><TAB> v:lua.tab_complete()]]
-cmd[[imap <expr><S-TAB> v:lua.s_tab_complete()]]
-cmd[[smap <expr><S-TAB> v:lua.s_tab_complete()]]
-
---Completion.nvim Configuration
--- cmd[[imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ? "\<Plug>(completion_confirm_completion)"  : "\<c-e>\<CR>" :  "\<CR>"]]
-
--- set.completion_matching_strategy_list = {'exact','substring', 'fuzzy'}
--- set.completion_enable_snippet = 'vim-vsnip'
--- set.completion_auto_change_source = 1
--- set.completion_sorting = 'length'
--- set.completion_trigger_on_delete = 1
--- set.completion_enable_auto_paren = 1
--- set.completion_matching_ignore_case = 1
--- set.completion_matching_smart_case = 1
--- set.completion_menu_length = 30
--- set.completion_timer_cycle = 200
--- set.completion_trigger_keyword_length = 2
--- set.completion_confirm_key = '<CR>'
--- 
--- set.completion_trigger_character = {'::','.'}
--- set.completion_expand_characters = {' ', '\t', '>', ';', ')'}
--- 
--- set.completion_chain_complete_list = {
---   default = {
---     {complete_items = {'lsp', 'snippet'}},
---     {complete_items = {'path'}, triggered_only = {'./', '/'}},
---     {complete_items = {'buffers'}},
---   },
---   string = {
---     {complete_items = {'path'}, triggered_only = {'./', '/'}},
---     {complete_items = {'buffers'}},
---   },
---   tex = {
---     {complete_items = {'path'}, triggered_only = {'./', '/'}},
---     {complete_items = {'snippet', 'lsp'}}
---   },
---   sql = {
---     {complete_items = {'vim-dadbod-completion'}}
---   },
---   comment = {},
--- }
+-- cmd[[imap <expr><TAB> v:lua.tab_complete()]]
+-- cmd[[smap <expr><TAB> v:lua.tab_complete()]]
+-- cmd[[imap <expr><S-TAB> v:lua.s_tab_complete()]]
+-- cmd[[smap <expr><S-TAB> v:lua.s_tab_complete()]]
 
 -- nvim-compe Configuration
-vim.api.nvim_set_keymap(
-  'i', '<Tab>',
-  'pumvisible() ? "<C-n>" : "<Tab>"',
-  { noremap=true, expr=true }
-)
+-- vim.api.nvim_set_keymap(
+--   'i', '<Tab>',
+--   'pumvisible() ? "<C-n>" : "<Tab>"',
+--   { noremap=true, expr=true }
+-- )
+
 cmd[[inoremap <silent><expr> <CR>      compe#confirm('<CR>')]]
 cmd[[inoremap <silent><expr> <C-e>     compe#close('<C-e>')]]
+cmd[[inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +4 })]]
+cmd[[inoremap <silent><expr> <C-k>     compe#scroll({ 'delta': -4 })]]
+
+local t = function(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local check_back_space = function()
+    local col = vim.fn.col('.') - 1
+    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+        return true
+    else
+        return false
+    end
+end
+
+-- Use (s-)tab to:
+--- move to prev/next item in completion menuone
+--- jump to prev/next snippet's placeholder
+_G.tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-n>"
+  elseif vim.fn.call("vsnip#available", {1}) == 1 then
+    return t "<Plug>(vsnip-expand-or-jump)"
+  elseif check_back_space() then
+    return t "<Tab>"
+  else
+    return vim.fn['compe#complete']()
+  end
+end
+_G.s_tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-p>"
+  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+    return t "<Plug>(vsnip-jump-prev)"
+  else
+    return t "<S-Tab>"
+  end
+end
+
+vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
 require('compe').setup {
   enabled = true;
@@ -257,18 +259,24 @@ require('compe').setup {
   min_length = 2;
   preselect = 'disable';
 
+  -- TODO: Define per filetype
   source = {
     path = true;
+    buffer = true;
+    calc = false;
     vsnip = true;
     nvim_lsp = true;
-    buffer = true;
+    nvim_lua = false;
+    spell = false;
+    tags = false;
+    snippets_nvim = false;
+    treesitter = true;
   };
 }
 
 
 cmd[[set shortmess+=c]]
-cmd[[set completeopt=menuone,noinsert,noselect]]
--- cmd[[autocmd BufEnter * lua require'completion'.on_attach()]]  -- completion-nvim
+vim.o.completeopt = "menuone,noinsert,noselect"
 -- cmd[[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]]
 
 -- ###############################
