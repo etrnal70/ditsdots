@@ -1,0 +1,17 @@
+[user]
+	name = Mochammad Hanif R
+	email = etrnal70@gmail.com
+[core]
+	editor = nvim
+[merge]
+  tool = vimdiff
+[mergetool]
+  prompt=true
+[mergetool "vimdiff"]
+  cmd = nvim  -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd 3'
+[difftool]
+  prompt = false
+[diff]
+  tool = vimdiff
+[push]
+  default = current
