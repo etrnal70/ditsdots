@@ -22,7 +22,7 @@ local win = vim.wo
 
 -- vim.api.nvim_command('set encoding=utf-8')
 gl.encoding = 'utf-8'
-gl.showmode = false
+gl.showmode = true
 
 gl.hidden = true                -- Hide unloaded buffer
 gl.lazyredraw = true            -- Don't redraw easily
@@ -30,8 +30,8 @@ gl.ttyfast = true               -- Performance related
 gl.clipboard = 'unnamedplus'    -- Enable system-wide clipboard
 gl.mouse = 'n'                  -- Mouse only on normal mode
 gl.updatetime = 250             -- Editor update time in ms
--- gl.foldenable = true            -- Prevent folding upon opening file
-vim.cmd('set foldenable')
+win.foldenable = true           -- Prevent folding upon opening file
+-- vim.cmd('set foldenable')
 
 gl.splitright = true            -- Vertical split always on the right
 gl.splitbelow = true            -- Horizontal split always on the bottom
@@ -50,7 +50,6 @@ gl.fillchars =
 gl.list = true
 gl.listchars = "tab:  "
 
-gl.ignorecase = true            -- Search are case-insensitive
 buf.autoindent = true
 buf.smartindent = true
 win.breakindent = true
@@ -86,12 +85,10 @@ gl.pumblend = 3             -- Make popup menu translucent
 
 vim.cmd('set formatoptions+=cqrnj')
 vim.cmd('set formatoptions-=ato')
--- vim.cmd('set noswapfile')           -- Tbh swap file are disturbing af
-gl.swapfile = false
-gl.backup = false
+gl.swapfile = false         -- Tbh swap file are disturbing af
+gl.backup = false           -- Disable backup file
 gl.writebackup = false
-buf.undofile = true                 -- Use undofile for persistent undo
-gl.undodir = '$HOME/.nvim/undo'     -- Undofile location
+buf.undofile = false
 
 -- vim.cmd('set backspace=indent,eol,start')   -- For good backspace
 gl.backspace = 'indent,eol,start'

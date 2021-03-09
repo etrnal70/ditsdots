@@ -1,0 +1,21 @@
+{
+  "code": {
+    "prefix": ["code"],
+    "body": [
+      "```${1:lang}",
+      "```"
+    ],
+    "description": "Insert code block."
+  },
+  "title": {
+    "prefix": ["title"],
+    "body": [
+      "---",
+      "title: ${1:title}",
+      "author: Mochammad Hanif R. (etrnal70)",
+      "date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+      "---"
+    ],
+    "description": "Standard YAML-format header."
+  }
+}

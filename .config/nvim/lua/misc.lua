@@ -2,9 +2,8 @@ local set = vim.g
 local cmd = vim.cmd
 
 local map = function(type, key, value)
-	vim.fn.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
+	vim.fn.nvim_set_keymap(type,key,value,{noremap = true, silent = true});
 end
--- TODO: Convert all keymap to lua ones
 
 -- #####################################
 -- #####         Keymapping        #####
@@ -16,15 +15,21 @@ cmd[[map sj <C-w>j]]
 cmd[[map sl <C-w>l]]
 
 -- Resize window using Ctrl + Alt + <hjkl>
-cmd[[nnoremap <C-A-k> :resize +2<CR>]]
-cmd[[nnoremap <C-A-j> :resize -2<CR>]]
-cmd[[nnoremap <C-A-h> :vertical resize -2<CR>]]
-cmd[[nnoremap <C-A-l> :vertical resize +2<CR>]]
+map('n','<C-A-k>',[[<cmd>resize +2<CR>]])
+map('n','<C-A-j>',[[<cmd>resize -2<CR>]])
+map('n','<C-A-h>',[[<cmd>vertical resize +2<CR>]])
+map('n','<C-A-l>',[[<cmd>vertical resize -2<CR>]])
 
 -- Move one character left or right in insert mode
 -- using Alt + <hl>
-cmd[[inoremap <A-l> <esc>la]]
-cmd[[inoremap <A-h> <esc>i]]
+map('i','<A-l>',[[<esc>la]])
+map('i','<A-h>',[[<esc>i]])
+
+-- Goto file in vertical split
+-- TODO: function to determine split based on window
+-- width
+cmd[[nnoremap <Leader><Leader>gf <C-w>vgf ]]
+cmd[[nnoremap <Leader><Leader>gF <C-w>vgF ]]
 
 -- #####################################
 -- #####         vim-move          #####
@@ -45,8 +50,8 @@ require('kommentary.config').config["rust"] = {"// ", {"/* ", " */"}}
 -- Maxiize/minimize active buffer size
 set.maximizer_set_default_mapping = 0
 set.maximizer_set_mapping_with_bang = 0
-cmd[[nnoremap <silent><leader>m :MaximizerToggle!<CR>]]
-cmd[[vnoremap <silent><leader>m :MaximizerToggle!<CR>gv]]
+map('n','<leader>m',[[<cmd>MaximizerToggle!<CR>]])
+map('v','<leader>gv',[[<cmd>MaximizerToggle!<CR>]])
 
 -- #####################################
 -- #####      nvim-autopairs       #####
@@ -74,19 +79,32 @@ npairs.setup({
 -- Ultimate lua-based fuzzy finder
 require('telescope').load_extension('fzy_native')
 require('telescope').load_extension('frecency')
+require('telescope').load_extension('bibtex')
+require('telescope').load_extension('gh')
 
 local tele = require('telescope')
 
-vim.cmd[[noremap <silent><Leader>lf <cmd>lua require'telescope.builtin'.find_files({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lgf <cmd>lua require'telescope.builtin'.git_files({})<CR>]]
-vim.cmd[[noremap <silent><Leader>ls <cmd>lua require'telescope.builtin'.live_grep({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lb <cmd>lua require'telescope.builtin'.buffers({initial_mode = "normal"})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lt <cmd>lua require'telescope.builtin'.treesitter({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lc <cmd>lua require'telescope.builtin'.tags({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lq <cmd>lua require'telescope.builtin'.quickfix({initial_mode = "normal"})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lh <cmd>lua require'telescope.builtin'.oldfiles({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lm <cmd>lua require'telescope.builtin'.marks({})<CR>]]
-vim.cmd[[nnoremap <silent><Leader>lgc <cmd>lua require'telescope.builtin'.git_commits({})<CR>]]
+map('n','<leader>lf',[[<cmd>lua require'telescope.builtin'.find_files({})<CR>]])
+map('n','<leader>ls',[[<cmd>lua require'telescope.builtin'.live_grep({})<CR>]])
+map('n','<leader>lb',[[<cmd>lua require'telescope.builtin'.buffers({initial_mode = "normal"})<CR>]])
+map('n','<leader>lt',[[<cmd>lua require'telescope.builtin'.treesitter({})<CR>]])
+map('n','<leader>lc',[[<cmd>lua require'telescope.builtin'.tags({})<CR>]])
+map('n','<leader>lq',[[<cmd>lua require'telescope.builtin'.lsp_workspace_diagnostics({})<CR>]])
+map('n','<leader>lo',[[<cmd>lua require'telescope.builtin'.oldfiles({})<CR>]])
+map('n','<leader>lh',[[<cmd>lua require'telescope.builtin'.help_tags({})<CR>]])
+map('n','<leader>lgf',[[<cmd>lua require'telescope.builtin'.git_files({})<CR>]])
+map('n','<leader>lgc',[[<cmd>lua require'telescope.builtin'.git_commits({})<CR>]])
+map('n','<leader>lmk',[[<cmd>lua require'telescope.builtin'.marks({})<CR>]])
+map('n','<leader>lws',[[<cmd>lua require'telescope.builtin'.lsp_workspace_symbols({})<CR>]])
+
+local tele_get_width = function()
+      local curwidth = vim.fn.winwidth(0)
+      if curwidth > 150 then
+        return "horizontal"
+      else
+        return "vertical"
+      end
+end
 
 tele.setup{
   defaults = {
@@ -114,7 +132,8 @@ tele.setup{
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
     prompt_prefix= " 🔍 ",
     color_devicons = true,
-    preview_cutoff = 120,
+    layout_strategy = tele_get_width(),
+    preview_cutoff = 140,
     windblend = 0.2,
     results_height = 1,
     results_width = 0.8,
@@ -123,7 +142,7 @@ tele.setup{
     generic_sorter = require'telescope.sorters'.get_generic_fuzzy_sorter,
     set_env = {['COLORTERM'] = 'truecolor'},
     shorten_path = true,
-    use_less = true,
+    use_less = false,
     mappings = {
       i = {
         ["<C-j>"] = require('telescope.actions').move_selection_next,
@@ -138,23 +157,23 @@ tele.setup{
 -- #####       nvim-tree.lua       #####
 -- #####################################
 -- Lua-based directory tree
-set.nvim_tree_side = 'left' 
-set.nvim_tree_width = 20 
+set.nvim_tree_side = 'left'
+set.nvim_tree_width = 20
 set.nvim_tree_ignore = { '.git', 'node_modules', '.cache', '__pycache__' }
-set.nvim_tree_auto_open = 0 
-set.nvim_tree_auto_close = 0 
-set.nvim_tree_quit_on_open = 0 
-set.nvim_tree_follow = 1 
-set.nvim_tree_indent_markers = 1 
-set.nvim_tree_hide_dotfiles = 0 
-set.nvim_tree_git_hl = 0 
-set.nvim_tree_root_folder_modifier = ':~' 
-set.nvim_tree_tab_open = 1 
-set.nvim_tree_allow_resize = 1 
+set.nvim_tree_auto_open = 0
+set.nvim_tree_auto_close = 0
+set.nvim_tree_quit_on_open = 0
+set.nvim_tree_follow = 1
+set.nvim_tree_indent_markers = 1
+set.nvim_tree_hide_dotfiles = 0
+set.nvim_tree_git_hl = 0
+set.nvim_tree_root_folder_modifier = ':~'
+set.nvim_tree_tab_open = 1
+set.nvim_tree_allow_resize = 1
 set.nvim_tree_show_icons = {git =  0,folders = 1,files = 1}
 
 set.nvim_tree_bindings = {
-    edit = {'<CR>', 'o'},
+    edit = '<CR>',
     edit_vsplit = '<C-v>',
     edit_split = '<C-x>',
     edit_tab = '<C-t>',
@@ -189,7 +208,7 @@ set.nvim_tree_icons = {
   }
 }
 
-vim.cmd('nnoremap <F2> :NvimTreeToggle<CR>')
+map('n','<F2>',[[<cmd> NvimTreeToggle<CR>]])
 vim.cmd('highlight NvimTreeFolderIcon guifg=gray')
 
 -- #####################################
@@ -220,9 +239,9 @@ require'nvim-treesitter.configs'.setup {
   },
   -- Treesitter-based refactoring function
   refactor = {
-    highlight_definitions = { enable = true }, 
+    highlight_definitions = { enable = true },
     smart_rename = {
-      enable = true, 
+      enable = true,
       keymaps = {
         smart_rename = "grr",
       },
@@ -279,18 +298,37 @@ require'nvim-treesitter.configs'.setup {
 -- vim.api.nvim_command('set foldmethod=expr')
 -- vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
 
+-- #####################################
+-- #####        neuron.nvin        #####
+-- #####################################
+require'neuron'.setup {
+  virtual_titles = true,
+  mappings = true,
+  run = nil,
+  neuron_dir = "~/Data/Notes",
+  leader = "gz"
+}
 
 -- #####################################
 -- #####        Vimspector         #####
 -- #####################################
 -- Python-based TUI debugger
-cmd[[nnoremap <Leader>dd :call vimspector#Launch()<CR>]]
-cmd[[nnoremap <Leader>de :call vimspector#Reset()<CR>]]
-cmd[[nnoremap <Leader>dp :call vimspector#Pause()<CR>]]
-cmd[[nnoremap <Leader>dl :call vimspector#StepInto()<CR>]]
-cmd[[nnoremap <Leader>dj :call vimspector#StepOver()<CR>]]
-cmd[[nnoremap <Leader>dk :call vimspector#StepOut()<CR>]]
-cmd[[nnoremap <Leader>d_ :call vimspector#Restart()<CR>]]
-cmd[[nnoremap <Leader>d<space> :call vimspector#Continue()<CR>]]
-cmd[[nnoremap <Leader>dbp :call vimspector#ToggleBreakpoint()<CR>]]
+map('n','<leader>dd',[[<cmd> call vimspector#Launch()<CR>]])
+map('n','<leader>de',[[<cmd> call vimspector#Reset()<CR>]])
+map('n','<leader>dp',[[<cmd> call vimspector#Pause()<CR>]])
+map('n','<leader>dl',[[<cmd> call vimspector#StepInto()<CR>]])
+map('n','<leader>dj',[[<cmd> call vimspector#StepOver()<CR>]])
+map('n','<leader>dk',[[<cmd> call vimspector#StepOut()<CR>]])
+map('n','<leader>d_',[[<cmd> call vimspector#Restart()<CR>]])
+map('n','<leader>d<space>',[[<cmd> call vimspector#Continue()<CR>]])
+map('n','<leader>dbp',[[<cmd> call vimspector#ToggleBreakpoint()<CR>]])
+-- cmd[[nnoremap <Leader>dd :call vimspector#Launch()<CR>]]
+-- cmd[[nnoremap <Leader>de :call vimspector#Reset()<CR>]]
+-- cmd[[nnoremap <Leader>dp :call vimspector#Pause()<CR>]]
+-- cmd[[nnoremap <Leader>dl :call vimspector#StepInto()<CR>]]
+-- cmd[[nnoremap <Leader>dj :call vimspector#StepOver()<CR>]]
+-- cmd[[nnoremap <Leader>dk :call vimspector#StepOut()<CR>]]
+-- cmd[[nnoremap <Leader>d_ :call vimspector#Restart()<CR>]]
+-- cmd[[nnoremap <Leader>d<space> :call vimspector#Continue()<CR>]]
+-- cmd[[nnoremap <Leader>dbp :call vimspector#ToggleBreakpoint()<CR>]]
 cmd[[nnoremap <Leader>dbcp <Plug>VimspectorToggleConditionalBreakpoint]]

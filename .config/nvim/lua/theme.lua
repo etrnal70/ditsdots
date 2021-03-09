@@ -18,10 +18,14 @@ cmd('autocmd ColorScheme * highlight Pmenu guibg=#292927')
 
 -- one-nvim specific fix
 cmd('autocmd ColorScheme * highlight IncSearch guifg=NONE guibg=#D19A66')  -- highlight matching char when search
+cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingError guibg=NONE')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingWarning guibg=NONE')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingHint guibg=NONE')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingInformation guibg=NONE')
 
 -- LSP Diagnostic color
-cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultWarning guifg=#fca903')
-cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultError guifg=#e53935')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultWarning guifg=#FCA903')
+cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultError guifg=#E53935')
 cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultHint guifg=LightGrey')
 cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultInformation guifg=LightBlue')
 
@@ -31,19 +35,30 @@ cmd('autocmd ColorScheme * highlight DiffChange cterm=NONE gui=NONE ctermbg=NONE
 cmd('autocmd ColorScheme * highlight DiffDelete cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
 
 cmd('autocmd ColorScheme * highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
-cmd('autocmd ColorScheme * highlight LineNr guifg=#323232')
+cmd('autocmd ColorScheme * highlight LineNr guifg=#3F3F3F')
 
 -- #######################################
 -- #####         Statusline          #####
 -- #######################################
 local gl = require('galaxyline')
 local gls = gl.section
-local status = require('lsp_status')
-gl.short_line_list = {'LuaTree','dbui'}
+local condition = require('galaxyline.condition')
+local ws_extension = require('lsp_extensions.workspace.diagnostic')
+local fileinfo = require('galaxyline.provider_fileinfo')
+local lsp = require('galaxyline.provider_lsp')
+
+gl.short_line_list = {'LuaTree','dbui','esearch'}
+
+local aliases = {
+  pyls_ms = 'MPLS',
+  rust_analyzer = 'rust-analyzer',
+  sumneko_lua = 'Sumneko-Lua'
+}
 
 -- Define colors
 local colors = {
   bg = nil,
+  white = '#FFFFFF',
   yellow = '#FABD2F',
   cyan = '#008080',
   darkblue = '#081633',
@@ -58,13 +73,6 @@ local colors = {
   black = '#000000'
 }
 
-local buffer_not_empty = function()
-  if vim.fn.empty(vim.fn.expand('%:t')) ~= 1 then
-    return true
-  end
-  return false
-end
-
 -- Statusline positioning
 gls.left[1] = {
   Space = {
@@ -72,58 +80,58 @@ gls.left[1] = {
   }
 }
 
-gls.left[2] = {
-  ViMode = {
-    provider = function()
-      local mode_color = {
-        n = colors.green, 
-        i = colors.blue, 
-        v =colors.orange, 
-        [''] = colors.green, 
-        V = colors.yellow,
-      	c = colors.red, 
-        no = colors.magenta,
-        s = colors.orange,
-        S = colors.orange,
-        [''] = colors.orange,
-	ic = colors.yellow,
-        R = colors.purple,
-        Rv = colors.purple,
-        cv = colors.red,
-        ce = colors.red,
-        [''] = colors.orange,
-	r = colors.cyan,rm = colors.cyan, 
-        ['r?'] = colors.cyan,
-        ['!'] = colors.red,
-        t = colors.red 
-      }
-      vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
-      local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
-      return alias[vim.fn.mode()]
-    end,
-    separator = ' ',
-    separator_highlight = {colors.yellow,function()
-      if not buffer_not_empty() then
-        return colors.bg
-      end
-      return colors.bg
-    end},
-    highlight = {colors.magenta,colors.bg,'bold'},
-  },
-}
+-- gls.left[2] = {
+--   ViMode = {
+--     provider = function()
+--       local mode_color = {
+--         n = colors.green,
+--         i = colors.blue,
+--         v =colors.orange,
+--         [''] = colors.green,
+--         V = colors.yellow,
+--       	c = colors.red,
+--         no = colors.magenta,
+--         s = colors.orange,
+--         S = colors.orange,
+--         [''] = colors.orange,
+-- 	ic = colors.yellow,
+--         R = colors.purple,
+--         Rv = colors.purple,
+--         cv = colors.red,
+--         ce = colors.red,
+--         [''] = colors.orange,
+-- 	r = colors.cyan,rm = colors.cyan,
+--         ['r?'] = colors.cyan,
+--         ['!'] = colors.red,
+--         t = colors.red
+--       }
+--       vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
+--       local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
+--       return alias[vim.fn.mode()]
+--     end,
+--     separator = ' ',
+--     separator_highlight = {colors.yellow,function()
+--       if not condition.buffer_not_empty then
+--         return colors.bg
+--       end
+--       return colors.bg
+--     end},
+--     highlight = {colors.magenta,colors.bg,'bold'},
+--   },
+-- }
 
 gls.left[3] = {
   GitIcon = {
     provider = function() return ' ' end,
-    condition = require('galaxyline.provider_vcs').check_git_workspace,
-    highlight = {colors.orange,colors.bg},
+    condition = condition.check_git_workspace,
+    highlight = {colors.white,colors.bg},
   }
 }
 
 gls.left[4] = {
   GitBranch = {
     provider = 'GitBranch',
-    condition = require('galaxyline.provider_vcs').check_git_workspace,
+    condition = condition.check_git_workspace,
     highlight = {colors.grey,colors.bg},
   }
 }
@@ -137,51 +145,61 @@ gls.left[5] = {
 gls.left[6] ={
   FileIcon = {
     provider = 'FileIcon',
-    condition = buffer_not_empty,
-    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.bg},
+    condition = condition.buffer_not_empty,
+    highlight = {fileinfo.get_file_icon_color,colors.bg},
   },
 }
 
 gls.left[7] = {
   FileName = {
     provider = {'FileName'},
-    condition = buffer_not_empty,
+    condition = condition.buffer_not_empty,
     separator = '',
     separator_highlight = {colors.bg,colors.bg},
     highlight = {colors.white,colors.bg}
   }
 }
 
-local checkwidth = function()
-  local squeeze_width  = vim.fn.winwidth(0) / 2
-  if squeeze_width > 40 then
-    return true
-  end
-  return false
-end
-
--- LSP Status (WIP)
+-- LSP Name
 gls.right[1] = {
-  Space = {
-    provider = function () return ' ' end
+  LspClient = {
+    provider = function ()
+      if next(vim.lsp.buf_get_clients(0)) == nil then
+        return ''
+      else
+        local res = lsp.get_lsp_client()
+        return aliases[res] or res
+      end
+    end,
+    icon = ' 🇻 ',
+    condition = condition.check_active_lsp,
+    highlight = {colors.white, colors.bg}
   }
-  -- LspMessage = {
-  --   provider = status.update_text(),
-  --   icon = '',
-  --   highlight = {colors.grey,colors.bg}
-  -- }
 }
 
 gls.right[2] = {
-  Space = {
-    provider = function () return ' ' end
+  SemiBigSpace = {
+    provider = function () return '   ' end
   }
 }
 
 gls.right[3] = {
   DiagnosticError = {
-    provider = 'DiagnosticError',
-    icon = ' ',
+    provider = function()
+      if next(vim.lsp.buf_get_clients(0)) == nil then
+        return ''
+      else
+        return ws_extension.get_count(0,'Error')
+      end
+    end,
+    icon = '  ',
+    condition = function ()
+      if ws_extension.get_count(0, 'Error') > 0 then
+        return true
+      else
+        return false
+      end
+    end,
     highlight = {colors.red,colors.bg}
   }
 }
@@ -194,8 +212,21 @@ gls.right[4] = {
 
 gls.right[5] = {
   DiagnosticWarn = {
-    provider = 'DiagnosticWarn',
-    icon = ' ',
+    provider = function() 
+      if next(vim.lsp.buf_get_clients(0)) == nil then
+        return ''
+      else
+        return ws_extension.get_count(0,'Hint')
+      end
+    end,
+    icon = '  ',
+    condition = function ()
+      if ws_extension.get_count(0, 'Hint') > 0 then
+        return true
+      else
+        return false
+      end
+    end,
     highlight = {colors.yellow,colors.bg},
   }
 }
@@ -206,6 +237,7 @@ gls.right[6] = {
     separator = '  ',
     separator_highlight = {colors.grey,colors.bg},
     highlight = {colors.dark_grey,colors.bg},
+    condition = condition.buffer_not_empty,
   },
 }
 gls.right[7] = {
@@ -217,7 +249,7 @@ gls.right[7] = {
 gls.short_line_left[1] = {
   FileIcon = {
     provider = 'FileIcon',
-    condition = buffer_not_empty,
+    condition = condition.buffer_not_empty,
     highlight = {colors.grey,colors.bg}
   },
 }
@@ -225,7 +257,7 @@ gls.short_line_left[1] = {
 gls.short_line_left[2] = {
   FileName = {
     provider = {'FileName'},
-    condition = buffer_not_empty,
+    condition = condition.buffer_not_empty,
     separator = '',
     separator_highlight = {colors.bg,colors.bg},
     highlight = {colors.white,colors.bg}

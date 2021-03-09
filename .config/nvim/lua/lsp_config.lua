@@ -7,17 +7,25 @@ local flutter 	 = require('flutter-tools')
 
 -- Diagnostic Configuration
 lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
-lsp.diagnostic.on_publish_diagnostics, {
-  virtual_text = {
-    spacing = 4, 
-    severity_limit = 'Warning',
-  }, 
-  signs = {
-    severity_limit = 'Warning',
-  },
-  update_in_insert = true,
-  underline = true,
-}
+  -- lsp.diagnostic.on_publish_diagnostics, {
+  --   virtual_text = {
+  --     spacing = 4, 
+  --     severity_limit = 'Warning',
+  --   }, 
+  --   signs = {
+  --     severity_limit = 'Warning',
+  --   },
+  --   update_in_insert = true,
+  --   underline = true,
+  -- },
+  require('lsp_extensions.workspace.diagnostic').handler,{
+    signs = {
+      severity_limit = "Warning",
+    },
+    virtual_text = false,
+    update_in_insert = true,
+    underline = true,
+  }
 )
 
 -- Use custom implementation from nvim-lsputils and lspsaga
@@ -86,17 +94,18 @@ local custom_attach = function(client)
 	map('n','[d','<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
 	map('n',']d','<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
 	map('n','<leader>a','<cmd>lua vim.lsp.buf.code_action()<CR>')
+	map('v','<leader>a',"<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR><esc>")
 	map('n','<leader>e','<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 
-        vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
-        vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
-        vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
-        vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
+  vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
+  vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
+  vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
+  vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
 
 	-- Rust inlay hints
-	-- if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
-	--  vim.cmd [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions.inlay_hints').request { aligned = false, prefix = " » " }]]
-	-- end
+	if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
+	 vim.cmd [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions').inlay_hints { aligned = false, prefix = " » ", enabled = {'TypeHint'} }]]
+	end
 
 	-- Dart label
 	if vim.api.nvim_buf_get_option(0, 'filetype') == 'dart' then
@@ -111,8 +120,8 @@ local custom_capabilities = protocol.make_client_capabilities();
 custom_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- LSP with default lspconfig repo
-local servers = {'bashls','clangd','gopls', 'graphql','pyright','rust_analyzer','texlab','tsserver','yamlls','zls'}
-for _, lsp in ipairs(servers) do
+local default_servers = {'bashls','cssls','clangd','dockerls','efm','gopls', 'graphql','pyright','texlab','tsserver','vls','yamlls','zls'}
+for _, lsp in ipairs(default_servers) do
 	nvim_lsp[lsp].setup{
 		on_attach = custom_attach,
 		capabilities = custom_capabilities,
@@ -120,6 +129,7 @@ for _, lsp in ipairs(servers) do
 end
 
 -- LSP with custom settings
+-- Dartls
 nvim_lsp.dartls.setup{
 	init_options = {
 		closingLabels = true,
@@ -134,6 +144,48 @@ nvim_lsp.dartls.setup{
 	capabilities = custom_capabilities
 }
 
+-- Rust-analyzer
+nvim_lsp.rust_analyzer.setup{
+	settings = {
+		["rust-analyzer"] = {
+			cargo = {
+				autoreload = true
+			}
+		}
+	},
+	on_attach = custom_attach,
+	capabilities = custom_capabilities
+}
+
+-- Sumneko-Lua
+nvim_lsp.sumneko_lua.setup {
+  cmd = {"lua-language-server"};
+  settings = {
+    Lua = {
+      runtime = {
+        -- Use builtin Lua in neovim, which is LuaJIT
+        version = "LuaJIT",
+        -- Setup Lua path
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = {
+        -- Make vim global known
+        globals = {'vim'},
+      },
+      workspace = {
+        library = {
+          -- Make server aware of Neovim runtime files
+          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+        }
+      }
+    }
+  },
+ 	on_attach = custom_attach,
+	capabilities = custom_capabilities
+}
+
+-- Texlab
 nvim_lsp.texlab.setup{
 	settings = {
 		latex = {
@@ -148,25 +200,6 @@ nvim_lsp.texlab.setup{
 	on_attach = custom_attach,
 	capabilities = custom_capabilities
 }
-
--- Show diagnostics result on quickfix
-do
-	local method = "textDocument/publishDiagnostics"
-	local default_callback = vim.lsp.callbacks[method]
-	vim.lsp.callbacks[method] = function(err, method, result, client_id)
-		default_callback(err, method, result, client_id)
-		if result and result.diagnostics then
-			for _, v in ipairs(result.diagnostics) do
-				v.bufnr = client_id
-				v.lnum = v.range.start.line + 1
-				v.col = v.range.start.character + 1
-				v.text = v.message
-			end
-			vim.lsp.util.set_qflist(result.diagnostics)
-		end
-	end
-end
-
 
 -- ###############################
 -- #####      Completion     #####
@@ -193,6 +226,9 @@ cmd[[xmap s <Plug>(vsnip-select-text)]]
 cmd[[nmap S <Plug>(vsnip-cut-text)]]
 cmd[[xmap S <Plug>(vsnip-cut-text)]]
 
+-- Vsnip Location
+set.vsnip_snippet_dir = "~/.config/nvim/snippet"
+
 -- Use Tab and S-Tab to scroll completion
 -- cmd[[imap <expr><TAB> v:lua.tab_complete()]]
 -- cmd[[smap <expr><TAB> v:lua.tab_complete()]]
@@ -217,7 +253,7 @@ end
 
 local check_back_space = function()
     local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+    if col == 0 or vim.fn.getline('.') :sub(col, col) :match('%s') then
         return true
     else
         return false
@@ -230,7 +266,7 @@ end
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-n>"
-  elseif vim.fn.call("vsnip#available", {1}) == 1 then
+  elseif vim.fn.call("vsnip#available",{1}) == 1 then
     return t "<Plug>(vsnip-expand-or-jump)"
   elseif check_back_space() then
     return t "<Tab>"
@@ -256,7 +292,7 @@ vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 require('compe').setup {
   enabled = true;
   debug = false;
-  min_length = 2;
+  min_length = 1;
   preselect = 'disable';
 
   -- TODO: Define per filetype
