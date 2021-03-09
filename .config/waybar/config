@@ -1,13 +1,13 @@
 {
     "layer": "bottom", // Waybar at top layer
     "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 26, // Waybar height (to be removed for auto height)
+    "height": 28, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
 
     // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["tray"],
-    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/neomutt","pulseaudio","network","battery","clock"],
+    "modules-left": ["clock", "sway/workspaces", "sway/mode"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/neomutt","pulseaudio","network","battery","tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -62,14 +62,21 @@
             "deactivated": ""
         }
     },
+    "wlr/taskbar": {
+        "format": "{title:.active}",
+        "icon-size": 14,
+        "tooltip-format": "{app_id}",
+        "on-click": "activate",
+        "all-outputs": false,
+        "on-click-middle": "close"
+    },
     "tray": {
         // "icon-size": 21,
         "spacing": 4
     },
     "clock": {
-        // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+        "format-alt": "{:%a │ %Y-%m-%d}"
     },
     "backlight": {
         // "device": "intel_backlight",
@@ -157,9 +164,9 @@
     },
     "custom/update" : {
       "exec" : "~/.config/waybar/modules/update_check.sh",
-      "exec-if": "exit 0",
+      "exec-if": "pgrep paru || pgrep pacman || exit 0",
       "return-type": "json",
-      "format": " {} 📦",
+      "format": " {} ",
       "interval": 3600,
       "signal": 8,
       "tooltip": true,
@@ -168,13 +175,13 @@
       "exec" : "~/.config/waybar/modules/sync_mail.sh",
       "exec-if": "exit 0",
       "return-type": "json",
-      "format": " {} 📬",
+      "format": " {} ",
       "interval": 1800,
       "signal": 8,
       "tooltip": true,
     },
     "custom/github": {
-      "format": " {}  ",
+      "format": " {} ",
       "return-type": "json",
       "interval": 120,
       "exec": "~/.config/waybar/modules/github.sh",

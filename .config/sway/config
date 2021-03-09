@@ -23,16 +23,13 @@ set $menu wofi -a
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/.config/walls/ny.png fill
-#
-# Example configuration:
-#
-output eDP-1 scale 1.21
-output eDP-1 resolution 1920x1080 position 0,528
-output DP-2 resolution 1920x1080 position 1586,340
-output HDMI-A-1 resolution 1920x1080 position 3506,21 transform 270
-#
-# You can get the names of your outputs by running: swaymsg -t get_outputs
+output * bg ~/.config/walls/cityroad.png fill
+
+# Monitor Configuration
+# Home
+output eDP-1 resolution 1920x1080 position 0,620
+output 'Hewlett Packard HP E231 6CM3420FR5' scale 0.90 resolution 1920x1080 position 1920,497
+output 'Hewlett Packard HP E231 6CM5191NBW' scale 0.90 resolution 1920x1080 position 4057,0 transform 270
 
 ### Idle configuration
 exec swayidle -w \
@@ -88,8 +85,8 @@ input "type:keyboard" {
     # Start your launcher
     bindsym $mod+comma exec $menu --show=drun
     
-    # Execute command
-    # bindsym $mod+period exec ~/.config/sway/script/wofi-power.sh
+    # Execute power menu
+    bindsym $mod+period exec wlogout -b 4 -m 350px -c 50
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -224,6 +221,12 @@ bar {
 }
 
 #
+# XWayland:
+#
+# Disable when the time has come lol
+xwayland enable
+
+#
 # Custom Settings
 #
 
@@ -231,7 +234,7 @@ bar {
 focus_follows_mouse no
 
 # Window Border
-default_border pixel 2
+default_border pixel 1
 default_floating_border normal
 
 set $cl_high #FFFFFF
@@ -241,24 +244,24 @@ set $cl_fore #d9d8d8
 set $cl_urge #ee2e24
 
 # Colors                border   bg       text     indi     childborder
-client.focused          $cl_high $cl_high $cl_fore $cl_indi $cl_high
+client.focused          $cl_indi $cl_high $cl_fore $cl_indi $cl_high
 client.focused_inactive $cl_back $cl_back $cl_fore $cl_back $cl_back
 client.unfocused        $cl_back $cl_back $cl_fore $cl_back $cl_back
 client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 
 # Faster key input
 input "1452:591:SONiX_USB_DEVICE" {
-  repeat_rate 35
+  repeat_rate 50
   repeat_delay 350
 }
 
 input "1:1:AT_Translated_Set_2_keyboard" {
-  repeat_rate 35
+  repeat_rate 50
   repeat_delay 350
 }
 
 # Gaps
-gaps inner 17
+gaps inner 10
 
 # Screenshot
 bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
@@ -268,7 +271,7 @@ bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
 set $my_cursor_size 30
 set $my_cursor VimixCursors-White
 
-seat seat0 xcursor_theme $my_cursor $my_cursor_size
+# seat seat0 xcursor_theme $my_cursor $my_cursor_size
 
 # GTK
 set $gnome-schema org.gnome.desktop.interface
@@ -296,10 +299,8 @@ bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
-bindsym XF86MonBrightnessUp exec brightnessctl s +10%
-bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
-bindsym $mod+Mod1+5 exec exec brightnessctl s +10%
-bindsym $mod+Mod1+6 exec brightnessctl s 10%-
+bindsym XF86MonBrightnessUp exec brightnessctl s +5%
+bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
 
 ### Another special keybinding
 bindsym $mod+Mod1+7 exec playerctl previous
@@ -311,6 +312,7 @@ bindsym $mod+Mod1+equal exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 
 # Startup
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec dex -a
 
 ###########################
 include /etc/sway/config.d/*
