@@ -1,6 +1,7 @@
 markup=1
 actions=1
 default-timeout=7000
+anchor=top-right
 
 # Format
 icons=1

@@ -2,7 +2,7 @@
     border: none;
     border-radius: 0;
     font-family: Roboto, "Font Awesome 5 Free";
-    font-size: 12px;
+    font-size: 14px;
     min-height: 0;
 }
 
@@ -52,7 +52,6 @@ window#waybar.chromium {
 }
 
 #workspaces button.focused {
-    background-color: #64727D;
     border-bottom: 3px solid #ffffff;
 }
 
@@ -176,7 +175,6 @@ label:focus {
 }
 
 #custom-caps_status {
-  padding: 0 3px;
   background-color: transparent;
   color: #FFFFFF;
   animation-name: blink;
@@ -184,17 +182,14 @@ label:focus {
 }
 
 #custom-github {
-  padding: 0 3px;
   border-bottom: 2px solid #039BE5;
 }
 
 #custom-update {
-  padding: 0 3px;
   border-bottom: 2px solid #4CAF50;
 }
 
 #custom-neomutt {
-  padding: 0 3px;
   border-bottom: 2px solid #F0932B;
 }
 
