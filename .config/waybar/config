@@ -76,7 +76,7 @@
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%a │ %Y-%m-%d}"
+        "format-alt": "{:%a │ %d-%m-%Y}"
     },
     "backlight": {
         // "device": "intel_backlight",
