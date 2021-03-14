@@ -71,13 +71,14 @@ export PATH="$HOME/.cargo/bin:$PATH"
  
 # Android SDK
 export ANDROID_HOME=$HOME/Development/android_sdk
-export PATH=$PATH:$ANDROID_HOME/emulator:$PATH
+export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools/
 export PATH=$PATH:$ANDROID_HOME/build-tools/
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin:$PATH
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin
 
 # Flutter
-export PATH=$PATH:$HOME/Repo/flutter/bin:$PATH
+export PATH=$PATH:$HOME/Repo/flutter/bin
+export CHROME_EXECUTABLE=/usr/bin/chromium
  
 # jEnv
 export JENV_ROOT="${JENV_ROOT:=${HOME}/.jenv}"
@@ -94,9 +95,12 @@ if type jenv > /dev/null; then
         jenv $@
     }
 fi
+
+# zoxide
+eval "$(zoxide init zsh)"
  
 # custom script
-export PATH="$HOME/.config/script:$PATH"
+export PATH=$PATH:$HOME/.config/script
  
 # pip
 export PATH="$HOME/.local/bin:$PATH"
@@ -106,10 +110,6 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=ON
  
 #Python lib
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
- 
-# nnn
-export NNN_PLUG='f:finder;o:fzopen;p:preview-tui;d:diffs;t:preview-tabbed;v:vidthumb;i:imgview;'
-export NNN_FIFO=/tmp/nnn.fifo
  
 # Wayland related
 export QT_QPA_PLATFORM=wayland-egl
@@ -133,17 +133,13 @@ export EDITOR=nvim
 alias dfs="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 alias cfnv="cd ~/.config/nvim && nvim"
-alias ls="exa -l"
-alias nvc="nvim -u ~/.config/nvim/fallback.vim"
 alias cls="clear"
-alias gpo="git push origin"
-alias wifi-menu="nmtui-connect"
 alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 
 # Ultralist
 alias u="ultralist"
-alias uc="ultralist l due:agenda group:context"
-alias up="ultralist l due:agenda group:project"
+alias uc="ultralist l group:context"
+alias up="ultralist l group:project"
 alias tod="ultralist l group:project due:tod"
 alias tom="ultralist l group:project due:tom"
 alias mon="ultralist l group:project due:mon"
@@ -153,5 +149,7 @@ alias thu="ultralist l group:project due:thu"
 alias fri="ultralist l group:project due:fri"
 alias c="ultralist l completed:tod"
 
-# Manual trigger for WebRTC screensharing
-alias webrtcss="/usr/lib/xdg-desktop-portal -r"
+# tmux
+alias ta='tmux attach -t'
+alias tl='tmux list-sessions'
+alias tks='tmux kill-server'
