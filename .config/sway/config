@@ -312,8 +312,8 @@ bindsym $mod+Mod1+equal exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 
 # Startup
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec dex -a
+exec "systemctl --user import-environment"
+exec "systemctl --user start autostart.target"
 
 ###########################
 include /etc/sway/config.d/*
-exec "systemctl --user import-environment"
