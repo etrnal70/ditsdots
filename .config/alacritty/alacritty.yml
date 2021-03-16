@@ -1,0 +1,67 @@
+# Background
+background_opacity: 0.90
+
+# Colors
+# Font
+font:
+  size: 10.5
+
+  normal: 
+    family: JetBrainsMono Nerd Font
+    style: Medium
+
+  bold:
+    family: JetBrainsMono Nerd Font
+    style: Extra Bold
+
+  italic:
+    family: JetBrainsMono Nerd Font
+    style: Medium Italic
+
+  bold_italic:
+    family: JetBrainsMono Nerd Font
+    style: Extra Bold Italic
+
+  offset:
+    x: 0
+    y: 1
+
+# Padding Config
+window:
+  padding:
+    x: 25
+    y: 25
+
+# Colors (Ayu Dark)
+colors:
+  # Default colors
+  primary:
+    background: '#1F1F1F'
+    foreground: '#B3B1AD'
+
+  # Normal colors
+  normal:
+    black: '#01060E'
+    red: '#EA6C73'
+    green: '#91B362'
+    yellow: '#F9AF4F'
+    blue: '#53BDFA'
+    magenta: '#FAE994'
+    cyan: '#90E1C6'
+    white: '#C7C7C7'
+
+  # Bright colors
+  bright:
+    black: '#686868'
+    red: '#F07178'
+    green: '#C2D94C'
+    yellow: '#FFB454'
+    blue: '#59C2FF'
+    magenta: '#FFEE99'
+    cyan: '#95E6CB'
+    white: '#FFFFFF'
+
+# Shell
+shell:
+  /bin/zsh
+
