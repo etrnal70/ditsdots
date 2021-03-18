@@ -13,26 +13,18 @@ cmd('autocmd ColorScheme * highlight Normal guibg=NONE')    -- Make background t
 cmd('autocmd ColorScheme * highlight NonText guibg=NONE')
 cmd('autocmd ColorScheme * highlight SignColumn guibg=NONE')
 cmd('autocmd ColorScheme * highlight StatusLine guibg=NONE')
+cmd('autocmd ColorScheme * highlight StatusLineNC guibg=#2C2C2C')
 cmd('autocmd ColorScheme * highlight VertSplit guifg=#3F3F3F guibg=NONE')
 cmd('autocmd ColorScheme * highlight Pmenu guibg=#292927')
 
 -- one-nvim specific fix
 cmd('autocmd ColorScheme * highlight IncSearch guifg=NONE guibg=#D19A66')  -- highlight matching char when search
-cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingError guibg=NONE')
-cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingWarning guibg=NONE')
-cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingHint guibg=NONE')
-cmd('autocmd ColorScheme * highlight LspDiagnosticsFloatingInformation guibg=NONE')
 
 -- LSP Diagnostic color
 cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultWarning guifg=#FCA903')
 cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultError guifg=#E53935')
 cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultHint guifg=LightGrey')
 cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultInformation guifg=LightBlue')
-
--- Gitsigns color
-cmd('autocmd ColorScheme * highlight DiffAdd cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
-cmd('autocmd ColorScheme * highlight DiffChange cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
-cmd('autocmd ColorScheme * highlight DiffDelete cterm=NONE gui=NONE ctermbg=NONE guibg=NONE')
 
 cmd('autocmd ColorScheme * highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
 cmd('autocmd ColorScheme * highlight LineNr guifg=#3F3F3F')
@@ -42,6 +34,7 @@ cmd('autocmd ColorScheme * highlight LineNr guifg=#3F3F3F')
 -- #######################################
 local gl = require('galaxyline')
 local gls = gl.section
+local whitespace = require('galaxyline.provider_whitespace')
 local condition = require('galaxyline.condition')
 local ws_extension = require('lsp_extensions.workspace.diagnostic')
 local fileinfo = require('galaxyline.provider_fileinfo')
@@ -68,6 +61,7 @@ local colors = {
   magenta = '#D16D9E',
   grey = '#C0C0C0',
   dark_grey = '#757575',
+  very_dark_grey = '#2C2C2C',
   blue = '#61AFEF',
   red = '#EC5F67',
   black = '#000000'
@@ -80,69 +74,47 @@ gls.left[1] = {
   }
 }
 
--- gls.left[2] = {
---   ViMode = {
---     provider = function()
---       local mode_color = {
---         n = colors.green,
---         i = colors.blue,
---         v =colors.orange,
---         [''] = colors.green,
---         V = colors.yellow,
---       	c = colors.red,
---         no = colors.magenta,
---         s = colors.orange,
---         S = colors.orange,
---         [''] = colors.orange,
--- 	ic = colors.yellow,
---         R = colors.purple,
---         Rv = colors.purple,
---         cv = colors.red,
---         ce = colors.red,
---         [''] = colors.orange,
--- 	r = colors.cyan,rm = colors.cyan,
---         ['r?'] = colors.cyan,
---         ['!'] = colors.red,
---         t = colors.red
---       }
---       vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
---       local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'VISUAL', [''] = 'VISUAL'}
---       return alias[vim.fn.mode()]
---     end,
---     separator = ' ',
---     separator_highlight = {colors.yellow,function()
---       if not condition.buffer_not_empty then
---         return colors.bg
---       end
---       return colors.bg
---     end},
---     highlight = {colors.magenta,colors.bg,'bold'},
---   },
--- }
-
-gls.left[3] = {
-  GitIcon = {
-    provider = function() return ' ' end,
-    condition = condition.check_git_workspace,
-    highlight = {colors.white,colors.bg},
-  }
+gls.left[2] = {
+  ViMode = {
+    provider = function()
+      local mode_color = {
+        n = colors.green,
+        i = colors.blue,
+        v =colors.orange,
+        [''] = colors.green,
+        V = colors.yellow,
+      	c = colors.red,
+        no = colors.magenta,
+        s = colors.orange,
+        S = colors.orange,
+        [''] = colors.orange,
+	ic = colors.yellow,
+        R = colors.purple,
+        Rv = colors.purple,
+        cv = colors.red,
+        ce = colors.red,
+        [''] = colors.orange,
+	r = colors.cyan,rm = colors.cyan,
+        ['r?'] = colors.cyan,
+        ['!'] = colors.red,
+        t = colors.red
+      }
+      vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
+      local alias = {n = 'N',i = 'I',c= 'C',v = 'V', V= 'V', [''] = 'V'}
+      return alias[vim.fn.mode()]
+    end,
+    separator = ' ',
+    separator_highlight = {colors.yellow,function()
+      if not condition.buffer_not_empty then
+        return colors.bg
+      end
+      return colors.bg
+    end},
+    highlight = {colors.white,colors.bg,'bold'},
+  },
 }
 
-gls.left[4] = {
-  GitBranch = {
-    provider = 'GitBranch',
-    condition = condition.check_git_workspace,
-    highlight = {colors.grey,colors.bg},
-  }
-}
-
-gls.left[5] = {
-  Space = {
-    provider = function () return ' ' end
-  }
-}
-
-gls.left[6] ={
+gls.left[3] ={
   FileIcon = {
     provider = 'FileIcon',
     condition = condition.buffer_not_empty,
@@ -150,13 +122,27 @@ gls.left[6] ={
   },
 }
 
-gls.left[7] = {
+gls.left[4] = {
   FileName = {
     provider = {'FileName'},
     condition = condition.buffer_not_empty,
-    separator = '',
-    separator_highlight = {colors.bg,colors.bg},
     highlight = {colors.white,colors.bg}
+  }
+}
+
+gls.left[5] = {
+  GitIcon = {
+    provider = function() return ' ' end,
+    condition = condition.check_git_workspace,
+    highlight = {colors.orange,colors.bg},
+  }
+}
+
+gls.left[6] = {
+  GitBranch = {
+    provider = 'GitBranch',
+    condition = condition.check_git_workspace,
+    highlight = {colors.grey,colors.bg},
   }
 }
 
@@ -171,7 +157,7 @@ gls.right[1] = {
         return aliases[res] or res
       end
     end,
-    icon = ' 🇻 ',
+    icon = '  ',
     condition = condition.check_active_lsp,
     highlight = {colors.white, colors.bg}
   }
@@ -212,7 +198,7 @@ gls.right[4] = {
 
 gls.right[5] = {
   DiagnosticWarn = {
-    provider = function() 
+    provider = function()
       if next(vim.lsp.buf_get_clients(0)) == nil then
         return ''
       else
@@ -240,6 +226,7 @@ gls.right[6] = {
     condition = condition.buffer_not_empty,
   },
 }
+
 gls.right[7] = {
   BigSpace = {
     provider = function () return '        ' end
@@ -247,19 +234,21 @@ gls.right[7] = {
 }
 
 gls.short_line_left[1] = {
-  FileIcon = {
-    provider = 'FileIcon',
-    condition = condition.buffer_not_empty,
-    highlight = {colors.grey,colors.bg}
-  },
+  Space = {
+    provider = function () return '  ' end
+  }
 }
 
 gls.short_line_left[2] = {
-  FileName = {
-    provider = {'FileName'},
-    condition = condition.buffer_not_empty,
-    separator = '',
-    separator_highlight = {colors.bg,colors.bg},
-    highlight = {colors.white,colors.bg}
+  BufferIcon = {
+    provider = 'BufferIcon',
+    highlight = {colors.white, colors.very_dark_grey},
+  }
+}
+
+gls.short_line_left[3] = {
+  FileTypeName = {
+    provider = 'FileTypeName',
+    highlight = {colors.white, colors.very_dark_grey},
   }
 }

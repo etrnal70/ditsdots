@@ -1,10 +1,15 @@
+local vim = vim
 local set = vim.g
 local cmd = vim.cmd
 
--- #####################################
--- #####         gina.vim          #####
--- #####################################
+local map = function(type, key, value)
+	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
+end
 
+-- #####################################
+-- #####           Neogit          #####
+-- #####################################
+map('n','<leader>gs','<cmd>lua require("neogit").status.create("split")<CR>')
 
 -- #####################################
 -- #####       git-messenger       #####

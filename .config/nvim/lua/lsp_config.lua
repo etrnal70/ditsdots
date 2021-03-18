@@ -1,49 +1,56 @@
 local lsp 	     = vim.lsp
 local protocol   = require('vim.lsp.protocol')
 local nvim_lsp   = require('lspconfig')
-local configs    = require('lspconfig/configs')
-local util       = require('lspconfig/util')
+local tele			 = require('telescope.builtin')
 local flutter 	 = require('flutter-tools')
 
 -- Diagnostic Configuration
 lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
-  -- lsp.diagnostic.on_publish_diagnostics, {
-  --   virtual_text = {
-  --     spacing = 4, 
-  --     severity_limit = 'Warning',
-  --   }, 
-  --   signs = {
-  --     severity_limit = 'Warning',
-  --   },
-  --   update_in_insert = true,
-  --   underline = true,
-  -- },
   require('lsp_extensions.workspace.diagnostic').handler,{
     signs = {
       severity_limit = "Warning",
-    },
-    virtual_text = false,
+    }, virtual_text = {
+			severity_limit = "Warning",
+		},
     update_in_insert = true,
     underline = true,
   }
 )
 
--- Use custom implementation from nvim-lsputils and lspsaga
+-- Peek Definition
+local function preview_location_callback(_, _, result)
+	if result == nil or vim.tbl_isempty(result) then
+		return nil
+	end
+	vim.lsp.util.preview_location(result[1])
+end
+
+function PeekDefinition()
+  local params = vim.lsp.util.make_position_params()
+  return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
+end
+
+-- Use custom implementation from various plugins
 lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
-lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+lsp.handlers['textDocument/references'] = tele.lsp_references
+-- lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+lsp.handlers['textDocument/definition'] = PeekDefinition
 lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
 lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
 lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
 lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+lsp.handlers['workspace/symbol'] = tele.lsp_workspace_symbols
 
 local map = function(type, key, value)
-	vim.fn.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
+	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
 end
 
 local custom_attach = function(client)
-	print("Starting LSP...")
+	local lsp_list = {
+		rust_analyzer = 'rust-analyzer',
+		sumneko_lua =  'Sumneko-Lua',
+		pyls_ms = 'MPLS'
+	}
 
   -- LSP Custom Label
 	protocol.CompletionItemKind = {
@@ -74,10 +81,6 @@ local custom_attach = function(client)
 		'';   -- TypeParameter = 25;
 	}
 
-  -- Enable incremental sync
-	if client.config.flags then
-		client.config.flags.allow_incremental_sync = true
-	end
 
   -- LSP Keymapping
 	map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
@@ -113,6 +116,8 @@ local custom_attach = function(client)
 	end
 
 	vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
+
+	print(lsp_list[client.name] .. " started")
 end
 
 -- Enable snippet support
@@ -121,8 +126,8 @@ custom_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- LSP with default lspconfig repo
 local default_servers = {'bashls','cssls','clangd','dockerls','efm','gopls', 'graphql','pyright','texlab','tsserver','vls','yamlls','zls'}
-for _, lsp in ipairs(default_servers) do
-	nvim_lsp[lsp].setup{
+for _, server in ipairs(default_servers) do
+	nvim_lsp[server].setup{
 		on_attach = custom_attach,
 		capabilities = custom_capabilities,
 	}
@@ -148,9 +153,9 @@ nvim_lsp.dartls.setup{
 nvim_lsp.rust_analyzer.setup{
 	settings = {
 		["rust-analyzer"] = {
-			cargo = {
-				autoreload = true
-			}
+			procMacro = {
+				enable = true
+			},
 		}
 	},
 	on_attach = custom_attach,

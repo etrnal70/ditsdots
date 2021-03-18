@@ -7,6 +7,27 @@
     ],
     "description": "Insert code block."
   },
+  "italic": {
+    "prefix": ["italic"],
+    "body": [
+      "*${1:text}*"
+    ],
+    "description": "Italic wrap"
+  },
+  "underline": {
+    "prefix": ["underline"],
+    "body": [
+      "**${1:text}**"
+    ],
+    "description": "Underline wrap"
+  },
+  "combineitauline": {
+    "prefix": ["combine"],
+    "body": [
+      "***${1:text}***"
+    ],
+    "description": "Italic and Underline wrap"
+  },
   "title": {
     "prefix": ["title"],
     "body": [

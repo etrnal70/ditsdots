@@ -2,7 +2,7 @@ local set = vim.g
 local cmd = vim.cmd
 
 local map = function(type, key, value)
-	vim.fn.nvim_set_keymap(type,key,value,{noremap = true, silent = true});
+	vim.api.nvim_set_keymap(type,key,value,{noremap = true, silent = true});
 end
 
 -- #####################################
@@ -299,7 +299,7 @@ require'nvim-treesitter.configs'.setup {
 -- vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
 
 -- #####################################
--- #####        neuron.nvin        #####
+-- #####        neuron.nvim        #####
 -- #####################################
 require'neuron'.setup {
   virtual_titles = true,

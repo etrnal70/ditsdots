@@ -1,30 +1,30 @@
  local vim = vim
  local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
- 
+
  if not packer_exists then
    if vim.fn.input("Download Packer? (y for yes)") ~= "y" then
      return
    end
- 
+
    local directory = string.format(
      '%s/site/pack/packer/opt/',
      vim.fn.stdpath('data')
    )
- 
+
    vim.fn.mkdir(directory, 'p')
- 
+
    local out = vim.fn.system(string.format(
      'git clone %s %s',
      'https://github.com/wbthomason/packer.nvim',
      directory .. '/packer.nvim'
    ))
- 
+
    print(out)
    print("Downloading packer.nvim...")
- 
+
    return
  end
- 
+
  return require('packer').startup(function()
 
 -- Plugin Manager
@@ -62,7 +62,7 @@ use {
 -- Theme and Icons
 use {'mhinz/vim-startify'}
 use {'kyazdani42/nvim-web-devicons'}
-use {'Th3Whit3Wolf/one-nvim'}
+use {'etrnal70/one-nvim'}
 
 -- Treesitter
 use {'nvim-treesitter/nvim-treesitter',
@@ -87,7 +87,7 @@ use {'rhysd/committia.vim'}       -- Show diff in commit buffer
 
 -- Debugger
 use {'puremourning/vimspector',   -- Python based TUI debugger
-  ft = {'rust', 'c', 'cpp'}
+  ft = {'rust', 'c', 'cpp', 'javascript', 'typescript'}
 }
 -- use {'mfussenegger/nvim-dap' -- Basic debug adapter protocol implementation
 --   requires = {
@@ -107,13 +107,16 @@ use {'tpope/vim-dadbod',                -- Database capability
   requires = {'kristijanhusak/vim-dadbod-ui'}
 }
 use {'oberblastmeister/neuron.nvim',    -- neuron note-taking integration
-  branch = "master"
+  branch = "unstable"
 }
 use {'windwp/nvim-autopairs'}           -- Autopair
 use {'eugen0329/vim-esearch'}           -- Project wide search-and-replace
 use {'b3nj5m1n/kommentary'}             -- Commentary plugin
 -- use 'tpope/vim-dispatch'              -- Async job control
 -- use 'tpope/vim-tbone'                 -- tmux wrapper
+use {'gyim/vim-boxdraw',
+  ft = "markdown"
+}
 use {'machakann/vim-sandwich'}          -- Surround plugin
 use {'szw/vim-maximizer'}               -- Maximize buffer
 use {'mhartington/formatter.nvim'}      -- Formatter
