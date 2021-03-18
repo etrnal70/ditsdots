@@ -2,12 +2,13 @@ markup=1
 actions=1
 default-timeout=7000
 anchor=top-right
+max-visible=3
 
 # Format
 icons=1
-background-color=#424242F8
+background-color=#2E2E2EF8
 text-color=#FFFFFF
-border-color=#424242F8
+border-color=#2E2E2EF8
 border-size=3
 width=370
 height=200
