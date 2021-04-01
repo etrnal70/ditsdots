@@ -3,6 +3,8 @@ local protocol   = require('vim.lsp.protocol')
 local nvim_lsp   = require('lspconfig')
 local tele			 = require('telescope.builtin')
 local flutter 	 = require('flutter-tools')
+local aerial		 = require('aerial')
+local lsp_status = require('lsp-status')
 
 -- Diagnostic Configuration
 lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
@@ -17,24 +19,10 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
   }
 )
 
--- Peek Definition
-local function preview_location_callback(_, _, result)
-	if result == nil or vim.tbl_isempty(result) then
-		return nil
-	end
-	vim.lsp.util.preview_location(result[1])
-end
-
-function PeekDefinition()
-  local params = vim.lsp.util.make_position_params()
-  return vim.lsp.buf_request(0, 'textDocument/definition', params, preview_location_callback)
-end
-
 -- Use custom implementation from various plugins
 lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
 lsp.handlers['textDocument/references'] = tele.lsp_references
--- lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
-lsp.handlers['textDocument/definition'] = PeekDefinition
+lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
 lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
 lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
 lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
@@ -45,12 +33,20 @@ local map = function(type, key, value)
 	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
 end
 
+-- Custom attach
 local custom_attach = function(client)
+
+	-- Define custom LSP name
 	local lsp_list = {
 		rust_analyzer = 'rust-analyzer',
 		sumneko_lua =  'Sumneko-Lua',
 		pyls_ms = 'MPLS'
 	}
+
+	-- Handle custom LSP name
+	function get_lsp_name()
+		return lsp_list[client.name]	or client.name	
+	end
 
   -- LSP Custom Label
 	protocol.CompletionItemKind = {
@@ -81,7 +77,6 @@ local custom_attach = function(client)
 		'';   -- TypeParameter = 25;
 	}
 
-
   -- LSP Keymapping
 	map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
 	map('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
@@ -105,6 +100,10 @@ local custom_attach = function(client)
   vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
   vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
 
+	-- Aerial
+	aerial.on_attach(client)
+	map('n', '<leader>st', '<cmd>lua require"aerial".toggle()<CR>')		-- Toggle aerial with <leader>st
+
 	-- Rust inlay hints
 	if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
 	 vim.cmd [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions').inlay_hints { aligned = false, prefix = " » ", enabled = {'TypeHint'} }]]
@@ -117,7 +116,10 @@ local custom_attach = function(client)
 
 	vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 
-	print(lsp_list[client.name] .. " started")
+	-- Register LSP status 
+	lsp_status.register_progress()
+
+	print("[" .. get_lsp_name() .. "] " .. "Language Server Protocol started")
 end
 
 -- Enable snippet support
@@ -125,7 +127,7 @@ local custom_capabilities = protocol.make_client_capabilities();
 custom_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- LSP with default lspconfig repo
-local default_servers = {'bashls','cssls','clangd','dockerls','efm','gopls', 'graphql','pyright','texlab','tsserver','vls','yamlls','zls'}
+local default_servers = {'bashls','cssls','dockerls','gopls', 'graphql','pyright','rust_analyzer','tsserver','vls','yamlls','zls'}
 for _, server in ipairs(default_servers) do
 	nvim_lsp[server].setup{
 		on_attach = custom_attach,
@@ -134,6 +136,15 @@ for _, server in ipairs(default_servers) do
 end
 
 -- LSP with custom settings
+-- clangd
+nvim_lsp.clangd.setup{
+	init_options = {
+		clangdFileStatus = true
+	},
+	on_attach = custom_attach,
+	capabilities = custom_capabilities
+}
+
 -- Dartls
 nvim_lsp.dartls.setup{
 	init_options = {
@@ -144,19 +155,6 @@ nvim_lsp.dartls.setup{
 	handlers = {
 		["dart/textDocument/publishClosingLabels"] = flutter.closing_tags,
 		["dart/textDocument/publishOutline"] = flutter.outline
-	},
-	on_attach = custom_attach,
-	capabilities = custom_capabilities
-}
-
--- Rust-analyzer
-nvim_lsp.rust_analyzer.setup{
-	settings = {
-		["rust-analyzer"] = {
-			procMacro = {
-				enable = true
-			},
-		}
 	},
 	on_attach = custom_attach,
 	capabilities = custom_capabilities
@@ -209,8 +207,6 @@ nvim_lsp.texlab.setup{
 -- ###############################
 -- #####      Completion     #####
 -- ###############################
-require('custom_func')
-
 local set = vim.g
 local cmd = vim.cmd
 
@@ -234,21 +230,32 @@ cmd[[xmap S <Plug>(vsnip-cut-text)]]
 -- Vsnip Location
 set.vsnip_snippet_dir = "~/.config/nvim/snippet"
 
--- Use Tab and S-Tab to scroll completion
--- cmd[[imap <expr><TAB> v:lua.tab_complete()]]
--- cmd[[smap <expr><TAB> v:lua.tab_complete()]]
--- cmd[[imap <expr><S-TAB> v:lua.s_tab_complete()]]
--- cmd[[smap <expr><S-TAB> v:lua.s_tab_complete()]]
+-- cmd[[inoremap <silent><expr> <CR>      compe#confirm('<CR>')]]
+-- Testing new <CR> behavior
+vim.g.completion_confirm_key = ""
+local npairs = require('nvim-autopairs')
 
--- nvim-compe Configuration
--- vim.api.nvim_set_keymap(
---   'i', '<Tab>',
---   'pumvisible() ? "<C-n>" : "<Tab>"',
---   { noremap=true, expr=true }
--- )
+_G.completion_confirm = function()
+  if vim.fn.pumvisible() ~= 0  then
+    if vim.fn.complete_info()["selected"] ~= -1 then
+      vim.fn["compe#confirm"]()
+      return npairs.esc("<c-y>")
+    else
+      vim.defer_fn(function()
+        vim.fn["compe#confirm"]("<cr>")
+      end, 20)
+      return npairs.esc("<c-n>")
+    end
+  else
+    return npairs.check_break_line_char()
+  end
+end
 
-cmd[[inoremap <silent><expr> <CR>      compe#confirm('<CR>')]]
-cmd[[inoremap <silent><expr> <C-e>     compe#close('<C-e>')]]
+vim.api.nvim_set_keymap('i','<CR>','v:lua.completion_confirm()', {expr = true , noremap = true})
+
+-- cmd[[inoremap <silent><expr> <C-e>     compe#close('<C-e>')]]
+vim.api.nvim_set_keymap('i','<C-e>',vim.fn["compe#close"]('<C-e>'), {expr = true , noremap = true, silent = true})
+
 cmd[[inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +4 })]]
 cmd[[inoremap <silent><expr> <C-k>     compe#scroll({ 'delta': -4 })]]
 
@@ -296,9 +303,17 @@ vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
 require('compe').setup {
   enabled = true;
+	autocomplete = true;
   debug = false;
   min_length = 1;
   preselect = 'disable';
+  throttle_time = 40;
+  source_timeout = 100;
+  incomplete_delay = 200;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 60;
+  documentation = true;
 
   -- TODO: Define per filetype
   source = {
@@ -312,13 +327,13 @@ require('compe').setup {
     tags = false;
     snippets_nvim = false;
     treesitter = true;
+		dadbod = true;
   };
 }
 
 
 cmd[[set shortmess+=c]]
 vim.o.completeopt = "menuone,noinsert,noselect"
--- cmd[[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]]
 
 -- ###############################
 -- #####      Formatter      #####

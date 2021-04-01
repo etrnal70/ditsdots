@@ -9,7 +9,18 @@ end
 -- #####################################
 -- #####           Neogit          #####
 -- #####################################
-map('n','<leader>gs','<cmd>lua require("neogit").status.create("split")<CR>')
+local neogit = require('neogit')
+
+neogit.setup {
+  disable_signs = false,
+  signs = {
+    section = {">", "v"},
+    item = {">", "v"},
+    hunk = {"", ""}
+  }
+}
+
+map('n','<leader>gs','<cmd>Neogit kind=split<CR>')
 
 -- #####################################
 -- #####       git-messenger       #####
@@ -36,4 +47,7 @@ require('gitsigns').setup{
     changedelete = {hl = 'DiffChange', text = '│'},
   },
   sign_priority = 6,
+  update_debounce = 250,
+  use_decoration_api = true,
+  use_internal_diff = true
 }

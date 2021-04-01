@@ -41,8 +41,19 @@ set.move_key_modifier = 'A-S'
 -- #####        Kommentary         #####
 -- #####################################
 -- Comment line/range using gc
--- For unsupported language, define it below
-require('kommentary.config').config["rust"] = {"// ", {"/* ", " */"}}
+local kommentary = require('kommentary.config')
+kommentary.configure_language(
+  "default",{
+    prefer_multi_line_comments = true,
+    use_consistent_indentation = true,
+    ignore_whitespace = true
+  }
+)
+kommentary.configure_language(
+  "lua",{
+    prefer_single_line_comments = true
+  }
+)
 
 -- #####################################
 -- #####      vim-maximizer        #####
@@ -67,10 +78,11 @@ npairs.setup({
     ['{'] = '}',
     ['`'] = '`',
   },
-  disable_filetype = {"TelescopePrompt"},
+  disable_filetype = {"TelescopePrompt", "NvimTreeLua"},
+  check_line_pair = true,
   break_line_filetype = nil,
   html_break_line_filetype = {'html' , 'vue' , 'typescriptreact' , 'svelte' , 'javascriptreact'},
-  ignored_nex_char = "%w",
+  ignored_next_char = "%w",
 })
 
 -- #####################################
@@ -224,13 +236,22 @@ colorizer.setup({'*';},{names = false; RRGGBBAA = true;})
 -- Next generation syntax parser
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {
-    "c", "rust", "cpp",  "dart", "verilog", "bash", "toml" , "lua", "css", "html", "typescript", "javascript", "json"
+     "bash","bibtex","c","cpp","css", "dart","go","rust","html","javascript","json","latex","lua","toml","python","typescript","verilog","yaml","zig"
   },
   -- Treesitter-based syntax highlighting
   highlight = {
-    enable = true, 
+    enable = true,
     use_languagetree = true,
-    disable = {},  
+    disable = {},
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<CR>",
+      scope_incremental = "<CR>",
+      node_incremental = "<TAB>",
+      node_decremental = "<S-TAB>"
+    }
   },
   -- Treesitter-based docstring generator
   -- TODO: Configure it
@@ -288,15 +309,29 @@ require'nvim-treesitter.configs'.setup {
   },
   -- See treesitter details. For development only
   playground = {
-    enable = false,
+    enable = true,
     disable = {},
     updatetime = 25,
     persist_queries = false,
+    keybindings = {
+      toggle_query_editor = 'o',
+      toggle_hl_groups = 'i',
+      toggle_injected_languages = 't',
+      toggle_anonymous_nodes = 'a',
+      toggle_language_display = 'I',
+      focus_language = 'f',
+      unfocus_language = 'F',
+      update = 'R',
+      goto_node = '<cr>',
+      show_help = '?',
+    },
   },
 }
--- Use treesitter fold capability (Still unstable, so disable for now)
--- vim.api.nvim_command('set foldmethod=expr')
--- vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
+-- Use treesitter fold capability
+vim.api.nvim_command('autocmd BufEnter * setlocal foldexpr=nvim_treesitter#foldexpr()')
+vim.api.nvim_command('autocmd BufEnter * setlocal foldmethod=expr')
+vim.api.nvim_command('autocmd BufEnter * normal zR')
+vim.o.foldlevelstart = 20
 
 -- #####################################
 -- #####        neuron.nvim        #####

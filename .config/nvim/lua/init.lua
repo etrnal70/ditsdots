@@ -36,6 +36,8 @@ use {'nvim-lua/lsp_extensions.nvim'}    -- LSP Custom Extension (Rust and Dart)
 use {'RishabhRD/nvim-lsputils',         -- Extra functionality for LSP
   requires = {'RishabhRD/popfix', run = "./install_fzy_native_sorter"}
 }
+use {'stevearc/aerial.nvim'}
+use {'nvim-lua/lsp-status.nvim'}
 
 -- Completion
 use {
@@ -62,7 +64,7 @@ use {
 -- Theme and Icons
 use {'mhinz/vim-startify'}
 use {'kyazdani42/nvim-web-devicons'}
-use {'etrnal70/one-nvim'}
+use {'mhartington/oceanic-next'}
 
 -- Treesitter
 use {'nvim-treesitter/nvim-treesitter',
@@ -89,16 +91,11 @@ use {'rhysd/committia.vim'}       -- Show diff in commit buffer
 use {'puremourning/vimspector',   -- Python based TUI debugger
   ft = {'rust', 'c', 'cpp', 'javascript', 'typescript'}
 }
--- use {'mfussenegger/nvim-dap' -- Basic debug adapter protocol implementation
---   requires = {
---     'theHamsta/nvim-dap-virtual-text'
---   }
--- }
+use {'mfussenegger/nvim-dap'}     -- Basic debug adapter protocol implementation
 
 -- Language-related
 use {'sheerun/vim-polyglot'}            -- Fallback for highlighting
 use {'akinsho/flutter-tools.nvim'}      -- Flutter development extensions
--- use {'dart-lang/dart-vim-plugin'}
 use {'ziglang/zig.vim'}
 
 -- Misc

@@ -7,38 +7,42 @@ vim.o.termguicolors = true  -- Use GUI colors in terminal
 vim.o.background = 'dark'   -- Set background to dark
 
 vim.g.one_nvim_transparent_bg = true  -- Enable one-nvim transparency support
-cmd('colorscheme one-nvim')
+cmd('syntax on')
+vim.g.oceanic_next_terminal_bold = 1
+vim.g.oceanic_next_terminal_italic = 1
+cmd('colorscheme OceanicNext')
 
-cmd('autocmd ColorScheme * highlight Normal guibg=NONE')    -- Make background transparent
-cmd('autocmd ColorScheme * highlight NonText guibg=NONE')
-cmd('autocmd ColorScheme * highlight SignColumn guibg=NONE')
-cmd('autocmd ColorScheme * highlight StatusLine guibg=NONE')
-cmd('autocmd ColorScheme * highlight StatusLineNC guibg=#2C2C2C')
-cmd('autocmd ColorScheme * highlight VertSplit guifg=#3F3F3F guibg=NONE')
-cmd('autocmd ColorScheme * highlight Pmenu guibg=#292927')
+cmd('highlight Normal guibg=NONE ctermbg=NONE')    -- Make background transparent
+cmd('highlight LineNr guibg=NONE ctermbg=NONE')
+cmd('highlight SignColumn guibg=NONE ctermbg=NONE guifg=NONE ctermfg=NONE')
+cmd('highlight EndOfBuffer guibg=NONE ctermbg=NONE')
+cmd('highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
+cmd('highlight LineNr guifg=#3F3F3F')
 
--- one-nvim specific fix
-cmd('autocmd ColorScheme * highlight IncSearch guifg=NONE guibg=#D19A66')  -- highlight matching char when search
+cmd('highlight DiffAdd guibg=NONE ctermbg=NONE')
+cmd('highlight DiffChange guibg=NONE ctermbg=NONE')
+cmd('highlight DiffChangeDelete guibg=NONE ctermbg=NONE')
+cmd('highlight DiffDelete guibg=NONE ctermbg=NONE')
 
--- LSP Diagnostic color
-cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultWarning guifg=#FCA903')
-cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultError guifg=#E53935')
-cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultHint guifg=LightGrey')
-cmd('autocmd ColorScheme * highlight LspDiagnosticsDefaultInformation guifg=LightBlue')
-
-cmd('autocmd ColorScheme * highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
-cmd('autocmd ColorScheme * highlight LineNr guifg=#3F3F3F')
+-- cmd('autocmd ColorScheme * highlight Normal guibg=NONE')    -- Make background transparent
+-- cmd('autocmd ColorScheme * highlight NonText guibg=NONE')
+-- cmd('autocmd ColorScheme * highlight SignColumn guibg=NONE')
+cmd('highlight StatusLine guibg=NONE')
+cmd('highlight StatusLineNC guibg=#2C2C2C')
+cmd('highlight VertSplit guifg=#3F3F3F guibg=NONE')
+cmd('highlight Pmenu guibg=#292927')
 
 -- #######################################
 -- #####         Statusline          #####
 -- #######################################
-local gl = require('galaxyline')
-local gls = gl.section
-local whitespace = require('galaxyline.provider_whitespace')
-local condition = require('galaxyline.condition')
-local ws_extension = require('lsp_extensions.workspace.diagnostic')
-local fileinfo = require('galaxyline.provider_fileinfo')
-local lsp = require('galaxyline.provider_lsp')
+local gl              = require('galaxyline')
+local gls             = gl.section
+local whitespace      = require('galaxyline.provider_whitespace')
+local condition       = require('galaxyline.condition')
+local ws_extension    = require('lsp_extensions.workspace.diagnostic')
+local fileinfo        = require('galaxyline.provider_fileinfo')
+local lsp             = require('galaxyline.provider_lsp')
+local lsp_status      = require('lsp-status')
 
 gl.short_line_list = {'LuaTree','dbui','esearch'}
 
@@ -114,40 +118,8 @@ gls.left[2] = {
   },
 }
 
-gls.left[3] ={
-  FileIcon = {
-    provider = 'FileIcon',
-    condition = condition.buffer_not_empty,
-    highlight = {fileinfo.get_file_icon_color,colors.bg},
-  },
-}
-
-gls.left[4] = {
-  FileName = {
-    provider = {'FileName'},
-    condition = condition.buffer_not_empty,
-    highlight = {colors.white,colors.bg}
-  }
-}
-
-gls.left[5] = {
-  GitIcon = {
-    provider = function() return ' ' end,
-    condition = condition.check_git_workspace,
-    highlight = {colors.orange,colors.bg},
-  }
-}
-
-gls.left[6] = {
-  GitBranch = {
-    provider = 'GitBranch',
-    condition = condition.check_git_workspace,
-    highlight = {colors.grey,colors.bg},
-  }
-}
-
 -- LSP Name
-gls.right[1] = {
+gls.left[3] = {
   LspClient = {
     provider = function ()
       if next(vim.lsp.buf_get_clients(0)) == nil then
@@ -163,13 +135,13 @@ gls.right[1] = {
   }
 }
 
-gls.right[2] = {
+gls.left[4] = {
   SemiBigSpace = {
-    provider = function () return '   ' end
+    provider = function () return ' ' end
   }
 }
 
-gls.right[3] = {
+gls.left[5] = {
   DiagnosticError = {
     provider = function()
       if next(vim.lsp.buf_get_clients(0)) == nil then
@@ -190,13 +162,13 @@ gls.right[3] = {
   }
 }
 
-gls.right[4] = {
+gls.left[6] = {
   Space = {
     provider = function () return ' ' end
   }
 }
 
-gls.right[5] = {
+gls.left[7] = {
   DiagnosticWarn = {
     provider = function()
       if next(vim.lsp.buf_get_clients(0)) == nil then
@@ -217,7 +189,84 @@ gls.right[5] = {
   }
 }
 
-gls.right[6] = {
+gls.left[8] = {
+  Space = {
+    provider = function () return ' ' end
+  }
+}
+
+gls.left[9] = {
+  LspStatus = {
+    provider = function()
+      -- TODO: Improve handling
+      local res = {}
+      local config = {
+        spinner_frames = { '⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷' }
+      }
+
+      local buf_message = lsp_status.messages()
+      for _, msg in ipairs(buf_message) do
+        local contents = ''
+        if msg.progress then
+          contents = msg.title
+          if msg.message then 
+            contents = contents
+          end
+
+          if msg.percentage then
+            contents = contents
+          end
+
+          if msg.spinner then
+            contents = contents .. ' ' .. config.spinner_frames[(msg.spinner % #config.spinner_frames) + 1] 
+          end
+        end
+
+        table.insert(res, contents)
+      end
+
+      return vim.trim(table.concat(res, ' '))
+    end,
+    separator = '  ',
+    separator_highlight = {colors.grey,colors.bg},
+    highlight = {colors.dark_grey,colors.bg},
+    condition = condition.check_active_lsp,
+  },
+}
+
+gls.right[1] ={
+  FileIcon = {
+    provider = 'FileIcon',
+    condition = condition.buffer_not_empty,
+    highlight = {fileinfo.get_file_icon_color,colors.bg},
+  },
+}
+
+gls.right[2] = {
+  FileName = {
+    provider = {'FileName'},
+    condition = condition.buffer_not_empty,
+    highlight = {colors.white,colors.bg}
+  }
+}
+
+gls.right[3] = {
+  GitIcon = {
+    provider = function() return ' ' end,
+    condition = condition.check_git_workspace,
+    highlight = {colors.orange,colors.bg},
+  }
+}
+
+gls.right[4] = {
+  GitBranch = {
+    provider = 'GitBranch',
+    condition = condition.check_git_workspace,
+    highlight = {colors.grey,colors.bg},
+  }
+}
+
+gls.right[5] = {
   LineInfo = {
     provider = 'LineColumn',
     separator = '  ',
@@ -227,11 +276,7 @@ gls.right[6] = {
   },
 }
 
-gls.right[7] = {
-  BigSpace = {
-    provider = function () return '        ' end
-  }
-}
+
 
 gls.short_line_left[1] = {
   Space = {

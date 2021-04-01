@@ -92,3 +92,4 @@ buf.undofile = false
 
 -- vim.cmd('set backspace=indent,eol,start')   -- For good backspace
 gl.backspace = 'indent,eol,start'
+
