@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["clock", "sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/neomutt","pulseaudio","network","battery","tray"],
+    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/neomutt","idle_inhibitor","pulseaudio","network","battery","tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
