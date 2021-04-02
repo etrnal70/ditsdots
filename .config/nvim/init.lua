@@ -2,12 +2,6 @@ local vim = vim
 
 vim.g.mapleader = ' '
 
-require('init')
-require('theme')
-require('lsp_config')
-require('git_config')
-require('misc')
-
 local function add(value, str, sep)
   sep = sep or ","
   str = str or ""
@@ -20,9 +14,8 @@ local gl = vim.o
 local buf = vim.bo
 local win = vim.wo
 
--- vim.api.nvim_command('set encoding=utf-8')
 gl.encoding = 'utf-8'
-gl.showmode = true
+gl.showmode = false
 
 gl.hidden = true                -- Hide unloaded buffer
 gl.lazyredraw = true            -- Don't redraw easily
@@ -31,13 +24,12 @@ gl.clipboard = 'unnamedplus'    -- Enable system-wide clipboard
 gl.mouse = 'n'                  -- Mouse only on normal mode
 gl.updatetime = 250             -- Editor update time in ms
 win.foldenable = true           -- Prevent folding upon opening file
--- vim.cmd('set foldenable')
 
 gl.splitright = true            -- Vertical split always on the right
 gl.splitbelow = true            -- Horizontal split always on the bottom
 gl.fillchars =
   add {
-  "vert:▕",
+  "vert: ",
   "fold: ",
   "eob: ",
   "diff:",
@@ -80,7 +72,7 @@ win.relativenumber = true   -- Make number column relative
 
 gl.wildmenu = true          -- Use wildmenu
 gl.wildoptions = 'pum'      -- Use popup style for wildmenu
-gl.pumheight = 4            -- Set popup height to 4 entry
+gl.pumheight = 3            -- Set popup height to 3 entry
 gl.pumblend = 3             -- Make popup menu translucent
 
 vim.cmd('set formatoptions+=cqrnj')
@@ -93,3 +85,11 @@ buf.undofile = false
 -- vim.cmd('set backspace=indent,eol,start')   -- For good backspace
 gl.backspace = 'indent,eol,start'
 
+-- ================================================
+-- ==              IMPORT FILES                  ==
+-- ================================================
+require('init')
+require('theme')
+require('lsp_config')
+require('git_config')
+require('misc')

@@ -44,38 +44,12 @@ local custom_attach = function(client)
 	}
 
 	-- Handle custom LSP name
-	function get_lsp_name()
-		return lsp_list[client.name]	or client.name	
+	local get_lsp_name = function()
+		return lsp_list[client.name] or client.name
 	end
 
-  -- LSP Custom Label
-	protocol.CompletionItemKind = {
-		'';   -- Text          = 1;
-		'';   -- Method        = 2;
-		'ƒ';   -- Function      = 3;
-		'';   -- Constructor   = 4;
-		'識';  -- Field         = 5;
-		'';   -- Variable      = 6;
-		'';   -- Class         = 7;
-		'ﰮ';   -- Interface     = 8;
-		'';   -- Module        = 9;
-		'';   -- Property      = 10;
-		'';   -- Unit          = 11;
-		'';   -- Value         = 12;
-		'了';  -- Enum          = 13;
-		'';   -- Keyword       = 14;
-		'﬌';   -- Snippet       = 15;
-		'';   -- Color         = 16;
-		'';   -- File          = 17;
-		'渚';  -- Reference     = 18;
-		'';   -- Folder        = 19;
-		'';   -- EnumMember    = 20;
-		'';   -- Constant      = 21;
-		'';   -- Struct        = 22;
-		'鬒';  -- Event         = 23;
-		'Ψ';   -- Operator      = 24;
-		'';   -- TypeParameter = 25;
-	}
+  -- LSP Custom Label using lspkind.nvim
+	require('lspkind').init()
 
   -- LSP Keymapping
 	map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
@@ -95,14 +69,23 @@ local custom_attach = function(client)
 	map('v','<leader>a',"<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR><esc>")
 	map('n','<leader>e','<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 
+	-- Disable SignColumn and show diagnostic on LineNr
   vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
   vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
   vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
   vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
 
 	-- Aerial
+	aerial.set_kind_abbr {
+		['Function'] = '',
+		['Class'] = '',
+		['Constructor'] = '',
+		['Method'] = 'ƒ',
+		['Struct'] = '',
+		['Enum'] = '了'
+	}
 	aerial.on_attach(client)
-	map('n', '<leader>st', '<cmd>lua require"aerial".toggle()<CR>')		-- Toggle aerial with <leader>st
+	map('n', '<leader>st', '<cmd>lua require"aerial".toggle(_,">")<CR>')		-- Toggle aerial with <leader>st
 
 	-- Rust inlay hints
 	if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
@@ -230,8 +213,6 @@ cmd[[xmap S <Plug>(vsnip-cut-text)]]
 -- Vsnip Location
 set.vsnip_snippet_dir = "~/.config/nvim/snippet"
 
--- cmd[[inoremap <silent><expr> <CR>      compe#confirm('<CR>')]]
--- Testing new <CR> behavior
 vim.g.completion_confirm_key = ""
 local npairs = require('nvim-autopairs')
 
@@ -252,8 +233,6 @@ _G.completion_confirm = function()
 end
 
 vim.api.nvim_set_keymap('i','<CR>','v:lua.completion_confirm()', {expr = true , noremap = true})
-
--- cmd[[inoremap <silent><expr> <C-e>     compe#close('<C-e>')]]
 vim.api.nvim_set_keymap('i','<C-e>',vim.fn["compe#close"]('<C-e>'), {expr = true , noremap = true, silent = true})
 
 cmd[[inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +4 })]]
@@ -312,7 +291,7 @@ require('compe').setup {
   incomplete_delay = 200;
   max_abbr_width = 100;
   max_kind_width = 100;
-  max_menu_width = 60;
+  max_menu_width = 50;
   documentation = true;
 
   -- TODO: Define per filetype

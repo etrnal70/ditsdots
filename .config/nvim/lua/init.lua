@@ -44,7 +44,8 @@ use {
   'hrsh7th/nvim-compe',
   requires = {
     'hrsh7th/vim-vsnip',              -- Snippet support
-    'hrsh7th/vim-vsnip-integ'
+    'hrsh7th/vim-vsnip-integ',
+    'onsails/lspkind-nvim'
   }
 }
 
