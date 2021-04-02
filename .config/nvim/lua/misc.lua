@@ -38,6 +38,12 @@ cmd[[nnoremap <Leader><Leader>gF <C-w>vgF ]]
 set.move_key_modifier = 'A-S'
 
 -- #####################################
+-- #####        CursorHold         #####
+-- #####################################
+-- CursorHold bug workaround
+set.cursorhold_updatetime = 100
+
+-- #####################################
 -- #####        Kommentary         #####
 -- #####################################
 -- Comment line/range using gc
