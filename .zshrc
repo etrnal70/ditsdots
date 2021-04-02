@@ -68,6 +68,9 @@ eval "$(fnm env)"
 
 # Rust Cargo
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Golang
+export PATH="$HOME/go/bin:$PATH"
  
 # Android SDK
 export ANDROID_HOME=$HOME/Development/android_sdk
@@ -132,7 +135,9 @@ export EDITOR=nvim
 # ditsdots
 alias dfs="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
+# Miscellaneous
 alias cfnv="cd ~/.config/nvim && nvim"
+alias ls="exa"
 alias cls="clear"
 alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 
