@@ -24,13 +24,13 @@ cmd('highlight DiffChange guibg=NONE ctermbg=NONE')
 cmd('highlight DiffChangeDelete guibg=NONE ctermbg=NONE')
 cmd('highlight DiffDelete guibg=NONE ctermbg=NONE')
 
--- cmd('autocmd ColorScheme * highlight Normal guibg=NONE')    -- Make background transparent
--- cmd('autocmd ColorScheme * highlight NonText guibg=NONE')
--- cmd('autocmd ColorScheme * highlight SignColumn guibg=NONE')
 cmd('highlight StatusLine guibg=NONE')
 cmd('highlight StatusLineNC guibg=#2C2C2C')
-cmd('highlight VertSplit guifg=#3F3F3F guibg=NONE')
+cmd('highlight VertSplit gui=NONE guifg=NONE guibg=NONE')
 cmd('highlight Pmenu guibg=#292927')
+
+cmd('highlight DiffAdded guibg=#46A73B')
+cmd('highlight DiffRemoved guibg=#E80C19')
 
 -- #######################################
 -- #####         Statusline          #####

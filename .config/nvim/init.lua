@@ -85,11 +85,13 @@ buf.undofile = false
 -- vim.cmd('set backspace=indent,eol,start')   -- For good backspace
 gl.backspace = 'indent,eol,start'
 
--- ================================================
--- ==              IMPORT FILES                  ==
--- ================================================
+-- ################################################
+-- ####              IMPORT FILES              ####
+-- ################################################
 require('init')
 require('theme')
 require('lsp_config')
 require('git_config')
 require('misc')
+
+vim.cmd('autocmd VimEnter * echo " "')

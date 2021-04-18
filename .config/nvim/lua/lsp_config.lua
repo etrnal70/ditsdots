@@ -1,19 +1,21 @@
-local lsp 	     = vim.lsp
-local protocol   = require('vim.lsp.protocol')
-local nvim_lsp   = require('lspconfig')
-local tele			 = require('telescope.builtin')
-local flutter 	 = require('flutter-tools')
-local aerial		 = require('aerial')
-local lsp_status = require('lsp-status')
+local lsp						= vim.lsp
+local protocol   		= require('vim.lsp.protocol')
+local nvim_lsp   		= require('lspconfig')
+local tele			 		= require('telescope.builtin')
+local flutter_ext 	= require('flutter-tools')
+local rust_ext			= require('rust-tools')
+local aerial		 		= require('aerial')
+local lsp_status 		= require('lsp-status')
 
 -- Diagnostic Configuration
 lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
   require('lsp_extensions.workspace.diagnostic').handler,{
     signs = {
       severity_limit = "Warning",
-    }, virtual_text = {
+    },
+		virtual_text = {
 			severity_limit = "Warning",
-		},
+    },
     update_in_insert = true,
     underline = true,
   }
@@ -60,14 +62,19 @@ local custom_attach = function(client)
 	map('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
 	map('n','gs','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
 	map('n','gw','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-	map('n','gc','<cmd>lua vim.lsp.buf.declaration()<CR>')
+	map('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
 	map('n','gn','<cmd>lua vim.lsp.buf.rename()<CR>')
-	map('n','ff','<cmd>lua vim.lsp.buf.formatting()<CR>')
 	map('n','[d','<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
 	map('n',']d','<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
 	map('n','<leader>a','<cmd>lua vim.lsp.buf.code_action()<CR>')
 	map('v','<leader>a',"<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR><esc>")
 	map('n','<leader>e','<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
+
+	if client.resolved_capabilities.document_formatting then
+    map("n", "<leader>sf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+  elseif client.resolved_capabilities.document_range_formatting then
+    map("n", "<leader>sf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>")
+	end
 
 	-- Disable SignColumn and show diagnostic on LineNr
   vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
@@ -84,33 +91,42 @@ local custom_attach = function(client)
 		['Struct'] = '',
 		['Enum'] = '了'
 	}
-	aerial.on_attach(client)
-	map('n', '<leader>st', '<cmd>lua require"aerial".toggle(_,">")<CR>')		-- Toggle aerial with <leader>st
-
-	-- Rust inlay hints
-	if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
-	 vim.cmd [[autocmd BufEnter,BufWritePost <buffer> :lua require('lsp_extensions').inlay_hints { aligned = false, prefix = " » ", enabled = {'TypeHint'} }]]
+	-- Workaround for zk
+	if client.name ~= 'zk' then
+		aerial.on_attach(client)
+		map('n', '<leader>st', '<cmd>lua require"aerial".toggle(_,">")<CR>')		-- Toggle aerial with <leader>st
 	end
 
-	-- Dart label
-	if vim.api.nvim_buf_get_option(0, 'filetype') == 'dart' then
-		require('flutter-tools').setup{}
+	-- Rust Keymapping
+	if client.name == 'rust_analyzer' then
+		map('n','<leader>rr','<cmd>RustRunnables<CR>')
+		map('n','<leader>rc','<cmd>RustOpenCargo<CR>')
+		map('n','<leader>rmu','<cmd>RustMoveItemUp<CR>')
+		map('n','<leader>rmd','<cmd>RustMoveItemDown<CR>')
 	end
 
+	-- Set omnifunc
 	vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 
-	-- Register LSP status 
+	-- Register LSP status
 	lsp_status.register_progress()
 
 	print("[" .. get_lsp_name() .. "] " .. "Language Server Protocol started")
 end
 
--- Enable snippet support
+-- Custom Capabilities
 local custom_capabilities = protocol.make_client_capabilities();
 custom_capabilities.textDocument.completion.completionItem.snippetSupport = true
+custom_capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits'
+  }
+}
 
 -- LSP with default lspconfig repo
-local default_servers = {'bashls','cssls','dockerls','gopls', 'graphql','pyright','rust_analyzer','tsserver','vls','yamlls','zls'}
+local default_servers = {'bashls','cssls','dockerls','gopls', 'graphql','pyright','tsserver','vls','yamlls','zls'}
 for _, server in ipairs(default_servers) do
 	nvim_lsp[server].setup{
 		on_attach = custom_attach,
@@ -128,19 +144,56 @@ nvim_lsp.clangd.setup{
 	capabilities = custom_capabilities
 }
 
--- Dartls
-nvim_lsp.dartls.setup{
-	init_options = {
-		closingLabels = true,
-		outline = true,
-		flutterOutline = true
-	},
-	handlers = {
-		["dart/textDocument/publishClosingLabels"] = flutter.closing_tags,
-		["dart/textDocument/publishOutline"] = flutter.outline
-	},
-	on_attach = custom_attach,
-	capabilities = custom_capabilities
+-- Flutter
+flutter_ext.setup {
+  experimental = {
+    lsp_derive_paths = false,
+  },
+  debugger = {
+    enabled = false,
+  },
+  flutter_path = "$HOME/Development/flutter/bin",
+  flutter_lookup_cmd = nil,
+  widget_guides = {
+    enabled = true,
+  },
+  closing_tags = {
+    highlight = "ErrorMsg",
+    prefix = ">"
+  },
+  dev_log = {
+    open_cmd = "tabedit",
+  },
+  outline = {
+    open_cmd = "30vnew",
+  },
+  lsp = {
+    on_attach = custom_attach,
+    capabilities = custom_capabilities,
+    settings = {
+      showTodos = true,
+      completeFunctionCalls = false
+    }
+  }
+}
+
+-- Rust-analyzer
+rust_ext.setup{
+    tools = {
+        autoSetHints = true,
+        hover_with_actions = true,
+        runnables = {
+            use_telescope = true
+        },
+        inlay_hints = {
+            show_parameter_hints = true,
+            parameter_hints_prefix = "<-",
+            other_hints_prefix  = "=>",
+        },
+    },
+   server = {
+     on_attach = custom_attach,
+   },
 }
 
 -- Sumneko-Lua
@@ -176,13 +229,30 @@ nvim_lsp.texlab.setup{
 	settings = {
 		latex = {
 			build = {
-				onSave = true
+				onSave = true,
+        args = {"-pdf", "-interaction=nonstopmode", "-synctex=1", "-outdir=build", "%f"},
+        executable = "latexmk",
+        outputDirectory = "build"
 			},
 			lint = {
 				onChange = true
 			}
 		}
 	},
+	on_attach = custom_attach,
+	capabilities = custom_capabilities
+}
+
+-- zk
+require('lspconfig/configs').zk = {
+	default_config = {
+    cmd = {'zk', 'lsp', '--log', '/tmp/zk-lsp.log'},
+    filetypes = {'markdown'},
+    root_dir = nvim_lsp.util.root_pattern('.zk'),
+    settings = {}
+  };
+}
+nvim_lsp.zk.setup{
 	on_attach = custom_attach,
 	capabilities = custom_capabilities
 }
@@ -219,16 +289,12 @@ local npairs = require('nvim-autopairs')
 _G.completion_confirm = function()
   if vim.fn.pumvisible() ~= 0  then
     if vim.fn.complete_info()["selected"] ~= -1 then
-      vim.fn["compe#confirm"]()
-      return npairs.esc("<c-y>")
+      return vim.fn["compe#confirm"](npairs.esc("<c-r>"))
     else
-      vim.defer_fn(function()
-        vim.fn["compe#confirm"]("<cr>")
-      end, 20)
-      return npairs.esc("<c-n>")
+      return npairs.esc("<cr>")
     end
   else
-    return npairs.check_break_line_char()
+    return npairs.autopairs_cr()
   end
 end
 
@@ -297,7 +363,7 @@ require('compe').setup {
   -- TODO: Define per filetype
   source = {
     path = true;
-    buffer = true;
+    buffer = false;
     calc = false;
     vsnip = true;
     nvim_lsp = true;
@@ -309,7 +375,6 @@ require('compe').setup {
 		dadbod = true;
   };
 }
-
 
 cmd[[set shortmess+=c]]
 vim.o.completeopt = "menuone,noinsert,noselect"

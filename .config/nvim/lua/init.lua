@@ -28,7 +28,7 @@ end
 return require('packer').startup(function()
 
   -- Plugin Manager
-  use {'wbthomason/packer.nvim', opt = true}
+  use {'wbthomason/packer.nvim'}
 
   -- LSP Plugins
   use {'neovim/nvim-lspconfig'}           -- Neovim LSP Configuration
@@ -63,7 +63,6 @@ return require('packer').startup(function()
   }
 
   -- Theme and Icons
-  use {'mhinz/vim-startify'}
   use {'kyazdani42/nvim-web-devicons'}
   use {'mhartington/oceanic-next'}
 
@@ -75,51 +74,54 @@ return require('packer').startup(function()
       'nvim-treesitter/nvim-tree-docs',               -- Docstring generator
       'nvim-treesitter/playground',                   -- See treesitter details
     },
-    run = function() vim.cmd [[TSUpdate]] end,
+    run = ":TSUpdate",
   }
   use {'vigoux/architext.nvim'}                       -- TS-based structural editing
 
   -- Git
   use {'lewis6991/gitsigns.nvim'}   -- Gutter sign
   use {'tpope/vim-fugitive'}        -- Integrated git function wrapper
-  use {'TimUntersberger/neogit',    -- Magit port for neovim
-    requires = {'nvim-lua/plenary.nvim'}
-  }
+  -- use {'TimUntersberger/neogit',    -- Magit port for neovim
+  --   requires = {'nvim-lua/plenary.nvim'}
+  -- }
   use {'rhysd/git-messenger.vim'}   -- Show commit message in floating win
   use {'rhysd/committia.vim'}       -- Show diff in commit buffer
 
   -- Debugger
-  use {'puremourning/vimspector',   -- Python based TUI debugger
-    ft = {'rust', 'c', 'cpp', 'javascript', 'typescript'}
+  use {'puremourning/vimspector'}   -- Python based TUI debugger
+  use {'mfussenegger/nvim-dap',     -- Lua-based debugger
+    requires = "rcarriga/nvim-dap-ui"
   }
-  use {'mfussenegger/nvim-dap'}     -- Basic debug adapter protocol implementation
+
+  -- Testing
+  use {'rcarriga/vim-ultest',
+    requires = "vim-test/vim-test",
+    run = ":UpdateRemotePlugins"
+  }
 
   -- Language-related
-  use {'sheerun/vim-polyglot'}            -- Fallback for highlighting
   use {'akinsho/flutter-tools.nvim'}      -- Flutter development extensions
-  use {'ziglang/zig.vim'}
+  use {'simrat39/rust-tools.nvim'}        -- Rust-analyzer development extensions
+  use {'ziglang/zig.vim', ft = 'zig'}
 
   -- Misc
   use {'antoinemadec/FixCursorHold.nvim'} -- Workaround for CursorHold bug
+  use {'akinsho/nvim-toggleterm.lua'}     -- Terminal addons
+  use {'numToStr/Navigator.nvim'}
   use {'glepnir/galaxyline.nvim'}         -- Statusline
   use {'tpope/vim-dadbod',                -- Database capability
-    requires = {'kristijanhusak/vim-dadbod-ui'}
-  }
-  use {'oberblastmeister/neuron.nvim',    -- neuron note-taking integration
-    branch = "unstable"
+    requires = {'kristijanhusak/vim-dadbod-ui'},
+    ft = 'sql'
   }
   use {'windwp/nvim-autopairs'}           -- Autopair
   use {'eugen0329/vim-esearch'}           -- Project wide search-and-replace
   use {'b3nj5m1n/kommentary'}             -- Commentary plugin
-  -- use 'tpope/vim-dispatch'              -- Async job control
-  -- use 'tpope/vim-tbone'                 -- tmux wrapper
   use {'gyim/vim-boxdraw',
     ft = "markdown"
   }
-  use {'machakann/vim-sandwich'}          -- Surround plugin
+  use {'blackCauldron7/surround.nvim'}    -- Surround plugin
   use {'szw/vim-maximizer'}               -- Maximize buffer
   use {'mhartington/formatter.nvim'}      -- Formatter
-  use {'lervag/vimtex', ft = 'tex'}       -- AiO TeX plugin
   use 'norcalli/nvim-colorizer.lua'       -- Color highlighting
   use {'kyazdani42/nvim-tree.lua'}        -- Directory tree
   use {'jsfaint/gen_tags.vim',            -- Generate gtags
@@ -127,11 +129,12 @@ return require('packer').startup(function()
   }
   use {'matze/vim-move'}                  -- To move lines easily
   use {'mhinz/vim-crates', ft = 'toml'}   -- Get updated Rust crates version
-  use {'jbyuki/instant.nvim'}             -- Collaborative editing without ext dependencies
-  use {'rafcamlet/nvim-luapad',           -- REPL for Lua development
+
+  -- Lua Development
+  use {'rafcamlet/nvim-luapad',
     ft = 'lua'
   }
-  use {'bfredl/nvim-luadev',              -- For lua development in Neovim
+  use {'bfredl/nvim-luadev',
     ft = 'lua'
   }
 end)

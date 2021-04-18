@@ -7,20 +7,11 @@ local map = function(type, key, value)
 end
 
 -- #####################################
--- #####           Neogit          #####
+-- #####        vim-fugitive       #####
 -- #####################################
-local neogit = require('neogit')
-
-neogit.setup {
-  disable_signs = false,
-  signs = {
-    section = {">", "v"},
-    item = {">", "v"},
-    hunk = {"", ""}
-  }
-}
-
-map('n','<leader>gs','<cmd>Neogit kind=split<CR>')
+map("n", "<leader>gs", "<cmd>:Git<CR>")
+map("n", "<leader>gh", "<cmd>:diffget //2<CR>")
+map("n", "<leader>gl", "<cmd>:diffget //3<CR>")
 
 -- #####################################
 -- #####       git-messenger       #####

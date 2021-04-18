@@ -57,9 +57,26 @@ kommentary.configure_language(
 )
 kommentary.configure_language(
   "lua",{
-    prefer_single_line_comments = true
+    prefer_single_line_comments = true,
+    single_line_comment_string = "--",
+    multi_line_comment_string = {"--[[", "]]"}
   }
 )
+
+-- #####################################
+-- #####     nvim-toggleterm       #####
+-- #####################################
+--
+require"toggleterm".setup{
+  size = 70,
+  open_mapping = [[<C-A-\>]],
+  shade_filetypes = {},
+  shade_terminals = true,
+  shading_factor = '1', -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+  start_in_insert = true,
+  persist_size = false,
+  direction = 'vertical'
+}
 
 -- #####################################
 -- #####      vim-maximizer        #####
@@ -146,7 +163,7 @@ tele.setup{
       '--smart-case'
     },
     file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-    grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new, 
+    grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
     qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
     prompt_prefix= " 🔍 ",
     color_devicons = true,
@@ -276,7 +293,7 @@ require'nvim-treesitter.configs'.setup {
   },
   -- Treesitter-based indentation
   indent = {
-    enable = true,
+    enable = false,
   },
   -- Custom-defined textobjects
   textobjects = {
@@ -332,22 +349,6 @@ require'nvim-treesitter.configs'.setup {
       show_help = '?',
     },
   },
-}
--- Use treesitter fold capability
-vim.api.nvim_command('autocmd BufEnter * setlocal foldexpr=nvim_treesitter#foldexpr()')
-vim.api.nvim_command('autocmd BufEnter * setlocal foldmethod=expr')
-vim.api.nvim_command('autocmd BufEnter * normal zR')
-vim.o.foldlevelstart = 20
-
--- #####################################
--- #####        neuron.nvim        #####
--- #####################################
-require'neuron'.setup {
-  virtual_titles = true,
-  mappings = true,
-  run = nil,
-  neuron_dir = "~/Data/Notes",
-  leader = "gz"
 }
 
 -- #####################################
