@@ -15,7 +15,6 @@ autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
 done
-
 compinit -C
 # End of lines added by compinstall
  
@@ -80,7 +79,7 @@ export PATH=$PATH:$ANDROID_HOME/build-tools/
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin
 
 # Flutter
-export PATH=$PATH:$HOME/Repo/flutter/bin
+export PATH=$PATH:$HOME/Development/flutter/bin
 export CHROME_EXECUTABLE=/usr/bin/chromium
  
 # jEnv
