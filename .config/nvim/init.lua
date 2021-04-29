@@ -29,7 +29,7 @@ gl.splitright = true            -- Vertical split always on the right
 gl.splitbelow = true            -- Horizontal split always on the bottom
 gl.fillchars =
   add {
-  "vert: ",
+  "vert:│",
   "fold: ",
   "eob: ",
   "diff:",
@@ -93,5 +93,3 @@ require('theme')
 require('lsp_config')
 require('git_config')
 require('misc')
-
-vim.cmd('autocmd VimEnter * echo " "')

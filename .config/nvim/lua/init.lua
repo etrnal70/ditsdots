@@ -25,7 +25,7 @@ if not packer_exists then
   return
 end
 
-return require('packer').startup(function()
+return require('packer').startup(function(use)
 
   -- Plugin Manager
   use {'wbthomason/packer.nvim'}
@@ -33,11 +33,10 @@ return require('packer').startup(function()
   -- LSP Plugins
   use {'neovim/nvim-lspconfig'}           -- Neovim LSP Configuration
   use {'nvim-lua/lsp_extensions.nvim'}    -- LSP Custom Extension (Rust and Dart)
-  use {'RishabhRD/nvim-lsputils',         -- Extra functionality for LSP
-    requires = {'RishabhRD/popfix', run = "./install_fzy_native_sorter"}
-  }
-  use {'stevearc/aerial.nvim'}
   use {'nvim-lua/lsp-status.nvim'}
+  use {'glepnir/lspsaga.nvim'}
+  use {'simrat39/symbols-outline.nvim'}
+  use {'ray-x/lsp_signature.nvim'}
 
   -- Completion
   use {
@@ -56,7 +55,6 @@ return require('packer').startup(function()
       'nvim-lua/popup.nvim',    -- Telescope requirement
       'nvim-lua/plenary.nvim',  -- Telescope requirement
       'nvim-telescope/telescope-fzy-native.nvim',   -- fzy algorithm support
-      {'nvim-telescope/telescope-frecency.nvim', requires = {'tami5/sql.nvim'}},  -- Frecency algorithm support
       'nvim-telescope/telescope-bibtex.nvim',
       'nvim-telescope/telescope-github.nvim'
     }
@@ -81,14 +79,11 @@ return require('packer').startup(function()
   -- Git
   use {'lewis6991/gitsigns.nvim'}   -- Gutter sign
   use {'tpope/vim-fugitive'}        -- Integrated git function wrapper
-  -- use {'TimUntersberger/neogit',    -- Magit port for neovim
-  --   requires = {'nvim-lua/plenary.nvim'}
-  -- }
   use {'rhysd/git-messenger.vim'}   -- Show commit message in floating win
   use {'rhysd/committia.vim'}       -- Show diff in commit buffer
+  use {'ThePrimeagen/git-worktree.nvim'}
 
   -- Debugger
-  use {'puremourning/vimspector'}   -- Python based TUI debugger
   use {'mfussenegger/nvim-dap',     -- Lua-based debugger
     requires = "rcarriga/nvim-dap-ui"
   }
@@ -102,6 +97,7 @@ return require('packer').startup(function()
   -- Language-related
   use {'akinsho/flutter-tools.nvim'}      -- Flutter development extensions
   use {'simrat39/rust-tools.nvim'}        -- Rust-analyzer development extensions
+  use {'megalithic/zk.nvim'}
   use {'ziglang/zig.vim', ft = 'zig'}
 
   -- Misc
@@ -109,26 +105,29 @@ return require('packer').startup(function()
   use {'akinsho/nvim-toggleterm.lua'}     -- Terminal addons
   use {'numToStr/Navigator.nvim'}
   use {'glepnir/galaxyline.nvim'}         -- Statusline
+  use {'glepnir/dashboard-nvim'}
   use {'tpope/vim-dadbod',                -- Database capability
     requires = {'kristijanhusak/vim-dadbod-ui'},
     ft = 'sql'
   }
+  use {'rmagatti/auto-session',
+    requires = 'rmagatti/session-lens'
+  }
   use {'windwp/nvim-autopairs'}           -- Autopair
   use {'eugen0329/vim-esearch'}           -- Project wide search-and-replace
   use {'b3nj5m1n/kommentary'}             -- Commentary plugin
+  use {'kdav5758/TrueZen.nvim'}
   use {'gyim/vim-boxdraw',
     ft = "markdown"
   }
   use {'blackCauldron7/surround.nvim'}    -- Surround plugin
   use {'szw/vim-maximizer'}               -- Maximize buffer
-  use {'mhartington/formatter.nvim'}      -- Formatter
   use 'norcalli/nvim-colorizer.lua'       -- Color highlighting
   use {'kyazdani42/nvim-tree.lua'}        -- Directory tree
   use {'jsfaint/gen_tags.vim',            -- Generate gtags
     cmd = {'GenCtags', 'GenGtags'}
   }
   use {'matze/vim-move'}                  -- To move lines easily
-  use {'mhinz/vim-crates', ft = 'toml'}   -- Get updated Rust crates version
 
   -- Lua Development
   use {'rafcamlet/nvim-luapad',

@@ -1,17 +1,17 @@
 local vim = vim
 local set = vim.g
-local cmd = vim.cmd
 
-local map = function(type, key, value)
-	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
+local gmap = function(type, key, value)
+	vim.api.nvim_set_keymap(type,key,value,{noremap = true, silent = true});
 end
 
 -- #####################################
 -- #####        vim-fugitive       #####
 -- #####################################
-map("n", "<leader>gs", "<cmd>:Git<CR>")
-map("n", "<leader>gh", "<cmd>:diffget //2<CR>")
-map("n", "<leader>gl", "<cmd>:diffget //3<CR>")
+gmap("n", "<leader>gs", "<cmd>:Git<CR>")
+gmap("n", "<leader>gl", "<cmd>:Git log<CR>")
+gmap("n", "<leader>gch", "<cmd>:diffget //2<CR>")
+gmap("n", "<leader>gcl", "<cmd>:diffget //3<CR>")
 
 -- #####################################
 -- #####       git-messenger       #####

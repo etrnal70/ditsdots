@@ -4,7 +4,6 @@ local nvim_lsp   		= require('lspconfig')
 local tele			 		= require('telescope.builtin')
 local flutter_ext 	= require('flutter-tools')
 local rust_ext			= require('rust-tools')
-local aerial		 		= require('aerial')
 local lsp_status 		= require('lsp-status')
 
 -- Diagnostic Configuration
@@ -22,16 +21,10 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 )
 
 -- Use custom implementation from various plugins
-lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
 lsp.handlers['textDocument/references'] = tele.lsp_references
-lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
-lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
 lsp.handlers['workspace/symbol'] = tele.lsp_workspace_symbols
 
-local map = function(type, key, value)
+local bmap = function(type, key, value)
 	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
 end
 
@@ -50,30 +43,27 @@ local custom_attach = function(client)
 		return lsp_list[client.name] or client.name
 	end
 
-  -- LSP Custom Label using lspkind.nvim
-	require('lspkind').init()
-
   -- LSP Keymapping
-	map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
-	map('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
-	map('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
-	map('n','gh','<cmd>lua vim.lsp.buf.signature_help()<CR>')
-	map('n','gy','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-	map('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-	map('n','gs','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-	map('n','gw','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-	map('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
-	map('n','gn','<cmd>lua vim.lsp.buf.rename()<CR>')
-	map('n','[d','<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-	map('n',']d','<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
-	map('n','<leader>a','<cmd>lua vim.lsp.buf.code_action()<CR>')
-	map('v','<leader>a',"<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR><esc>")
-	map('n','<leader>e','<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
+	bmap('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
+	bmap('n','K','<cmd>Lspsaga hover_doc<CR>')
+	bmap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
+	bmap('n','gh','<cmd>lua vim.lsp.buf.signature_help()<CR>')
+	bmap('n','gy','<cmd>lua vim.lsp.buf.type_definition()<CR>')
+	bmap('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
+	bmap('n','gs','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+	bmap('n','gw','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
+	bmap('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
+	bmap('n','gR','<cmd>Lspsaga rename<CR>')
+	bmap('n','[d','<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+	bmap('n',']d','<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+	bmap('n','<leader>a','<cmd>Lspsaga code_action<CR>')
+	bmap('v','<leader>a',"<cmd>Lspsaga range_code_action<CR>")
+	bmap('n','<leader>e','<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 
 	if client.resolved_capabilities.document_formatting then
-    map("n", "<leader>sf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+    bmap("n", "<leader>sf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
   elseif client.resolved_capabilities.document_range_formatting then
-    map("n", "<leader>sf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>")
+    bmap("n", "<leader>sf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>")
 	end
 
 	-- Disable SignColumn and show diagnostic on LineNr
@@ -82,27 +72,60 @@ local custom_attach = function(client)
   vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
   vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
 
-	-- Aerial
-	aerial.set_kind_abbr {
-		['Function'] = '',
-		['Class'] = '',
-		['Constructor'] = '',
-		['Method'] = 'ƒ',
-		['Struct'] = '',
-		['Enum'] = '了'
-	}
-	-- Workaround for zk
-	if client.name ~= 'zk' then
-		aerial.on_attach(client)
-		map('n', '<leader>st', '<cmd>lua require"aerial".toggle(_,">")<CR>')		-- Toggle aerial with <leader>st
-	end
+  -- LSP Saga
+  require('lspsaga').init_lsp_saga {
+    use_saga_diagnostic_sign = false,
+    dianostic_header_icon = '   ',
+    code_action_icon = ' ',
+    code_action_prompt = {
+      enable = true,
+      sign = false,
+      virtual_text = true,
+    },
+    finder_definition_icon = '  ',
+    finder_reference_icon = '  ',
+    max_preview_lines = 10,
+    finder_action_keys = {
+      open = 'o', vsplit = 's',split = 'i',quit = '<esc>',scroll_down = '<C-j>', scroll_up = '<C-k>'
+    },
+    code_action_keys = {
+      quit = '<esc>',exec = '<CR>'
+    },
+    rename_action_keys = {
+      quit = '<C-c>',exec = '<CR>'
+    },
+    definition_preview_icon = '  ',
+    border_style = "single",
+    rename_prompt_prefix = '➤',
+    server_filetype_map = {}
+  }
+
+  -- LSP Custom Label using lspkind.nvim
+	require('lspkind').init()
+
+  -- LSP Outline Symbols
+  bmap('n','<leader>ss','<cmd>SymbolsOutline<CR>')
+  vim.g.symbols_outline = {
+    highlight_hovered_item = true,
+    show_guides = true,
+    position = 'right',
+    keymaps = {
+        close = "<Esc>",
+        goto_location = "<Cr>",
+        focus_location = "o",
+        hover_symbol = "<K>",
+        rename_symbol = "r",
+        code_actions = "a",
+    },
+    lsp_blacklist = {"zk","texlab"},
+  }
 
 	-- Rust Keymapping
 	if client.name == 'rust_analyzer' then
-		map('n','<leader>rr','<cmd>RustRunnables<CR>')
-		map('n','<leader>rc','<cmd>RustOpenCargo<CR>')
-		map('n','<leader>rmu','<cmd>RustMoveItemUp<CR>')
-		map('n','<leader>rmd','<cmd>RustMoveItemDown<CR>')
+		bmap('n','<leader>rr','<cmd>RustRunnables<CR>')
+		bmap('n','<leader>rc','<cmd>RustOpenCargo<CR>')
+		bmap('n','<leader>rmu','<cmd>RustMoveItemUp<CR>')
+		bmap('n','<leader>rmd','<cmd>RustMoveItemDown<CR>')
 	end
 
 	-- Set omnifunc
@@ -126,7 +149,7 @@ custom_capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 -- LSP with default lspconfig repo
-local default_servers = {'bashls','cssls','dockerls','gopls', 'graphql','pyright','tsserver','vls','yamlls','zls'}
+local default_servers = {'bashls','cssls','dockerls','gopls','graphql','pyright','tsserver','vls','yamlls','zls'}
 for _, server in ipairs(default_servers) do
 	nvim_lsp[server].setup{
 		on_attach = custom_attach,
@@ -149,11 +172,11 @@ flutter_ext.setup {
   experimental = {
     lsp_derive_paths = false,
   },
-  debugger = {
-    enabled = false,
-  },
-  flutter_path = "$HOME/Development/flutter/bin",
+  flutter_path = "<full/path/if/needed>",
   flutter_lookup_cmd = nil,
+  debugger = {
+    enabled = true,
+  },
   widget_guides = {
     enabled = true,
   },
@@ -289,7 +312,7 @@ local npairs = require('nvim-autopairs')
 _G.completion_confirm = function()
   if vim.fn.pumvisible() ~= 0  then
     if vim.fn.complete_info()["selected"] ~= -1 then
-      return vim.fn["compe#confirm"](npairs.esc("<c-r>"))
+      return vim.fn["compe#confirm"](npairs.esc("<cr>"))
     else
       return npairs.esc("<cr>")
     end
@@ -360,7 +383,6 @@ require('compe').setup {
   max_menu_width = 50;
   documentation = true;
 
-  -- TODO: Define per filetype
   source = {
     path = true;
     buffer = false;
@@ -371,27 +393,10 @@ require('compe').setup {
     spell = false;
     tags = false;
     snippets_nvim = false;
-    treesitter = true;
+    treesitter = false;
 		dadbod = true;
   };
 }
 
 cmd[[set shortmess+=c]]
 vim.o.completeopt = "menuone,noinsert,noselect"
-
--- ###############################
--- #####      Formatter      #####
--- ###############################
-require('formatter').setup ({
-  logging = false,
-  rust = {
-    -- Rustfmt
-    function()
-      return {
-        exe = "rustfmt",
-        args = {"--emit=stdout"},
-        stdin = true
-      }
-    end
-  },
-})

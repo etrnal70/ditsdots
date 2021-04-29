@@ -24,8 +24,8 @@ cmd('highlight DiffChange guibg=NONE ctermbg=NONE')
 cmd('highlight DiffChangeDelete guibg=NONE ctermbg=NONE')
 cmd('highlight DiffDelete guibg=NONE ctermbg=NONE')
 
-cmd('highlight StatusLine guibg=NONE')
-cmd('highlight StatusLineNC guibg=#2C2C2C')
+cmd('highlight StatusLine gui=NONE guifg=NONE guibg=NONE')
+cmd('highlight StatusLineNC gui=NONE guifg=NONE guibg=NONE')
 cmd('highlight VertSplit gui=NONE guifg=NONE guibg=NONE')
 cmd('highlight Pmenu guibg=#292927')
 
@@ -37,7 +37,6 @@ cmd('highlight DiffRemoved guibg=#E80C19')
 -- #######################################
 local gl              = require('galaxyline')
 local gls             = gl.section
-local whitespace      = require('galaxyline.provider_whitespace')
 local condition       = require('galaxyline.condition')
 local ws_extension    = require('lsp_extensions.workspace.diagnostic')
 local fileinfo        = require('galaxyline.provider_fileinfo')
@@ -45,12 +44,6 @@ local lsp             = require('galaxyline.provider_lsp')
 local lsp_status      = require('lsp-status')
 
 gl.short_line_list = {'LuaTree','dbui','esearch'}
-
-local aliases = {
-  pyls_ms = 'MPLS',
-  rust_analyzer = 'rust-analyzer',
-  sumneko_lua = 'Sumneko-Lua'
-}
 
 -- Define colors
 local colors = {
@@ -104,7 +97,7 @@ gls.left[2] = {
         t = colors.red
       }
       vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
-      local alias = {n = 'N',i = 'I',c= 'C',v = 'V', V= 'V', [''] = 'V'}
+      local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'V', [''] = 'V'}
       return alias[vim.fn.mode()]
     end,
     separator = ' ',
@@ -118,30 +111,13 @@ gls.left[2] = {
   },
 }
 
--- LSP Name
 gls.left[3] = {
-  LspClient = {
-    provider = function ()
-      if next(vim.lsp.buf_get_clients(0)) == nil then
-        return ''
-      else
-        local res = lsp.get_lsp_client()
-        return aliases[res] or res
-      end
-    end,
-    icon = '  ',
-    condition = condition.check_active_lsp,
-    highlight = {colors.white, colors.bg}
-  }
-}
-
-gls.left[4] = {
   SemiBigSpace = {
     provider = function () return ' ' end
   }
 }
 
-gls.left[5] = {
+gls.left[4] = {
   DiagnosticError = {
     provider = function()
       if next(vim.lsp.buf_get_clients(0)) == nil then
@@ -162,13 +138,13 @@ gls.left[5] = {
   }
 }
 
-gls.left[6] = {
+gls.left[5] = {
   Space = {
     provider = function () return ' ' end
   }
 }
 
-gls.left[7] = {
+gls.left[6] = {
   DiagnosticWarn = {
     provider = function()
       if next(vim.lsp.buf_get_clients(0)) == nil then
@@ -189,13 +165,13 @@ gls.left[7] = {
   }
 }
 
-gls.left[8] = {
+gls.left[7] = {
   Space = {
     provider = function () return ' ' end
   }
 }
 
-gls.left[9] = {
+gls.left[8] = {
   LspStatus = {
     provider = function()
       -- TODO: Improve handling
@@ -276,24 +252,17 @@ gls.right[5] = {
   },
 }
 
-
-
-gls.short_line_left[1] = {
-  Space = {
-    provider = function () return '  ' end
-  }
+gls.short_line_right[1] = {
+  FileIcon = {
+    provider = 'FileIcon',
+    condition = condition.buffer_not_empty,
+    highlight = {colors.very_dark_grey,colors.bg},
+  },
 }
 
-gls.short_line_left[2] = {
-  BufferIcon = {
-    provider = 'BufferIcon',
-    highlight = {colors.white, colors.very_dark_grey},
-  }
-}
-
-gls.short_line_left[3] = {
-  FileTypeName = {
-    provider = 'FileTypeName',
-    highlight = {colors.white, colors.very_dark_grey},
+gls.short_line_right[2] = {
+  FileName = {
+    provider = 'FileName',
+    highlight = {colors.very_dark_grey, colors.bg},
   }
 }
