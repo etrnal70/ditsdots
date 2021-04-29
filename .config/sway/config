@@ -80,7 +80,7 @@ input "type:keyboard" {
 
     # Kill focused window
     # bindsym $mod+Shift+q kill
-    bindsym Mod1+Tab kill
+    bindsym $mod+Mod1+q kill
 
     # Start your launcher
     bindsym $mod+comma exec $menu --show=drun
