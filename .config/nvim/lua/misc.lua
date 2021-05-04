@@ -32,6 +32,48 @@ cmd[[nnoremap <Leader><Leader>gf <C-w>vgf ]]
 cmd[[nnoremap <Leader><Leader>gF <C-w>vgF ]]
 
 -- #####################################
+-- #####      dashboard.nvim       #####
+-- #####################################
+-- ASCII art taken from http://ctrl-c.club/~lovetocode999/ascii-art.html
+set.dashboard_custom_header = {
+'                                        ',
+'                                        ',
+'                                        ',
+'                                        ',
+'         //                 /*          ',
+'      ,(/(//,               *###        ',
+'    ((((((////.             /####%*     ',
+' ,/(((((((/////*            /########   ',
+'/*///((((((//////.          *#########/ ',
+'//////((((((((((((/         *#########/.',
+'////////((((((((((((*       *#########/.',
+'/////////(/(((((((((((      *#########(.',
+'//////////.,((((((((((/(    *#########(.',
+'//////////.  /(((((((((((,  *#########(.',
+'(////////(.    (((((((((((( *#########(.',
+'(////////(.     ,#((((((((((##########(.',
+'((//////((.       /#((((((((##%%######(.',
+'((((((((((.         #(((((((####%%##%#(.',
+'((((((((((.          ,((((((#####%%%%%(.',
+' .#(((((((.            (((((#######%%   ',
+'    /(((((.             .(((#%##%%/*    ',
+'      ,(((.               /(#%%#        ',
+'        ./.                 #*          ',
+'                                        ',
+'                                        ',
+}
+
+set.dashboard_default_executive = 'telescope'
+set.dashboard_custom_section = {
+    a = {description = {'  New File       '}, command = 'enew'},
+    b = {description = {'  Find File      '}, command = 'Telescope find_files'},
+    c = {description = {'  Find Text      '}, command = 'Telescope live_grep'},
+    d = {description = {'  Find Session   '}, command = 'Telescope session-lens search_session'},
+    e = {description = {'ﴚ  Quit           '}, command = 'qa'},
+}
+set.dashboard_custom_footer = {'Modal editing go brrrrr....'}
+
+-- #####################################
 -- #####         vim-move          #####
 -- #####################################
 -- Move line with Alt + Shift + <hjkl>
@@ -120,7 +162,14 @@ npairs.setup({
 -- Ultimate lua-based fuzzy finder
 require('telescope').load_extension('fzy_native')
 require('telescope').load_extension('bibtex')
+require("telescope").load_extension("session-lens")
 require('telescope').load_extension('gh')
+
+require('telescope._extensions.session-lens').setup {
+  shorten_path = false,
+  theme_conf = { border = true },
+  previewer = true
+}
 
 local tele = require('telescope')
 gmap('n','<leader>lf',[[<cmd>lua require'telescope.builtin'.find_files({})<CR>]])

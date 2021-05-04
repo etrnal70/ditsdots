@@ -17,7 +17,7 @@ cmd('highlight LineNr guibg=NONE ctermbg=NONE')
 cmd('highlight SignColumn guibg=NONE ctermbg=NONE guifg=NONE ctermfg=NONE')
 cmd('highlight EndOfBuffer guibg=NONE ctermbg=NONE')
 cmd('highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
-cmd('highlight LineNr guifg=#3F3F3F')
+cmd('highlight LineNr guifg=#4F4F4F')
 
 cmd('highlight DiffAdd guibg=NONE ctermbg=NONE')
 cmd('highlight DiffChange guibg=NONE ctermbg=NONE')
@@ -26,7 +26,7 @@ cmd('highlight DiffDelete guibg=NONE ctermbg=NONE')
 
 cmd('highlight StatusLine gui=NONE guifg=NONE guibg=NONE')
 cmd('highlight StatusLineNC gui=NONE guifg=NONE guibg=NONE')
-cmd('highlight VertSplit gui=NONE guifg=NONE guibg=NONE')
+cmd('highlight VertSplit gui=NONE guifg=#4F4F4F guibg=NONE')
 cmd('highlight Pmenu guibg=#292927')
 
 cmd('highlight DiffAdded guibg=#46A73B')

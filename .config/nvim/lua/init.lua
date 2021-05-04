@@ -36,6 +36,7 @@ return require('packer').startup(function(use)
   use {'nvim-lua/lsp-status.nvim'}
   use {'glepnir/lspsaga.nvim'}
   use {'simrat39/symbols-outline.nvim'}
+  use {'folke/lsp-trouble.nvim'}
   use {'ray-x/lsp_signature.nvim'}
 
   -- Completion
@@ -81,6 +82,7 @@ return require('packer').startup(function(use)
   use {'tpope/vim-fugitive'}        -- Integrated git function wrapper
   use {'rhysd/git-messenger.vim'}   -- Show commit message in floating win
   use {'rhysd/committia.vim'}       -- Show diff in commit buffer
+  use {'sindrets/diffview.nvim'}
   use {'ThePrimeagen/git-worktree.nvim'}
 
   -- Debugger
@@ -117,6 +119,7 @@ return require('packer').startup(function(use)
   use {'eugen0329/vim-esearch'}           -- Project wide search-and-replace
   use {'b3nj5m1n/kommentary'}             -- Commentary plugin
   use {'kdav5758/TrueZen.nvim'}
+  use {'rktjmp/fwatch.nvim'}
   use {'gyim/vim-boxdraw',
     ft = "markdown"
   }

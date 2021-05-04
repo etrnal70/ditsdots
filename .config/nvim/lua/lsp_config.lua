@@ -44,12 +44,12 @@ local custom_attach = function(client)
 	end
 
   -- LSP Keymapping
-	bmap('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
+	bmap('n','gd','<cmd>lua require("telescope.builtin").lsp_definitions()<CR>')
 	bmap('n','K','<cmd>Lspsaga hover_doc<CR>')
 	bmap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
 	bmap('n','gh','<cmd>lua vim.lsp.buf.signature_help()<CR>')
 	bmap('n','gy','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-	bmap('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
+	bmap('n','gr','<cmd>lua require("telescope.builtin").lsp_references()<CR>')
 	bmap('n','gs','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
 	bmap('n','gw','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
 	bmap('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
@@ -100,8 +100,58 @@ local custom_attach = function(client)
     server_filetype_map = {}
   }
 
+  -- LSP Trouble
+  require('trouble').setup{
+    height = 10,
+    icons = true,
+    mode = "workspace",
+    fold_open = "",
+    fold_closed = "",
+    action_keys = {
+        close = "q",
+        cancel = "<esc>",
+        refresh = "r",
+        jump = {"<cr>", "<tab>"},
+        jump_close = {"o"},
+        hover = "K",
+        toggle_mode = "m",
+        toggle_preview = "P",
+        preview = "p",
+        close_folds = {"zM", "zm"},
+        open_folds = {"zR", "zr"},
+        toggle_fold = {"zA", "za"},
+        previous = "k",
+        next = "j"
+    },
+    indent_lines = true,
+    auto_open = false,
+    auto_close = false,
+    auto_preview = false,
+    auto_fold = false,
+    signs = {
+        error = "",
+        warning = "",
+        hint = "",
+        information = ""
+    },
+    use_lsp_diagnostic_signs = false
+  }
+
   -- LSP Custom Label using lspkind.nvim
 	require('lspkind').init()
+
+  -- LSP Signature
+  require('lsp_signature').on_attach({
+    bind = true,
+    doc_lines = 10,
+    hint_enable = false,
+    hint_prefix = "🐼 ",
+    hint_scheme = "String",
+    handler_opts = {
+      border = "none"
+    },
+    decorator = {"`", "`"}
+  })
 
   -- LSP Outline Symbols
   bmap('n','<leader>ss','<cmd>SymbolsOutline<CR>')
@@ -209,7 +259,7 @@ rust_ext.setup{
             use_telescope = true
         },
         inlay_hints = {
-            show_parameter_hints = true,
+            show_parameter_hints = false,
             parameter_hints_prefix = "<-",
             other_hints_prefix  = "=>",
         },
