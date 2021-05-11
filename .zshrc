@@ -3,6 +3,7 @@ HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt beep notify
+setopt autocd
 bindkey -v
  
 # End of lines configured by zsh-newuser-install
@@ -76,7 +77,7 @@ export ANDROID_HOME=$HOME/Development/android_sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools/
 export PATH=$PATH:$ANDROID_HOME/build-tools/
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/tools/bin
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 
 # Flutter
 export PATH=$PATH:$HOME/Development/flutter/bin
