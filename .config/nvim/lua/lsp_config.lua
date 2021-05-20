@@ -44,12 +44,12 @@ local custom_attach = function(client)
 	end
 
   -- LSP Keymapping
-	bmap('n','gd','<cmd>lua require("telescope.builtin").lsp_definitions()<CR>')
+	bmap('n','gd','<cmd>lua require("telescope.builtin").lsp_definitions(require("telescope.themes").get_ivy())<CR>')
 	bmap('n','K','<cmd>Lspsaga hover_doc<CR>')
 	bmap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
 	bmap('n','gh','<cmd>lua vim.lsp.buf.signature_help()<CR>')
 	bmap('n','gy','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-	bmap('n','gr','<cmd>lua require("telescope.builtin").lsp_references()<CR>')
+	bmap('n','gr','<cmd>lua require("telescope.builtin").lsp_references(require("telescope.themes").get_ivy())<CR>')
 	bmap('n','gs','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
 	bmap('n','gw','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
 	bmap('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
@@ -80,7 +80,7 @@ local custom_attach = function(client)
     code_action_prompt = {
       enable = true,
       sign = false,
-      virtual_text = true,
+      virtual_text = false,
     },
     finder_definition_icon = '  ',
     finder_reference_icon = '  ',
@@ -167,15 +167,20 @@ local custom_attach = function(client)
         rename_symbol = "r",
         code_actions = "a",
     },
-    lsp_blacklist = {"zk","texlab"},
+    lsp_blacklist = {"zk","texlab","dartls"},
   }
 
-	-- Rust Keymapping
+  -- LSP-specific keymapping
+	-- Rust
 	if client.name == 'rust_analyzer' then
 		bmap('n','<leader>rr','<cmd>RustRunnables<CR>')
 		bmap('n','<leader>rc','<cmd>RustOpenCargo<CR>')
+		bmap('n','<leader>rh','<cmd>RustHoverActions<CR>')
 		bmap('n','<leader>rmu','<cmd>RustMoveItemUp<CR>')
 		bmap('n','<leader>rmd','<cmd>RustMoveItemDown<CR>')
+  -- Dart/Flutter
+  elseif client.name == 'dartls' then
+    bmap('n','<leader>ss','<cmd>FlutterOutline<CR>')
 	end
 
 	-- Set omnifunc
@@ -220,9 +225,9 @@ nvim_lsp.clangd.setup{
 -- Flutter
 flutter_ext.setup {
   experimental = {
-    lsp_derive_paths = false,
+    lsp_derive_paths = true,
   },
-  flutter_path = "<full/path/if/needed>",
+  flutter_path = "/home/hanifrmdhn/Development/flutter/bin/flutter",
   flutter_lookup_cmd = nil,
   debugger = {
     enabled = true,
@@ -231,14 +236,14 @@ flutter_ext.setup {
     enabled = true,
   },
   closing_tags = {
-    highlight = "ErrorMsg",
-    prefix = ">"
+    highlight = "Comment",
+    prefix = " // "
   },
   dev_log = {
     open_cmd = "tabedit",
   },
   outline = {
-    open_cmd = "30vnew",
+    open_cmd = "35vnew",
   },
   lsp = {
     on_attach = custom_attach,
@@ -252,21 +257,21 @@ flutter_ext.setup {
 
 -- Rust-analyzer
 rust_ext.setup{
-    tools = {
-        autoSetHints = true,
-        hover_with_actions = true,
-        runnables = {
-            use_telescope = true
-        },
-        inlay_hints = {
-            show_parameter_hints = false,
-            parameter_hints_prefix = "<-",
-            other_hints_prefix  = "=>",
-        },
+  tools = {
+    autoSetHints = true,
+    hover_with_actions = true,
+    runnables = {
+      use_telescope = true
     },
-   server = {
-     on_attach = custom_attach,
-   },
+    inlay_hints = {
+      show_parameter_hints = false,
+      parameter_hints_prefix = " » ",
+      other_hints_prefix  = "=>",
+    },
+  },
+  server = {
+    on_attach = custom_attach,
+  },
 }
 
 -- Sumneko-Lua
@@ -293,8 +298,8 @@ nvim_lsp.sumneko_lua.setup {
       }
     }
   },
- 	on_attach = custom_attach,
-	capabilities = custom_capabilities
+  on_attach = custom_attach,
+  capabilities = custom_capabilities
 }
 
 -- Texlab

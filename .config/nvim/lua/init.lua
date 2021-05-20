@@ -82,18 +82,25 @@ return require('packer').startup(function(use)
   use {'tpope/vim-fugitive'}        -- Integrated git function wrapper
   use {'rhysd/git-messenger.vim'}   -- Show commit message in floating win
   use {'rhysd/committia.vim'}       -- Show diff in commit buffer
-  use {'sindrets/diffview.nvim'}
   use {'ThePrimeagen/git-worktree.nvim'}
 
   -- Debugger
   use {'mfussenegger/nvim-dap',     -- Lua-based debugger
-    requires = "rcarriga/nvim-dap-ui"
+    requires = {
+      "rcarriga/nvim-dap-ui",
+      "mfussenegger/nvim-dap-python"
+    }
   }
 
-  -- Testing
+  -- Testing and Runner
   use {'rcarriga/vim-ultest',
     requires = "vim-test/vim-test",
     run = ":UpdateRemotePlugins"
+  }
+  use {'skywind3000/asyncrun.vim',
+    requires = {
+      'skywind3000/asynctasks.vim'
+    }
   }
 
   -- Language-related
@@ -117,6 +124,7 @@ return require('packer').startup(function(use)
   }
   use {'windwp/nvim-autopairs'}           -- Autopair
   use {'eugen0329/vim-esearch'}           -- Project wide search-and-replace
+  use {'soywod/himalaya.vim'}
   use {'b3nj5m1n/kommentary'}             -- Commentary plugin
   use {'kdav5758/TrueZen.nvim'}
   use {'rktjmp/fwatch.nvim'}

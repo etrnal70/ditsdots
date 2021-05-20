@@ -14,6 +14,10 @@ cmd[[map sk <C-w>k]]
 cmd[[map sj <C-w>j]]
 cmd[[map sl <C-w>l]]
 
+-- Move tab
+gmap('n','<leader>bn',[[<cmd>tabn<CR>]])
+gmap('n','<leader>bp',[[<cmd>tabp<CR>]])
+
 -- Resize window using Ctrl + Alt + <hjkl>
 gmap('n','<C-A-k>',[[<cmd>resize +2<CR>]])
 gmap('n','<C-A-j>',[[<cmd>resize -2<CR>]])
@@ -30,6 +34,13 @@ gmap('i','<A-h>',[[<esc>i]])
 -- width
 cmd[[nnoremap <Leader><Leader>gf <C-w>vgf ]]
 cmd[[nnoremap <Leader><Leader>gF <C-w>vgF ]]
+
+-- #####################################
+-- #####         himalaya          #####
+-- #####################################
+vim.o.runtimepath = vim.o.runtimepath .. ',/home/hanifrmdhn/Repo/himalaya/vim'
+vim.g.himalaya_mailbox_picker = 'telescope'
+set.himalaya_telescope_preview_enabled = 1
 
 -- #####################################
 -- #####      dashboard.nvim       #####
@@ -157,6 +168,13 @@ npairs.setup({
 })
 
 -- #####################################
+-- #####        vim-ultest         #####
+-- #####################################
+vim.g.ultest_show_in_file = 1
+vim.g.ultest_virtual_text = 1
+vim.g.ultest_icons = 0
+
+-- #####################################
 -- #####         Telescope         #####
 -- #####################################
 -- Ultimate lua-based fuzzy finder
@@ -177,7 +195,7 @@ gmap('n','<leader>ls',[[<cmd>lua require'telescope.builtin'.live_grep({})<CR>]])
 gmap('n','<leader>lb',[[<cmd>lua require'telescope.builtin'.buffers({initial_mode = "normal"})<CR>]])
 gmap('n','<leader>lt',[[<cmd>lua require'telescope.builtin'.treesitter({})<CR>]])
 gmap('n','<leader>lc',[[<cmd>lua require'telescope.builtin'.tags({})<CR>]])
-gmap('n','<leader>lq',[[<cmd>lua require'telescope.builtin'.lsp_workspace_diagnostics({})<CR>]])
+gmap('n','<leader>lq',[[<cmd>lua require'telescope.builtin'.lsp_workspace_diagnostics(require("telescope.themes").get_ivy())<CR>]])
 gmap('n','<leader>lo',[[<cmd>lua require'telescope.builtin'.oldfiles({})<CR>]])
 gmap('n','<leader>lh',[[<cmd>lua require'telescope.builtin'.help_tags({})<CR>]])
 gmap('n','<leader>lgf',[[<cmd>lua require'telescope.builtin'.git_files({})<CR>]])
@@ -236,8 +254,8 @@ tele.setup{
 -- #####################################
 -- Lua-based directory tree
 set.nvim_tree_side = 'left'
-set.nvim_tree_width = 20
-set.nvim_tree_ignore = { '.git', 'node_modules', '.cache', '__pycache__' }
+set.nvim_tree_width = 30
+set.nvim_tree_ignore = { '.git', 'node_modules', '.cache', '__pycache__', 'build'}
 set.nvim_tree_auto_open = 0
 set.nvim_tree_auto_close = 0
 set.nvim_tree_quit_on_open = 0
@@ -285,7 +303,7 @@ set.nvim_tree_icons = {
     open = ""
   }
 }
-gmap('n','<F2>',[[<cmd> NvimTreeToggle<CR>]])
+gmap('n','<leader>st',[[<cmd> NvimTreeToggle<CR>]])
 vim.cmd('highlight NvimTreeFolderIcon guifg=gray')
 
 -- #####################################

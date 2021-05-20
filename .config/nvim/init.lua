@@ -91,5 +91,7 @@ gl.backspace = 'indent,eol,start'
 require('init')
 require('theme')
 require('lsp_config')
+require('dap_config')
 require('git_config')
 require('misc')
+require('custom_commands')

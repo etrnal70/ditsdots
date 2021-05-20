@@ -26,42 +26,9 @@ set.git_messenger_max_popup_height = 20
 set.git_messenger_max_popup_width = 50
 
 -- #####################################
--- #####       diffview.nvim       #####
--- #####################################
-local cb = require('diffview.config').diffview_callback
-require('diffview').setup {
-  diff_binaries = false,
-  file_panel = {
-    width = 35,
-    use_icons = true
-  },
-  key_bindings = {
-    view = {
-      ["<tab>"]     = cb("select_next_entry"),
-      ["<s-tab>"]   = cb("select_prev_entry"),
-      ["<leader>e"] = cb("focus_files"),
-      ["<leader>b"] = cb("toggle_files"),
-    },
-    file_panel = {
-      ["j"]         = cb("next_entry"),
-      ["<down>"]    = cb("next_entry"),
-      ["k"]         = cb("prev_entry"),
-      ["<up>"]      = cb("prev_entry"),
-      ["<cr>"]      = cb("select_entry"),
-      ["o"]         = cb("select_entry"),
-      ["R"]         = cb("refresh_files"),
-      ["<tab>"]     = cb("select_next_entry"),
-      ["<s-tab>"]   = cb("select_prev_entry"),
-      ["<leader>e"] = cb("focus_files"),
-      ["<leader>b"] = cb("toggle_files")
-    }
-  }
-}
-
--- #####################################
 -- #####         GitSigns          #####
 -- #####################################
--- Show modified line on signcolumn
+-- Git in-buffer extra functionality
 require('gitsigns').setup{
   signs = {
     add          = {hl = 'DiffAdd'   , text = '│'},
@@ -70,8 +37,25 @@ require('gitsigns').setup{
     topdelete    = {hl = 'DiffDelete', text = '│'},
     changedelete = {hl = 'DiffChange', text = '│'},
   },
+  keymaps = {
+    noremap = true,
+    buffer = true,
+    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+
+    -- Text objects
+    ['o ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
+    ['x ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>'
+  },
+  watch_index = {
+    interval = 1000
+  },
   sign_priority = 6,
   update_debounce = 250,
+  status_formatter = nil,
   use_decoration_api = true,
   use_internal_diff = true
 }
