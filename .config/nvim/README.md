@@ -6,5 +6,4 @@ Issues preventing from fully switch to native LSP
 
 # TODO 
 
- - [ ] Fix global settings not applied [PR](https://github.com/neovim/neovim/pull/13479)
  - [ ] Watch for augroup and autocmd [PR](https://github.com/neovim/neovim/pull/12378)

@@ -124,6 +124,7 @@ return require('packer').startup(function(use)
   }
   use {'windwp/nvim-autopairs'}           -- Autopair
   use {'eugen0329/vim-esearch'}           -- Project wide search-and-replace
+  use {'kevinhwang91/nvim-bqf'}
   use {'soywod/himalaya.vim'}
   use {'b3nj5m1n/kommentary'}             -- Commentary plugin
   use {'kdav5758/TrueZen.nvim'}
@@ -131,7 +132,7 @@ return require('packer').startup(function(use)
   use {'gyim/vim-boxdraw',
     ft = "markdown"
   }
-  use {'blackCauldron7/surround.nvim'}    -- Surround plugin
+  use {'machakann/vim-sandwich'}
   use {'szw/vim-maximizer'}               -- Maximize buffer
   use 'norcalli/nvim-colorizer.lua'       -- Color highlighting
   use {'kyazdani42/nvim-tree.lua'}        -- Directory tree
@@ -139,12 +140,4 @@ return require('packer').startup(function(use)
     cmd = {'GenCtags', 'GenGtags'}
   }
   use {'matze/vim-move'}                  -- To move lines easily
-
-  -- Lua Development
-  use {'rafcamlet/nvim-luapad',
-    ft = 'lua'
-  }
-  use {'bfredl/nvim-luadev',
-    ft = 'lua'
-  }
 end)

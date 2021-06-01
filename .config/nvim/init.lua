@@ -9,25 +9,22 @@ local function add(value, str, sep)
   return str ~= "" and table.concat({value, str}, sep) or value
 end
 
--- TODO : Wait for upstream fix for vim.o
-local gl = vim.o
-local buf = vim.bo
-local win = vim.wo
+local opt = vim.opt
 
-gl.encoding = 'utf-8'
-gl.showmode = false
+opt.encoding = 'utf-8'
+opt.showmode = false
 
-gl.hidden = true                -- Hide unloaded buffer
-gl.lazyredraw = true            -- Don't redraw easily
-gl.ttyfast = true               -- Performance related
-gl.clipboard = 'unnamedplus'    -- Enable system-wide clipboard
-gl.mouse = 'n'                  -- Mouse only on normal mode
-gl.updatetime = 250             -- Editor update time in ms
-win.foldenable = true           -- Prevent folding upon opening file
+opt.hidden = true                -- Hide unloaded buffer
+opt.lazyredraw = true            -- Don't redraw easily
+opt.ttyfast = true               -- Performance related
+opt.clipboard = 'unnamedplus'    -- Enable system-wide clipboard
+opt.mouse = 'n'                  -- Mouse only on normal mode
+opt.updatetime = 250             -- Editor update time in ms
+opt.foldenable = true           -- Prevent folding upon opening file
 
-gl.splitright = true            -- Vertical split always on the right
-gl.splitbelow = true            -- Horizontal split always on the bottom
-gl.fillchars =
+opt.splitright = true            -- Vertical split always on the right
+opt.splitbelow = true            -- Horizontal split always on the bottom
+opt.fillchars =
   add {
   "vert:│",
   "fold: ",
@@ -39,51 +36,50 @@ gl.fillchars =
   "foldclose:▸"
 }
 
-gl.list = true
-gl.listchars = "tab:  "
+opt.list = true
+opt.listchars = "tab:  "
 
-buf.autoindent = true
-buf.smartindent = true
-win.breakindent = true
-gl.joinspaces = true
+opt.autoindent = true
+opt.smartindent = true
+opt.breakindent = true
+opt.joinspaces = true
 
 -- vim.api.nvim_command('set breakindentopt=shift:2,min:40,sbr')
-gl.breakindentopt = 'shift:2,min:40,sbr'
-gl.lbr = true                   -- Enable line break
-gl.wrap = true
+opt.breakindentopt = 'shift:2,min:40,sbr'
+opt.lbr = true                   -- Enable line break
+opt.wrap = true
 
-gl.list = true -- Invisible chars
--- buf.shiftwidth = 4
--- buf.softtabstop = 4
--- buf.tabstop = 4
--- gl.smarttab = true
--- gl.expandtab = true
--- win.signcolumn = 'auto:1'
-vim.cmd('set shiftwidth=2')
-vim.cmd('set softtabstop=2')
-vim.cmd('set tabstop=2')
-vim.cmd('set expandtab')
-vim.cmd('set smarttab')
-vim.cmd('set signcolumn=auto:1')   -- Signcolumn auto and set minimum width of 1
+opt.list = true -- Invisible chars
+opt.shiftwidth = 4
+opt.softtabstop = 4
+opt.tabstop = 4
+opt.smarttab = true
+opt.expandtab = true
+opt.signcolumn = 'auto:1'
+-- vim.cmd('set shiftwidth=2')
+-- vim.cmd('set softtabstop=2')
+-- vim.cmd('set tabstop=2')
+-- vim.cmd('set expandtab')
+-- vim.cmd('set smarttab')
+-- vim.cmd('set signcolumn=auto:1')   -- Signcolumn auto and set minimum width of 1
 
-gl.laststatus = 2           -- Always show statusline
-win.number = true           -- Enable number column
-win.relativenumber = true   -- Make number column relative
+opt.laststatus = 2           -- Always show statusline
+opt.number = true           -- Enable number column
+opt.relativenumber = true   -- Make number column relative
 
-gl.wildmenu = true          -- Use wildmenu
-gl.wildoptions = 'pum'      -- Use popup style for wildmenu
-gl.pumheight = 3            -- Set popup height to 3 entry
-gl.pumblend = 3             -- Make popup menu translucent
+opt.wildmenu = true          -- Use wildmenu
+opt.wildoptions = 'pum'      -- Use popup style for wildmenu
+opt.pumheight = 3            -- Set popup height to 3 entry
+opt.pumblend = 3             -- Make popup menu translucent
 
 vim.cmd('set formatoptions+=cqrnj')
 vim.cmd('set formatoptions-=ato')
-gl.swapfile = false         -- Tbh swap file are disturbing af
-gl.backup = false           -- Disable backup file
-gl.writebackup = false
-buf.undofile = false
+opt.swapfile = false         -- Tbh swap file are disturbing af
+opt.backup = false           -- Disable backup file
+opt.writebackup = false
+opt.undofile = false
 
--- vim.cmd('set backspace=indent,eol,start')   -- For good backspace
-gl.backspace = 'indent,eol,start'
+opt.backspace = 'indent,eol,start'
 
 -- ################################################
 -- ####              IMPORT FILES              ####
