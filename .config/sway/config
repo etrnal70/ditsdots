@@ -1,31 +1,24 @@
-# Default config for sway
-#
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
-# Read `man 5 sway` for a complete reference.
+# Sway Config
 
-### Variables
-#
-# Logo key. Use Mod1 for Alt.
+# Default modifier
 set $mod Mod4
+
 # Home row direction keys, like vim
 set $left h
 set $down j
 set $up k
 set $right l
-# Your preferred terminal emulator
+
+# Default terminal emulator
 set $term alacritty
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
+
+# Application launcher
 set $menu wofi -a
 
-### Output configuration
-#
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+### Wallpaper configuration
 output * bg ~/.config/walls/cityroad.png fill
 
-# Monitor Configuration
+### Monitor Configuration
 # Home
 output eDP-1 resolution 1920x1080 position 0,620
 output 'Hewlett Packard HP E231 6CM3420FR5' scale 0.90 resolution 1920x1080 position 1920,497
@@ -38,23 +31,8 @@ exec swayidle -w \
          timeout 1800 'systemctl suspend ' \
          before-sleep 'swaylock -f -c 000000 && playerctl pause'
 
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
-
 ### Input configuration
-#
-# Example configuration:
-#
-#   input "2:14:SynPS/2_Synaptics_TouchPad" {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
+# Touchpad
 input "1739:33521:SYNA3071:00_06CB:82F1_Touchpad" {
     dwt enabled
     tap enabled
@@ -62,19 +40,27 @@ input "1739:33521:SYNA3071:00_06CB:82F1_Touchpad" {
     middle_emulation enabled
 }
 
-#
 # Keyboard 
-#
 input "type:keyboard" {
   # Pressing both Shift toggle CapsLock
   # Use capslock as escape
   xkb_options shift:both_capslock,caps:escape
 }
 
+# Faster key input
+input "1452:591:SONiX_USB_DEVICE" {
+  repeat_rate 50
+  repeat_delay 350
+}
+
+input "1:1:AT_Translated_Set_2_keyboard" {
+  repeat_rate 50
+  repeat_delay 350
+}
+
+
 ### Key bindings
-#
 # Basics:
-#
     # Start a terminal
     bindsym $mod+Return exec $term
 
@@ -100,9 +86,8 @@ input "type:keyboard" {
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-#
-# Moving around:
-#
+
+### Moving around:
     # Move your focus around
     bindsym $mod+$left focus left
     bindsym $mod+$down focus down
@@ -124,9 +109,8 @@ input "type:keyboard" {
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
-#
-# Workspaces:
-#
+
+### Workspaces:
     # Switch to workspace
     bindsym $mod+1 workspace number 1
     bindsym $mod+2 workspace number 2
@@ -149,11 +133,8 @@ input "type:keyboard" {
     bindsym $mod+Shift+8 move container to workspace number 8
     bindsym $mod+Shift+9 move container to workspace number 9
     bindsym $mod+Shift+0 move container to workspace number 10
-    # Note: workspaces can have any name you want, not just numbers.
-    # We just use 1-10 as the default.
-#
-# Layout stuff:
-#
+
+### Layout stuff:
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
@@ -176,60 +157,39 @@ input "type:keyboard" {
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
-#
-# Scratchpad:
-#
-    # Sway has a "scratchpad", which is a bag of holding for windows.
-    # You can send windows there and get them back later.
 
+### Scratchpad:
     # Move the currently focused window to the scratchpad
     bindsym $mod+Shift+minus move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
     bindsym $mod+minus scratchpad show
-#
-# Resizing containers:
-#
+
+### Resizing containers:
 mode "resize" {
-    # left will shrink the containers width
-    # right will grow the containers width
-    # up will shrink the containers height
-    # down will grow the containers height
     bindsym $left resize shrink width 10px
     bindsym $down resize grow height 10px
     bindsym $up resize shrink height 10px
     bindsym $right resize grow width 10px
 
-    # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
-
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
 bindsym $mod+r mode "resize"
 
-#
-# Status Bar:
-#
+### Status Bar:
 bar {
   swaybar_command waybar
 }
 
-#
-# XWayland:
-#
+### XWayland:
 # Disable when the time has come lol
 xwayland enable
 
-#
-# Custom Settings
-#
-
+### Custom Settings
 # Disable mouse focus
 focus_follows_mouse no
 
@@ -249,31 +209,23 @@ client.focused_inactive $cl_back $cl_back $cl_fore $cl_back $cl_back
 client.unfocused        $cl_back $cl_back $cl_fore $cl_back $cl_back
 client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 
-# Faster key input
-input "1452:591:SONiX_USB_DEVICE" {
-  repeat_rate 50
-  repeat_delay 350
-}
-
-input "1:1:AT_Translated_Set_2_keyboard" {
-  repeat_rate 50
-  repeat_delay 350
-}
-
 # Gaps
 gaps inner 10
 
 # Screenshot
 bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
 
-# Theme
-# Curor
+# sway-marker
+bindsym --to-code $mod+m exec sway-marker mark
+bindsym --to-code $mod+tab exec sway-marker goto
+
+### Theme
+# Global Cursor
 set $my_cursor_size 30
-set $my_cursor VimixCursors-White
+set $my_cursor vimix-cursors-white
+seat seat0 xcursor_theme $my_cursor $my_cursor_size
 
-# seat seat0 xcursor_theme $my_cursor $my_cursor_size
-
-# GTK
+# GTK-specific
 set $gnome-schema org.gnome.desktop.interface
 
 exec_always {
@@ -302,7 +254,7 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86MonBrightnessUp exec brightnessctl s +5%
 bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
 
-### Another special keybinding
+### Alternative keybinding
 bindsym $mod+Mod1+7 exec playerctl previous
 bindsym $mod+Mod1+8 exec playerctl play-pause
 bindsym $mod+Mod1+9 exec playerctl next
