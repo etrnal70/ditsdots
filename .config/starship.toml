@@ -2,9 +2,6 @@
 [character]      # The name of the module we are configuring is "character"
 success_symbol = "⚡"     # The "symbol" segment is being set to "➜"
 
-[git_status]
-enabled = true
-
 [directory]
 truncation_length = 1
 home_symbol = "~"
