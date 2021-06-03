@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["clock", "sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/neomutt","idle_inhibitor","pulseaudio","network","battery","tray"],
+    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/weather","idle_inhibitor","pulseaudio","network","battery","tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -130,6 +130,13 @@
       "return-type": "json",
       "format": "{}",
       "interval": 1,
+    },
+    "custom/weather": {
+      "format": " {} ",
+      "tooltip": true,
+      "interval": 3600,
+      "exec": "~/.config/waybar/modules/waybar-wttr.py",
+      "return-type": "json"
     },
     "custom/update" : {
       "exec" : "~/.config/waybar/modules/update_check.sh",
