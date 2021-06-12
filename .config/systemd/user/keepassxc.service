@@ -1,6 +1,9 @@
 [Unit]
-Description=KeepassXC Password Manager
+Description=KeepassXC - Password Manager
+Documentation=man:keepassxc
 
 [Service]
-Environment="QT_QPA_PLATFORM=wayland"
 ExecStart=/usr/bin/keepassxc
+
+[Install]
+WantedBy=autostart.target
