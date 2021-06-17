@@ -1,93 +1,32 @@
-local vim = vim
-
+-- Set global to space
 vim.g.mapleader = ' '
 
-local function add(value, str, sep)
-  sep = sep or ","
-  str = str or ""
-  value = type(value) == "table" and table.concat(value, sep) or value
-  return str ~= "" and table.concat({value, str}, sep) or value
-end
+-- Import global vim config
+require "config.global"
 
-local opt = vim.opt
+-- Plugins
+require "config.plugins"
 
-opt.encoding = 'utf-8'
-opt.showmode = false
+-- Theme
+require "config.theme"
 
-opt.hidden = true                -- Hide unloaded buffer
-opt.lazyredraw = true            -- Don't redraw easily
-opt.ttyfast = true               -- Performance related
-opt.clipboard = 'unnamedplus'    -- Enable system-wide clipboard
-opt.mouse = 'n'                  -- Mouse only on normal mode
-opt.updatetime = 250             -- Editor update time in ms
-opt.foldenable = true           -- Prevent folding upon opening file
+-- Telescope
+require "config.telescope"
 
-opt.splitright = true            -- Vertical split always on the right
-opt.splitbelow = true            -- Horizontal split always on the bottom
-opt.fillchars =
-  add {
-  "vert:│",
-  "fold: ",
-  "eob: ",
-  "diff:",
-  "msgsep:‾",
-  "foldopen:▾",
-  "foldsep:│",
-  "foldclose:▸"
-}
+-- LSP Settings
+require "config.lsp"
 
-opt.list = true
-opt.listchars = "tab:  "
+-- DAP Settings
+-- require "config.dap"
 
-opt.autoindent = true
-opt.smartindent = true
-opt.breakindent = true
-opt.joinspaces = true
+-- Test Framework Settings
+require "config.test"
 
--- vim.api.nvim_command('set breakindentopt=shift:2,min:40,sbr')
-opt.breakindentopt = 'shift:2,min:40,sbr'
-opt.lbr = true                   -- Enable line break
-opt.wrap = true
+-- Git settings
+require "config.git"
 
-opt.list = true -- Invisible chars
-opt.shiftwidth = 4
-opt.softtabstop = 4
-opt.tabstop = 4
-opt.smarttab = true
-opt.expandtab = true
-opt.signcolumn = 'auto:1'
--- vim.cmd('set shiftwidth=2')
--- vim.cmd('set softtabstop=2')
--- vim.cmd('set tabstop=2')
--- vim.cmd('set expandtab')
--- vim.cmd('set smarttab')
--- vim.cmd('set signcolumn=auto:1')   -- Signcolumn auto and set minimum width of 1
+-- Miscellaneous plugin configs
+require "config.plugin_config"
 
-opt.laststatus = 2           -- Always show statusline
-opt.number = true           -- Enable number column
-opt.relativenumber = true   -- Make number column relative
-
-opt.wildmenu = true          -- Use wildmenu
-opt.wildoptions = 'pum'      -- Use popup style for wildmenu
-opt.pumheight = 3            -- Set popup height to 3 entry
-opt.pumblend = 3             -- Make popup menu translucent
-
-vim.cmd('set formatoptions+=cqrnj')
-vim.cmd('set formatoptions-=ato')
-opt.swapfile = false         -- Tbh swap file are disturbing af
-opt.backup = false           -- Disable backup file
-opt.writebackup = false
-opt.undofile = false
-
-opt.backspace = 'indent,eol,start'
-
--- ################################################
--- ####              IMPORT FILES              ####
--- ################################################
-require('init')
-require('theme')
-require('lsp_config')
-require('dap_config')
-require('git_config')
-require('misc')
-require('custom_commands')
+-- Keymapping
+require "config.keymaps"

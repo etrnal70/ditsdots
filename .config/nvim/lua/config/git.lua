@@ -1,5 +1,5 @@
-local vim = vim
 local set = vim.g
+local gitsigns = require("gitsigns")
 
 local gmap = function(type, key, value)
 	vim.api.nvim_set_keymap(type,key,value,{noremap = true, silent = true});
@@ -29,7 +29,7 @@ set.git_messenger_max_popup_width = 50
 -- #####         GitSigns          #####
 -- #####################################
 -- Git in-buffer extra functionality
-require('gitsigns').setup{
+gitsigns.setup {
   signs = {
     add          = {hl = 'DiffAdd'   , text = '│'},
     change       = {hl = 'DiffChange', text = '│'},

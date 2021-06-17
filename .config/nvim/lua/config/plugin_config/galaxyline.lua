@@ -1,37 +1,3 @@
-local cmd = vim.api.nvim_command
-
--- #######################################
--- #####         Colorscheme         #####
--- #######################################
-vim.o.termguicolors = true  -- Use GUI colors in terminal
-vim.o.background = 'dark'   -- Set background to dark
-
-vim.g.one_nvim_transparent_bg = true  -- Enable one-nvim transparency support
-cmd('syntax on')
-vim.g.oceanic_next_terminal_bold = 1
-vim.g.oceanic_next_terminal_italic = 1
-cmd('colorscheme OceanicNext')
-
-cmd('highlight Normal guibg=NONE ctermbg=NONE')    -- Make background transparent
-cmd('highlight LineNr guibg=NONE ctermbg=NONE')
-cmd('highlight SignColumn guibg=NONE ctermbg=NONE guifg=NONE ctermfg=NONE')
-cmd('highlight EndOfBuffer guibg=NONE ctermbg=NONE')
-cmd('highlight CursorLineNr ctermbg=NONE ctermfg=White guibg=NONE guifg=White')
-cmd('highlight LineNr guifg=#4F4F4F')
-
-cmd('highlight DiffAdd guibg=NONE ctermbg=NONE')
-cmd('highlight DiffChange guibg=NONE ctermbg=NONE')
-cmd('highlight DiffChangeDelete guibg=NONE ctermbg=NONE')
-cmd('highlight DiffDelete guibg=NONE ctermbg=NONE')
-
-cmd('highlight StatusLine gui=NONE guifg=NONE guibg=NONE')
-cmd('highlight StatusLineNC gui=NONE guifg=NONE guibg=NONE')
-cmd('highlight VertSplit gui=NONE guifg=#4F4F4F guibg=NONE')
-cmd('highlight Pmenu guibg=#292927')
-
-cmd('highlight DiffAdded guibg=#46A73B')
-cmd('highlight DiffRemoved guibg=#E80C19')
-
 -- #######################################
 -- #####         Statusline          #####
 -- #######################################
@@ -40,7 +6,6 @@ local gls             = gl.section
 local condition       = require('galaxyline.condition')
 local ws_extension    = require('lsp_extensions.workspace.diagnostic')
 local fileinfo        = require('galaxyline.provider_fileinfo')
-local lsp             = require('galaxyline.provider_lsp')
 local lsp_status      = require('lsp-status')
 
 gl.short_line_list = {'LuaTree','dbui','esearch'}
@@ -66,58 +31,6 @@ local colors = {
 
 -- Statusline positioning
 gls.left[1] = {
-  Space = {
-    provider = function () return ' ' end
-  }
-}
-
-gls.left[2] = {
-  ViMode = {
-    provider = function()
-      local mode_color = {
-        n = colors.green,
-        i = colors.blue,
-        v =colors.orange,
-        [''] = colors.green,
-        V = colors.yellow,
-      	c = colors.red,
-        no = colors.magenta,
-        s = colors.orange,
-        S = colors.orange,
-        [''] = colors.orange,
-	ic = colors.yellow,
-        R = colors.purple,
-        Rv = colors.purple,
-        cv = colors.red,
-        ce = colors.red,
-        [''] = colors.orange,
-	r = colors.cyan,rm = colors.cyan,
-        ['r?'] = colors.cyan,
-        ['!'] = colors.red,
-        t = colors.red
-      }
-      vim.cmd('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
-      local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v = 'VISUAL', V= 'V', [''] = 'V'}
-      return alias[vim.fn.mode()]
-    end,
-    separator = ' ',
-    separator_highlight = {colors.yellow,function()
-      if not condition.buffer_not_empty then
-        return colors.bg
-      end
-      return colors.bg
-    end},
-    highlight = {colors.white,colors.bg,'bold'},
-  },
-}
-
-gls.left[3] = {
-  SemiBigSpace = {
-    provider = function () return ' ' end
-  }
-}
-
-gls.left[4] = {
   DiagnosticError = {
     provider = function()
       if next(vim.lsp.buf_get_clients(0)) == nil then
@@ -138,13 +51,13 @@ gls.left[4] = {
   }
 }
 
-gls.left[5] = {
+gls.left[2] = {
   Space = {
     provider = function () return ' ' end
   }
 }
 
-gls.left[6] = {
+gls.left[3] = {
   DiagnosticWarn = {
     provider = function()
       if next(vim.lsp.buf_get_clients(0)) == nil then
@@ -165,13 +78,13 @@ gls.left[6] = {
   }
 }
 
-gls.left[7] = {
+gls.left[4] = {
   Space = {
     provider = function () return ' ' end
   }
 }
 
-gls.left[8] = {
+gls.left[5] = {
   LspStatus = {
     provider = function()
       -- TODO: Improve handling
@@ -185,7 +98,7 @@ gls.left[8] = {
         local contents = ''
         if msg.progress then
           contents = msg.title
-          if msg.message then 
+          if msg.message then
             contents = contents
           end
 
@@ -194,7 +107,7 @@ gls.left[8] = {
           end
 
           if msg.spinner then
-            contents = contents .. ' ' .. config.spinner_frames[(msg.spinner % #config.spinner_frames) + 1] 
+            contents = contents .. ' ' .. config.spinner_frames[(msg.spinner % #config.spinner_frames) + 1]
           end
         end
 

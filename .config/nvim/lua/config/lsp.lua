@@ -6,6 +6,10 @@ local flutter_ext 	= require('flutter-tools')
 local rust_ext			= require('rust-tools')
 local lsp_status 		= require('lsp-status')
 
+local bmap = function(type, key, value)
+	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
+end
+
 -- Diagnostic Configuration
 lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
   require('lsp_extensions.workspace.diagnostic').handler,{
@@ -23,29 +27,14 @@ lsp.handlers['textDocument/publishDiagnostics'] = lsp.with(
 -- Use custom implementation from various plugins
 lsp.handlers['textDocument/references'] = tele.lsp_references
 lsp.handlers['workspace/symbol'] = tele.lsp_workspace_symbols
-
-local bmap = function(type, key, value)
-	vim.api.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
-end
+lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover,{border = "rounded"})
 
 -- Custom attach
 local custom_attach = function(client)
 
-	-- Define custom LSP name
-	local lsp_list = {
-		rust_analyzer = 'rust-analyzer',
-		sumneko_lua =  'Sumneko-Lua',
-		pyls_ms = 'MPLS'
-	}
-
-	-- Handle custom LSP name
-	local get_lsp_name = function()
-		return lsp_list[client.name] or client.name
-	end
-
   -- LSP Keymapping
 	bmap('n','gd','<cmd>lua require("telescope.builtin").lsp_definitions(require("telescope.themes").get_ivy())<CR>')
-	bmap('n','K','<cmd>Lspsaga hover_doc<CR>')
+	bmap('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
 	bmap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
 	bmap('n','gh','<cmd>lua vim.lsp.buf.signature_help()<CR>')
 	bmap('n','gy','<cmd>lua vim.lsp.buf.type_definition()<CR>')
@@ -100,57 +89,25 @@ local custom_attach = function(client)
     server_filetype_map = {}
   }
 
-  -- LSP Trouble
-  require('trouble').setup{
-    height = 10,
-    icons = true,
-    mode = "workspace",
-    fold_open = "",
-    fold_closed = "",
-    action_keys = {
-        close = "q",
-        cancel = "<esc>",
-        refresh = "r",
-        jump = {"<cr>", "<tab>"},
-        jump_close = {"o"},
-        hover = "K",
-        toggle_mode = "m",
-        toggle_preview = "P",
-        preview = "p",
-        close_folds = {"zM", "zm"},
-        open_folds = {"zR", "zr"},
-        toggle_fold = {"zA", "za"},
-        previous = "k",
-        next = "j"
-    },
-    indent_lines = true,
-    auto_open = false,
-    auto_close = false,
-    auto_preview = false,
-    auto_fold = false,
-    signs = {
-        error = "",
-        warning = "",
-        hint = "",
-        information = ""
-    },
-    use_lsp_diagnostic_signs = false
-  }
-
   -- LSP Custom Label using lspkind.nvim
-	require('lspkind').init()
+  require('lspkind').init()
 
   -- LSP Signature
   require('lsp_signature').on_attach({
     bind = true,
-    doc_lines = 10,
-    hint_enable = false,
+    doc_lines = 2,
+    floating_window = false,
+    hint_enable = true,
     hint_prefix = "🐼 ",
     hint_scheme = "String",
+    use_lspsaga = false,
+    hi_parameter = "Search",
+    max_height = 12,
+    max_width = 60,
     handler_opts = {
-      border = "none"
+      border = "shadow"
     },
-    decorator = {"`", "`"}
+    extra_trigger_chars = {}
   })
 
   -- LSP Outline Symbols
@@ -170,26 +127,13 @@ local custom_attach = function(client)
     lsp_blacklist = {"zk","texlab","dartls"},
   }
 
-  -- LSP-specific keymapping
-	-- Rust
-	if client.name == 'rust_analyzer' then
-		bmap('n','<leader>rr','<cmd>RustRunnables<CR>')
-		bmap('n','<leader>rc','<cmd>RustOpenCargo<CR>')
-		bmap('n','<leader>rh','<cmd>RustHoverActions<CR>')
-		bmap('n','<leader>rmu','<cmd>RustMoveItemUp<CR>')
-		bmap('n','<leader>rmd','<cmd>RustMoveItemDown<CR>')
-  -- Dart/Flutter
-  elseif client.name == 'dartls' then
-    bmap('n','<leader>ss','<cmd>FlutterOutline<CR>')
-	end
+  -- Set omnifunc
+  vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 
-	-- Set omnifunc
-	vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
+  -- Register LSP status
+  lsp_status.register_progress()
 
-	-- Register LSP status
-	lsp_status.register_progress()
-
-	print("[" .. get_lsp_name() .. "] " .. "Language Server Protocol started")
+  print("[" .. client.name .. "] " .. "Language Server Protocol started")
 end
 
 -- Custom Capabilities
@@ -246,13 +190,35 @@ flutter_ext.setup {
     open_cmd = "35vnew",
   },
   lsp = {
-    on_attach = custom_attach,
+    on_attach = function()
+      custom_attach()
+      require('telescope').load_extension('flutter')
+      bmap('n','<leader>ss','<cmd>FlutterOutline<CR>')
+    end,
     capabilities = custom_capabilities,
     settings = {
       showTodos = true,
       completeFunctionCalls = false
     }
   }
+}
+
+-- Gopls
+nvim_lsp.gopls.setup{
+	on_attach = function()
+	  custom_attach()
+    require('go').setup({
+      goimport='gofumports',
+      gofmt = 'gofumpt',
+      max_len = 120,
+      transform = false,
+      test_template = '',
+      test_template_dir = '',
+      comment_placeholder = '',
+      verbose = false,
+    })
+	end,
+	capabilities = custom_capabilities
 }
 
 -- Rust-analyzer
@@ -270,7 +236,14 @@ rust_ext.setup{
     },
   },
   server = {
-    on_attach = custom_attach,
+    on_attach = function()
+      custom_attach()
+      bmap('n','<leader>rr','<cmd>RustRunnables<CR>')
+      bmap('n','<leader>rc','<cmd>RustOpenCargo<CR>')
+      bmap('n','<leader>rh','<cmd>RustHoverActions<CR>')
+      bmap('n','<leader>rmu','<cmd>RustMoveItemUp<CR>')
+      bmap('n','<leader>rmd','<cmd>RustMoveItemDown<CR>')
+    end,
   },
 }
 
@@ -327,7 +300,8 @@ require('lspconfig/configs').zk = {
     cmd = {'zk', 'lsp', '--log', '/tmp/zk-lsp.log'},
     filetypes = {'markdown'},
     root_dir = nvim_lsp.util.root_pattern('.zk'),
-    settings = {}
+    settings = {},
+    autostart = true
   };
 }
 nvim_lsp.zk.setup{
@@ -361,9 +335,10 @@ cmd[[xmap S <Plug>(vsnip-cut-text)]]
 -- Vsnip Location
 set.vsnip_snippet_dir = "~/.config/nvim/snippet"
 
-vim.g.completion_confirm_key = ""
-local npairs = require('nvim-autopairs')
+-- vim.g.completion_confirm_key = ""
 
+-- nvim-autopairs
+--[[ local npairs = require('nvim-autopairs')
 _G.completion_confirm = function()
   if vim.fn.pumvisible() ~= 0  then
     if vim.fn.complete_info()["selected"] ~= -1 then
@@ -374,9 +349,22 @@ _G.completion_confirm = function()
   else
     return npairs.autopairs_cr()
   end
-end
+end ]]
 
-vim.api.nvim_set_keymap('i','<CR>','v:lua.completion_confirm()', {expr = true , noremap = true})
+-- vim.api.nvim_set_keymap('i','<CR>','v:lua.completion_confirm()', {expr = true , noremap = true})
+
+-- pears.nvim
+require "pears".setup(function(conf)
+  conf.on_enter(function(pears_handle)
+    if vim.fn.pumvisible() == 1 and vim.fn.complete_info().selected ~= -1 then
+      return vim.fn["compe#confirm"]("<CR>")
+    else
+      pears_handle()
+    end
+  end)
+  conf.expand_on_enter(true)
+end)
+
 vim.api.nvim_set_keymap('i','<C-e>',vim.fn["compe#close"]('<C-e>'), {expr = true , noremap = true, silent = true})
 
 cmd[[inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +4 })]]
@@ -453,5 +441,5 @@ require('compe').setup {
   };
 }
 
-cmd[[set shortmess+=c]]
-vim.o.completeopt = "menuone,noinsert,noselect"
+vim.o.shortmess = vim.o.shortmess .. "c"
+vim.opt.completeopt = "menuone,noinsert,noselect"
