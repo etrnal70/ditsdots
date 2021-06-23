@@ -1,7 +1,6 @@
 # Background
 background_opacity: 0.90
 
-# Colors
 # Font
 font:
   size: 10.5
@@ -24,13 +23,15 @@ font:
 
   offset:
     x: 0
-    y: 0
+    y: -1
 
 # Padding Config
 window:
+  decorations: none
+
   padding:
-    x: 15
-    y: 15
+    x: 12
+    y: 12
 
 # Colors (Ayu Dark)
 colors:
@@ -39,7 +40,6 @@ colors:
     background: '#1F1F1F'
     foreground: '#B3B1AD'
 
-# Shell
-shell:
-  /bin/zsh
-
+# Environment
+env:
+  TERM: xterm-256color
