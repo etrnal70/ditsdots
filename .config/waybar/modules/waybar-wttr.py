@@ -2,6 +2,7 @@
 
 # Taken from
 # https://gist.github.com/bjesus/f8db49e1434433f78e5200dc403d58a3
+# Some modification by me
 
 import json
 import requests
@@ -104,6 +105,8 @@ for i, day in enumerate(weather['weather']):
         data['tooltip'] += "Today, "
     if i == 1:
         data['tooltip'] += "Tomorrow, "
+    if i > 1:
+        break
     data['tooltip'] += f"{day['date']}</b>\n"
     data['tooltip'] += f"⬆️ {day['maxtempC']}° ⬇️ {day['mintempC']}° "
     data['tooltip'] += f"🌅 {day['astronomy'][0]['sunrise']} 🌇 {day['astronomy'][0]['sunset']}\n"

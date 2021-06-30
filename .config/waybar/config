@@ -7,23 +7,8 @@
     // Choose the order of the modules
     "modules-left": ["clock", "sway/workspaces", "sway/mode"],
     "modules-center": ["sway/window"],
-    "modules-right": ["custom/caps_status","custom/github","custom/update","custom/weather","idle_inhibitor","pulseaudio","network","battery","tray"],
+    "modules-right": ["custom/pomo","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery","tray"],
     // Modules configuration
-    // "sway/workspaces": {
-    //     "disable-scroll": true,
-    //     "all-outputs": true,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
-    // },
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -34,26 +19,22 @@
             "deactivated": ""
         }
     },
-    "wlr/taskbar": {
-        "format": "{title:.active}",
-        "icon-size": 14,
-        "tooltip-format": "{app_id}",
-        "on-click": "activate",
-        "all-outputs": false,
-        "on-click-middle": "close"
+    "sway/window": {
+        "format": "{}",
+        "max-length": 50,
+        "rewrite": {
+            "(.*)Firefox Nightly": "🌎 $1",
+            "(.*)Chromium": "🌎 $1",
+            "(.*) - vim": " $1",
+            "(.*) - zsh": " [$1]"
+        }
     },
     "tray": {
-        // "icon-size": 21,
         "spacing": 4
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%a │ %d-%m-%Y}"
-    },
-    "backlight": {
-        // "device": "intel_backlight",
-        "format": "{percent}% {icon}",
-        "format-icons": ["", ""]
     },
     "battery": {
         "states": {
@@ -95,15 +76,6 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
-    },
-    "cpu": {
-      "interval": 5,
-      "format": "{}% ",
-      "max-length": 10
-    },
-    "memory": {
-      "interval": 30,
-      "format": "{used:0.1f}G "
     },
     "wlr/taskbar": {
       "format": "{title}",
@@ -164,4 +136,19 @@
       "on-click": "xdg-open https://github.com/notifications",
       "tooltip": true
     },
+    "custom/pomo": {
+        "format": " {} ",
+        "interval": 1,
+        "exec": "pomodoro status --format '⏱  %r'",
+        "exec-if": "pgrep pomodoro || exit 0",
+        "on-click": "pomodoro pause"
+    },
+    "custom/dunst_status": {
+        "return-type": "json",
+        "format": " {} ",
+        "interval": 1,
+        "exec": "~/.config/waybar/modules/dunst_status.sh",
+        "on-click": "dunstctl set-paused toggle",
+        "tooltip": true
+    }
 }
