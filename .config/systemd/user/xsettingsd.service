@@ -1,6 +1,6 @@
 [Unit]
-Description=xsettings daemon
-PartOf=graphical-session.target
+Description=Daemon that implements the XSETTINGS specification
+BindsTo=sway-session.target
 
 [Service]
 Type=simple
