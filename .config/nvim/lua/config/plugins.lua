@@ -30,13 +30,18 @@ return packer.startup(function(use)
   -- Plugin Manager
   use {'wbthomason/packer.nvim'}
 
+  use {'dstein64/vim-startuptime'}
+
   -- LSP Plugins
-  use {'neovim/nvim-lspconfig'}
-  use {'nvim-lua/lsp_extensions.nvim'}
-  use {'nvim-lua/lsp-status.nvim'}
-  use {'glepnir/lspsaga.nvim'}
-  use {'simrat39/symbols-outline.nvim'}
-  use {'ray-x/lsp_signature.nvim'}
+  use {'neovim/nvim-lspconfig',
+    requires = {
+      'nvim-lua/lsp_extensions.nvim',
+      'nvim-lua/lsp-status.nvim',
+      'glepnir/lspsaga.nvim',
+      'simrat39/symbols-outline.nvim',
+      'ray-x/lsp_signature.nvim'
+    }
+  }
 
   -- Completion
   use {
@@ -57,7 +62,6 @@ return packer.startup(function(use)
       {'nvim-telescope/telescope-fzy-native.nvim'},
       {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'},
       {'nvim-telescope/telescope-bibtex.nvim'},
-      {'nvim-telescope/telescope-github.nvim'},
       {'GustavoKatel/telescope-asynctasks.nvim'}
     }
   }
@@ -81,9 +85,15 @@ return packer.startup(function(use)
 
   -- Git
   use {'lewis6991/gitsigns.nvim'}
-  use {'tpope/vim-fugitive'}
-  use {'rhysd/git-messenger.vim'}
-  use {'rhysd/committia.vim'}
+  use {'tpope/vim-fugitive',
+    keys = '<leader>gs'
+  }
+  use {'rhysd/git-messenger.vim',
+    keys = '<leader>gm'
+  }
+  use {'rhysd/committia.vim',
+    event = "BufEnter"
+  }
   use {'ThePrimeagen/git-worktree.nvim'}
 
   -- Debugger
@@ -97,7 +107,8 @@ return packer.startup(function(use)
   -- Testing and Runner
   use {'rcarriga/vim-ultest',
     requires = "vim-test/vim-test",
-    run = ":UpdateRemotePlugins"
+    run = ":UpdateRemotePlugins",
+    cmd = {"Ultest","UltestNearest","UltestDebug","UltestDebugNearest","UltestOutput","UltestSummary"}
   }
   use {'skywind3000/asyncrun.vim',
     requires = {
@@ -109,13 +120,21 @@ return packer.startup(function(use)
   use {'akinsho/flutter-tools.nvim'}
   use {'simrat39/rust-tools.nvim'}
   use {'ray-x/go.nvim'}
-  use {'megalithic/zk.nvim'}
+  use {'megalithic/zk.nvim', ft = 'md'}
   use {'ziglang/zig.vim', ft = 'zig'}
 
   -- Misc
+  use {'kristijanhusak/orgmode.nvim'}
   use {'antoinemadec/FixCursorHold.nvim'}
   use {'glepnir/galaxyline.nvim'}
   use {'glepnir/dashboard-nvim'}
+  use {'folke/todo-comments.nvim'}
+  use {'pwntester/octo.nvim',
+    cmd = 'Octo',
+    config = function()
+      require('octo').setup()
+    end
+  }
   use {'tpope/vim-dadbod',
     requires = {'kristijanhusak/vim-dadbod-ui'},
     ft = 'sql'
@@ -123,15 +142,16 @@ return packer.startup(function(use)
   use {'rmagatti/auto-session',
     requires = 'rmagatti/session-lens'
   }
-  -- use {'windwp/nvim-autopairs'}
-  use {'steelsojka/pears.nvim'}
-  use {'eugen0329/vim-esearch'}
+  use {'windwp/nvim-autopairs'}
+  use {'eugen0329/vim-esearch',
+    keys = '<leader>ff'
+  }
   use {'kevinhwang91/nvim-bqf'}
   use {'b3nj5m1n/kommentary'}
-  use {'kdav5758/TrueZen.nvim'}
+  use {'Pocco81/TrueZen.nvim'}
   use {'rktjmp/fwatch.nvim'}
   use {'gyim/vim-boxdraw',
-    ft = "markdown"
+    ft = {'markdown', 'text'}
   }
   use {'machakann/vim-sandwich'}
   use {'szw/vim-maximizer'}

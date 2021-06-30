@@ -34,7 +34,7 @@ local custom_attach = function(client)
 
   -- LSP Keymapping
 	bmap('n','gd','<cmd>lua require("telescope.builtin").lsp_definitions(require("telescope.themes").get_ivy())<CR>')
-	bmap('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
+	bmap('n','K','<cmd>Lspsaga hover_doc<CR>')
 	bmap('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
 	bmap('n','gh','<cmd>lua vim.lsp.buf.signature_help()<CR>')
 	bmap('n','gy','<cmd>lua vim.lsp.buf.type_definition()<CR>')
@@ -96,8 +96,9 @@ local custom_attach = function(client)
   require('lsp_signature').on_attach({
     bind = true,
     doc_lines = 2,
-    floating_window = false,
-    hint_enable = true,
+    floating_window = true,
+    fix_pos = false,
+    hint_enable = false,
     hint_prefix = "🐼 ",
     hint_scheme = "String",
     use_lspsaga = false,
@@ -148,7 +149,7 @@ custom_capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 -- LSP with default lspconfig repo
-local default_servers = {'bashls','cssls','dockerls','gopls','graphql','pyright','tsserver','vls','yamlls','zls'}
+local default_servers = {'bashls','cssls','dockerls','graphql','pyright','tsserver','vls','yamlls','zls'}
 for _, server in ipairs(default_servers) do
 	nvim_lsp[server].setup{
 		on_attach = custom_attach,
@@ -164,6 +165,38 @@ nvim_lsp.clangd.setup{
 	},
 	on_attach = custom_attach,
 	capabilities = custom_capabilities
+}
+
+-- efm-langserver
+nvim_lsp.efm.setup {
+  init_options = {
+    documentFormatting = true,
+    codeAction = true
+  },
+  filetypes = {
+    "lua",
+    "rust",
+    "yaml"
+  },
+  root_dir = vim.loop.cwd,
+  settings = {
+    rootMarkers = {".git/"},
+    languages = {
+      lua = {
+        formatCommand ="luafmt --indent-count 2 --line-width 120 --stdin",
+        formatStdin = true
+      },
+      yaml = {
+        formatCommand = "yamllint -f parsable -",
+        lintStdin = true
+      },
+      rust = {
+        formatCommand = "rustfmt",
+        formatStdin = true
+      }
+    }
+  },
+  on_attach = custom_attach
 }
 
 -- Flutter
@@ -190,8 +223,8 @@ flutter_ext.setup {
     open_cmd = "35vnew",
   },
   lsp = {
-    on_attach = function()
-      custom_attach()
+    on_attach = function(client)
+      custom_attach(client)
       require('telescope').load_extension('flutter')
       bmap('n','<leader>ss','<cmd>FlutterOutline<CR>')
     end,
@@ -205,8 +238,8 @@ flutter_ext.setup {
 
 -- Gopls
 nvim_lsp.gopls.setup{
-	on_attach = function()
-	  custom_attach()
+	on_attach = function(client)
+	  custom_attach(client)
     require('go').setup({
       goimport='gofumports',
       gofmt = 'gofumpt',
@@ -236,8 +269,8 @@ rust_ext.setup{
     },
   },
   server = {
-    on_attach = function()
-      custom_attach()
+    on_attach = function(client)
+      custom_attach(client)
       bmap('n','<leader>rr','<cmd>RustRunnables<CR>')
       bmap('n','<leader>rc','<cmd>RustOpenCargo<CR>')
       bmap('n','<leader>rh','<cmd>RustHoverActions<CR>')
@@ -335,37 +368,21 @@ cmd[[xmap S <Plug>(vsnip-cut-text)]]
 -- Vsnip Location
 set.vsnip_snippet_dir = "~/.config/nvim/snippet"
 
--- vim.g.completion_confirm_key = ""
+-- Remove all <CR> keybinding
+set.completion_confirm_key = ""
 
 -- nvim-autopairs
---[[ local npairs = require('nvim-autopairs')
-_G.completion_confirm = function()
-  if vim.fn.pumvisible() ~= 0  then
-    if vim.fn.complete_info()["selected"] ~= -1 then
-      return vim.fn["compe#confirm"](npairs.esc("<cr>"))
-    else
-      return npairs.esc("<cr>")
-    end
-  else
-    return npairs.autopairs_cr()
-  end
-end ]]
-
--- vim.api.nvim_set_keymap('i','<CR>','v:lua.completion_confirm()', {expr = true , noremap = true})
-
--- pears.nvim
-require "pears".setup(function(conf)
-  conf.on_enter(function(pears_handle)
-    if vim.fn.pumvisible() == 1 and vim.fn.complete_info().selected ~= -1 then
-      return vim.fn["compe#confirm"]("<CR>")
-    else
-      pears_handle()
-    end
-  end)
-  conf.expand_on_enter(true)
-end)
-
-vim.api.nvim_set_keymap('i','<C-e>',vim.fn["compe#close"]('<C-e>'), {expr = true , noremap = true, silent = true})
+require('nvim-autopairs').setup({
+  disable_filetype = {'TelescopePrompt'},
+  enable_moveright = true,
+  enable_afterquota = true,
+  enable_check_bracket_line = true,
+  check_ts = true
+})
+require('nvim-autopairs.completion.compe').setup({
+  map_cr = true,
+  map_complete = true
+})
 
 cmd[[inoremap <silent><expr> <C-j>     compe#scroll({ 'delta': +4 })]]
 cmd[[inoremap <silent><expr> <C-k>     compe#scroll({ 'delta': -4 })]]
@@ -438,8 +455,6 @@ require('compe').setup {
     snippets_nvim = false;
     treesitter = false;
 		dadbod = true;
+    orgmode = true
   };
 }
-
-vim.o.shortmess = vim.o.shortmess .. "c"
-vim.opt.completeopt = "menuone,noinsert,noselect"

@@ -4,7 +4,6 @@ local themes = require('telescope.themes')
 tele.load_extension('fzy_native')
 tele.load_extension('bibtex')
 tele.load_extension('session-lens')
-tele.load_extension('gh')
 tele.load_extension('fzf')
 
 tele.setup{
@@ -63,7 +62,7 @@ tele.setup{
 
 local ivy_config = {
   layout_config = {
-    height = 17
+    height = 13
   }
 }
 

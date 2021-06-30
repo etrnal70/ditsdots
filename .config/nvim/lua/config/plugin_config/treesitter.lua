@@ -4,9 +4,6 @@
 -- #####################################
 -- Next generation syntax parser
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {
-     "bash","bibtex","c","cpp","css", "dart","go","rust","html","javascript","json","latex","lua","toml","python","typescript","verilog","yaml","zig"
-  },
   -- Treesitter-based syntax highlighting
   highlight = {
     enable = true,
@@ -39,7 +36,7 @@ require'nvim-treesitter.configs'.setup {
   },
   -- Treesitter-based indentation
   indent = {
-    enable = false,
+    enable = true,
   },
   rainbow = {
     enable = true,
