@@ -1,4 +1,4 @@
-require('todo-comments').setup {
+require("todo-comments").setup({
   signs = false,
   sign_priority = 8,
   keywords = {
@@ -21,7 +21,7 @@ require('todo-comments').setup {
     pattern = [[.*<(KEYWORDS)\s*:]],
     comments_only = true,
     max_line_len = 400,
-    exclude = {'org'},
+    exclude = { "org" },
   },
   colors = {
     error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },
@@ -40,5 +40,5 @@ require('todo-comments').setup {
       "--column",
     },
     pattern = [[\b(KEYWORDS):]],
-  }
-}
+  },
+})

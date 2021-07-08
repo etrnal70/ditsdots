@@ -1,32 +1,32 @@
 -- Set global to space
-vim.g.mapleader = ' '
+vim.g.mapleader = " "
 
 -- Import global vim config
-require "config.global"
+require("config.global")
 
 -- Plugins
-require "config.plugins"
+require("config.plugins")
 
 -- Theme
-require "config.theme"
+require("config.theme")
 
 -- Telescope
-require "config.telescope"
+require("config.telescope")
 
 -- LSP Settings
-require "config.lsp"
+require("config.lsp")
 
 -- DAP Settings
--- require "config.dap"
+-- require ("config.dap")
 
 -- Test Framework Settings
-require "config.test"
+require("config.test")
 
 -- Git settings
-require "config.git"
+require("config.git")
 
 -- Miscellaneous plugin configs
-require "config.plugin_config"
+require("config.plugin_config")
 
 -- Keymapping
-require "config.keymaps"
+require("config.keymaps")

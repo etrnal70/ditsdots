@@ -1,9 +1,8 @@
-
 -- #####################################
 -- #####        Treesitter         #####
 -- #####################################
 -- Next generation syntax parser
-require'nvim-treesitter.configs'.setup {
+require("nvim-treesitter.configs").setup({
   -- Treesitter-based syntax highlighting
   highlight = {
     enable = true,
@@ -16,13 +15,13 @@ require'nvim-treesitter.configs'.setup {
       init_selection = "<CR>",
       scope_incremental = "<CR>",
       node_incremental = "<TAB>",
-      node_decremental = "<S-TAB>"
-    }
+      node_decremental = "<S-TAB>",
+    },
   },
   -- Treesitter-based docstring generator
   -- TODO: Configure it
   tree_docs = {
-    enable = false
+    enable = false,
   },
   -- Treesitter-based refactoring function
   refactor = {
@@ -41,13 +40,13 @@ require'nvim-treesitter.configs'.setup {
   rainbow = {
     enable = true,
     extended_mode = true,
-    max_file_lines = 1000
+    max_file_lines = 1000,
   },
   -- Custom-defined textobjects
   textobjects = {
     select = {
       enable = true,
-        keymaps = {
+      keymaps = {
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
         ["ac"] = "@conditional.outer",
@@ -56,7 +55,7 @@ require'nvim-treesitter.configs'.setup {
         ["il"] = "@loop.inner",
         ["as"] = "@statement.outer",
         ["am"] = "@statement.outer",
-        }
+      },
     },
     move = {
       enable = true,
@@ -85,16 +84,16 @@ require'nvim-treesitter.configs'.setup {
     updatetime = 25,
     persist_queries = false,
     keybindings = {
-      toggle_query_editor = 'o',
-      toggle_hl_groups = 'i',
-      toggle_injected_languages = 't',
-      toggle_anonymous_nodes = 'a',
-      toggle_language_display = 'I',
-      focus_language = 'f',
-      unfocus_language = 'F',
-      update = 'R',
-      goto_node = '<cr>',
-      show_help = '?',
+      toggle_query_editor = "o",
+      toggle_hl_groups = "i",
+      toggle_injected_languages = "t",
+      toggle_anonymous_nodes = "a",
+      toggle_language_display = "I",
+      focus_language = "f",
+      unfocus_language = "F",
+      update = "R",
+      goto_node = "<cr>",
+      show_help = "?",
     },
   },
-}
+})
