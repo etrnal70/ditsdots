@@ -1,33 +1,12 @@
 {
-    "layer": "bottom", // Waybar at top layer
-    "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 28, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-
-    // Choose the order of the modules
+    "layer": "top",
+    "position": "bottom",
+    "height": 26,
     "modules-left": ["clock", "sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["custom/pomo","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery","tray"],
-    // Modules configuration
+    "modules-center": ["tray"],
+    "modules-right": ["custom/pomo","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
-    },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
-    },
-    "sway/window": {
-        "format": "{}",
-        "max-length": 50,
-        "rewrite": {
-            "(.*)Firefox Nightly": "🌎 $1",
-            "(.*)Chromium": "🌎 $1",
-            "(.*) - vim": " $1",
-            "(.*) - zsh": " [$1]"
-        }
     },
     "tray": {
         "spacing": 4
@@ -38,20 +17,16 @@
     },
     "battery": {
         "states": {
-            // "good": 95,
             "warning": 35,
-            "critical": 20
+            "critical": 15
         },
         "format": "{icon}",
         "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-alt": "{capacity}%",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
         "format-icons": ["", "", "", "", ""]
     },
     "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "",
         "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
         "format-linked": "{ifname} (No IP)  ",
@@ -59,7 +34,6 @@
         "format-alt": "{essid} ({signalStrength}%)"
     },
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         "format": "{icon} {format_source}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
@@ -77,14 +51,6 @@
         },
         "on-click": "pavucontrol"
     },
-    "wlr/taskbar": {
-      "format": "{title}",
-      "icon-size": 14,
-      // "icon-theme": "Numix-Circle",
-      "tooltip-format": "{title}",
-      "on-click": "activate",
-      "on-click-middle": "close"
-    },
     "custom/media": {
         "format": "{icon} {}",
         "return-type": "json",
@@ -94,8 +60,7 @@
             "default": "  "
         },
         "escape": true,
-        //"exec": "$HOME/.config/waybar/modules/mediaplayer.py 2> /dev/null" // Script in resources folder
-        "exec": "$HOME/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+        "exec": "$HOME/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null"
     },
     "custom/caps_status" : {
       "exec" : "~/.config/waybar/modules/caps_status.sh",

@@ -19,15 +19,6 @@ window#waybar.hidden {
     opacity: 0.2;
 }
 
-/*
-window#waybar.empty {
-    background-color: transparent;
-}
-window#waybar.solo {
-    background-color: #FFFFFF;
-}
-*/
-
 window#waybar.termite {
     background-color: #3F3F3F;
 }
@@ -67,16 +58,11 @@ window#waybar.chromium {
 
 #clock,
 #battery,
-#cpu,
-#memory,
-#temperature,
-#backlight,
 #network,
 #pulseaudio,
 #custom-media,
 #tray,
 #mode,
-#idle_inhibitor,
 
 #mpd {
     padding: 0 10px;
@@ -124,19 +110,6 @@ label:focus {
     background-color: #000000;
 }
 
-#cpu {
-    background-color: #2ecc71;
-    color: #000000;
-}
-
-#memory {
-    background-color: #9b59b6;
-}
-
-#backlight {
-    background-color: #90b1b1;
-}
-
 #network {
     background-color: transparent;
 }
@@ -176,7 +149,6 @@ label:focus {
 
 #custom-caps_status {
   background-color: transparent;
-  color: #FFFFFF;
   animation-name: blink;
   border-bottom: 2px solid #FF1744;
 }
@@ -193,50 +165,10 @@ label:focus {
   border-bottom: 2px solid #F0932B;
 }
 
-#temperature {
-    background-color: #f0932b;
-}
-
-#temperature.critical {
-    background-color: #eb4d4b;
-}
-
-#cpu {
-  background-color: transparent;
-  color: #ffffff;
-}
-
-#memory {
-  background-color: transparent;
-  color: #ffffff;
+#custom-pomo {
+  border-bottom: 2px solid #BBBBBB;
 }
 
 #tray {
     background-color: transparent;
-}
-
-#idle_inhibitor {
-    background-color: #2d3436;
-}
-
-#idle_inhibitor.activated {
-    background-color: #ecf0f1;
-    color: #2d3436;
-}
-
-#mpd {
-    background-color: #66cc99;
-    color: #2a5c45;
-}
-
-#mpd.disconnected {
-    background-color: #f53c3c;
-}
-
-#mpd.stopped {
-    background-color: #90b1b1;
-}
-
-#mpd.paused {
-    background-color: #51a37a;
 }
