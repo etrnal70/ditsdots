@@ -70,7 +70,11 @@ eval "$(fnm env)"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Golang
-export PATH="$HOME/go/bin:$PATH"
+export GOPATH=$HOME/go
+export PATH="$GOPATH/bin:$PATH"
+
+# SSH Agent
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # Android SDK
 export ANDROID_HOME=$HOME/.sdk_dir/android_sdk
@@ -83,22 +87,6 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$HOME/.sdk_dir/flutter/bin
 export CHROME_EXECUTABLE=/usr/bin/chromium
 
-# jEnv
-export JENV_ROOT="${JENV_ROOT:=${HOME}/.jenv}"
-if ! type jenv > /dev/null && [ -f "${JENV_ROOT}/bin/jenv" ]; then
-  export PATH="${JENV_ROOT}/bin:${PATH}"
-  export JAVA_OPTS=""
-fi
-
-if type jenv > /dev/null; then
-  export PATH="${JENV_ROOT}/bin:${JENV_ROOT}/shims:${PATH}"
-  function jenv() {
-    unset -f jenv
-    eval "$(jenv init -)"
-    jenv $@
-  }
-fi
-
 # zoxide
 eval "$(zoxide init zsh)"
 
@@ -108,7 +96,7 @@ export PATH=$PATH:$HOME/.config/script
 # CMake
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-#Python lib
+# Python lib
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
 
 # FzF
