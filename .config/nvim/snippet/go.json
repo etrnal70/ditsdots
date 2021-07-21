@@ -26,6 +26,24 @@
       "  ${0}",
       "}"
     ],
-    "description": "For-Loop"
+    "description": "For-Loop",
+    "reterr": {
+      "prefix": ["reterr"],
+      "body": [
+        "if err != nil {",
+        "  return \"\", err",
+        "}"
+      ],
+      "description": "Return error value"
+    }
+  },
+  "logerr": {
+    "prefix": ["logerr"],
+    "body": [
+      "if err != nil {",
+      "  log.Fatal(err)",
+      "}"
+    ],
+    "description": "Error as log"
   }
 }

@@ -53,8 +53,8 @@ require("nvim-treesitter.configs").setup({
         ["ic"] = "@conditional.inner",
         ["al"] = "@loop.outer",
         ["il"] = "@loop.inner",
+        ["is"] = "@statement.inner",
         ["as"] = "@statement.outer",
-        ["am"] = "@statement.outer",
       },
     },
     move = {

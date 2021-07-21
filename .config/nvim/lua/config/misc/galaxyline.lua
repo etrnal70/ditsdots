@@ -12,21 +12,14 @@ gl.short_line_list = { "LuaTree", "dbui", "esearch" }
 
 -- Define colors
 local colors = {
-  bg = nil,
+  bg = "#222222",
   white = "#FFFFFF",
   yellow = "#FABD2F",
-  cyan = "#008080",
-  darkblue = "#081633",
-  green = "#98C379",
   orange = "#FF8800",
-  purple = "#5D4D7A",
-  magenta = "#D16D9E",
-  grey = "#C0C0C0",
+  grey = "#bdbdbd",
   dark_grey = "#757575",
-  very_dark_grey = "#2C2C2C",
   blue = "#61AFEF",
   red = "#EC5F67",
-  black = "#000000",
 }
 
 -- Statusline positioning
@@ -56,6 +49,7 @@ gls.left[2] = {
     provider = function()
       return " "
     end,
+    highlight = { colors.bg, colors.bg },
   },
 }
 
@@ -85,6 +79,7 @@ gls.left[4] = {
     provider = function()
       return " "
     end,
+    highlight = { colors.bg, colors.bg },
   },
 }
 
@@ -122,7 +117,7 @@ gls.left[5] = {
     end,
     separator = "  ",
     separator_highlight = { colors.grey, colors.bg },
-    highlight = { colors.dark_grey, colors.bg },
+    highlight = { colors.grey, colors.bg },
     condition = condition.check_active_lsp,
   },
 }
@@ -135,9 +130,44 @@ gls.right[1] = {
   },
 }
 
+local function buffer_not_empty()
+  if vim.fn.empty(vim.fn.expand("%:t")) ~= 1 then
+    return true
+  end
+  return false
+end
+
+local function wide_enough()
+  local squeeze_width = vim.fn.winwidth(0)
+  if squeeze_width > 80 then
+    return true
+  end
+  return false
+end
+
 gls.right[2] = {
-  FileName = {
-    provider = { "FileName" },
+  CustomFileName = {
+    provider = function()
+      if not buffer_not_empty() then
+        return ""
+      end
+      local fname
+      if wide_enough() then
+        fname = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
+      else
+        fname = vim.fn.expand("%:t")
+      end
+      if #fname == 0 then
+        return ""
+      end
+      if vim.bo.readonly then
+        fname = fname
+      end
+      if vim.bo.modified then
+        fname = fname
+      end
+      return " " .. fname .. " "
+    end,
     condition = condition.buffer_not_empty,
     highlight = { colors.white, colors.bg },
   },
@@ -175,13 +205,13 @@ gls.short_line_right[1] = {
   FileIcon = {
     provider = "FileIcon",
     condition = condition.buffer_not_empty,
-    highlight = { colors.very_dark_grey, colors.bg },
+    highlight = { colors.grey, colors.bg },
   },
 }
 
 gls.short_line_right[2] = {
   FileName = {
-    provider = "FileName",
-    highlight = { colors.very_dark_grey, colors.bg },
+    provider = { "FileName" },
+    highlight = { colors.grey, colors.bg },
   },
 }

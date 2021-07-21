@@ -21,16 +21,19 @@ cmd("highlight DiffChange guibg=NONE ctermbg=NONE")
 cmd("highlight DiffChangeDelete guibg=NONE ctermbg=NONE")
 cmd("highlight DiffDelete guibg=NONE ctermbg=NONE")
 
-cmd("highlight StatusLine gui=NONE guifg=NONE guibg=NONE")
-cmd("highlight StatusLineNC gui=NONE guifg=NONE guibg=NONE")
+cmd("highlight StatusLine gui=NONE guifg=NONE guibg=#222222")
+cmd("highlight StatusLineNC gui=NONE guifg=NONE guibg=#222222")
 cmd("highlight VertSplit gui=NONE guifg=#4F4F4F guibg=NONE")
 cmd("highlight Pmenu guibg=#292927")
 
-cmd("highlight DiffAdded guibg=#46A73B")
-cmd("highlight DiffRemoved guibg=#E80C19")
+cmd("highlight DiffAdded guifg=#66BB6A guibg=NONE")
+cmd("highlight DiffRemoved guifg=#EF5350 guibg=NONE")
 
 -- lsp-saga
-cmd("highlight LspSagaDocTruncateLine guifg=#B3DEEF")
+cmd("highlight LspSagaDocTruncateLine guifg=#6F6F6F")
+cmd("hi! link LspFloatWinNormal NormalFloat")
+cmd("hi LspFloatWinBorder guibg=#292927 guifg=#292927")
+cmd("hi LspSagaHoverBorder guibg=#292927 guifg=#292927 ")
 
 -- orgmode.nvim
 cmd("highlight OrgTODO guifg=Red")
