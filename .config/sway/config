@@ -18,12 +18,6 @@ set $menu wofi -a
 ### Wallpaper configuration
 output * bg ~/.config/walls/cityroad.png fill
 
-### Monitor Configuration
-# Home
-output eDP-1 resolution 1920x1080 position 0,620
-output 'Hewlett Packard HP E231 6CM3420FR5' scale 0.90 resolution 1920x1080 position 1920,497
-output 'Hewlett Packard HP E231 6CM5191NBW' scale 0.90 resolution 1920x1080 position 4057,0 transform 270
-
 ### Idle configuration
 exec swayidle -w \
          timeout 900 'swaylock -f -c 000000' \
@@ -33,7 +27,7 @@ exec swayidle -w \
 
 ### Input configuration
 # Touchpad
-input "1739:33521:SYNA3071:00_06CB:82F1_Touchpad" {
+input "type:touchpad" {
     dwt enabled
     tap enabled
     natural_scroll enabled
@@ -45,19 +39,10 @@ input "type:keyboard" {
   # Pressing both Shift toggle CapsLock
   # Use capslock as escape
   xkb_options shift:both_capslock,caps:escape
-}
-
-# Faster key input
-input "1452:591:SONiX_USB_DEVICE" {
+  # Faster key input
   repeat_rate 50
   repeat_delay 350
 }
-
-input "1:1:AT_Translated_Set_2_keyboard" {
-  repeat_rate 50
-  repeat_delay 350
-}
-
 
 ### Key bindings
 # Basics:
@@ -65,20 +50,13 @@ input "1:1:AT_Translated_Set_2_keyboard" {
     bindsym $mod+Return exec $term
 
     # Kill focused window
-    # bindsym $mod+Shift+q kill
     bindsym $mod+Mod1+q kill
 
     # Start your launcher
     bindsym $mod+comma exec $menu --show=drun
-    
-    # Execute power menu
-    bindsym $mod+period exec wlogout -b 4 -m 350px -c 50
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
     floating_modifier $mod normal
 
     # Reload the configuration file
@@ -98,7 +76,6 @@ input "1:1:AT_Translated_Set_2_keyboard" {
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
-
     # Move the focused window with the same, but add Shift
     bindsym $mod+Shift+$left move left
     bindsym $mod+Shift+$down move down
@@ -159,11 +136,7 @@ input "1:1:AT_Translated_Set_2_keyboard" {
     bindsym $mod+a focus parent
 
 ### Scratchpad:
-    # Move the currently focused window to the scratchpad
     bindsym $mod+Shift+minus move scratchpad
-
-    # Show the next scratchpad window or hide the focused scratchpad window.
-    # If there are multiple scratchpad windows, this command cycles through them.
     bindsym $mod+minus scratchpad show
 
 ### Resizing containers:
@@ -180,11 +153,6 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-### Status Bar:
-bar {
-  swaybar_command waybar
-}
-
 ### XWayland:
 # Disable when the time has come lol
 xwayland enable
@@ -193,9 +161,15 @@ xwayland enable
 # Disable mouse focus
 focus_follows_mouse no
 
+# Hide cursor after 5 seconds
+seat * hide_cursor 5000
+
 # Window Border
 default_border pixel 1
 default_floating_border normal
+
+# Random Launcher
+bindsym $mod+period exec ~/.config/script/dmenu_toggle.sh
 
 set $cl_high #FFFFFF
 set $cl_indi #d9d8d8
@@ -210,29 +184,23 @@ client.unfocused        $cl_back $cl_back $cl_fore $cl_back $cl_back
 client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 
 # Gaps
-gaps inner 10
+gaps inner 8
 
 # Screenshot
 bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
 
-# sway-marker
-bindsym --to-code $mod+m exec sway-marker mark
-bindsym --to-code $mod+tab exec sway-marker goto
+# Dunst
+bindsym $mod+backslash exec dunstctl set-paused toggle
 
-### Theme
 # Global Cursor
 set $my_cursor_size 30
 set $my_cursor vimix-cursors-white
 seat seat0 xcursor_theme $my_cursor $my_cursor_size
 
-# GTK-specific
-set $gnome-schema org.gnome.desktop.interface
-
-exec_always {
-  gsettings set $gnome-schema gtk-theme Arc-Dark
-  gsettings set $gnome-schema cursor-theme vimix-cursors-white
-  gsettings set $gnome-schema cursor-size $my_cursor_size
-}
+### Windowing Rules
+for_window [app_id="firefox"] inhibit_idle fullscreen
+for_window [app_id="chromium"] inhibit_idle fullscreen
+for_window [app_id="wdisplays"] floating enable
 
 ### Clamshell mode
 # Set laptops creen
@@ -240,32 +208,31 @@ set $laptop_screen 'eDP-1'
 # Set sleep script
 set $sleep sleep 3 && systemctl suspend
 
-bindswitch --reload --locked lid:on exec '[$(swaymsg -t get_outputs | grep name | wc -l) == 1] && ($sleep) || (notify-send 'Clamshell mode - Laptop screen off' && swaymsg output $laptop_screen disable)'
+bindswitch --reload --locked lid:on exec "[$(swaymsg -t get_outputs | grep name | wc -l) == 1] && ($sleep) || (notify-send 'Clamshell Mode' 'Laptop screen off' && swaymsg output $laptop_screen disable)"
 bindswitch --reload --locked lid:off output $laptop_screen enable
 
 ### Special keybinding
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% 
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioRaiseVolume exec ~/.config/script/volume.sh up
+bindsym XF86AudioLowerVolume exec ~/.config/script/volume.sh down
+bindsym XF86AudioMute exec ~/.config/script/volume.sh mute
 bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
-bindsym XF86MonBrightnessUp exec brightnessctl s +5%
-bindsym XF86MonBrightnessDown exec brightnessctl s 5%-
+bindsym XF86MonBrightnessUp exec ~/.config/script/backlight.sh up
+bindsym XF86MonBrightnessDown exec ~/.config/script/backlight.sh down
 
 ### Alternative keybinding
 bindsym $mod+Mod1+7 exec playerctl previous
 bindsym $mod+Mod1+8 exec playerctl play-pause
 bindsym $mod+Mod1+9 exec playerctl next
-bindsym $mod+Mod1+0 exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym $mod+Mod1+minus exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym $mod+Mod1+equal exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym $mod+Mod1+0 exec ~/.config/script/volume.sh down
+bindsym $mod+Mod1+minus exec ~/.config/script/volume.sh mute
+bindsym $mod+Mod1+equal exec ~/.config/script/volume.sh up
 
 # Startup
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec "systemctl --user import-environment"
-exec "systemctl --user start autostart.target"
+exec "systemctl --user import-environment; systemctl --user start sway-session.target"
 
 ###########################
 include /etc/sway/config.d/*
