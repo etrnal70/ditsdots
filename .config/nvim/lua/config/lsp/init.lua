@@ -2,16 +2,16 @@ local lsp = vim.lsp
 local protocol = require("vim.lsp.protocol")
 local nvim_lsp = require("lspconfig")
 local lsp_status = require("lsp-status")
-local tele = require("telescope.builtin")
-local flutter_ext = require("flutter-tools")
-local rust_ext = require("rust-tools")
 
 local bmap = function(type, key, value)
   vim.api.nvim_buf_set_keymap(0, type, key, value, { noremap = true, silent = true })
 end
 
--- Diagnostic Configuration
-lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(require("lsp_extensions.workspace.diagnostic").handler, {
+-- LSP default override
+lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "rounded",
+})
+lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(lsp.diagnostic.on_publish_diagnostics, {
   signs = {
     severity_limit = "Warning",
   },
@@ -32,9 +32,6 @@ custom_capabilities.textDocument.completion.completionItem.resolveSupport = {
     "additionalTextEdits",
   },
 }
-
--- LSP default override
-lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 
 -- Custom attach
 local custom_attach = function(client)
@@ -115,7 +112,7 @@ local custom_attach = function(client)
     hint_enable = false,
     hint_prefix = "🐼 ",
     hint_scheme = "String",
-    use_lspsaga = false,
+    use_lspsaga = true,
     hi_parameter = "Search",
     max_height = 12,
     max_width = 60,
@@ -174,11 +171,10 @@ nvim_lsp.clangd.setup({
 })
 
 -- Flutter
-flutter_ext.setup({
+require("flutter-tools").setup({
   experimental = {
     lsp_derive_paths = true,
   },
-  flutter_path = "/home/hanifrmdhn/Development/flutter/bin/flutter",
   flutter_lookup_cmd = nil,
   debugger = {
     enabled = true,
@@ -234,7 +230,7 @@ nvim_lsp.gopls.setup({
 })
 
 -- Rust-analyzer
-rust_ext.setup({
+require("rust-tools").setup({
   tools = {
     autoSetHints = true,
     hover_with_actions = true,

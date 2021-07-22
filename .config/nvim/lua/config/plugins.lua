@@ -29,32 +29,28 @@ return packer.startup(function(use)
   use({ "nvim-lua/plenary.nvim" })
 
   -- LSP Plugins
+  use({ "glepnir/lspsaga.nvim", opt = true })
+  use({ "simrat39/symbols-outline.nvim", opt = true })
+  use({ "nvim-lua/lsp-status.nvim", opt = true })
+  use({ "ray-x/lsp_signature.nvim", opt = true })
   use({
     "neovim/nvim-lspconfig",
-    requires = {
-      "nvim-lua/lsp_extensions.nvim",
-      "nvim-lua/lsp-status.nvim",
-      "glepnir/lspsaga.nvim",
-      "simrat39/symbols-outline.nvim",
-      "ray-x/lsp_signature.nvim",
-    },
-    event = "BufRead",
+    event = "BufEnter",
     config = function()
+      vim.cmd("PackerLoad lspsaga.nvim symbols-outline.nvim lsp_signature.nvim")
       require("config.lsp")
     end,
   })
 
   -- Completion
+  use({ "onsails/lspkind-nvim", opt = true })
+  use({ "windwp/nvim-autopairs", opt = true })
+  use({ "hrsh7th/vim-vsnip", requires = "hrsh7th/vim-vsnip-integ", after = "nvim-compe" })
   use({
     "hrsh7th/nvim-compe",
-    requires = {
-      "hrsh7th/vim-vsnip",
-      "hrsh7th/vim-vsnip-integ",
-      "onsails/lspkind-nvim",
-      "windwp/nvim-autopairs",
-    },
     event = "InsertEnter",
     config = function()
+      vim.cmd("PackerLoad lspkind-nvim nvim-autopairs")
       require("config.lsp.compe")
     end,
   })
@@ -112,7 +108,7 @@ return packer.startup(function(use)
       vim.g.git_messenger_max_popup_width = 50
     end,
   })
-  use({ "rhysd/committia.vim", event = "BufEnter" })
+  use({ "rhysd/committia.vim" })
   use({ "ThePrimeagen/git-worktree.nvim" })
 
   -- Debugger
@@ -142,10 +138,17 @@ return packer.startup(function(use)
   use({ "akinsho/flutter-tools.nvim" })
   use({ "simrat39/rust-tools.nvim" })
   use({ "ray-x/go.nvim" })
-  use({ "ziglang/zig.vim", ft = "zig" })
   use({ "folke/lua-dev.nvim" })
+  use({ "ziglang/zig.vim", ft = "zig" })
 
   -- Misc
+  use({
+    "famiu/feline.nvim",
+    config = function()
+      vim.cmd("PackerLoad lsp-status.nvim")
+      require("config.misc.feline")
+    end,
+  })
   use({
     "kristijanhusak/orgmode.nvim",
     ft = "org",
@@ -157,18 +160,6 @@ return packer.startup(function(use)
     "antoinemadec/FixCursorHold.nvim",
     config = function()
       vim.g.cursorhold_updatetime = 100
-    end,
-  })
-  use({
-    "glepnir/galaxyline.nvim",
-    config = function()
-      require("config.misc.galaxyline")
-    end,
-  })
-  use({
-    "glepnir/dashboard-nvim",
-    config = function()
-      require("config.misc.dashboard-nvim")
     end,
   })
   use({
@@ -210,9 +201,8 @@ return packer.startup(function(use)
     "b3nj5m1n/kommentary",
     event = "BufRead",
   })
-  use({ "Pocco81/TrueZen.nvim", event = "BufEnter" })
   use({ "gyim/vim-boxdraw", ft = { "markdown", "text" } })
-  use({ "machakann/vim-sandwich", event = "InsertEnter" })
+  use({ "machakann/vim-sandwich", event = "BufRead" })
   use({
     "szw/vim-maximizer",
     event = "BufEnter",
