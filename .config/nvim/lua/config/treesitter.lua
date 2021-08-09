@@ -1,7 +1,13 @@
--- #####################################
--- #####        Treesitter         #####
--- #####################################
--- Next generation syntax parser
+local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+
+parser_configs.norg = {
+  install_info = {
+    url = "https://github.com/vhyrro/tree-sitter-norg",
+    files = { "src/parser.c" },
+    branch = "main",
+  },
+}
+
 require("nvim-treesitter.configs").setup({
   -- Treesitter-based syntax highlighting
   highlight = {
@@ -41,6 +47,13 @@ require("nvim-treesitter.configs").setup({
     enable = true,
     extended_mode = true,
     max_file_lines = 1000,
+  },
+  textsubjects = {
+    enable = true,
+    keymaps = {
+      ["."] = "textsubjects-smart",
+      [";"] = "textsubjects-container-outer",
+    },
   },
   -- Custom-defined textobjects
   textobjects = {

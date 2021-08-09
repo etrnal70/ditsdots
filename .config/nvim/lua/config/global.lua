@@ -14,7 +14,11 @@ opt.ttyfast = true -- Performance related
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
 opt.mouse = "n" -- Mouse only on normal mode
 opt.updatetime = 250 -- Editor update time in ms
+
+opt.foldlevel = 99 -- Open folds when opening file
 opt.foldenable = true -- Prevent folding upon opening file
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 opt.splitright = true -- Vertical split always on the right
 opt.splitbelow = true -- Horizontal split always on the bottom
@@ -61,7 +65,6 @@ opt.relativenumber = true -- Make number column relative
 opt.wildmenu = true -- Use wildmenu
 opt.wildoptions = "pum" -- Use popup style for wildmenu
 opt.pumheight = 3 -- Set popup height to 3 entry
-opt.pumblend = 3 -- Make popup menu translucent
 
 opt.wildignorecase = true
 opt.wildignore = {

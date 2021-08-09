@@ -30,14 +30,17 @@ return packer.startup(function(use)
 
   -- LSP Plugins
   use({ "glepnir/lspsaga.nvim", opt = true })
-  use({ "simrat39/symbols-outline.nvim", opt = true })
+  use({ "nvim-lua/lsp_extensions.nvim", opt = true })
   use({ "nvim-lua/lsp-status.nvim", opt = true })
+  use({ "simrat39/symbols-outline.nvim", opt = true })
   use({ "ray-x/lsp_signature.nvim", opt = true })
+  use({ "jose-elias-alvarez/null-ls.nvim", opt = true })
   use({
     "neovim/nvim-lspconfig",
-    event = "BufEnter",
+    event = "BufRead",
+    -- cmd = "LspStart",
     config = function()
-      vim.cmd("PackerLoad lspsaga.nvim symbols-outline.nvim lsp_signature.nvim")
+      vim.cmd("PackerLoad lspsaga.nvim symbols-outline.nvim lsp_signature.nvim lsp_extensions.nvim")
       require("config.lsp")
     end,
   })
@@ -48,7 +51,7 @@ return packer.startup(function(use)
   use({ "hrsh7th/vim-vsnip", requires = "hrsh7th/vim-vsnip-integ", after = "nvim-compe" })
   use({
     "hrsh7th/nvim-compe",
-    event = "InsertEnter",
+    event = "BufEnter",
     config = function()
       vim.cmd("PackerLoad lspkind-nvim nvim-autopairs")
       require("config.lsp.compe")
@@ -68,14 +71,16 @@ return packer.startup(function(use)
 
   -- Theme and Icons
   use({ "kyazdani42/nvim-web-devicons" })
-  use({ "mhartington/oceanic-next", event = "BufRead" })
+  use({ "etrnal70/oceanic-next", event = "BufRead" })
 
   -- Treesitter
   use({
     "nvim-treesitter/nvim-treesitter",
     requires = {
+      "RRethy/nvim-treesitter-textsubjects",
       "nvim-treesitter/nvim-treesitter-textobjects",
       "nvim-treesitter/nvim-treesitter-refactor",
+      "nvim-treesitter/nvim-tree-docs",
       "nvim-treesitter/playground",
       "p00f/nvim-ts-rainbow",
     },
@@ -89,7 +94,6 @@ return packer.startup(function(use)
   -- Git
   use({
     "lewis6991/gitsigns.nvim",
-    event = "BufEnter",
     config = function()
       require("config.git.gitsigns")
     end,
@@ -106,6 +110,10 @@ return packer.startup(function(use)
       vim.g.git_messenger_always_into_popup = true
       vim.g.git_messenger_max_popup_height = 20
       vim.g.git_messenger_max_popup_width = 50
+      vim.g.git_messenger_floating_win_opts = {
+        border = "single",
+      }
+      vim.g.git_messenger_popup_content_margins = true
     end,
   })
   use({ "rhysd/committia.vim" })
@@ -135,10 +143,10 @@ return packer.startup(function(use)
   })
 
   -- Language-related
-  use({ "akinsho/flutter-tools.nvim" })
-  use({ "simrat39/rust-tools.nvim" })
-  use({ "ray-x/go.nvim" })
-  use({ "folke/lua-dev.nvim" })
+  use({ "akinsho/flutter-tools.nvim", opt = true })
+  use({ "simrat39/rust-tools.nvim", opt = true })
+  use({ "ray-x/go.nvim", opt = true })
+  use({ "folke/lua-dev.nvim", opt = true })
   use({ "ziglang/zig.vim", ft = "zig" })
 
   -- Misc
@@ -150,12 +158,20 @@ return packer.startup(function(use)
     end,
   })
   use({
-    "kristijanhusak/orgmode.nvim",
-    ft = "org",
+    "akinsho/nvim-bufferline.lua",
     config = function()
-      require("config.misc.orgmode")
+      require("config.misc.nvim-bufferline")
     end,
   })
+  use({
+    "vhyrro/neorg",
+    event = "VimEnter",
+    config = function()
+      vim.cmd("PackerLoad neorg-telescope")
+      require("config.misc.neorg")
+    end,
+  })
+  use({ "vhyrro/neorg-telescope", opt = true })
   use({
     "antoinemadec/FixCursorHold.nvim",
     config = function()
@@ -191,12 +207,6 @@ return packer.startup(function(use)
     end,
   })
   use({ "eugen0329/vim-esearch", keys = "<leader>ff" })
-  use({
-    "kevinhwang91/nvim-bqf",
-    config = function()
-      require("config.misc.bqf")
-    end,
-  })
   use({
     "b3nj5m1n/kommentary",
     event = "BufRead",

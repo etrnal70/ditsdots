@@ -1,6 +1,11 @@
 local tele = require("telescope")
 local actions = require("telescope.actions")
 
+-- Load telescope extension
+tele.load_extension("bibtex")
+tele.load_extension("fzf")
+tele.load_extension("heading")
+
 tele.setup({
   defaults = {
     extensions = {
@@ -55,6 +60,7 @@ tele.setup({
         ["<C-k>"] = actions.move_selection_previous,
         ["<esc>"] = actions.close,
         ["<C-o>"] = actions.toggle_selection,
+        ["<C-O>"] = actions.toggle_all,
       },
     },
   },
@@ -88,8 +94,3 @@ tele.setup({
     },
   },
 })
-
--- Load telescope extension
-tele.load_extension("bibtex")
-tele.load_extension("fzf")
-tele.load_extension("heading")

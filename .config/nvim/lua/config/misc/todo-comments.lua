@@ -21,7 +21,7 @@ require("todo-comments").setup({
     pattern = [[.*<(KEYWORDS)\s*:]],
     comments_only = true,
     max_line_len = 400,
-    exclude = { "org" },
+    exclude = { "norg" },
   },
   colors = {
     error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },

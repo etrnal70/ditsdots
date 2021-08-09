@@ -74,11 +74,11 @@ require("compe").setup({
   debug = false,
   min_length = 1,
   preselect = "disable",
-  throttle_time = 40,
+  throttle_time = 20,
   source_timeout = 100,
   incomplete_delay = 200,
-  max_abbr_width = 100,
-  max_kind_width = 100,
+  max_abbr_width = 40,
+  max_kind_width = 20,
   max_menu_width = 50,
   documentation = true,
 
@@ -86,15 +86,24 @@ require("compe").setup({
     path = true,
     buffer = false,
     calc = false,
-    vsnip = true,
+    vsnip = {
+      priority = 1,
+    },
     nvim_lsp = true,
     nvim_lua = false,
     spell = false,
     tags = false,
     snippets_nvim = false,
     treesitter = false,
-    dadbod = true,
-    orgmode = true,
+    dadbod = {
+      filetypes = { "sql" },
+    },
+    orgmode = {
+      filetypes = { "org" },
+    },
+    neorg = {
+      filetypes = { "norg" },
+    },
   },
 })
 

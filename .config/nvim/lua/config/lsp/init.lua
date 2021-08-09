@@ -3,15 +3,14 @@ local protocol = require("vim.lsp.protocol")
 local nvim_lsp = require("lspconfig")
 local lsp_status = require("lsp-status")
 
-local bmap = function(type, key, value)
-  vim.api.nvim_buf_set_keymap(0, type, key, value, { noremap = true, silent = true })
-end
-
 -- LSP default override
+lsp_status.register_progress()
 lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "rounded",
 })
-lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(lsp.diagnostic.on_publish_diagnostics, {
+-- TODO: Add LSP name on every diags
+-- see https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#show-source-in-diagnostics
+lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(require("lsp_extensions.workspace.diagnostic").handler, {
   signs = {
     severity_limit = "Warning",
   },
@@ -34,7 +33,11 @@ custom_capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 
 -- Custom attach
-local custom_attach = function(client)
+local custom_attach = function(client, bufnr)
+  local bmap = function(type, key, value)
+    vim.api.nvim_buf_set_keymap(bufnr, type, key, value, { noremap = true, silent = true })
+  end
+
   -- LSP Keymapping
   bmap("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
   bmap("n", "K", "<cmd>Lspsaga hover_doc<CR>")
@@ -107,11 +110,11 @@ local custom_attach = function(client)
   require("lsp_signature").on_attach({
     bind = true,
     doc_lines = 2,
-    floating_window = true,
-    fix_pos = true,
-    hint_enable = false,
-    hint_prefix = "🐼 ",
-    hint_scheme = "String",
+    floating_window = false,
+    fix_pos = false,
+    hint_enable = true,
+    hint_prefix = "ﰠ ",
+    hint_scheme = "Todo",
     use_lspsaga = false,
     hi_parameter = "Search",
     max_height = 12,
@@ -119,7 +122,8 @@ local custom_attach = function(client)
     handler_opts = {
       border = "single",
     },
-    extra_trigger_chars = {},
+    extra_trigger_chars = { "(", "," },
+    zindex = 50,
   })
 
   -- LSP Outline Symbols
@@ -136,155 +140,31 @@ local custom_attach = function(client)
       rename_symbol = "r",
       code_actions = "a",
     },
-    lsp_blacklist = { "texlab", "dartls" },
+    lsp_blacklist = { "texlab", "bashls", "dockerls", "yamlls" },
   }
 
   -- Set omnifunc
   vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
 
   -- Register LSP status
-  lsp_status.register_progress()
+  lsp_status.on_attach(client)
 
-  print("[" .. client.name .. "] " .. "Language Server Protocol started")
+  vim.notify("[" .. client.name .. "] " .. "Language Server Protocol started")
 end
 
 -- LSP with default lspconfig repo
-local default_servers = { "bashls", "cssls", "dockerls", "pyright", "tsserver", "yamlls", "zls" }
+local default_servers = { "bashls", "cssls", "denols", "dockerls", "pylsp", "yamlls", "zls" }
 for _, server in ipairs(default_servers) do
   nvim_lsp[server].setup({
     on_attach = custom_attach,
     capabilities = custom_capabilities,
     flags = {
-      debounce_text_changes = 150,
+      debounce_text_changes = 250,
     },
   })
 end
 
--- LSP with custom settings
--- clangd
-nvim_lsp.clangd.setup({
-  init_options = {
-    clangdFileStatus = true,
-  },
-  on_attach = custom_attach,
-  capabilities = custom_capabilities,
-})
-
--- Flutter
-require("flutter-tools").setup({
-  experimental = {
-    lsp_derive_paths = true,
-  },
-  flutter_lookup_cmd = nil,
-  debugger = {
-    enabled = true,
-  },
-  widget_guides = {
-    enabled = true,
-  },
-  closing_tags = {
-    highlight = "Comment",
-    prefix = " // ",
-  },
-  dev_log = {
-    open_cmd = "tabedit",
-  },
-  outline = {
-    open_cmd = "35vnew",
-  },
-  lsp = {
-    on_attach = function(client)
-      custom_attach(client)
-      require("telescope").load_extension("flutter")
-      bmap("n", "<leader>ss", "<cmd>FlutterOutline<CR>")
-    end,
-    capabilities = custom_capabilities,
-    settings = {
-      showTodos = true,
-      completeFunctionCalls = false,
-    },
-  },
-})
-
--- Gopls
-nvim_lsp.gopls.setup({
-  on_attach = function(client)
-    custom_attach(client)
-    require("go").setup({
-      goimport = "gofumports",
-      gofmt = "gofumpt",
-      max_len = 120,
-      transform = false,
-      test_template = "",
-      test_template_dir = "",
-      comment_placeholder = "",
-      verbose = false,
-    })
-    bmap("n", "<leader>Gd", "<cmd>GoCmt<CR>")
-    bmap("n", "<leader>Gl", "<cmd>GoLint<CR>")
-    bmap("n", "<leader>Gf", '<cmd>lua require"go.format".gofmt()<CR>')
-    bmap("n", "<leader>Gat", "<cmd>GoAddTag<CR>")
-    bmap("n", "<leader>Grt", "<cmd>GoRmTag<CR>")
-  end,
-  capabilities = custom_capabilities,
-})
-
--- Rust-analyzer
-require("rust-tools").setup({
-  tools = {
-    autoSetHints = true,
-    hover_with_actions = true,
-    runnables = {
-      use_telescope = true,
-    },
-    inlay_hints = {
-      show_parameter_hints = false,
-      parameter_hints_prefix = " » ",
-      other_hints_prefix = "=>",
-    },
-  },
-  server = {
-    on_attach = function(client)
-      custom_attach(client)
-      bmap("n", "<leader>rr", "<cmd>RustRunnables<CR>")
-      bmap("n", "<leader>rc", "<cmd>RustOpenCargo<CR>")
-      bmap("n", "<leader>rh", "<cmd>RustHoverActions<CR>")
-      bmap("n", "<leader>rmu", "<cmd>RustMoveItemUp<CR>")
-      bmap("n", "<leader>rmd", "<cmd>RustMoveItemDown<CR>")
-    end,
-  },
-})
-
--- Sumneko-Lua
-local luadev = require("lua-dev").setup({
-  library = {
-    vimruntime = true,
-    types = true,
-    plugins = true,
-  },
-  lspconfig = {
-    cmd = { "lua-language-server" },
-    on_attach = custom_attach,
-    capabilities = custom_capabilities,
-  },
-})
-nvim_lsp.sumneko_lua.setup(luadev)
-
--- Texlab
-nvim_lsp.texlab.setup({
-  settings = {
-    latex = {
-      build = {
-        onSave = true,
-        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "-outdir=build", "%f" },
-        executable = "latexmk",
-        outputDirectory = "build",
-      },
-      lint = {
-        onChange = true,
-      },
-    },
-  },
-  on_attach = custom_attach,
-  capabilities = custom_capabilities,
-})
+local custom_servers = { "clangd", "flutter", "gopls", "rust_analyzer", "sumneko", "texlab" }
+for _, server in ipairs(custom_servers) do
+  require("config.lsp." .. server).setup(custom_attach, custom_capabilities)
+end

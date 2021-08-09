@@ -1,5 +1,4 @@
 local feline = require("feline")
-local providers = require("feline.providers")
 local devicons = require("nvim-web-devicons")
 local lsp = require("feline.providers.lsp")
 local status = require("lsp-status")
@@ -80,14 +79,30 @@ components.right.active[2] = {
 }
 
 components.right.active[3] = {
-  provider = "git_branch",
+  provider = "git_diff_added",
   hl = {
-    fg = colors.orange,
+    fg = "green",
   },
-  icon = "  ",
+  icon = " +",
 }
 
 components.right.active[4] = {
+  provider = "git_diff_changed",
+  hl = {
+    fg = "orange",
+  },
+  icon = " ~",
+}
+
+components.right.active[5] = {
+  provider = "git_diff_removed",
+  hl = {
+    fg = "red",
+  },
+  icon = " -",
+}
+
+components.right.active[6] = {
   provider = "position",
   hl = {
     fg = colors.grey,
@@ -101,40 +116,33 @@ components.right.active[4] = {
 }
 
 components.left.active[1] = {
-  provider = "diagnostic_errors",
+  provider = function()
+    if vim.b.lsp_current_function ~= nil then
+      if vim.b.lsp_current_function ~= "" then
+        return " ( " .. vim.b.lsp_current_function .. ")"
+      else
+        return ""
+      end
+    else
+      return ""
+    end
+  end,
   enabled = function()
-    return lsp.diagnostics_exist("Error")
+    return #vim.lsp.buf_get_clients() > 0
   end,
   hl = {
-    fg = colors.bg,
-    bg = colors.red,
+    fg = colors.white,
+    bg = colors.bg,
   },
   right_sep = {
     hl = {
-      bg = colors.red,
+      bg = colors.bg,
     },
     str = " ",
   },
 }
 
 components.left.active[2] = {
-  provider = "diagnostic_warnings",
-  enabled = function()
-    return lsp.diagnostics_exist("Warning")
-  end,
-  hl = {
-    fg = colors.bg,
-    bg = colors.yellow,
-  },
-  right_sep = {
-    hl = {
-      bg = colors.yellow,
-    },
-    str = " ",
-  },
-}
-
-components.left.active[3] = {
   provider = function()
     -- TODO: Improve handling
     local res = {}
@@ -198,14 +206,6 @@ components.right.inactive[1] = {
 }
 
 components.right.inactive[2] = {
-  provider = "git_branch",
-  hl = {
-    fg = colors.grey,
-  },
-  icon = "  ",
-}
-
-components.right.inactive[3] = {
   provider = "position",
   hl = {
     fg = colors.grey,
@@ -216,44 +216,6 @@ components.right.inactive[3] = {
   left_sep = {
     str = "  ",
   },
-}
-
-components.left.inactive[1] = {
-  provider = "diagnostic_errors",
-  enabled = function()
-    return lsp.diagnostics_exist("Error")
-  end,
-  hl = {
-    fg = colors.dark_grey,
-    bg = colors.grey,
-  },
-  right_sep = {
-    hl = {
-      bg = colors.grey,
-    },
-    str = " ",
-  },
-}
-
-components.left.inactive[2] = {
-  provider = "diagnostic_warnings",
-  enabled = function()
-    return lsp.diagnostics_exist("Warning")
-  end,
-  hl = {
-    fg = colors.dark_grey,
-    bg = colors.grey,
-  },
-  right_sep = {
-    hl = {
-      bg = colors.grey,
-    },
-    str = " ",
-  },
-}
-
-components.left.inactive[3] = {
-  provider = " ",
 }
 
 feline.setup({
