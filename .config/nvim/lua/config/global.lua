@@ -1,12 +1,10 @@
 local vim = vim
 local opt = vim.opt
-local cmd = vim.api.nvim_command
 
 opt.encoding = "utf-8"
 opt.showmode = true
 opt.termguicolors = true -- Use GUI colors in terminal
 opt.background = "dark" -- Set background to dark
-cmd("syntax on")
 
 opt.hidden = true -- Hide unloaded buffer
 opt.lazyredraw = true -- Don't redraw easily
@@ -61,6 +59,8 @@ opt.signcolumn = "auto:1"
 opt.laststatus = 2 -- Always show statusline
 opt.number = true -- Enable number column
 opt.relativenumber = true -- Make number column relative
+opt.cursorline = true
+opt.cursorlineopt = "number"
 
 opt.wildmenu = true -- Use wildmenu
 opt.wildoptions = "pum" -- Use popup style for wildmenu

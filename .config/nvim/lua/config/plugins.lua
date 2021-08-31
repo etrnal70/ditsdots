@@ -25,36 +25,33 @@ return packer.startup(function(use)
   use({ "wbthomason/packer.nvim" })
 
   -- stdlib
-  use({ "nvim-lua/popup.nvim" })
   use({ "nvim-lua/plenary.nvim" })
 
   -- LSP Plugins
-  use({ "glepnir/lspsaga.nvim", opt = true })
-  use({ "nvim-lua/lsp_extensions.nvim", opt = true })
-  use({ "nvim-lua/lsp-status.nvim", opt = true })
-  use({ "simrat39/symbols-outline.nvim", opt = true })
-  use({ "ray-x/lsp_signature.nvim", opt = true })
-  use({ "jose-elias-alvarez/null-ls.nvim", opt = true })
+  use({ "glepnir/lspsaga.nvim" })
+  use({ "nvim-lua/lsp_extensions.nvim" })
+  use({ "nvim-lua/lsp-status.nvim" })
+  use({ "simrat39/symbols-outline.nvim" })
+  use({ "ray-x/lsp_signature.nvim" })
   use({
     "neovim/nvim-lspconfig",
-    event = "BufRead",
-    -- cmd = "LspStart",
+    event = "BufReadPre",
     config = function()
-      vim.cmd("PackerLoad lspsaga.nvim symbols-outline.nvim lsp_signature.nvim lsp_extensions.nvim")
       require("config.lsp")
     end,
   })
 
   -- Completion
-  use({ "onsails/lspkind-nvim", opt = true })
-  use({ "windwp/nvim-autopairs", opt = true })
-  use({ "hrsh7th/vim-vsnip", requires = "hrsh7th/vim-vsnip-integ", after = "nvim-compe" })
+  use({ "windwp/nvim-autopairs" })
+  use({ "hrsh7th/vim-vsnip" })
+  use({ "hrsh7th/vim-vsnip-integ" })
+  use({ "hrsh7th/cmp-nvim-lsp" })
+  use({ "hrsh7th/cmp-path" })
+  use({ "hrsh7th/cmp-vsnip" })
   use({
-    "hrsh7th/nvim-compe",
-    event = "BufEnter",
+    "hrsh7th/nvim-cmp",
     config = function()
-      vim.cmd("PackerLoad lspkind-nvim nvim-autopairs")
-      require("config.lsp.compe")
+      require("config.lsp.cmp")
     end,
   })
 
@@ -71,25 +68,37 @@ return packer.startup(function(use)
 
   -- Theme and Icons
   use({ "kyazdani42/nvim-web-devicons" })
-  use({ "etrnal70/oceanic-next", event = "BufRead" })
+  use({ "etrnal70/oceanic-next" })
 
   -- Treesitter
   use({
     "nvim-treesitter/nvim-treesitter",
-    requires = {
-      "RRethy/nvim-treesitter-textsubjects",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      "nvim-treesitter/nvim-treesitter-refactor",
-      "nvim-treesitter/nvim-tree-docs",
-      "nvim-treesitter/playground",
-      "p00f/nvim-ts-rainbow",
-    },
     run = ":TSUpdate",
     config = function()
       require("config.treesitter")
     end,
   })
-  use({ "vigoux/architext.nvim", event = "BufEnter" })
+  use({ "nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter" })
+  use({ "nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter" })
+  use({ "nvim-treesitter/playground", requires = "nvim-treesitter" })
+  use({ "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" })
+  use({
+    "danymat/neogen",
+    requires = "nvim-treesitter",
+    config = function()
+      require("neogen").setup({
+        enabled = true,
+      })
+    end,
+  })
+  use({
+    "SmiteshP/nvim-gps",
+    requires = "nvim-treesitter",
+    config = function()
+      require("nvim-gps").setup()
+    end,
+  })
+  use({ "vigoux/architext.nvim", opt = true })
 
   -- Git
   use({
@@ -117,7 +126,7 @@ return packer.startup(function(use)
     end,
   })
   use({ "rhysd/committia.vim" })
-  use({ "ThePrimeagen/git-worktree.nvim" })
+  use({ "ThePrimeagen/git-worktree.nvim", opt = true })
 
   -- Debugger
   use({
@@ -132,13 +141,12 @@ return packer.startup(function(use)
     "rcarriga/vim-ultest",
     requires = "vim-test/vim-test",
     run = ":UpdateRemotePlugins",
-    cmd = { "Ultest", "UltestNearest", "UltestDebug", "UltestDebugNearest", "UltestOutput", "UltestSummary" },
   })
   use({
     "skywind3000/asyncrun.vim",
     requires = { "skywind3000/asynctasks.vim" },
     config = function()
-      require("config.misc.async_config")
+      require("config.misc.asynctasks")
     end,
   })
 
@@ -147,40 +155,40 @@ return packer.startup(function(use)
   use({ "simrat39/rust-tools.nvim", opt = true })
   use({ "ray-x/go.nvim", opt = true })
   use({ "folke/lua-dev.nvim", opt = true })
-  use({ "ziglang/zig.vim", ft = "zig" })
+  use({ "jose-elias-alvarez/null-ls.nvim" })
 
   -- Misc
+  use({ "lewis6991/impatient.nvim" }) -- Remove after neovim/pull/15436 merged
+  use({
+    "glepnir/dashboard-nvim",
+    config = function()
+      require("config.misc.dashboard")
+    end,
+  })
   use({
     "famiu/feline.nvim",
+    requires = { "SmiteshP/nvim-gps" },
     config = function()
       vim.cmd("PackerLoad lsp-status.nvim")
       require("config.misc.feline")
     end,
   })
   use({
-    "akinsho/nvim-bufferline.lua",
+    "akinsho/bufferline.nvim",
     config = function()
       require("config.misc.nvim-bufferline")
     end,
   })
   use({
     "vhyrro/neorg",
-    event = "VimEnter",
+    branch = "unstable",
+    requires = "vhyrro/neorg-telescope",
     config = function()
-      vim.cmd("PackerLoad neorg-telescope")
       require("config.misc.neorg")
-    end,
-  })
-  use({ "vhyrro/neorg-telescope", opt = true })
-  use({
-    "antoinemadec/FixCursorHold.nvim",
-    config = function()
-      vim.g.cursorhold_updatetime = 100
     end,
   })
   use({
     "folke/todo-comments.nvim",
-    event = "BufRead",
     config = function()
       require("config.misc.todo-comments")
     end,
@@ -193,39 +201,14 @@ return packer.startup(function(use)
     end,
   })
   use({ "tpope/vim-dadbod", requires = { "kristijanhusak/vim-dadbod-ui" }, ft = "sql" })
-  use({
-    "rmagatti/auto-session",
-    requires = "rmagatti/session-lens",
-    config = function()
-      vim.g.auto_session_enabled = false
-      require("auto-session").setup({
-        auto_session_enable_last_session = false,
-        auto_session_eanbled = true,
-        auto_save_enabled = true,
-        auto_restore_enabled = false,
-      })
-    end,
-  })
   use({ "eugen0329/vim-esearch", keys = "<leader>ff" })
-  use({
-    "b3nj5m1n/kommentary",
-    event = "BufRead",
-  })
-  use({ "gyim/vim-boxdraw", ft = { "markdown", "text" } })
-  use({ "machakann/vim-sandwich", event = "BufRead" })
-  use({
-    "szw/vim-maximizer",
-    event = "BufEnter",
-    config = function()
-      vim.g.maximizer_set_default_mapping = 0
-      vim.g.maximizer_set_mapping_with_bang = 0
-    end,
-  })
+  use({ "b3nj5m1n/kommentary" })
+  use({ "gyim/vim-boxdraw", opt = true })
+  use({ "machakann/vim-sandwich" })
   use({
     "norcalli/nvim-colorizer.lua",
-    event = "BufRead",
     config = function()
-      require("config.misc.colorizer")
+      require("colorizer").setup({ "*" }, { names = false, RRGGBBAA = true })
     end,
   })
   use({

@@ -2,9 +2,6 @@ local gmap = function(type, key, value)
   vim.api.nvim_set_keymap(type, key, value, { noremap = true, silent = true })
 end
 
--- #####################################
--- #####        vim-fugitive       #####
--- #####################################
 gmap("n", "<leader>gs", "<cmd>:Git<CR>")
 gmap("n", "<leader>gl", "<cmd>:Git log<CR>")
 gmap("n", "<leader>gch", "<cmd>:diffget //2<CR>")

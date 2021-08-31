@@ -3,12 +3,21 @@ local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
 parser_configs.norg = {
   install_info = {
     url = "https://github.com/vhyrro/tree-sitter-norg",
+    files = { "src/parser.c", "src/scanner.cc" },
+    branch = "main",
+  },
+}
+
+parser_configs.http = {
+  install_info = {
+    url = "https://github.com/NTBBloodbath/tree-sitter-http",
     files = { "src/parser.c" },
     branch = "main",
   },
 }
 
 require("nvim-treesitter.configs").setup({
+  ensure_installed = { "norg", "http" },
   -- Treesitter-based syntax highlighting
   highlight = {
     enable = true,
@@ -18,10 +27,10 @@ require("nvim-treesitter.configs").setup({
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "<CR>",
-      scope_incremental = "<CR>",
-      node_incremental = "<TAB>",
-      node_decremental = "<S-TAB>",
+      init_selection = ";",
+      scope_incremental = ";",
+      node_incremental = ".",
+      node_decremental = ",",
     },
   },
   -- Treesitter-based docstring generator
@@ -46,14 +55,7 @@ require("nvim-treesitter.configs").setup({
   rainbow = {
     enable = true,
     extended_mode = true,
-    max_file_lines = 1000,
-  },
-  textsubjects = {
-    enable = true,
-    keymaps = {
-      ["."] = "textsubjects-smart",
-      [";"] = "textsubjects-container-outer",
-    },
+    max_file_lines = 2000,
   },
   -- Custom-defined textobjects
   textobjects = {
@@ -92,8 +94,7 @@ require("nvim-treesitter.configs").setup({
   },
   -- See treesitter details. For development only
   playground = {
-    enable = true,
-    disable = {},
+    enable = false,
     updatetime = 25,
     persist_queries = false,
     keybindings = {

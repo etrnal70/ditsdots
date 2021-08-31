@@ -1,5 +1,3 @@
-vim.opt.shadafile = "NONE"
-
 -- Set <leader> to space
 vim.g.mapleader = " "
 
@@ -23,14 +21,20 @@ for _, plugin in pairs(disabled_built_ins) do
   vim.g["loaded_" .. plugin] = 1
 end
 
--- Import global vim config
+-- Load impatient plugin
+require("impatient")
+
+-- General neovim options
 require("config.global")
 
--- Plugins
-require("config.plugins")
+-- Autocommands
+require("config.autocmd")
 
 -- Theme
 require("config.theme")
+
+-- Plugins
+require("config.plugins")
 
 -- Telescope
 require("config.telescope")
@@ -46,5 +50,3 @@ require("config.git")
 
 -- Keymapping
 require("config.keymaps")
-
-vim.opt.shadafile = ""

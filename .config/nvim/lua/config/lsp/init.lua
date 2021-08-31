@@ -1,6 +1,5 @@
 local lsp = vim.lsp
 local protocol = require("vim.lsp.protocol")
-local nvim_lsp = require("lspconfig")
 local lsp_status = require("lsp-status")
 
 -- LSP default override
@@ -23,14 +22,7 @@ lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(require("lsp_extensio
 
 -- Custom Capabilities
 local custom_capabilities = protocol.make_client_capabilities()
-custom_capabilities.textDocument.completion.completionItem.snippetSupport = true
-custom_capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    "documentation",
-    "detail",
-    "additionalTextEdits",
-  },
-}
+custom_capabilities = require("cmp_nvim_lsp").update_capabilities(custom_capabilities)
 
 -- Custom attach
 local custom_attach = function(client, bufnr)
@@ -41,6 +33,8 @@ local custom_attach = function(client, bufnr)
   -- LSP Keymapping
   bmap("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
   bmap("n", "K", "<cmd>Lspsaga hover_doc<CR>")
+  bmap("n", "<C-k>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>")
+  bmap("n", "<C-j>", "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>")
   bmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
   bmap("n", "gh", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
   bmap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
@@ -55,11 +49,17 @@ local custom_attach = function(client, bufnr)
   bmap("v", "<leader>a", "<cmd>Lspsaga range_code_action<CR>")
   bmap("n", "<leader>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>")
   bmap("n", "<leader>lq", "<cmd>Telescope lsp_workspace_diagnostics<CR>")
+  bmap("n", "<leader>lm", "<cmd>Telescope lsp_document_symbols<CR>")
+  bmap("n", "<leader>lM", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
 
+  -- Disable server autoformat. Let null-ls handle it by default
+  if client.name ~= "null-ls" then
+    client.resolved_capabilities.document_formatting = false
+  end
+
+  -- Autoformat on save
   if client.resolved_capabilities.document_formatting then
-    bmap("n", "<leader>sf", "<cmd>lua vim.lsp.buf.formatting()<CR>")
-  elseif client.resolved_capabilities.document_range_formatting then
-    bmap("n", "<leader>sf", "<cmd>lua vim.lsp.buf.range_formatting()<CR>")
+    vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
   end
 
   -- Disable SignColumn and show diagnostic on LineNr
@@ -78,23 +78,12 @@ local custom_attach = function(client, bufnr)
       sign = false,
       virtual_text = false,
     },
-    finder_definition_icon = "  ",
-    finder_reference_icon = "  ",
-    max_preview_lines = 10,
-    finder_action_keys = {
-      open = "o",
-      vsplit = "s",
-      split = "i",
-      quit = "<esc>",
-      scroll_down = "<C-j>",
-      scroll_up = "<C-k>",
-    },
     code_action_keys = {
       quit = "<esc>",
       exec = "<CR>",
     },
     rename_action_keys = {
-      quit = "<C-c>",
+      quit = "<esc>",
       exec = "<CR>",
     },
     definition_preview_icon = "  ",
@@ -102,9 +91,6 @@ local custom_attach = function(client, bufnr)
     rename_prompt_prefix = "➤",
     server_filetype_map = {},
   })
-
-  -- LSP Custom Label using lspkind.nvim
-  require("lspkind").init()
 
   -- LSP Signature
   require("lsp_signature").on_attach({
@@ -120,10 +106,9 @@ local custom_attach = function(client, bufnr)
     max_height = 12,
     max_width = 60,
     handler_opts = {
-      border = "single",
+      border = "none",
     },
-    extra_trigger_chars = { "(", "," },
-    zindex = 50,
+    extra_trigger_chars = { "(", ",", "." },
   })
 
   -- LSP Outline Symbols
@@ -133,18 +118,18 @@ local custom_attach = function(client, bufnr)
     show_guides = true,
     position = "right",
     keymaps = {
-      close = "<Esc>",
-      goto_location = "<Cr>",
+      close = "<esc>",
+      goto_location = "<CR>",
       focus_location = "o",
       hover_symbol = "<K>",
       rename_symbol = "r",
       code_actions = "a",
     },
-    lsp_blacklist = { "texlab", "bashls", "dockerls", "yamlls" },
+    lsp_blacklist = {},
   }
 
-  -- Set omnifunc
-  vim.cmd("setlocal omnifunc=v:lua.vim.lsp.omnifunc")
+  -- Start nvim-cmp LSP source
+  require("cmp_nvim_lsp").setup()
 
   -- Register LSP status
   lsp_status.on_attach(client)
@@ -152,19 +137,20 @@ local custom_attach = function(client, bufnr)
   vim.notify("[" .. client.name .. "] " .. "Language Server Protocol started")
 end
 
--- LSP with default lspconfig repo
-local default_servers = { "bashls", "cssls", "denols", "dockerls", "pylsp", "yamlls", "zls" }
-for _, server in ipairs(default_servers) do
-  nvim_lsp[server].setup({
-    on_attach = custom_attach,
-    capabilities = custom_capabilities,
-    flags = {
-      debounce_text_changes = 250,
-    },
-  })
-end
+local servers = {
+  "clangd",
+  "denols",
+  "flutter",
+  "gopls",
+  "null_ls",
+  "omnisharp",
+  "pylsp",
+  "rust_analyzer",
+  "sumneko",
+  "texlab",
+  "zls",
+}
 
-local custom_servers = { "clangd", "flutter", "gopls", "rust_analyzer", "sumneko", "texlab" }
-for _, server in ipairs(custom_servers) do
+for _, server in ipairs(servers) do
   require("config.lsp." .. server).setup(custom_attach, custom_capabilities)
 end

@@ -1,11 +1,15 @@
 require("neorg").setup({
   load = {
     ["core.defaults"] = {},
+    ["core.integrations.telescope"] = {},
     ["core.keybinds"] = {
       config = {
         default_keybinds = true,
         neorg_leader = "<leader>o",
       },
+    },
+    ["core.norg.completion"] = {
+      config = { engine = "nvim-cmp" }, -- We current support nvim-compe and nvim-cmp only
     },
     ["core.norg.concealer"] = {
       config = {
@@ -31,6 +35,7 @@ require("neorg").setup({
       config = {
         workspaces = {
           notes = "~/Data/Notes",
+          uni = "~/Data/Coolyeah",
         },
         autodetect = true,
         autochdir = true,

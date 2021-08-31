@@ -5,10 +5,6 @@ local gmap = function(type, key, value)
   vim.api.nvim_set_keymap(type, key, value, { noremap = true, silent = true })
 end
 
--- #####################################
--- #####       nvim-tree.lua       #####
--- #####################################
--- Lua-based directory tree
 set.nvim_tree_side = "left"
 set.nvim_tree_width = 30
 set.nvim_tree_ignore = { ".git", "node_modules", ".cache", "__pycache__", "build" }

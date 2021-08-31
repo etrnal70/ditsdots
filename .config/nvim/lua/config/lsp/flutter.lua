@@ -3,7 +3,6 @@ vim.cmd("PackerLoad flutter-tools.nvim")
 local M = {}
 
 local opts = { noremap = true, silent = true }
-local bufnr = 0
 
 M.setup = function(on_attach, capabilities)
   require("flutter-tools").setup({
@@ -31,15 +30,15 @@ M.setup = function(on_attach, capabilities)
       open_cmd = "tabnew",
     },
     dev_tools = {
-      autostart = false,
-      auto_open_browser = true,
+      autostart = true,
+      auto_open_browser = false,
     },
     outline = {
       open_cmd = "35vnew",
       auto_open = false,
     },
     lsp = {
-      on_attach = function(client)
+      on_attach = function(client, bufnr)
         on_attach(client, bufnr)
         require("telescope").load_extension("flutter")
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>fl", "<cmd>Telescope flutter commands<CR>", opts)

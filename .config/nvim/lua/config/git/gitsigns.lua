@@ -23,7 +23,8 @@ require("gitsigns").setup({
     interval = 1000,
   },
   sign_priority = 6,
-  update_debounce = 250,
+  update_debounce = 500,
   status_formatter = nil,
+  word_diff = true,
   use_internal_diff = true,
 })

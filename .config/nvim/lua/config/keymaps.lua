@@ -4,9 +4,6 @@ local gmap = function(type, key, value)
   vim.api.nvim_set_keymap(type, key, value, { noremap = true, silent = true })
 end
 
--- #####################################
--- #####         Keymapping        #####
--- #####################################
 -- Switch active buffer with Ctrl + w + <hjkl>
 cmd([[map sh <C-w>h]])
 cmd([[map sk <C-w>k]])
@@ -54,16 +51,19 @@ gmap("n", "<A-.>", "<cmd>lnext<CR>")
 gmap("n", "<leader>lf", "<cmd>Telescope find_files<CR>")
 gmap("n", "<leader>ls", "<cmd>Telescope live_grep<CR>")
 gmap("n", "<leader>lb", "<cmd>Telescope buffers<CR>")
-gmap("n", "<leader>lt", "<cmd>Telescope treesitter<CR>")
+gmap("n", "<leader>lt", "<cmd>lua require'telescope'.extensions.asynctasks.all()<CR>")
 gmap("n", "<leader>lo", "<cmd>Telescope oldfiles<CR>")
 gmap("n", "<leader>lH", "<cmd>Telescope help_tags<CR>")
-gmap("n", "<leader>lh", "<cmd>Telescope heading<CR>") -- Need autocmd
+gmap("n", "<leader>lh", "<cmd>Telescope heading<CR>")
 
 -- nvim-bufferline
 gmap("n", "bd", "<cmd>bdelete! %<CR>")
 gmap("n", "bc", "<cmd>BufferLinePickClose<CR>")
 gmap("n", "bn", "<cmd>BufferLineCycleNext<CR>")
 gmap("n", "bp", "<cmd>BufferLineCyclePrev<CR>")
+
+-- neogen
+gmap("n", "<leader>dg", "<cmd>lua require'neogen'.generate()<CR>")
 
 -- rest.nvim
 vim.cmd("nmap <leader>rr <Plug>RestNvim")

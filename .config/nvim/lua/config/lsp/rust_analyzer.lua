@@ -3,7 +3,6 @@ vim.cmd("PackerLoad rust-tools.nvim")
 local M = {}
 
 local opts = { noremap = true, silent = true }
-local bufnr = 0
 
 M.setup = function(on_attach, capabilities)
   require("rust-tools").setup({
@@ -20,7 +19,7 @@ M.setup = function(on_attach, capabilities)
       },
     },
     server = {
-      on_attach = function(client)
+      on_attach = function(client, bufnr)
         on_attach(client, bufnr)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>RustRunnables<CR>", opts)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rc", "<cmd>RustOpenCargo<CR>", opts)

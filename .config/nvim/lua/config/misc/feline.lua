@@ -117,18 +117,10 @@ components.right.active[6] = {
 
 components.left.active[1] = {
   provider = function()
-    if vim.b.lsp_current_function ~= nil then
-      if vim.b.lsp_current_function ~= "" then
-        return " ( " .. vim.b.lsp_current_function .. ")"
-      else
-        return ""
-      end
-    else
-      return ""
-    end
+    return require("nvim-gps").get_location()
   end,
   enabled = function()
-    return #vim.lsp.buf_get_clients() > 0
+    return require("nvim-gps").is_available()
   end,
   hl = {
     fg = colors.white,

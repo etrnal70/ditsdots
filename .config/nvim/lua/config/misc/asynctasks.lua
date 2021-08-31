@@ -3,9 +3,10 @@ local gmap = function(type, key, value)
 end
 
 vim.g.asyncrun_open = 6
+vim.g.asyncrun_rootmarks = { ".git", ".root", "Cargo.toml", "package.json", "pubspec.yaml" }
 vim.g.asynctasks_term_rows = 6
+vim.g.asynctasks_term_focus = 0
 vim.g.asynctasks_template = "~/.config/nvim/task_template.ini"
 
-gmap("n", "<leader>Ar", "<cmd>AsyncTask file-run")
-gmap("n", "<leader>Ab", "<cmd>AsyncTask file-build")
-gmap("n", "<leader>At", "<cmd>AsyncTask file-test")
+gmap("n", "<leader>jr", "<cmd>AsyncTask project-run<CR>")
+gmap("n", "<leader>jb", "<cmd>AsyncTask project-build<CR>")

@@ -1,8 +1,6 @@
 require("bufferline").setup({
   options = {
     numbers = "none",
-    number_style = "superscript",
-    mappings = true,
     close_command = "bdelete! %d",
     right_mouse_command = "bdelete! %d",
     left_mouse_command = "buffer %d",
@@ -53,10 +51,11 @@ require("bufferline").setup({
         for _, client in pairs(vim.lsp.get_active_clients()) do
           if client.name == "dartls" then
             if vim.g.flutter_tools_decorations.app_version ~= nil then
-              table.insert(
-                result,
-                { text = " " .. vim.g.flutter_tools_decorations.app_version .. " ", guifg = "#222222", guibg = " #59B3EF" }
-              )
+              table.insert(result, {
+                text = " " .. vim.g.flutter_tools_decorations.app_version .. " ",
+                guifg = "#222222",
+                guibg = " #59B3EF",
+              })
             end
           end
         end

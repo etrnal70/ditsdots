@@ -11,6 +11,8 @@ cmd("highlight SignColumn guibg=NONE ctermbg=NONE guifg=NONE ctermfg=NONE")
 cmd("highlight EndOfBuffer guibg=NONE ctermbg=NONE")
 cmd("highlight ModeMsg guifg=White")
 cmd("highlight Search guifg=#CFCFCF guibg=#4F4F4F")
+cmd("highlight PmenuSel guibg=#4F4F4F")
+cmd("highlight Folded guibg=#2F2F2F guifg=#999999")
 
 cmd("highlight DiffAdd guibg=NONE ctermbg=NONE")
 cmd("highlight DiffChange guibg=NONE ctermbg=NONE")
