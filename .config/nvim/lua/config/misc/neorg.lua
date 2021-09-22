@@ -9,7 +9,7 @@ require("neorg").setup({
       },
     },
     ["core.norg.completion"] = {
-      config = { engine = "nvim-cmp" }, -- We current support nvim-compe and nvim-cmp only
+      config = { engine = "nvim-cmp" },
     },
     ["core.norg.concealer"] = {
       config = {
@@ -34,8 +34,9 @@ require("neorg").setup({
     ["core.norg.dirman"] = {
       config = {
         workspaces = {
+          default = "~/Data",
           notes = "~/Data/Notes",
-          uni = "~/Data/Coolyeah",
+          uni = "~/Data/Uni",
         },
         autodetect = true,
         autochdir = true,

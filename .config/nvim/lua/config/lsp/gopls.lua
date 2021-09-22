@@ -1,5 +1,3 @@
-vim.cmd("PackerLoad go.nvim")
-
 local M = {}
 
 local opts = { noremap = true, silent = true }

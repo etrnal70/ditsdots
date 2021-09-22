@@ -1,5 +1,3 @@
-vim.cmd("PackerLoad lua-dev.nvim")
-
 local M = {}
 
 M.setup = function(on_attach, capabilities)

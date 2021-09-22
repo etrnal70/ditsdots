@@ -1,5 +1,3 @@
-vim.cmd("PackerLoad flutter-tools.nvim")
-
 local M = {}
 
 local opts = { noremap = true, silent = true }

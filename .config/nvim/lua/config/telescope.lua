@@ -2,9 +2,7 @@ local tele = require("telescope")
 local actions = require("telescope.actions")
 
 -- Load telescope extension
-tele.load_extension("bibtex")
 tele.load_extension("fzf")
-tele.load_extension("heading")
 
 tele.setup({
   defaults = {
@@ -15,14 +13,6 @@ tele.setup({
         override_file_sorter = true,
         case_mode = "smart_case",
       },
-    },
-    vimgrep_arguments = {
-      "rg",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--smart-case",
     },
     layout_strategy = "flex",
     layout_config = {

@@ -1,4 +1,3 @@
-local vim = vim
 local opt = vim.opt
 
 opt.encoding = "utf-8"
@@ -95,8 +94,6 @@ opt.shortmess = {
   c = true,
 }
 
-opt.completeopt = { "menuone", "noinsert", "noselect" }
-
 opt.formatoptions = {
   ["1"] = true,
   ["2"] = true,
@@ -118,3 +115,22 @@ opt.autowriteall = true
 opt.backspace = { "indent", "eol", "start" }
 
 opt.emoji = false
+
+-- Default Diagnostics Override
+vim.diagnostic.config({
+  signs = true,
+  severity_sort = true,
+  underline = false,
+  update_in_insert = true,
+  virtual_text = {
+    severity = { min = vim.diagnostic.severity.WARN },
+  },
+})
+-- Disable diagnostic on SignColumn
+vim.fn.sign_define("DiagnosticSignError", { text = "" })
+vim.fn.sign_define("DiagnosticSignWarn", { text = "" })
+vim.fn.sign_define("DiagnosticSignInfo", { text = "" })
+vim.fn.sign_define("DiagnosticSignHint", { text = "" })
+
+-- Use nvim-notify as default
+vim.notify = require("notify")

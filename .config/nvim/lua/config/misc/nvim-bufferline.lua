@@ -61,6 +61,7 @@ require("bufferline").setup({
         end
 
         -- Git branch
+        -- TODO: Remove fugitive dependency
         local git_status = vim.fn["fugitive#statusline"]()
         if git_status ~= "" then
           git_status = git_status:match("%((.*)%)")

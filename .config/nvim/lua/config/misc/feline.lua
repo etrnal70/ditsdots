@@ -1,10 +1,9 @@
 local feline = require("feline")
-local devicons = require("nvim-web-devicons")
 local lsp = require("feline.providers.lsp")
 local status = require("lsp-status")
 
 local colors = {
-  bg = "#222222",
+  bg = "#181818",
   white = "#FFFFFF",
   yellow = "#FABD2F",
   orange = "#FF8800",
@@ -14,108 +13,13 @@ local colors = {
   red = "#EC5F67",
 }
 
-local ft_list = devicons.get_icons()
-
-local properties = {
-  force_inactive = {
-    filetypes = {
-      "NvimTree",
-      "dbui",
-      "esearch",
-      "packer",
-      "fugitive",
-      "fugiviteblame",
-    },
-    buftypes = {
-      "terminal",
-    },
-    bufnames = {},
-  },
-}
-
 local components = {
-  left = { active = {}, inactive = {} },
-  mid = { active = {}, inactive = {} },
-  right = { active = {}, inactive = {} },
+  active = { {}, {}, {} },
+  inactive = { {}, {} },
 }
 
 -- Active Components
-components.right.active[1] = {
-  provider = function()
-    local filename = vim.fn.expand("%:t")
-    local extension = vim.fn.expand("%:e")
-    local res = devicons.get_icon(filename, extension, { default = true })
-    return res
-  end,
-  hl = function()
-    local var = {}
-    local ext = tostring(vim.fn.expand("%:e"))
-    local res = ft_list[ext]
-    if res ~= nil then
-      var.fg = res.color
-    else
-      var.fg = "#6D8086"
-    end
-    return var
-  end,
-  icon = "",
-}
-
-components.right.active[2] = {
-  provider = function()
-    if (vim.fn.winwidth(0) / 2) < 60 then
-      return vim.fn.pathshorten(vim.fn.fnamemodify(vim.fn.expand("%"), ":~:."))
-    else
-      return vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
-    end
-  end,
-  hl = {
-    fg = colors.white,
-  },
-  left_sep = {
-    str = " ",
-  },
-  icon = "",
-}
-
-components.right.active[3] = {
-  provider = "git_diff_added",
-  hl = {
-    fg = "green",
-  },
-  icon = " +",
-}
-
-components.right.active[4] = {
-  provider = "git_diff_changed",
-  hl = {
-    fg = "orange",
-  },
-  icon = " ~",
-}
-
-components.right.active[5] = {
-  provider = "git_diff_removed",
-  hl = {
-    fg = "red",
-  },
-  icon = " -",
-}
-
-components.right.active[6] = {
-  provider = "position",
-  hl = {
-    fg = colors.grey,
-  },
-  right_sep = {
-    str = "  ",
-  },
-  left_sep = {
-    str = "  ",
-  },
-}
-
-components.left.active[1] = {
+table.insert(components.active[1], {
   provider = function()
     return require("nvim-gps").get_location()
   end,
@@ -132,9 +36,9 @@ components.left.active[1] = {
     },
     str = " ",
   },
-}
+})
 
-components.left.active[2] = {
+table.insert(components.active[1], {
   provider = function()
     -- TODO: Improve handling
     local res = {}
@@ -178,26 +82,44 @@ components.left.active[2] = {
     },
     str = "  ",
   },
-}
+})
 
--- Inactive Components
-components.right.inactive[1] = {
-  provider = function()
-    if (vim.fn.winwidth(0) / 2) < 60 then
-      return vim.fn.pathshorten(vim.fn.fnamemodify(vim.fn.expand("%"), ":~:."))
-    else
-      return vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
-    end
-  end,
+table.insert(components.active[3], {
+  provider = "file_info",
+  type = "relative-short",
   hl = {
-    fg = colors.grey,
+    fg = colors.white,
   },
   left_sep = {
     str = " ",
   },
-}
+})
 
-components.right.inactive[2] = {
+table.insert(components.active[3], {
+  provider = "git_diff_added",
+  hl = {
+    fg = "green",
+  },
+  icon = " +",
+})
+
+table.insert(components.active[3], {
+  provider = "git_diff_changed",
+  hl = {
+    fg = "orange",
+  },
+  icon = " ~",
+})
+
+table.insert(components.active[3], {
+  provider = "git_diff_removed",
+  hl = {
+    fg = "red",
+  },
+  icon = " -",
+})
+
+table.insert(components.active[3], {
   provider = "position",
   hl = {
     fg = colors.grey,
@@ -208,11 +130,53 @@ components.right.inactive[2] = {
   left_sep = {
     str = "  ",
   },
-}
+})
+
+-- Inactive Components
+table.insert(components.inactive[2], {
+  provider = "file_info",
+  type = "relative-short",
+  colored_icon = false,
+  hl = {
+    fg = colors.grey,
+  },
+  left_sep = {
+    str = " ",
+  },
+})
+
+table.insert(components.inactive[2], {
+  provider = "position",
+  hl = {
+    fg = colors.grey,
+  },
+  right_sep = {
+    str = "  ",
+  },
+  left_sep = {
+    str = "  ",
+  },
+})
 
 feline.setup({
-  default_bg = colors.bg,
-  default_fg = colors.white,
+  colors = {
+    fg = colors.white,
+    bg = colors.bg,
+  },
   components = components,
-  properties = properties,
+  force_inactive = {
+    filetypes = {
+      "dashboard",
+      "dbui",
+      "esearch",
+      "fugitive",
+      "fugiviteblame",
+      "NvimTree",
+      "packer",
+    },
+    buftypes = {
+      "terminal",
+    },
+    bufnames = {},
+  },
 })

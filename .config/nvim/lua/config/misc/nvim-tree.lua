@@ -86,6 +86,3 @@ set.nvim_tree_bindings = {
   { key = "q", cb = tree_cb("close") },
   { key = "g?", cb = tree_cb("toggle_help") },
 }
-
-gmap("n", "<leader>st", [[<cmd> NvimTreeToggle<CR>]])
-vim.cmd("highlight NvimTreeFolderIcon guifg=gray")

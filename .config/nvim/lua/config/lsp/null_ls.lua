@@ -3,6 +3,9 @@ local builtins = null_ls.builtins
 
 local sources = {
   -- Formatter
+  builtins.formatting.clang_format,
+  builtins.formatting.dart_format,
+  -- builtins.formatting.deno_fmt,
   builtins.formatting.eslint_d,
   builtins.formatting.rustfmt,
   builtins.formatting.shfmt.with({
@@ -13,11 +16,19 @@ local sources = {
       return utils.root_has_file(".stylua.toml") or utils.root_has_file("stylua.toml")
     end,
   }),
+  builtins.formatting.yapf,
   -- Diagnostics
   builtins.diagnostics.chktex,
+  builtins.diagnostics.codespell.with({
+    condition = function(utils)
+      return utils.root_has_file("setup.cfg") or utils.root_has_file(".codespellrc")
+    end,
+  }),
+  builtins.diagnostics.flake8,
   builtins.diagnostics.hadolint,
   builtins.diagnostics.markdownlint,
   builtins.diagnostics.shellcheck,
+  -- builtins.diagnostics.pylint,
 }
 
 local M = {}

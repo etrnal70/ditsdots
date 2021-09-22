@@ -18,7 +18,7 @@ parser_configs.http = {
 
 require("nvim-treesitter.configs").setup({
   ensure_installed = { "norg", "http" },
-  -- Treesitter-based syntax highlighting
+  ignore_installed = { "markdown" },
   highlight = {
     enable = true,
     use_languagetree = true,
@@ -33,14 +33,8 @@ require("nvim-treesitter.configs").setup({
       node_decremental = ",",
     },
   },
-  -- Treesitter-based docstring generator
-  -- TODO: Configure it
-  tree_docs = {
-    enable = false,
-  },
-  -- Treesitter-based refactoring function
   refactor = {
-    highlight_definitions = { enable = true },
+    highlight_definitions = { enable = false },
     smart_rename = {
       enable = true,
       keymaps = {
@@ -48,7 +42,6 @@ require("nvim-treesitter.configs").setup({
       },
     },
   },
-  -- Treesitter-based indentation
   indent = {
     enable = true,
   },
@@ -57,7 +50,6 @@ require("nvim-treesitter.configs").setup({
     extended_mode = true,
     max_file_lines = 2000,
   },
-  -- Custom-defined textobjects
   textobjects = {
     select = {
       enable = true,

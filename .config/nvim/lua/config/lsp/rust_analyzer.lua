@@ -1,5 +1,3 @@
-vim.cmd("PackerLoad rust-tools.nvim")
-
 local M = {}
 
 local opts = { noremap = true, silent = true }
@@ -8,7 +6,7 @@ M.setup = function(on_attach, capabilities)
   require("rust-tools").setup({
     tools = {
       autoSetHints = true,
-      hover_with_actions = true,
+      hover_with_actions = false,
       runnables = {
         use_telescope = true,
       },

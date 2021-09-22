@@ -1,14 +1,14 @@
-local cmd = vim.cmd
+local cmd = vim.api.nvim_command
 
 local gmap = function(type, key, value)
   vim.api.nvim_set_keymap(type, key, value, { noremap = true, silent = true })
 end
 
--- Switch active buffer with Ctrl + w + <hjkl>
-cmd([[map sh <C-w>h]])
-cmd([[map sk <C-w>k]])
-cmd([[map sj <C-w>j]])
-cmd([[map sl <C-w>l]])
+-- Switch active buffer with s + <hjkl>
+gmap("", "sh", "<C-w>h")
+gmap("", "sk", "<C-w>k")
+gmap("", "sj", "<C-w>j")
+gmap("", "sl", "<C-w>l")
 
 -- Move tab
 gmap("n", "<leader>bn", "<cmd>tabn<CR>")
@@ -29,23 +29,14 @@ gmap("n", "<C-A-l>", "<cmd>vertical resize -2<CR>")
 gmap("i", "<A-l>", "<esc>la")
 gmap("i", "<A-h>", "<esc>i")
 
--- Goto file in vertical split
--- TODO: function to determine split based on window
--- width
-cmd("nnoremap <Leader><Leader>gf <C-w>vgf")
-cmd("nnoremap <Leader><Leader>gF <C-w>vgF")
+-- Terminal
+gmap("t", "<esc>", "<C-\\><C-n>")
 
--- vim-maximizer
-gmap("n", "<leader>m", [[<cmd>MaximizerToggle!<CR>]])
-gmap("v", "<leader>gv", [[<cmd>MaximizerToggle!<CR>]])
+-- Neovim Diagnostics
+gmap("n", "<leader>e", "<cmd>lua vim.diagnostic.show_line_diagnostics({source='always'})<CR>")
 
--- Quickfix and Loclist
-gmap("n", "<C-q>", "<Plug>(qf_qf_toggle)<CR>")
-gmap("n", "<C-,>", "<cmd>cprev<CR>")
-gmap("n", "<C-.>", "<cmd>cnext<CR>")
-gmap("n", "<C-l>", "<Plug>(qf_loc_toggle)<CR>")
-gmap("n", "<A-,>", "<cmd>lprev<CR>")
-gmap("n", "<A-.>", "<cmd>lnext<CR>")
+-- nvim-tree.lua
+gmap("n", "<leader>st", "<cmd>NvimTreeToggle<CR>")
 
 -- Telescope
 gmap("n", "<leader>lf", "<cmd>Telescope find_files<CR>")
@@ -66,7 +57,5 @@ gmap("n", "bp", "<cmd>BufferLineCyclePrev<CR>")
 gmap("n", "<leader>dg", "<cmd>lua require'neogen'.generate()<CR>")
 
 -- rest.nvim
-vim.cmd("nmap <leader>rr <Plug>RestNvim")
-vim.cmd("nmap <leader>rp <Plug>RestNvimPreview")
-
--- TODO: some autocmd's here
+cmd("nmap <leader>rr <Plug>RestNvim")
+cmd("nmap <leader>rp <Plug>RestNvimPreview")
