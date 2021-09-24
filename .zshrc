@@ -1,4 +1,3 @@
-# Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
@@ -6,20 +5,20 @@ setopt beep notify
 setopt autocd
 bindkey -v
 
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/hanifrmdhn/.zshrc'
+# Benchmark purpose
+zmodload zsh/zprof
 
+# compinstall
+zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
 
-# Generate zcompdump once a day
+## Generate zcompdump once a day
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
 done
 compinit -C
-# End of lines added by compinstall
 
-### Added by Zinit's installer
+# zinit
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
   print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
   command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
@@ -32,33 +31,37 @@ source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# Load a few important annexes, without Turbo
-# (this is currently required for annexes)
+## zinit plugins
 zinit wait lucid light-mode for \
   zinit-zsh/z-a-rust \
   zinit-zsh/z-a-as-monitor \
   zinit-zsh/z-a-patch-dl \
   zinit-zsh/z-a-bin-gem-node \
-  zsh-users/zsh-syntax-highlighting \
+  zdharma/fast-syntax-highlighting \
   zsh-users/zsh-autosuggestions \
-  zsh-users/zsh-completions \
-  marlonrichert/zsh-autocomplete
+  zsh-users/zsh-completions
 
-### End of Zinit's installer chunk
-
-
-# zinit plugin config
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+## zinit plugin config
+zstyle ':completion:*' matcher-list 'r:|?=** m:{a-z\-}={A-Z\_}'
 zstyle ':completion:*' menu select
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
-zstyle ':autocomplete:*' min-input 2
 zstyle ':completion:*' verbose no
+zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#666666,bold,italic"
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
+export ZSH_AUTOSUGGEST_COMPLETION_IGNORE="git *"
 
 # Default
 export PATH=/usr/local/bin:/usr/bin:$HOME/.local/bin:$PATH
 export LC_ALL="en_US.UTF-8"
+
+# custom script
+export PATH=$PATH:$HOME/.scripts
 
 # Starship
 eval "$(starship init zsh)"
@@ -66,8 +69,12 @@ eval "$(starship init zsh)"
 # fnm
 eval "$(fnm env)"
 
-# Rust Cargo
+# zoxide
+eval "$(zoxide init zsh)"
+
+# Rust
 export PATH="$HOME/.cargo/bin:$PATH"
+export RUSTC_WRAPPER=sccache
 
 # Golang
 export GOPATH=$HOME/go
@@ -87,37 +94,31 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 export PATH=$PATH:$HOME/.sdk_dir/flutter/bin
 export CHROME_EXECUTABLE=/usr/bin/chromium
 
-# zoxide
-eval "$(zoxide init zsh)"
-
-# custom script
-export PATH=$PATH:$HOME/.config/script
-
 # CMake
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 # Python lib
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
 
-# FzF
-export FZF_DEFAULT_OPTS="--ansi --height 40% --layout=reverse --border"
-source /usr/share/fzf/key-bindings.zsh
+# Pyenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv virtualenv-init -)"
+
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
+
+# FZF
+export FZF_DEFAULT_OPTS="--ansi --height 40% --layout=reverse --border=none"
+# source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 
 # Misc
 export OPENCV_LOG_LEVEL=ERROR
 export EDITOR=nvim
 
-# ditsdots
-alias dfs="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-
-# Miscellaneous
-alias cfnv="cd ~/.config/nvim && nvim"
-alias ls="exa"
-alias cls="clear"
-alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
-
-# tmux
-alias ta='tmux attach -t'
-alias tl='tmux list-sessions'
-alias tks='tmux kill-server'
+# Source alias file
+source $HOME/.config/aliasrc
