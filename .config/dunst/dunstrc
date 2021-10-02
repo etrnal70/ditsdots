@@ -1,70 +1,69 @@
 [global]
     ### Display ###
     monitor = 0
-    follow = mouse
-    geometry = "320x50-30+20"
+    follow = keyboard
+    # Dimension
+    width = 310
+    height = 120
+    origin = top-right
+    offset = 20x20
+    # Progress Bar
     progress_bar = true
     progress_bar_height = 10
     progress_bar_frame_width = 2
     progress_bar_min_width = 0
     progress_bar_max_width = 320
-    indicate_hidden = yes
-    shrink = no
-    transparency = 30
-    notification_height = 60
-    separator_height = 10
-    padding = 12
-    horizontal_padding = 8
-    text_icon_padding = 12
+    # Padding
+    padding = 14
+    horizontal_padding = 14
+    text_icon_padding = 18
+    # Other
     frame_width = 2
-    frame_color = "#2E2E2E"
+    frame_color = "#616161"
+    separator_height = 0
     separator_color = frame
-    sort = yes
-    idle_threshold = 120
+    notification_limit = 3
+    indicate_hidden = true
+    sort = true
+    idle_threshold = 3m
 
     ### Text ###
-    font = "JetBrainsMono Nerd Font" 11
+    font = "JetBrainsMono Nerd Font" 10
     line_height = 0
     markup = full
-    format = "<b>%s</b>\n%b"
     alignment = left
     vertical_alignment = center
-    show_age_threshold = 300
-    word_wrap = yes
+    show_age_threshold = 5m
+    word_wrap = false
     ellipsize = middle
-    ignore_newline = no
+    ignore_newline = false
     stack_duplicates = true
     hide_duplicate_count = false
-    show_indicators = yes
+    show_indicators = true
 
     ### Icons ###
     icon_position = left
-    min_icon_size = 32
-    max_icon_size = 48
+    min_icon_size = 56
+    max_icon_size = 64
     # Fix : https://github.com/dunst-project/dunst/pull/864
+    # icon_path = "Adwaita"
     icon_path = /usr/share/icons/gnome/48x48/actions/:/usr/share/icons/gnome/48x48/apps/:/usr/share/icons/gnome/48x48/devices/:/usr/share/icons/gnome/48x48/emblems/:/usr/share/icons/gnome/48x48/emotes/:/usr/share/icons/gnome/48x48/mimetypes/:/usr/share/icons/Paper/48x48/actions:/usr/share/icons/Paper/48x48/apps:/usr/share/icons/Paper/48x48/categories:/usr/share/icons/Paper/48x48/devices:/usr/share/icons/Paper/48x48/emblems:/usr/share/icons/Paper/48x48/emotes:/usr/share/icons/Paper/48x48/mimetypes:/usr/share/icons/Paper/48x48/notifications:/usr/share/icons/Paper/48x48/places:/usr/share/icons/Paper/48x48/status:/usr/share/icons/Paper/48x48/web:/usr/share/icons/Paper/24x24/actions:/usr/share/icons/Paper/24x24/apps:/usr/share/icons/Paper/24x24/categories:/usr/share/icons/Paper/24x24/devices:/usr/share/icons/Paper/24x24/emblems:/usr/share/icons/Paper/24x24/emotes:/usr/share/icons/Paper/24x24/mimetypes:/usr/share/icons/Paper/24x24/notifications:/usr/share/icons/Paper/24x24/places:/usr/share/icons/Paper/24x24/status:/usr/share/icons/Paper/24x24/web
 
     ### History ###
-    sticky_history = timeout
     history_length = 10
 
-    ### Misc/Advanced ###
+    ### External ###
     dmenu = "/usr/bin/wofi -d dunst"
     browser = "/usr/bin/xdg-open"
     always_run_script = true
     title = Dunst
     class = Dunst
-    startup_notification = true
-    verbosity = mesg
-    corner_radius = 0
+    corner_radius = 5
     ignore_dbusclose = false
 
     ### Wayland ###
     layer = overlay
     force_xwayland = false
-
-    ### Legacy
-    force_xinerama = false
 
     ### Mouse ###
     mouse_left_click = close_current
@@ -75,15 +74,15 @@
     per_monitor_dpi = true
 
 [urgency_low]
-    background = "#2E2E2E"
-    foreground = "#AAAAAA"
-    highlight = "#999999"
+    background = "#616161"
+    foreground = "#FFFFFF"
+    highlight = "#FFFFFF"
     timeout = 6
 
 [urgency_normal]
-    background = "#2E2E2E"
-    foreground = "#DDDDDD"
-    highlight = "#999999"
+    background = "#616161"
+    foreground = "#FFFFFF"
+    highlight = "#FFFFFF"
     timeout = 8
 
 [urgency_critical]
@@ -98,5 +97,7 @@
 [fullscreen_show_critical]
     msg_urgency = critical
     fullscreen = show
+
+# TODO: Extend custom rules for e.g. battery, volume, etc
 
 # vim: ft=cfg
