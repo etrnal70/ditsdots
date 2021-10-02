@@ -59,3 +59,6 @@ gmap("n", "<leader>dg", "<cmd>lua require'neogen'.generate()<CR>")
 -- rest.nvim
 cmd("nmap <leader>rr <Plug>RestNvim")
 cmd("nmap <leader>rp <Plug>RestNvimPreview")
+
+-- autocmd
+cmd("autocmd TermOpen * setlocal nonumber norelativenumber")

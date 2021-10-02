@@ -70,6 +70,10 @@ tele.setup({
         },
       },
     },
+    lsp_code_actions = {
+      theme = "cursor",
+      layout_config = { width = 50 },
+    },
     lsp_definitions = {
       theme = "ivy",
       layout_config = { height = 13 },

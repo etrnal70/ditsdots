@@ -16,6 +16,8 @@ M.setup = function(on_attach, capabilities)
         verbose = false,
         lsp_on_attach = false,
         lsp_codelens = true,
+        dap_debug_keymap = false,
+        dap_debug_vt = false,
       })
       on_attach(client, bufnr)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>Gd", "<cmd>GoCmt<CR>", opts)

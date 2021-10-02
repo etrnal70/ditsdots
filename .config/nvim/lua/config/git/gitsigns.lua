@@ -19,6 +19,9 @@ require("gitsigns").setup({
     ["o ih"] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
     ["x ih"] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
   },
+  preview_config = {
+    border = "solid",
+  },
   sign_priority = 6,
   update_debounce = 500,
   status_formatter = nil,

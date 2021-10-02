@@ -47,6 +47,7 @@ return packer.startup({
       end,
     })
     use({ "ray-x/lsp_signature.nvim" })
+    use({ "weilbith/nvim-code-action-menu" })
     use({
       "neovim/nvim-lspconfig",
       config = function()
@@ -55,12 +56,12 @@ return packer.startup({
     })
 
     -- Completion
-    use({ "hrsh7th/vim-vsnip" })
-    use({ "hrsh7th/vim-vsnip-integ" })
-    use({ "hrsh7th/cmp-nvim-lsp" })
-    use({ "hrsh7th/cmp-path" })
-    use({ "hrsh7th/cmp-vsnip" })
-    use({ "hrsh7th/cmp-buffer" })
+    use({ "hrsh7th/vim-vsnip", after = "nvim-cmp" })
+    use({ "hrsh7th/vim-vsnip-integ", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-vsnip", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({
       "abecodes/tabout.nvim",
       config = function()
@@ -72,13 +73,13 @@ return packer.startup({
     })
     use({
       "hrsh7th/nvim-cmp",
-      branch = "custom-menu",
       config = function()
         require("config.completion.cmp")
       end,
     })
     use({
       "windwp/nvim-autopairs",
+      after = "nvim-cmp",
       config = function()
         require("config.completion.autopairs")
       end,
@@ -149,7 +150,7 @@ return packer.startup({
       end,
     })
     use({ "tpope/vim-fugitive" })
-    use({ "TimUntersberger/neogit", disable = true, requires = "sindrets/diffview.nvim" })
+    -- use({ "TimUntersberger/neogit", disable = true, requires = "sindrets/diffview.nvim" })
     use({
       "rhysd/git-messenger.vim",
       keys = "<leader>gm",
@@ -177,6 +178,12 @@ return packer.startup({
         "rcarriga/nvim-dap-ui",
       },
     })
+    use({
+      "nvim-telescope/telescope-dap.nvim",
+      config = function()
+        require("telescope").load_extension("dap")
+      end,
+    })
 
     -- Testing and Runner
     use({
@@ -201,13 +208,13 @@ return packer.startup({
     use({ "folke/lua-dev.nvim" })
     use({ "jose-elias-alvarez/null-ls.nvim" })
     use({ "plasticboy/vim-markdown", ft = "markdown" })
+    use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install" })
     -- use({ "dccsillag/magma-nvim" })
 
     -- Misc
     use({ "lewis6991/impatient.nvim" }) -- Remove after neovim/pull/15436 merged
     use({
       "goolord/alpha-nvim",
-      -- disable = true,
       config = function()
         require("config.misc.alpha")
       end,
@@ -281,12 +288,14 @@ return packer.startup({
     use({
       "rcarriga/nvim-notify",
       config = function()
+        vim.notify = require("notify")
         require("notify").setup({
           background_colour = "#000000",
           stages = "fade",
         })
       end,
     })
+    use({ "tpope/vim-scriptease", opt = true })
     -- use({ "soywod/himalaya", rtp = "vim" })
   end,
   config = {

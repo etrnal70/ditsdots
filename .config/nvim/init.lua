@@ -1,23 +1,23 @@
 -- Set <leader> to space
 vim.g.mapleader = " "
 
--- Load impatient plugin
-require("impatient")
-
 -- General neovim options
 require("config.global")
+
+-- Plugins
+require("config.plugins")
+local packer_compiled = vim.fn.stdpath("config") .. "/lua/packer_compiled.lua"
+vim.api.nvim_command("luafile" .. packer_compiled)
+require("packer_compiled")
+
+-- Load impatient plugin
+require("impatient")
 
 -- Theme
 require("config.theme")
 
--- Plugins
-require("config.plugins")
-require("packer_compiled")
-local packer_compiled = vim.fn.stdpath("config") .. "/plugin/packer_compiled.lua"
-vim.api.nvim_command("luafile" .. packer_compiled)
-
 -- DAP Settings
--- require ("config.dap")
+require("config.dap")
 
 -- Test Framework Settings
 require("config.test")

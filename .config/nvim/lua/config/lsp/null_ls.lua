@@ -25,10 +25,9 @@ local sources = {
     end,
   }),
   builtins.diagnostics.flake8,
-  builtins.diagnostics.hadolint,
+  -- builtins.diagnostics.hadolint,
   builtins.diagnostics.markdownlint,
   builtins.diagnostics.shellcheck,
-  -- builtins.diagnostics.pylint,
 }
 
 local M = {}

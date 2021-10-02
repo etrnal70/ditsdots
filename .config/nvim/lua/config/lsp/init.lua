@@ -1,6 +1,7 @@
 local lsp = vim.lsp
 local protocol = require("vim.lsp.protocol")
 local lsp_status = require("lsp-status")
+pcall(vim.cmd, [[packadd cmp-nvim-lsp]])
 
 -- LSP default override
 lsp_status.register_progress()
@@ -10,8 +11,7 @@ lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(require("lsp_extensions.workspace.diagnostic").handler, {})
 
 -- Custom Capabilities
-local custom_capabilities = protocol.make_client_capabilities()
-custom_capabilities = require("cmp_nvim_lsp").update_capabilities(custom_capabilities)
+local custom_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Custom attach
 local custom_attach = function(client, bufnr)
@@ -32,7 +32,8 @@ local custom_attach = function(client, bufnr)
   bmap("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>")
   bmap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
   bmap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
-  bmap("n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+  bmap("n", "<leader>a", "<cmd>CodeActionMenu<CR>")
+  bmap("v", "<leader>a", "<cmd>CodeActionMenu()<CR>")
   bmap("n", "<leader>lq", "<cmd>Telescope lsp_workspace_diagnostics<CR>")
   bmap("n", "<leader>lm", "<cmd>Telescope lsp_document_symbols<CR>")
   bmap("n", "<leader>lM", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
@@ -66,7 +67,7 @@ local custom_attach = function(client, bufnr)
     handler_opts = {
       border = "single",
     },
-    extra_trigger_chars = { "(", ",", "." },
+    extra_trigger_chars = { "<", "[", "(", ",", "." },
   })
 
   -- vim-illuminate

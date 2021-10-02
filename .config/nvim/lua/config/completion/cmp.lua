@@ -38,10 +38,11 @@ local item_kinds = {
 
 cmp.setup({
   completion = {
-    keyword_length = 1,
-  },
-  experimental = {
-    ghost_text = true,
+    autocomplete = {
+      cmp.TriggerEvent.TextChanged,
+      cmp.TriggerEvent.InsertEnter,
+    },
+    completeopt = "menu,menuone,noinsert",
   },
   formatting = {
     format = function(_, vim_item)
@@ -51,10 +52,10 @@ cmp.setup({
   },
   mapping = {
     ["<Tab>"] = cmp.mapping(function()
-      --[[ if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(t("<C-n>"), "n") ]]
-      if cmp.visible() then
-        cmp.select_next_item()
+      if vim.fn.pumvisible() == 1 then
+        vim.fn.feedkeys(t("<C-n>"), "n")
+        --[[ if cmp.visible() then
+        cmp.select_next_item() ]]
       else
         vim.fn.feedkeys(t("<Plug>(Tabout)"), "")
       end
@@ -63,10 +64,10 @@ cmp.setup({
       "s",
     }),
     ["<S-Tab>"] = cmp.mapping(function()
-      --[[ if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(t("<C-p>"), "n") ]]
-      if cmp.visible() then
-        cmp.select_prev_item()
+      if vim.fn.pumvisible() == 1 then
+        vim.fn.feedkeys(t("<C-p>"), "n")
+        --[[ if cmp.visible() then
+        cmp.select_prev_item() ]]
       else
         vim.fn.feedkeys(t("<Plug>(TaboutBack)"), "")
       end
@@ -74,8 +75,8 @@ cmp.setup({
       "i",
       "s",
     }),
-    ["<C-k>"] = cmp.mapping.scroll_docs(2),
-    ["<C-j>"] = cmp.mapping.scroll_docs(-2),
+    ["<C-j>"] = cmp.mapping.scroll_docs(2),
+    ["<C-k>"] = cmp.mapping.scroll_docs(-2),
     ["<C-l>"] = cmp.mapping(function()
       if neogen.jumpable() then
         vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
@@ -98,17 +99,12 @@ cmp.setup({
       behavior = cmp.ConfirmBehavior.Insert,
       select = false,
     }),
+    ["<C-Space>"] = cmp.mapping.complete(),
   },
   snippet = {
     expand = function(args)
       vim.fn["vsnip#anonymous"](args.body)
     end,
-  },
-  sorting = {
-    comparators = {
-      cmp.config.compare.score,
-      cmp.config.compare.offset,
-    },
   },
   sources = {
     { name = "vsnip" },

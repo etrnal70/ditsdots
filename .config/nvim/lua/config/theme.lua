@@ -1,9 +1,5 @@
 local cmd = vim.api.nvim_command
 
-vim.g.oceanic_next_terminal_bold = 1
-vim.g.oceanic_next_terminal_italic = 1
--- cmd("colorscheme OceanicNext")
-
 vim.g.substrata_italic_comments = true
 vim.g.substrata_italic_booleans = true
 vim.g.substrata_italic_functions = true
@@ -36,6 +32,9 @@ cmd("highlight DiffAdded guifg=#66BB6A guibg=NONE")
 cmd("highlight DiffRemoved guifg=#EF5350 guibg=NONE")
 
 cmd("highlight Todo guibg=NONE")
+
+-- symbols-outline
+cmd("highlight FocusedSymbol gui=bold guifg=#FFFFFF")
 
 -- git-messenger
 cmd("hi link gitMessengerPopupNormal NormalFloat")
