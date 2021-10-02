@@ -9,7 +9,6 @@
 window#waybar {
     background-color: rgba(0, 0, 0, 0.00);
     opacity: 1.0;
-    /*border-bottom: 3px solid rgba(100, 114, 125, 0.5);*/
     color: #ffffff;
     transition-property: background-color;
     transition-duration: .5s;
@@ -19,31 +18,22 @@ window#waybar.hidden {
     opacity: 0.2;
 }
 
-window#waybar.termite {
-    background-color: #3F3F3F;
-}
-
-window#waybar.chromium {
-    background-color: #000000;
-    border: none;
-}
-
 #workspaces button {
     padding: 0 3px;
     background-color: transparent;
-    color: #ffffff;
-    border-bottom: 2px solid transparent;
+    color: #555555;
     opacity: 0.85;
+    font-weight: bold;
 }
 
 #workspaces button:hover {
     background: rgba(0, 0, 0, 0.2);
     box-shadow: inherit;
-    border-bottom: 3px solid #ffffff;
+    color: #ffffff;
 }
 
 #workspaces button.focused {
-    border-bottom: 3px solid #ffffff;
+    color: #ffffff;
 }
 
 #workspaces button.urgent {
@@ -75,8 +65,15 @@ window#waybar.chromium {
 }
 
 #clock {
-    color: #000000;
-    background-color: #FFFFFF;
+    color: #FFFFFF;
+    background-color: rgba(66,66,66,0.8);
+    opacity: 0.6;
+    font-weight: bold;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-right: 8px;
+    margin-left: 10px;
+    border-radius: 12px;
 }
 
 #battery {
@@ -91,7 +88,6 @@ window#waybar.chromium {
 
 @keyframes blink {
     to {
-        background-color: rgba(0, 0, 0, 0.55);
         color: rgba(0, 0, 0, 0.55);
     }
 }
@@ -149,7 +145,6 @@ label:focus {
 
 #custom-caps_status {
   background-color: transparent;
-  animation-name: blink;
   border-bottom: 2px solid #FF1744;
 }
 
@@ -167,6 +162,15 @@ label:focus {
 
 #custom-pomo {
   border-bottom: 2px solid #BBBBBB;
+}
+
+#custom-screenrecord {
+  color: #ff1744;
+  animation-name: blink;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 #tray {

@@ -6,7 +6,7 @@ notmuch reindex '*'
 notmuch new
 
 if [ "$new" -gt "$old" ]; then
-  echo $new > ~/.status/EMAIL_COUNT
+  echo "$new" > ~/.status/EMAIL_COUNT
 else
   echo ''
 fi

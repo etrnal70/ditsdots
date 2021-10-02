@@ -4,7 +4,7 @@
     "height": 26,
     "modules-left": ["clock", "sway/workspaces", "sway/mode"],
     "modules-center": ["tray"],
-    "modules-right": ["custom/pomo","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery"],
+    "modules-right": ["custom/screenrecord","custom/pomo","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -13,7 +13,8 @@
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%a │ %d-%m-%Y}"
+        "format" : "{:  %a │ %H : %M}",
+        "format-alt": "{:  %a │ %d-%m-%Y}"
     },
     "battery": {
         "states": {
@@ -80,7 +81,7 @@
       "exec-if": "pgrep paru || pgrep pacman || exit 0",
       "return-type": "json",
       "format": " {} ",
-      "interval": 3600,
+      "interval": 10800,
       "signal": 8,
       "tooltip": true,
     },
@@ -115,5 +116,12 @@
         "exec": "~/.config/waybar/modules/dunst_status.sh",
         "on-click": "dunstctl set-paused toggle",
         "tooltip": true
-    }
+    },
+    "custom/screenrecord": {
+        "format": " {} ",
+        "interval": 1,
+        "exec": "~/.config/waybar/modules/screenrecord.sh",
+    },
 }
+
+# vim: ft=bash
