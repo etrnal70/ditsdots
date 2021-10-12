@@ -1,6 +1,3 @@
-# Background
-background_opacity: 0.90
-
 # Font
 font:
   size: 10.5
@@ -28,16 +25,17 @@ font:
 # Padding Config
 window:
   decorations: none
+  opacity: 0.93
 
   padding:
-    x: 12
-    y: 12
+    x: 8
+    y: 8
 
 # Colors (Ayu Dark)
 colors:
   # Default colors
   primary:
-    background: '#1F1F1F'
+    background: '#111111'
     foreground: '#B3B1AD'
 
 # Environment
