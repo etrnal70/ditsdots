@@ -3,7 +3,6 @@ local opt = vim.opt
 opt.encoding = "utf-8"
 opt.showmode = true
 opt.termguicolors = true -- Use GUI colors in terminal
-opt.background = "dark" -- Set background to dark
 
 opt.hidden = true -- Hide unloaded buffer
 opt.lazyredraw = true -- Don't redraw easily
@@ -53,7 +52,7 @@ opt.softtabstop = 2
 opt.tabstop = 2
 opt.smarttab = true
 opt.expandtab = true
-opt.signcolumn = "auto:1"
+opt.signcolumn = "auto:2"
 
 opt.laststatus = 2 -- Always show statusline
 opt.number = true -- Enable number column
@@ -63,7 +62,7 @@ opt.cursorlineopt = "number"
 
 opt.wildmenu = true -- Use wildmenu
 opt.wildoptions = "pum" -- Use popup style for wildmenu
-opt.pumheight = 3 -- Set popup height to 3 entry
+opt.pumheight = 4 -- Set popup height to 4 entry
 
 opt.wildignorecase = true
 opt.wildignore = {
@@ -106,6 +105,7 @@ opt.formatoptions = {
   l = true,
   v = true,
 }
+
 opt.swapfile = false -- Tbh swap file are disturbing af
 opt.backup = false -- Disable backup file
 opt.writebackup = false

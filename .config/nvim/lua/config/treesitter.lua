@@ -18,7 +18,7 @@ parser_configs.http = {
 
 require("nvim-treesitter.configs").setup({
   ensure_installed = { "norg", "http" },
-  ignore_installed = { "markdown" },
+  ignore_installed = {},
   highlight = {
     enable = true,
     use_languagetree = true,
@@ -35,12 +35,6 @@ require("nvim-treesitter.configs").setup({
   },
   refactor = {
     highlight_definitions = { enable = false },
-    smart_rename = {
-      enable = true,
-      keymaps = {
-        smart_rename = "grr",
-      },
-    },
   },
   indent = {
     enable = true,

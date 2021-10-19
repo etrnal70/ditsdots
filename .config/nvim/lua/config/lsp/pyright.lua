@@ -8,8 +8,9 @@ M.setup = function(on_attach, capabilities)
       python = {
         analysis = {
           autoSearchPaths = true,
-          useLibraryCodeForTypes = true,
+          diagnosticMode = "openFilesOnly",
           typeCheckingMode = "off",
+          useLibraryCodeForTypes = true,
         },
       },
     },

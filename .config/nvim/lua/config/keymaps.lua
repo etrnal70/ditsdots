@@ -33,13 +33,13 @@ gmap("i", "<A-h>", "<esc>i")
 gmap("t", "<esc>", "<C-\\><C-n>")
 
 -- Neovim Diagnostics
-gmap("n", "<leader>e", "<cmd>lua vim.diagnostic.show_line_diagnostics({source='always'})<CR>")
+gmap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float(0,{source='always'})<CR>")
 
 -- nvim-tree.lua
 gmap("n", "<leader>st", "<cmd>NvimTreeToggle<CR>")
 
 -- Telescope
-gmap("n", "<leader>lf", "<cmd>Telescope find_files<CR>")
+gmap("n", "<leader>lf", "<cmd>lua require('config.telescope').project_files()<CR>")
 gmap("n", "<leader>ls", "<cmd>Telescope live_grep<CR>")
 gmap("n", "<leader>lb", "<cmd>Telescope buffers<CR>")
 gmap("n", "<leader>lt", "<cmd>lua require'telescope'.extensions.asynctasks.all()<CR>")

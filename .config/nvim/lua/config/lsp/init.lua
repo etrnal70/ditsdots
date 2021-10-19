@@ -51,22 +51,11 @@ local custom_attach = function(client, bufnr)
 
   -- LSP Signature
   require("lsp_signature").on_attach({
-    bind = true,
-    doc_lines = 2,
     floating_window = false,
-    floating_window_above_first = true,
     fix_pos = false,
     hint_enable = true,
     hint_prefix = "ﰠ ",
-    hint_scheme = "Todo",
     use_lspsaga = false,
-    hi_parameter = "Search",
-    max_height = 12,
-    max_width = 60,
-    transparency = 10,
-    handler_opts = {
-      border = "single",
-    },
     extra_trigger_chars = { "<", "[", "(", ",", "." },
   })
 
@@ -89,11 +78,11 @@ end
 local servers = {
   "clangd",
   "denols",
+  "dockerls",
   "flutter",
   "gopls",
   "null_ls",
   "omnisharp",
-  -- "pylsp",
   "pyright",
   "rust_analyzer",
   "sumneko",

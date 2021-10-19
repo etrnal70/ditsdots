@@ -22,7 +22,7 @@ require("gitsigns").setup({
   preview_config = {
     border = "solid",
   },
-  sign_priority = 6,
+  sign_priority = 0,
   update_debounce = 500,
   status_formatter = nil,
   word_diff = true,

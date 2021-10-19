@@ -1,33 +1,34 @@
 local null_ls = require("null-ls")
-local builtins = null_ls.builtins
+local formatter = null_ls.builtins.formatting
+local linter = null_ls.builtins.diagnostics
 
 local sources = {
   -- Formatter
-  builtins.formatting.clang_format,
-  builtins.formatting.dart_format,
-  -- builtins.formatting.deno_fmt,
-  builtins.formatting.eslint_d,
-  builtins.formatting.rustfmt,
-  builtins.formatting.shfmt.with({
+  formatter.clang_format,
+  formatter.dart_format,
+  -- formatter.deno_fmt,
+  formatter.prettierd,
+  formatter.rustfmt,
+  formatter.shfmt.with({
     extra_args = { "-i", "2", "-ci", "-sr" },
   }),
-  builtins.formatting.stylua.with({
+  formatter.stylua.with({
     condition = function(utils)
       return utils.root_has_file(".stylua.toml") or utils.root_has_file("stylua.toml")
     end,
   }),
-  builtins.formatting.yapf,
+  formatter.yapf,
   -- Diagnostics
-  builtins.diagnostics.chktex,
-  builtins.diagnostics.codespell.with({
+  linter.chktex,
+  linter.codespell.with({
     condition = function(utils)
       return utils.root_has_file("setup.cfg") or utils.root_has_file(".codespellrc")
     end,
   }),
-  builtins.diagnostics.flake8,
-  -- builtins.diagnostics.hadolint,
-  builtins.diagnostics.markdownlint,
-  builtins.diagnostics.shellcheck,
+  linter.flake8,
+  -- linter.hadolint,
+  linter.markdownlint,
+  linter.shellcheck,
 }
 
 local M = {}

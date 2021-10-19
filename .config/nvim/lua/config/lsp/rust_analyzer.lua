@@ -61,9 +61,6 @@ M.setup = function(on_attach, capabilities)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rmd", "<cmd>RustMoveItemDown<CR>", opts)
       end,
       capabilities = capabilities,
-      flags = {
-        debounce_text_changes = 500,
-      },
     },
   })
 end

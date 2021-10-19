@@ -22,13 +22,13 @@ M.setup = function(on_attach, capabilities)
       on_attach(client, bufnr)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>Gd", "<cmd>GoCmt<CR>", opts)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>Gl", "<cmd>GoLint<CR>", opts)
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>Gf", '<cmd>lua require"go.format".gofmt()<CR>', opts)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>Gat", "<cmd>GoAddTag<CR>", opts)
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>Gfs", "<cmd>GoFillStruct<CR>", opts)
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>Grt", "<cmd>GoRmTag<CR>", opts)
     end,
     capabilities = capabilities,
     flags = {
-      debounce_text_changes = 500,
+      debounce_text_changes = 250,
     },
   })
 end

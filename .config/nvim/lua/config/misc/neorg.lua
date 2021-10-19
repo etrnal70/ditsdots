@@ -42,5 +42,11 @@ require("neorg").setup({
         autochdir = true,
       },
     },
+    ["core.gtd.base"] = {
+      config = {
+        workspace = "default",
+        exclude = {},
+      },
+    },
   },
 })

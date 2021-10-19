@@ -56,27 +56,24 @@ return packer.startup({
     })
 
     -- Completion
-    use({ "hrsh7th/vim-vsnip", after = "nvim-cmp" })
-    use({ "hrsh7th/vim-vsnip-integ", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-vsnip", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
-    use({
-      "abecodes/tabout.nvim",
-      config = function()
-        require("tabout").setup({
-          tabkey = "",
-          backwards_tabkey = "",
-        })
-      end,
-    })
     use({
       "hrsh7th/nvim-cmp",
       config = function()
         require("config.completion.cmp")
       end,
     })
+    use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
+    use({
+      "saadparwaiz1/cmp_luasnip",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end,
+      requires = { "L3MON4D3/LuaSnip" },
+      after = "nvim-cmp",
+    })
+    use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
+    use({ "kdheepak/cmp-latex-symbols", after = "nvim-cmp" })
     use({
       "windwp/nvim-autopairs",
       after = "nvim-cmp",
@@ -84,6 +81,7 @@ return packer.startup({
         require("config.completion.autopairs")
       end,
     })
+    use({ "rafamadriz/friendly-snippets" })
 
     -- Fuzzy-finder
     use({
@@ -95,10 +93,18 @@ return packer.startup({
         { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
       },
     })
-    use({ "GustavoKatel/telescope-asynctasks.nvim" })
+    use({ "GustavoKatel/telescope-asynctasks.nvim", requires = "telescope.nvim" })
     -- use({ "nvim-telescope/telescope-bibtex.nvim" })
     use({
+      "xiyaowong/telescope-emoji.nvim",
+      requires = "telescope.nvim",
+      config = function()
+        require("telescope").load_extension("emoji")
+      end,
+    })
+    use({
       "crispgm/telescope-heading.nvim",
+      requires = "telescope.nvim",
       ft = "markdown",
       config = function()
         require("telescope").load_extension("heading")
@@ -107,7 +113,6 @@ return packer.startup({
 
     -- Theme and Icons
     use({ "kyazdani42/nvim-web-devicons" })
-    use({ "etrnal70/oceanic-next", disable = true })
     use({ "kvrohit/substrata.nvim" })
 
     -- Treesitter
@@ -173,9 +178,9 @@ return packer.startup({
 
     -- Debugger
     use({
-      "mfussenegger/nvim-dap",
+      "rcarriga/nvim-dap-ui",
       requires = {
-        "rcarriga/nvim-dap-ui",
+        "mfussenegger/nvim-dap",
       },
     })
     use({
@@ -184,6 +189,7 @@ return packer.startup({
         require("telescope").load_extension("dap")
       end,
     })
+    use({ "mfussenegger/nvim-dap-python" })
 
     -- Testing and Runner
     use({
@@ -207,7 +213,6 @@ return packer.startup({
     use({ "ray-x/go.nvim" })
     use({ "folke/lua-dev.nvim" })
     use({ "jose-elias-alvarez/null-ls.nvim" })
-    use({ "plasticboy/vim-markdown", ft = "markdown" })
     use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install" })
     -- use({ "dccsillag/magma-nvim" })
 
@@ -241,15 +246,42 @@ return packer.startup({
       end,
     })
     use({
+      "luukvbaal/stabilize.nvim",
+      config = function()
+        require("stabilize").setup()
+      end,
+    })
+    use({
+      "https://gitlab.com/yorickpeterse/nvim-pqf.git",
+      config = function()
+        require("pqf").setup()
+      end,
+    })
+    use({
       "pwntester/octo.nvim",
       cmd = "Octo",
       config = function()
         require("octo").setup()
       end,
     })
-    use({ "tpope/vim-dadbod", ft = "sql" })
-    use({ "kristijanhusak/vim-dadbod-ui", after = "vim-dadbod" })
-    use({ "b3nj5m1n/kommentary" })
+    use({
+      "kristijanhusak/vim-dadbod-ui",
+      requires = { "tpope/vim-dadbod", "kristijanhusak/vim-dadbod-completion" },
+      config = function()
+        vim.api.nvim_command(
+          "autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })"
+        )
+      end,
+      ft = "sql",
+    })
+    use({
+      "numToStr/Comment.nvim",
+      config = function()
+        require("Comment").setup({
+          sticky = false,
+        })
+      end,
+    })
     use({ "gyim/vim-boxdraw", opt = true })
     use({ "machakann/vim-sandwich", event = "InsertEnter" })
     use({
@@ -262,9 +294,6 @@ return packer.startup({
       "RRethy/vim-illuminate",
       config = function()
         vim.g.Illuminate_delay = 750
-        vim.api.nvim_command("hi! def link LspReferenceText CursorLine")
-        vim.api.nvim_command("hi! def link LspReferenceWrite CursorLine")
-        vim.api.nvim_command("hi! def link LspReferenceRead CursorLine")
         vim.g.Illuminate_ftblacklist = {
           "NvimTree",
           "Telescope",
@@ -296,7 +325,7 @@ return packer.startup({
       end,
     })
     use({ "tpope/vim-scriptease", opt = true })
-    -- use({ "soywod/himalaya", rtp = "vim" })
+    use({ "soywod/himalaya", rtp = "vim" })
   end,
   config = {
     -- Move to lua dir so impatient.nvim can cache it
