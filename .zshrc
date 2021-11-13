@@ -22,7 +22,7 @@ compinit -C
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
   print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
   command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-  command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+  command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
     print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
     print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
@@ -33,11 +33,7 @@ autoload -Uz _zinit
 
 ## zinit plugins
 zinit wait lucid light-mode for \
-  zinit-zsh/z-a-rust \
-  zinit-zsh/z-a-as-monitor \
-  zinit-zsh/z-a-patch-dl \
-  zinit-zsh/z-a-bin-gem-node \
-  zdharma/fast-syntax-highlighting \
+  zdharma-continuum/fast-syntax-highlighting \
   zsh-users/zsh-autosuggestions \
   zsh-users/zsh-completions
 
@@ -101,11 +97,6 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
 export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
-
-# Pyenv
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv virtualenv-init -)"
 
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
