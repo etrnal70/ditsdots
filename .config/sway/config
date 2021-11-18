@@ -1,32 +1,23 @@
 # Sway Config
 
-# Default modifier
+# Defaults
+## Key Modifier
 set $mod Mod4
 
-# Home row direction keys, like vim
+## Home row direction keys
 set $left h
 set $down j
 set $up k
 set $right l
 
-# Default terminal emulator
-set $term alacritty
+## Terminal Emulator
+set $term kitty
 
-# Application launcher
-set $menu wofi -a
-
-### Wallpaper configuration
+## Wallpaper
 output * bg ~/.config/walls/cityroad.png fill
 
-### Idle configuration
-exec swayidle -w \
-         timeout 900 'swaylock -f -c 000000' \
-         timeout 1000 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-         timeout 1800 'systemctl suspend ' \
-         before-sleep 'swaylock -f -c 000000 && playerctl pause'
-
-### Input configuration
-# Touchpad
+# Input Configuration
+## Touchpad
 input "type:touchpad" {
     dwt enabled
     tap enabled
@@ -34,113 +25,151 @@ input "type:touchpad" {
     middle_emulation enabled
 }
 
-# Keyboard 
+## Keyboard
 input "type:keyboard" {
-  # Pressing both Shift toggle CapsLock
-  # Use capslock as escape
+  ### Double shift to CapsLock
+  ### Use capslock as escape
   xkb_options shift:both_capslock,caps:escape
-  # Faster key input
+
+  ### Faster key input
   repeat_rate 50
   repeat_delay 350
 }
 
-### Key bindings
-# Basics:
-    # Start a terminal
-    bindsym $mod+Return exec $term
+# Key Bindings
+## Mandatory Keybinds
+### Start a terminal
+bindsym $mod+Return exec $term
 
-    # Kill focused window
-    bindsym $mod+Mod1+q kill
+### Kill focused window
+bindsym $mod+Mod1+q kill
 
-    # Start your launcher
-    bindsym $mod+comma exec $menu --show=drun
+### Start default launcher
+bindsym --release $mod exec (pgrep "wofi" 1>/dev/null 2>&1 && killall wofi ) || wofi -a --show=drun
 
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    floating_modifier $mod normal
+### Floating Modifier
+floating_modifier $mod normal
 
-    # Reload the configuration file
-    bindsym $mod+Shift+c reload
+### Reload sway
+bindsym $mod+Shift+c reload
 
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+### Exit sway
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
-### Moving around:
-    # Move your focus around
-    bindsym $mod+$left focus left
-    bindsym $mod+$down focus down
-    bindsym $mod+$up focus up
-    bindsym $mod+$right focus right
-    # Or use $mod+[up|down|left|right]
-    bindsym $mod+Left focus left
-    bindsym $mod+Down focus down
-    bindsym $mod+Up focus up
-    bindsym $mod+Right focus right
-    # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
-    # Ditto, with arrow keys
-    bindsym $mod+Shift+Left move left
-    bindsym $mod+Shift+Down move down
-    bindsym $mod+Shift+Up move up
-    bindsym $mod+Shift+Right move right
+## App-specific Keybinds
+### Personal Custom Launcher
+bindsym $mod+period exec ~/.scripts/dmenu_toggle.sh
 
-### Workspaces:
-    # Switch to workspace
-    bindsym $mod+1 workspace number 1
-    bindsym $mod+2 workspace number 2
-    bindsym $mod+3 workspace number 3
-    bindsym $mod+4 workspace number 4
-    bindsym $mod+5 workspace number 5
-    bindsym $mod+6 workspace number 6
-    bindsym $mod+7 workspace number 7
-    bindsym $mod+8 workspace number 8
-    bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
-    # Move focused container to workspace
-    bindsym $mod+Shift+1 move container to workspace number 1
-    bindsym $mod+Shift+2 move container to workspace number 2
-    bindsym $mod+Shift+3 move container to workspace number 3
-    bindsym $mod+Shift+4 move container to workspace number 4
-    bindsym $mod+Shift+5 move container to workspace number 5
-    bindsym $mod+Shift+6 move container to workspace number 6
-    bindsym $mod+Shift+7 move container to workspace number 7
-    bindsym $mod+Shift+8 move container to workspace number 8
-    bindsym $mod+Shift+9 move container to workspace number 9
-    bindsym $mod+Shift+0 move container to workspace number 10
+### Screenshot
+bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
 
-### Layout stuff:
-    # You can "split" the current object of your focus with
-    # $mod+b or $mod+v, for horizontal and vertical splits
-    # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+### Dunst
+bindsym $mod+backslash exec ~/.scripts/dnd_toggle.sh
 
-    # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+## Movement Keybinds
+### Move your focus around
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
 
-    # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
+### Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
 
-    # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+## Workspaces Keybinds
+### Switch to workspace
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
 
-    # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+### Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
 
-    # Move focus to the parent container
-    bindsym $mod+a focus parent
+### Switch back and forth
+bindsym Mod1+Tab workspace back_and_forth
 
-### Scratchpad:
-    bindsym $mod+Shift+minus move scratchpad
-    bindsym $mod+minus scratchpad show
+## Layout Keybinds
+### Split
+bindsym $mod+b splith
+bindsym $mod+v splitv
 
-### Resizing containers:
-mode "resize" {
+### Switch current window layout
+bindsym $mod+i layout stacking
+bindsym $mod+o layout tabbed
+bindsym $mod+p layout toggle split
+
+### Make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+### Toggle tiling - floating window
+bindsym $mod+Shift+space floating toggle
+
+### Swap focus between the tiling area and the floating area
+bindsym $mod+space focus mode_toggle
+
+### Move focus to the parent container
+bindsym $mod+a focus parent
+
+### Scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+## Hardware Keybinds
+### Generic Hardware Button
+bindsym XF86AudioRaiseVolume exec ~/.scripts/volume.sh up
+bindsym XF86AudioLowerVolume exec ~/.scripts/volume.sh down
+bindsym XF86AudioMute exec ~/.scripts/volume.sh mute
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86MonBrightnessUp exec ~/.scripts/backlight.sh up
+bindsym XF86MonBrightnessDown exec ~/.scripts/backlight.sh down
+
+### Alternative
+bindsym $mod+Mod1+7 exec playerctl previous
+bindsym $mod+Mod1+8 exec playerctl play-pause
+bindsym $mod+Mod1+9 exec playerctl next
+bindsym $mod+Mod1+0 exec ~/.scripts/volume.sh down
+bindsym $mod+Mod1+minus exec ~/.scripts/volume.sh mute
+bindsym $mod+Mod1+equal exec ~/.scripts/volume.sh up
+
+### Arrow Keys
+bindsym $mod+Mod1+Left exec playerctl previous
+bindsym $mod+Mod1+Right exec playerctl next
+bindsym $mod+Mod1+Down exec ~/.scripts/volume.sh down
+bindsym $mod+Mod1+Up exec ~/.scripts/volume.sh up
+
+## Container Keybinds
+### Resize
+mode "resize_containers" {
     bindsym $left resize shrink width 10px
     bindsym $down resize grow height 10px
     bindsym $up resize shrink height 10px
@@ -150,89 +179,99 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+bindsym $mod+r mode "resize_containers"
 
-bindsym $mod+r mode "resize"
-
-### XWayland:
-# Disable when the time has come lol
-xwayland enable
-
-### Custom Settings
-# Disable mouse focus
-focus_follows_mouse no
-
-# Hide cursor after 5 seconds
-seat * hide_cursor 5000
-
-# Window Border
+# Additional Settings
+## Theme
+### Window Border
 default_border pixel 1
 default_floating_border normal
+smart_borders on
 
-# Random Launcher
-bindsym $mod+period exec ~/.config/script/dmenu_toggle.sh
+### Titlebar
+titlebar_border_thickness 1
+title_align center
 
+### Gaps
+gaps inner 8
+
+### Cursor
+set $my_cursor_size 30
+set $my_cursor Vimix-white-cursors
+seat seat0 xcursor_theme $my_cursor $my_cursor_size
+
+### Colors
 set $cl_high #FFFFFF
 set $cl_indi #d9d8d8
 set $cl_back #231f20
 set $cl_fore #d9d8d8
 set $cl_urge #ee2e24
-
-# Colors                border   bg       text     indi     childborder
-client.focused          $cl_indi $cl_high $cl_fore $cl_indi $cl_high
+# Properties            border   bg       text     indi     childborder
+client.focused          $cl_indi $cl_back $cl_fore $cl_indi $cl_high
 client.focused_inactive $cl_back $cl_back $cl_fore $cl_back $cl_back
-client.unfocused        $cl_back $cl_back $cl_fore $cl_back $cl_back
+client.unfocused        $cl_back $cl_fore $cl_back $cl_back $cl_back
 client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 
-# Gaps
-gaps inner 8
+## Idle Configuration
+exec swayidle -w \
+         timeout 900 'swaylock -f -c 000000' \
+         timeout 1000 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+         timeout 1800 'systemctl suspend ' \
+         before-sleep 'swaylock -f -c 000000 && playerctl pause'
 
-# Screenshot
-bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
+## XWayland
+xwayland enable # Disable when sar
 
-# Dunst
-bindsym $mod+backslash exec dunstctl set-paused toggle
+## Mouse
+focus_follows_mouse no
+mouse_warping none
 
-# Global Cursor
-set $my_cursor_size 30
-set $my_cursor vimix-cursors-white
-seat seat0 xcursor_theme $my_cursor $my_cursor_size
+## Windowing Rules
+for_window {
+  ### Browser
+  [instance="chromium"] inhibit_idle fullscreen; max_render_time off
+  [title="MAX - Chromium"] floating enable; sticky enable; border pixel 1
+  [class="firefox"] inhibit_idle fullscreen;  max_render_time off
+  [app_id="firefox"] inhibit_idle fullscreen; max_render_time off
+  [class="Nightly"] inhibit_idle fullscreen; max_render_time off
 
-### Windowing Rules
-for_window [app_id="firefox"] inhibit_idle fullscreen
-for_window [app_id="chromium"] inhibit_idle fullscreen
-for_window [app_id="wdisplays"] floating enable
+  ### Steam/WINE related
+  [class="gamescope"] inhibit_idle fullscreen; floating enable; border none
+  [class="Steam"] floating enable; max_render_time off
+  [class="steam_app.*"] inhibit_idle fullscreen; floating enable; border none
+  [class=".*.exe"] inhibit_idle fullscreen; floating enable; border none
 
-### Clamshell mode
-# Set laptops creen
+  ### Desktop apps
+  [app_id="zoom"] inhibit_idle fullscreen; floating enable
+  [app_id="ksysguard"] floating enable; sticky enable
+  [app_id="image-roll"] floating enable; border pixel 1
+  [app_id="pavucontrol"] sticky enable; floating enable
+  [app_id="wdisplays"] floating enable
+  [app_id="mpv"] inhibit_idle visible; border none; max_render_time off
+
+  ### Miscellaneous
+  [title="^Loading archive" app_id="org.kde.ark"] floating enable
+  [title="(?:Open|Save) (?:File|Folder|As)"] floating enable; sticky enable
+  [class="^.*"] inhibit_idle fullscreen
+  [app_id="^.*"] inhibit_idle fullscreen
+}
+
+## Clamshell mode
+### Set variable
 set $laptop_screen 'eDP-1'
-# Set sleep script
+### Set sleep script
 set $sleep sleep 3 && systemctl suspend
-
+### Assign with lid detection
 bindswitch --reload --locked lid:on exec "[$(swaymsg -t get_outputs | grep name | wc -l) == 1] && ($sleep) || (notify-send 'Clamshell Mode' 'Laptop screen off' && swaymsg output $laptop_screen disable)"
 bindswitch --reload --locked lid:off output $laptop_screen enable
 
-### Special keybinding
-bindsym XF86AudioRaiseVolume exec ~/.config/script/volume.sh up
-bindsym XF86AudioLowerVolume exec ~/.config/script/volume.sh down
-bindsym XF86AudioMute exec ~/.config/script/volume.sh mute
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
-bindsym XF86MonBrightnessUp exec ~/.config/script/backlight.sh up
-bindsym XF86MonBrightnessDown exec ~/.config/script/backlight.sh down
-
-### Alternative keybinding
-bindsym $mod+Mod1+7 exec playerctl previous
-bindsym $mod+Mod1+8 exec playerctl play-pause
-bindsym $mod+Mod1+9 exec playerctl next
-bindsym $mod+Mod1+0 exec ~/.config/script/volume.sh down
-bindsym $mod+Mod1+minus exec ~/.config/script/volume.sh mute
-bindsym $mod+Mod1+equal exec ~/.config/script/volume.sh up
-
 # Startup
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+## Start session target
 exec "systemctl --user import-environment; systemctl --user start sway-session.target"
+## Start GTK polkit agent
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+## Import GTK configuration
+exec_always ~/.scripts/import-gsettings
 
 ###########################
 include /etc/sway/config.d/*
