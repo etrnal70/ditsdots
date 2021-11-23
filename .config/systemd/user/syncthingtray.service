@@ -1,8 +1,0 @@
-[Unit]
-Description=Syncthingtray - Tray icon and notification for Syncthing
-
-[Service]
-ExecStart=/usr/bin/syncthingtray --wait
-
-[Install]
-WantedBy=syncthing.service
