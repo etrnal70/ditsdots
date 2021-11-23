@@ -3,7 +3,7 @@
     monitor = 0
     follow = keyboard
     # Dimension
-    width = 310
+    width = 350
     height = 120
     origin = top-right
     offset = 20x20
@@ -18,10 +18,10 @@
     horizontal_padding = 14
     text_icon_padding = 18
     # Other
-    frame_width = 2
+    frame_width = 0
     frame_color = "#616161"
-    separator_height = 0
-    separator_color = frame
+    separator_height = 8
+    separator_color = "#00000000"
     notification_limit = 3
     indicate_hidden = true
     sort = true
@@ -34,7 +34,7 @@
     alignment = left
     vertical_alignment = center
     show_age_threshold = 5m
-    word_wrap = false
+    word_wrap = true
     ellipsize = middle
     ignore_newline = false
     stack_duplicates = true
@@ -43,11 +43,11 @@
 
     ### Icons ###
     icon_position = left
-    min_icon_size = 56
-    max_icon_size = 64
-    # Fix : https://github.com/dunst-project/dunst/pull/864
-    # icon_path = "Adwaita"
-    icon_path = /usr/share/icons/gnome/48x48/actions/:/usr/share/icons/gnome/48x48/apps/:/usr/share/icons/gnome/48x48/devices/:/usr/share/icons/gnome/48x48/emblems/:/usr/share/icons/gnome/48x48/emotes/:/usr/share/icons/gnome/48x48/mimetypes/:/usr/share/icons/Paper/48x48/actions:/usr/share/icons/Paper/48x48/apps:/usr/share/icons/Paper/48x48/categories:/usr/share/icons/Paper/48x48/devices:/usr/share/icons/Paper/48x48/emblems:/usr/share/icons/Paper/48x48/emotes:/usr/share/icons/Paper/48x48/mimetypes:/usr/share/icons/Paper/48x48/notifications:/usr/share/icons/Paper/48x48/places:/usr/share/icons/Paper/48x48/status:/usr/share/icons/Paper/48x48/web:/usr/share/icons/Paper/24x24/actions:/usr/share/icons/Paper/24x24/apps:/usr/share/icons/Paper/24x24/categories:/usr/share/icons/Paper/24x24/devices:/usr/share/icons/Paper/24x24/emblems:/usr/share/icons/Paper/24x24/emotes:/usr/share/icons/Paper/24x24/mimetypes:/usr/share/icons/Paper/24x24/notifications:/usr/share/icons/Paper/24x24/places:/usr/share/icons/Paper/24x24/status:/usr/share/icons/Paper/24x24/web
+    enable_recursive_icon_lookup = true
+    icon_theme = "Papirus, Papirus-Dark"
+    icon_size = 64
+    min_icon_size = 64 # Mark for upcoming breaking changes
+    max_icon_size = 64 # Mark for upcoming breaking changes
 
     ### History ###
     history_length = 10
@@ -55,23 +55,16 @@
     ### External ###
     dmenu = "/usr/bin/wofi -d dunst"
     browser = "/usr/bin/xdg-open"
-    always_run_script = true
-    title = Dunst
-    class = Dunst
     corner_radius = 5
     ignore_dbusclose = false
 
     ### Wayland ###
     layer = overlay
-    force_xwayland = false
 
     ### Mouse ###
     mouse_left_click = close_current
     mouse_middle_click = close_all
     mouse_right_click = do_action, close_current
-
-[experimental]
-    per_monitor_dpi = true
 
 [urgency_low]
     background = "#616161"
