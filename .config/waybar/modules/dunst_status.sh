@@ -2,8 +2,8 @@
 
 is_paused="$(dunstctl is-paused)"
 
-if [ "$is_paused" == "true" ]; then
-  echo '{"text":"","tooltip":"Notifications is paused","class":"$class"}'
+if [ "$is_paused" = "true" ]; then
+  jo text= tooltip="Notifications is paused"
 else
   echo ''
 fi
