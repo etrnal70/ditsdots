@@ -1,6 +1,3 @@
-[user]
-	name = Mochammad Hanif R
-	email = etrnal70@gmail.com
 [core]
 	editor = nvim
   pager = delta
@@ -25,3 +22,11 @@
   commit-decoration-style = bold yellow box ul
   file-style = bold yellow ul
   file-decoration-style = none
+[alias]
+  p = pull
+  co = checkout
+  cob = checkout -b
+  del = branch -b
+  br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+[init]
+	defaultBranch = main
