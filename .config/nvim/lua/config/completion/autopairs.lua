@@ -11,13 +11,6 @@ npairs.setup({
   check_ts = true,
 })
 
-require("nvim-autopairs.completion.cmp").setup({
-  map_cr = true,
-  map_complete = true,
-  auto_select = false,
-  insert = false,
-})
-
 -- Custom Rules (might be refactored to new file)
 npairs.add_rules({
   rule("$", "$", { "tex", "latex" })

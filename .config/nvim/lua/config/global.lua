@@ -116,6 +116,8 @@ opt.backspace = { "indent", "eol", "start" }
 
 opt.emoji = false
 
+vim.g.python3_host_prog = "/bin/python"
+
 -- Default Diagnostics Override
 vim.diagnostic.config({
   signs = true,

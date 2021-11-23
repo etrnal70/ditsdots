@@ -3,6 +3,7 @@ local cmd = vim.api.nvim_command
 vim.g.substrata_italic_comments = true
 vim.g.substrata_italic_booleans = true
 vim.g.substrata_italic_functions = true
+vim.g.substrata_transparent = true
 cmd("colorscheme substrata")
 
 cmd("hi Normal guibg=NONE")
@@ -32,9 +33,9 @@ cmd("hi DiffRemoved guifg=#EF5350 guibg=NONE")
 -- Completion-related
 cmd("hi Pmenu guibg=#292927 guifg=#777777")
 cmd("hi PmenuSel guibg=#4F4F4F guifg=#DDDDDD")
-cmd("hi! def link CmpItemMenuDefault Pmenu")
-cmd("hi! def link CmpItemAbbrDefault Pmenu")
-cmd("hi CmpItemKindDefault guibg=#292927 guifg=#AB924C")
+cmd("hi! def link CmpItemMenu Pmenu")
+cmd("hi! def link CmpItemAbbr Pmenu")
+cmd("hi CmpItemKind guibg=#292927 guifg=#AB924C")
 
 -- symbols-outline
 cmd("hi FocusedSymbol gui=bold guifg=#FFFFFF")

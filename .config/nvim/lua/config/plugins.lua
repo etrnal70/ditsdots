@@ -47,7 +47,12 @@ return packer.startup({
       end,
     })
     use({ "ray-x/lsp_signature.nvim" })
-    use({ "weilbith/nvim-code-action-menu" })
+    use({
+      "weilbith/nvim-code-action-menu",
+      config = function()
+        vim.g.code_action_menu_show_diff = false
+      end,
+    })
     use({
       "neovim/nvim-lspconfig",
       config = function()
@@ -60,10 +65,18 @@ return packer.startup({
       "hrsh7th/nvim-cmp",
       config = function()
         require("config.completion.cmp")
+        require("config.completion.autocmd")
       end,
     })
+    use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
+    use({
+      "petertriho/cmp-git",
+      config = function()
+        require("cmp_git").setup()
+      end,
+    })
     use({
       "saadparwaiz1/cmp_luasnip",
       config = function()
@@ -72,7 +85,6 @@ return packer.startup({
       requires = { "L3MON4D3/LuaSnip" },
       after = "nvim-cmp",
     })
-    use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({ "kdheepak/cmp-latex-symbols", after = "nvim-cmp" })
     use({
       "windwp/nvim-autopairs",
@@ -145,7 +157,6 @@ return packer.startup({
         })
       end,
     })
-    use({ "vigoux/architext.nvim", opt = true })
 
     -- Git
     use({
@@ -209,7 +220,13 @@ return packer.startup({
     -- Language-related
     use({ "akinsho/flutter-tools.nvim" })
     use({ "simrat39/rust-tools.nvim" })
-    use({ "Saecki/crates.nvim", opt = true })
+    use({
+      "Saecki/crates.nvim",
+      event = "BufRead Cargo.toml",
+      config = function()
+        require("crates").setup()
+      end,
+    })
     use({ "ray-x/go.nvim" })
     use({ "folke/lua-dev.nvim" })
     use({ "jose-elias-alvarez/null-ls.nvim" })
@@ -266,13 +283,17 @@ return packer.startup({
     })
     use({
       "kristijanhusak/vim-dadbod-ui",
-      requires = { "tpope/vim-dadbod", "kristijanhusak/vim-dadbod-completion" },
+      requires = "tpope/vim-dadbod",
+    })
+    use({
+      "kristijanhusak/vim-dadbod-completion",
+      after = "vim-dadbod",
       config = function()
         vim.api.nvim_command(
           "autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })"
         )
       end,
-      ft = "sql",
+      ft = { "sql", "msql", "plsql" },
     })
     use({
       "numToStr/Comment.nvim",
@@ -320,12 +341,16 @@ return packer.startup({
         vim.notify = require("notify")
         require("notify").setup({
           background_colour = "#000000",
+          minimum_width = 35,
+          render = "minimal",
           stages = "fade",
         })
       end,
     })
     use({ "tpope/vim-scriptease", opt = true })
-    use({ "soywod/himalaya", rtp = "vim" })
+    use({ "tpope/vim-dotenv" })
+    use({ "sotte/presenting.vim", ft = { "markdown", "rst" } })
+    -- use({ "soywod/himalaya", rtp = "vim" })
   end,
   config = {
     -- Move to lua dir so impatient.nvim can cache it

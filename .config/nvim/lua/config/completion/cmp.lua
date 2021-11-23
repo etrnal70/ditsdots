@@ -95,19 +95,14 @@ cmp.setup({
       select = false,
     }),
   },
+  preselect = require("cmp.types").cmp.PreselectMode.None,
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
     end,
   },
-  sorting = {
-    comparators = {
-      cmp.config.compare.score,
-      cmp.config.compare.offset,
-    },
-  },
   sources = {
-    { name = "luasnip" },
+    { name = "luasnip", max_item_count = 3 },
     { name = "nvim_lsp" },
     { name = "path" },
   },

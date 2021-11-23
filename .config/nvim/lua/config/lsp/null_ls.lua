@@ -7,6 +7,7 @@ local sources = {
   formatter.clang_format,
   formatter.dart_format,
   -- formatter.deno_fmt,
+  formatter.gofumpt,
   formatter.prettierd,
   formatter.rustfmt,
   formatter.shfmt.with({
