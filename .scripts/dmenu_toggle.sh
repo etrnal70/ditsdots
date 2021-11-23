@@ -4,7 +4,7 @@
 
 entries="Audio Mute Toggle\nMic Mute Toggle\nRestart Kanshi\nRestart Waybar"
 
-selected=$(echo -e "$entries" | wofi --dmenu --style=$HOME/.config/wofi/style.css)
+selected=$(echo -e "$entries" | rofi -dmenu -i)
 
 case $selected in
   "Audio Mute Toggle")
