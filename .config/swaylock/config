@@ -1,12 +1,24 @@
-clock
 indicator
+indicator-caps-lock
 indicator-radius=120
-timestr=%H : %M
-datestr=%A %d %b
-text-color=FFFFFF
-ring-color=00000000
+indicator-idle-visible
+ring-color=FFFFFF30
+ring-clear-color=9CCC6580
+ring-wrong-color=E5393580
+ring-ver-color=43A04780
+key-hl-color=FFFFFF99
+text-color=00000000
+text-wrong-color=00000000
+text-ver-color=00000000
+text-clear-color=00000000
 inside-color=00000000
+inside-wrong-color=00000000
+inside-ver-color=00000000
+inside-clear-color=00000000
 separator-color=00000000
 line-color=00000000
+line-wrong-color=00000000
+line-ver-color=00000000
+line-clear-color=00000000
 fade-in=1
-image=~/.config/walls/ndv.png
+image=~/Data/wallpaper/lockscreen.png
