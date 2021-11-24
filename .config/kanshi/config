@@ -1,0 +1,9 @@
+profile default {
+  output eDP-1 enable position 0,0
+}
+
+profile home_dock {
+  output eDP-1 enable position 0,1080
+  output "Hewlett Packard HP E231 6CM3420FR5" enable position 0,0
+  output "Hewlett Packard HP E231 6CM5191NBW" enable position 1920,0 transform 90
+}
