@@ -29,28 +29,16 @@ return packer.startup({
     use({ "nvim-lua/plenary.nvim" })
 
     -- LSP Plugins
-    use({ "nvim-lua/lsp_extensions.nvim" })
     use({ "nvim-lua/lsp-status.nvim" })
-    use({
-      "simrat39/symbols-outline.nvim",
-      config = function()
-        vim.g.symbols_outline = {
-          highlight_hovered_item = true,
-          auto_preview = false,
-          position = "right",
-          width = 15,
-          keymaps = {
-            hover_symbol = "K",
-            toggle_preview = "<C-space>",
-          },
-        }
-      end,
-    })
     use({ "ray-x/lsp_signature.nvim" })
     use({
-      "weilbith/nvim-code-action-menu",
+      "ldelossa/litee.nvim",
       config = function()
-        vim.g.code_action_menu_show_diff = false
+        require("litee").setup({
+          layout = "right",
+          layout_size = 35,
+          icons = "nerd",
+        })
       end,
     })
     use({
@@ -68,8 +56,10 @@ return packer.startup({
         require("config.completion.autocmd")
       end,
     })
-    use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-buffer" })
+    use({ "hrsh7th/cmp-omni" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
     use({
       "petertriho/cmp-git",
@@ -88,7 +78,6 @@ return packer.startup({
     use({ "kdheepak/cmp-latex-symbols", after = "nvim-cmp" })
     use({
       "windwp/nvim-autopairs",
-      after = "nvim-cmp",
       config = function()
         require("config.completion.autopairs")
       end,
@@ -153,7 +142,7 @@ return packer.startup({
       requires = "nvim-treesitter",
       config = function()
         require("nvim-gps").setup({
-          separator = " ᐳ ",
+          separator = " ❯ ",
         })
       end,
     })
@@ -205,10 +194,13 @@ return packer.startup({
     -- Testing and Runner
     use({
       "rcarriga/vim-ultest",
+      requires = { "vim-test/vim-test" },
+      setup = function()
+        require("config.test")
+      end,
       run = ":UpdateRemotePlugins",
       cmd = { "Ultest", "UltestNearest", "UltestDebug", "UltestDebugNearest" },
     })
-    use({ "vim-test/vim-test", opt = true })
     use({
       "skywind3000/asyncrun.vim",
       requires = { "skywind3000/asynctasks.vim" },
@@ -229,7 +221,13 @@ return packer.startup({
     })
     use({ "ray-x/go.nvim" })
     use({ "folke/lua-dev.nvim" })
-    use({ "jose-elias-alvarez/null-ls.nvim" })
+    use({ "lervag/vimtex", disable = true, ft = "tex" })
+    use({
+      "jose-elias-alvarez/null-ls.nvim",
+      config = function()
+        require("config.null_ls")
+      end,
+    })
     use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install" })
     -- use({ "dccsillag/magma-nvim" })
 
@@ -242,6 +240,12 @@ return packer.startup({
       end,
     })
     use({
+      "stevearc/dressing.nvim",
+      config = function()
+        require("config.dressing")
+      end,
+    })
+    use({
       "famiu/feline.nvim",
       config = function()
         vim.cmd("PackerLoad lsp-status.nvim")
@@ -251,12 +255,11 @@ return packer.startup({
     use({
       "akinsho/bufferline.nvim",
       config = function()
-        require("config.misc.nvim-bufferline")
+        require("config.misc.bufferline")
       end,
     })
     use({
       "vhyrro/neorg",
-      branch = "unstable",
       requires = "vhyrro/neorg-telescope",
       config = function()
         require("config.misc.neorg")
@@ -283,7 +286,11 @@ return packer.startup({
     })
     use({
       "kristijanhusak/vim-dadbod-ui",
-      requires = "tpope/vim-dadbod",
+      requires = { "kristijanhusak/vim-dadbod", branch = "async-query" },
+      setup = function()
+        vim.g.db_async = 1
+      end,
+      cmd = { "DBUI" },
     })
     use({
       "kristijanhusak/vim-dadbod-completion",
@@ -330,7 +337,7 @@ return packer.startup({
     })
     use({
       "NTBBloodbath/rest.nvim",
-      opt = true,
+      ft = "http",
       config = function()
         require("rest-nvim").setup()
       end,
@@ -347,10 +354,11 @@ return packer.startup({
         })
       end,
     })
-    use({ "tpope/vim-scriptease", opt = true })
     use({ "tpope/vim-dotenv" })
-    use({ "sotte/presenting.vim", ft = { "markdown", "rst" } })
     -- use({ "soywod/himalaya", rtp = "vim" })
+
+    -- Lua development
+    use({ "rafcamlet/nvim-luapad", cmd = "Luapad" })
   end,
   config = {
     -- Move to lua dir so impatient.nvim can cache it

@@ -1,4 +1,3 @@
-pcall(vim.cmd, [[packadd nvim-autopairs]])
 local npairs = require("nvim-autopairs")
 local conds = require("nvim-autopairs.conds")
 local rule = require("nvim-autopairs.rule")

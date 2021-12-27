@@ -29,7 +29,7 @@ gmap("n", "<leader>dlv", "<cmd>Telescope dap variables<CR>")
 gmap("n", "<leader>dlf", "<cmd>Telescope dap frames<CR>")
 
 -- Set icon
--- TODO: Don't conflict with gitsigns
+-- TODO: Don't conflict with gitsigns (Issue #10106)
 vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapLogpoint", { text = "", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "🟢", texthl = "", linehl = "", numhl = "" })
@@ -72,3 +72,5 @@ dapui.setup({
     remove = "d",
   },
 })
+
+require("dap.ext.vscode").load_launchjs()

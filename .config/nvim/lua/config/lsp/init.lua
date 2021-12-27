@@ -1,5 +1,4 @@
 local lsp = vim.lsp
-local protocol = require("vim.lsp.protocol")
 local lsp_status = require("lsp-status")
 pcall(vim.cmd, [[packadd cmp-nvim-lsp]])
 
@@ -8,7 +7,6 @@ lsp_status.register_progress()
 lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "solid",
 })
-lsp.handlers["textDocument/publishDiagnostics"] = lsp.with(require("lsp_extensions.workspace.diagnostic").handler, {})
 
 -- Custom Capabilities
 local custom_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -22,9 +20,9 @@ local custom_attach = function(client, bufnr)
   -- LSP Keymapping
   bmap("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
   bmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-  bmap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
+  bmap("n", "gi", "<cmd>Telescope lsp_implementations<CR>")
   bmap("n", "gh", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-  bmap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+  bmap("n", "gy", "<cmd>Telescope lsp_type_definitions<CR>")
   bmap("n", "gr", "<cmd>Telescope lsp_references<CR>")
   bmap("n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
   bmap("n", "gw", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>")
@@ -32,40 +30,37 @@ local custom_attach = function(client, bufnr)
   bmap("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>")
   bmap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
   bmap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
-  bmap("n", "<leader>a", "<cmd>CodeActionMenu<CR>")
-  bmap("v", "<leader>a", "<cmd>CodeActionMenu()<CR>")
-  bmap("n", "<leader>lq", "<cmd>Telescope lsp_workspace_diagnostics<CR>")
+  bmap("n", "<leader>ci", "<cmd>lua vim.lsp.buf.incoming_calls()<CR>")
+  bmap("n", "<leader>co", "<cmd>lua vim.lsp.buf.outgoing_calls()<CR>")
+  bmap("n", "<leader>ss", "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
+  -- bmap("n", "<leader>a", "<cmd>Telescope lsp_code_actions<CR>")
+  bmap("n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+  bmap("v", "<leader>a", "<cmd>Telescope lsp_range_code_action<CR>")
+  bmap("n", "<leader>L", "<cmd>Telescope lsp_codelens<CR>")
   bmap("n", "<leader>lm", "<cmd>Telescope lsp_document_symbols<CR>")
   bmap("n", "<leader>lM", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
-  bmap("n", "<leader>sf", "<cmd>lua vim.lsp.buf.formatting_sync()<CR>")
 
-  -- Disable server autoformat. Let null-ls handle it by default
-  if client.name ~= "null-ls" then
-    client.resolved_capabilities.document_formatting = false
-  end
-
-  -- Autoformat on save
-  --[[ if client.resolved_capabilities.document_formatting then
-    vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
-  end ]]
+  -- Disable server formatting capabilities
+  client.resolved_capabilities.document_formatting = false
+  client.resolved_capabilities.document_range_formatting = false
 
   -- LSP Signature
   require("lsp_signature").on_attach({
-    floating_window = false,
-    fix_pos = false,
-    hint_enable = true,
+    bind = true,
+    floating_window = true,
+    doc_lines = 0,
+    handler_opts = {
+      border = "solid",
+    },
+    hint_enable = false,
     hint_prefix = "ﰠ ",
-    use_lspsaga = false,
-    extra_trigger_chars = { "<", "[", "(", ",", "." },
+    extra_trigger_chars = { "<", "[", "(", "{", ",", "." },
   })
 
   -- vim-illuminate
   require("illuminate").on_attach(client)
 
-  -- LSP Outline Symbols
-  bmap("n", "<leader>ss", "<cmd>SymbolsOutline<CR>")
-
-  -- Start nvim-cmp LSP source
+  -- Register nvim-cmp LSP source
   require("cmp_nvim_lsp").setup()
 
   -- Register LSP status
@@ -81,7 +76,6 @@ local servers = {
   "dockerls",
   "flutter",
   "gopls",
-  "null_ls",
   "omnisharp",
   "pyright",
   "rust_analyzer",

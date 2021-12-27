@@ -1,4 +1,6 @@
 local cmp = require("cmp")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+local compare = require("cmp.config.compare")
 local neogen = require("neogen")
 local luasnip = require("luasnip")
 
@@ -11,10 +13,17 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local concat_str = function(str)
+  if string.len(str) > 35 then
+    return string.sub(str, 1, 20) .. "..." .. string.sub(str, -12)
+  end
+  return str
+end
+
 -- Define CompletionItemKind
 local item_kinds = {
   Text = " Text",
-  Method = " Method",
+  Method = " Method",
   Function = "ƒ Function",
   Constructor = " Constructor",
   Field = "識Field",
@@ -36,7 +45,7 @@ local item_kinds = {
   Struct = " Struct",
   Event = "鬒Event",
   Operator = "\u{03a8} Operator",
-  TypeParameter = " TypeParameter",
+  TypeParameter = "ﰠ TypeParameter",
 }
 
 cmp.setup({
@@ -47,15 +56,7 @@ cmp.setup({
   formatting = {
     format = function(entry, vim_item)
       vim_item.kind = item_kinds[vim_item.kind]
-      vim_item.menu = ({
-        nvim_lsp = "[LSP]",
-        luasnip = "[Snip]",
-        path = "[Path]",
-        neorg = "[Nrg]",
-        buffer = "[Buf]",
-        latex_symbols = "[TeX]",
-      })[entry.source.name]
-      vim_item.abbr = string.sub(vim_item.abbr, 1, 30)
+      vim_item.abbr = concat_str(vim_item.abbr)
       return vim_item
     end,
   },
@@ -101,9 +102,28 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
+  sorting = {
+    comparators = {
+      function(...)
+        return require("cmp_buffer"):compare_locality(...)
+      end,
+      compare.offset,
+      compare.exact,
+      compare.score,
+      compare.recently_used,
+      compare.kind,
+      compare.sort_text,
+      compare.length,
+      compare.order,
+    },
+  },
   sources = {
     { name = "luasnip", max_item_count = 3 },
     { name = "nvim_lsp" },
+    { name = "signature_help" },
+    { name = "buffer", max_item_count = 2 },
     { name = "path" },
   },
 })
+
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "{" } }))

@@ -8,7 +8,7 @@ vim.cmd([[
 vim.cmd([[
   augroup CmpTex
     au!
-    autocmd FileType tex lua require'cmp'.setup.buffer({ sources = { { name = 'luasnip' }, { name = 'nvim_lsp' }, { name = 'latex_symbols' }, { name = 'buffer', keyword_length = 5 } } })
+    autocmd FileType tex lua require'cmp'.setup.buffer({ sources = { { name = 'luasnip', max_item_count = 3 }, { name = 'nvim_lsp' }, { name = 'latex_symbols', max_item_count = 2 }, { name = 'buffer', keyword_length = 4 } } })
   augroup END
 ]])
 

@@ -13,6 +13,15 @@ local colors = {
   red = "#EC5F67",
 }
 
+feline.use_theme(colors)
+
+local separator = {
+  hl = {
+    fg = "bg",
+  },
+  str = " ",
+}
+
 local components = {
   active = { {}, {}, {} },
   inactive = { {}, {} },
@@ -27,24 +36,16 @@ table.insert(components.active[1], {
     return require("nvim-gps").is_available()
   end,
   hl = {
-    fg = colors.white,
-    bg = colors.bg,
+    fg = "white",
   },
-  right_sep = {
-    hl = {
-      bg = colors.bg,
-    },
-    str = " ",
-  },
+  left_sep = separator,
 })
 
 table.insert(components.active[1], {
   provider = function()
     -- TODO: Improve handling
     local res = {}
-    local config = {
-      spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" },
-    }
+    local spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" }
 
     local buf_message = status.messages()
     for _, msg in ipairs(buf_message) do
@@ -60,7 +61,7 @@ table.insert(components.active[1], {
         end
 
         if msg.spinner then
-          contents = contents .. " " .. config.spinner_frames[(msg.spinner % #config.spinner_frames) + 1]
+          contents = contents .. " " .. spinner_frames[(msg.spinner % #spinner_frames) + 1]
         end
       end
 
@@ -73,26 +74,18 @@ table.insert(components.active[1], {
     return lsp.is_lsp_attached
   end,
   hl = {
-    fg = colors.grey,
+    fg = "grey",
   },
-  left_sep = {
-    hl = {
-      fg = colors.bg,
-      bg = colors.bg,
-    },
-    str = "  ",
-  },
+  left_sep = separator,
 })
 
 table.insert(components.active[3], {
   provider = "file_info",
   type = "relative-short",
   hl = {
-    fg = colors.white,
+    fg = "white",
   },
-  left_sep = {
-    str = " ",
-  },
+  left_sep = separator,
 })
 
 table.insert(components.active[3], {
@@ -122,7 +115,7 @@ table.insert(components.active[3], {
 table.insert(components.active[3], {
   provider = "position",
   hl = {
-    fg = colors.grey,
+    fg = "grey",
   },
   right_sep = {
     str = "  ",
@@ -138,17 +131,15 @@ table.insert(components.inactive[2], {
   type = "relative-short",
   colored_icon = false,
   hl = {
-    fg = colors.grey,
+    fg = "grey",
   },
-  left_sep = {
-    str = " ",
-  },
+  left_sep = separator,
 })
 
 table.insert(components.inactive[2], {
   provider = "position",
   hl = {
-    fg = colors.grey,
+    fg = "grey",
   },
   right_sep = {
     str = "  ",
@@ -160,22 +151,22 @@ table.insert(components.inactive[2], {
 
 feline.setup({
   colors = {
-    fg = colors.white,
-    bg = colors.bg,
+    fg = "white",
+    bg = "bg",
   },
   components = components,
   force_inactive = {
     filetypes = {
-      "dashboard",
-      "dbui",
-      "esearch",
-      "fugitive",
-      "fugiviteblame",
-      "NvimTree",
-      "packer",
+      "^dbui$",
+      "^fugitive$",
+      "^fugiviteblame$",
+      "^NvimTree$",
+      "^packer$",
+      "^qf$",
+      "^help$",
     },
     buftypes = {
-      "terminal",
+      "^terminal$",
     },
     bufnames = {},
   },

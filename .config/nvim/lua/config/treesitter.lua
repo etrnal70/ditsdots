@@ -9,7 +9,7 @@ parser_configs.norg = {
 }
 
 require("nvim-treesitter.configs").setup({
-  ensure_installed = { "norg", "http" },
+  ensure_installed = "all",
   ignore_installed = {},
   highlight = {
     enable = true,
@@ -30,6 +30,7 @@ require("nvim-treesitter.configs").setup({
   },
   indent = {
     enable = true,
+    disable = { "python" },
   },
   rainbow = {
     enable = true,

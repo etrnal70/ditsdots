@@ -120,16 +120,25 @@ vim.g.python3_host_prog = "/bin/python"
 
 -- Default Diagnostics Override
 vim.diagnostic.config({
-  signs = true,
+  float = {
+    border = "solid",
+    source = "always",
+  },
+  signs = {
+    severity = { min = vim.diagnostic.severity.WARN },
+  },
   severity_sort = true,
   underline = false,
   update_in_insert = true,
   virtual_text = {
+    format = function()
+      return ""
+    end,
     severity = { min = vim.diagnostic.severity.WARN },
   },
 })
 -- Disable diagnostic on SignColumn
-vim.fn.sign_define("DiagnosticSignError", { text = "" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = "" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = "" })
-vim.fn.sign_define("DiagnosticSignHint", { text = "" })
+vim.fn.sign_define("DiagnosticSignError", { text = "", numhl = "DiagnosticError" })
+vim.fn.sign_define("DiagnosticSignWarn", { text = "", numhl = "DiagnosticWarn" })
+vim.fn.sign_define("DiagnosticSignInfo", { text = "", numhl = "DiagnosticInfo" })
+vim.fn.sign_define("DiagnosticSignHint", { text = "", numhl = "DiagnosticHint" })

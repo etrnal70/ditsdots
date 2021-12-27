@@ -4,6 +4,11 @@ local actions = require("telescope.actions")
 -- Load telescope extension
 tele.load_extension("fzf")
 
+local default_ivy = {
+  theme = "ivy",
+  layout_config = { height = 13 },
+}
+
 tele.setup({
   defaults = {
     extensions = {
@@ -70,30 +75,25 @@ tele.setup({
         },
       },
     },
+    diagnostics = default_ivy,
     lsp_code_actions = {
       theme = "cursor",
       layout_config = { width = 50 },
     },
-    lsp_definitions = {
-      theme = "ivy",
-      layout_config = { height = 13 },
-    },
-    lsp_references = {
-      theme = "ivy",
-      layout_config = { height = 13 },
-    },
-    lsp_workspace_diagnostics = {
-      theme = "ivy",
-      layout_config = { height = 13 },
-    },
+    lsp_definitions = default_ivy,
+    lsp_implementations = default_ivy,
+    lsp_references = default_ivy,
+    lsp_type_definitions = default_ivy,
   },
 })
 
 local M = {}
 
-M.project_files = function ()
+M.project_files = function()
   local ok = pcall(require("telescope.builtin").git_files, {})
-  if not ok then require("telescope.builtin").find_files({}) end
+  if not ok then
+    require("telescope.builtin").find_files({})
+  end
 end
 
 return M

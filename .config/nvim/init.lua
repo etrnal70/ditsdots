@@ -19,9 +19,6 @@ require("config.theme")
 -- DAP Settings
 require("config.dap")
 
--- Test Framework Settings
-require("config.test")
-
 -- Git settings
 require("config.git")
 

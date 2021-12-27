@@ -33,7 +33,8 @@ gmap("i", "<A-h>", "<esc>i")
 gmap("t", "<esc>", "<C-\\><C-n>")
 
 -- Neovim Diagnostics
-gmap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float(0,{source='always'})<CR>")
+gmap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>")
+gmap("n", "<leader>lq", "<cmd>Telescope diagnostics<CR>")
 
 -- nvim-tree.lua
 gmap("n", "<leader>st", "<cmd>NvimTreeToggle<CR>")
