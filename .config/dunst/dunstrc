@@ -3,8 +3,8 @@
     monitor = 0
     follow = keyboard
     # Dimension
-    width = 350
-    height = 120
+    width = 320
+    height = 150
     origin = top-right
     offset = 20x20
     # Progress Bar
@@ -20,7 +20,7 @@
     # Other
     frame_width = 0
     frame_color = "#616161"
-    separator_height = 8
+    separator_height = 6
     separator_color = "#00000000"
     notification_limit = 3
     indicate_hidden = true
@@ -28,7 +28,7 @@
     idle_threshold = 3m
 
     ### Text ###
-    font = "JetBrainsMono Nerd Font" 10
+    font = "JetBrainsMono Nerd Font" 9
     line_height = 0
     markup = full
     alignment = left
@@ -44,10 +44,10 @@
     ### Icons ###
     icon_position = left
     enable_recursive_icon_lookup = true
-    icon_theme = "Papirus, Papirus-Dark"
-    icon_size = 64
-    min_icon_size = 64 # Mark for upcoming breaking changes
-    max_icon_size = 64 # Mark for upcoming breaking changes
+    icon_theme = "Papirus, Adwaita, breeze"
+    icon_size = 48
+    min_icon_size = 48 # Mark for upcoming breaking changes
+    max_icon_size = 48 # Mark for upcoming breaking changes
 
     ### History ###
     history_length = 10
