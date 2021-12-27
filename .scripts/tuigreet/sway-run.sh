@@ -8,8 +8,8 @@ export WLR_DRM_NO_MODIFIERS=1
 # export WLR_RENDERER=vulkan
 
 # SSH Agent
-SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 source /usr/local/bin/wayland_enablement.sh
 
-systemd-cat --identifier=sway sway $@
+systemd-cat --identifier=sway sway "$@"
