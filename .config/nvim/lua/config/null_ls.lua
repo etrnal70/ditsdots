@@ -13,8 +13,8 @@ null_ls.setup({
       bufnr,
       "n",
       "<leader>ff",
-      "<cmd>lua vim.lsp.buf.formatting_seq_sync()<CR>",
-      { noremap = true, silent = true }
+      "",
+      { callback = vim.lsp.buf.formatting_seq_sync, noremap = true, silent = true }
 
       -- Autoformat on save
       -- vim.api.nvim_command("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()")
@@ -39,13 +39,8 @@ null_ls.setup({
     formatter.yapf,
     -- Diagnostics
     linter.chktex,
-    linter.codespell.with({
-      condition = function(utils)
-        return utils.root_has_file("setup.cfg") or utils.root_has_file(".codespellrc")
-      end,
-    }),
     linter.flake8,
-    -- linter.hadolint,
+    linter.hadolint,
     linter.markdownlint,
     linter.shellcheck,
     -- Code Actions

@@ -6,8 +6,6 @@ local extension_path = vim.fn.expand("$HOME/.vscode/extensions/vadimcn.vscode-ll
 local codelldb_path = extension_path .. "adapter/codelldb"
 local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 
-local border = { " ", "FloatBorder" }
-
 M.setup = function(on_attach, capabilities)
   require("rust-tools").setup({
     dap = {
@@ -22,19 +20,10 @@ M.setup = function(on_attach, capabilities)
       inlay_hints = {
         show_parameter_hints = false,
         parameter_hints_prefix = " » ",
-        other_hints_prefix = "❱ ",
+        other_hints_prefix = " ❱ ",
       },
       hover_actions = {
-        border = {
-          border,
-          border,
-          border,
-          border,
-          border,
-          border,
-          border,
-          border,
-        },
+        border = "solid",
       },
     },
     server = {
@@ -44,15 +33,15 @@ M.setup = function(on_attach, capabilities)
           bufnr,
           "n",
           "K",
-          "<cmd>lua require('rust-tools.hover_actions').hover_actions()<CR>",
-          opts
+          "",
+          { callback = require("rust-tools.hover_actions").hover_actions, noremap = true, silent = true }
         ) ]]
         vim.api.nvim_buf_set_keymap(
           bufnr,
           "v",
           "K",
-          "<cmd>lua require('rust-tools.hover_range').hover_range()<CR>",
-          opts
+          "",
+          { callback = require("rust-tools.hover_range").hover_range, noremap = true, silent = true }
         )
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rr", "<cmd>RustRunnables<CR>", opts)
         vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rc", "<cmd>RustOpenCargo<CR>", opts)

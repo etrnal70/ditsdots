@@ -1,7 +1,7 @@
 local cmd = vim.api.nvim_command
 
-local gmap = function(type, key, value)
-  vim.api.nvim_set_keymap(type, key, value, { noremap = true, silent = true })
+local gmap = function(type, lhs, rhs, func)
+  vim.api.nvim_set_keymap(type, lhs, rhs, { callback = func, noremap = true, silent = true })
 end
 
 -- Switch active buffer with s + <hjkl>
@@ -33,17 +33,19 @@ gmap("i", "<A-h>", "<esc>i")
 gmap("t", "<esc>", "<C-\\><C-n>")
 
 -- Neovim Diagnostics
-gmap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>")
+gmap("n", "<leader>e", "", vim.diagnostic.open_float)
+gmap("n", "[d", "", vim.diagnostic.goto_prev)
+gmap("n", "]d", "", vim.diagnostic.goto_prev)
 gmap("n", "<leader>lq", "<cmd>Telescope diagnostics<CR>")
 
 -- nvim-tree.lua
 gmap("n", "<leader>st", "<cmd>NvimTreeToggle<CR>")
 
 -- Telescope
-gmap("n", "<leader>lf", "<cmd>lua require('config.telescope').project_files()<CR>")
+gmap("n", "<leader>lf", "", require("config.telescope").project_files)
 gmap("n", "<leader>ls", "<cmd>Telescope live_grep<CR>")
 gmap("n", "<leader>lb", "<cmd>Telescope buffers<CR>")
-gmap("n", "<leader>lt", "<cmd>lua require'telescope'.extensions.asynctasks.all()<CR>")
+gmap("n", "<leader>lt", "", require("telescope").extensions.asynctasks.all)
 gmap("n", "<leader>lo", "<cmd>Telescope oldfiles<CR>")
 gmap("n", "<leader>lH", "<cmd>Telescope help_tags<CR>")
 gmap("n", "<leader>lh", "<cmd>Telescope heading<CR>")
@@ -55,7 +57,7 @@ gmap("n", "bn", "<cmd>BufferLineCycleNext<CR>")
 gmap("n", "bp", "<cmd>BufferLineCyclePrev<CR>")
 
 -- neogen
-gmap("n", "<leader>dg", "<cmd>lua require'neogen'.generate()<CR>")
+gmap("n", "<leader>dg", "", require("neogen").generate)
 
 -- rest.nvim
 cmd("nmap <leader>rr <Plug>RestNvim")

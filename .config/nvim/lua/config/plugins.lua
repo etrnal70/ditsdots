@@ -33,12 +33,20 @@ return packer.startup({
     use({ "ray-x/lsp_signature.nvim" })
     use({
       "ldelossa/litee.nvim",
+      requires = { "ldelossa/litee-calltree.nvim", "ldelossa/litee-symboltree.nvim" },
       config = function()
-        require("litee").setup({
-          layout = "right",
-          layout_size = 35,
-          icons = "nerd",
+        require("litee.lib").setup({
+          notify = { enabled = false },
+          panel = {
+            orientation = "right",
+            panel_size = 45,
+          },
+          tree = {
+            icons = "nerd",
+          },
         })
+        require("litee.calltree").setup()
+        require("litee.symboltree").setup()
       end,
     })
     use({
@@ -155,6 +163,13 @@ return packer.startup({
       end,
     })
     use({ "tpope/vim-fugitive" })
+    use({
+      "rbong/vim-flog",
+      setup = function()
+        vim.api.nvim_command("let g:flog_default_arguments = { 'max_count': 2000 }")
+      end,
+      requires = { "TamaMcGlinn/flog-forest" },
+    })
     -- use({ "TimUntersberger/neogit", disable = true, requires = "sindrets/diffview.nvim" })
     use({
       "rhysd/git-messenger.vim",

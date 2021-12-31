@@ -17,5 +17,12 @@ vim.cmd([[
 ]])
 
 vim.cmd([[
+  augroup CmpNeorg
+  au!
+    autocmd FileType norg lua require'cmp'.setup.buffer({ sources = { { name = 'luasnip', max_item_count = 3 }, { name = 'neorg' }, { name = 'buffer', keyword_length = 4, max_item_count = 3 }, { name = 'path' } } })
+  augroup END
+]])
+
+vim.cmd([[
   autocmd FileType gitcommit lua require'cmp'.setup.buffer{ sources = { { name = 'luasnip', max_item_count = 5 }, { name = 'cmp_git' } } }
 ]])

@@ -13,32 +13,28 @@ local custom_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.
 
 -- Custom attach
 local custom_attach = function(client, bufnr)
-  local bmap = function(type, key, value)
-    vim.api.nvim_buf_set_keymap(bufnr, type, key, value, { noremap = true, silent = true })
+  local bmap = function(type, lhs, rhs, func)
+    vim.api.nvim_buf_set_keymap(bufnr, type, lhs, rhs, { callback = func, noremap = true, silent = true })
   end
 
   -- LSP Keymapping
+  bmap("n", "K", "", vim.lsp.buf.hover)
+  bmap("n", "gh", "", vim.lsp.buf.signature_help)
+  bmap("n", "gD", "", vim.lsp.buf.declaration)
+  bmap("n", "gR", "", vim.lsp.buf.rename)
+  bmap("n", "gs", "", vim.lsp.buf.document_symbol)
   bmap("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
-  bmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
   bmap("n", "gi", "<cmd>Telescope lsp_implementations<CR>")
-  bmap("n", "gh", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
   bmap("n", "gy", "<cmd>Telescope lsp_type_definitions<CR>")
   bmap("n", "gr", "<cmd>Telescope lsp_references<CR>")
-  bmap("n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
-  bmap("n", "gw", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>")
-  bmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-  bmap("n", "gR", "<cmd>lua vim.lsp.buf.rename()<CR>")
-  bmap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
-  bmap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
-  bmap("n", "<leader>ci", "<cmd>lua vim.lsp.buf.incoming_calls()<CR>")
-  bmap("n", "<leader>co", "<cmd>lua vim.lsp.buf.outgoing_calls()<CR>")
-  bmap("n", "<leader>ss", "<cmd>lua vim.lsp.buf.document_symbol()<CR>")
-  -- bmap("n", "<leader>a", "<cmd>Telescope lsp_code_actions<CR>")
-  bmap("n", "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<CR>")
+  bmap("n", "gS", "<cmd>Telescope lsp_document_symbols<CR>")
+  bmap("n", "gw", "<cmd>Telescope lsp_workspace_symbols<CR>")
+  bmap("n", "gW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
+  bmap("n", "<leader>ci", "", vim.lsp.buf.incoming_calls)
+  bmap("n", "<leader>co", "", vim.lsp.buf.outgoing_calls)
+  bmap("n", "<leader>a", "", vim.lsp.buf.code_action)
   bmap("v", "<leader>a", "<cmd>Telescope lsp_range_code_action<CR>")
-  bmap("n", "<leader>L", "<cmd>Telescope lsp_codelens<CR>")
-  bmap("n", "<leader>lm", "<cmd>Telescope lsp_document_symbols<CR>")
-  bmap("n", "<leader>lM", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
+  -- bmap("n", "<leader>ll", "<cmd>Telescope lsp_codelens<CR>")
 
   -- Disable server formatting capabilities
   client.resolved_capabilities.document_formatting = false
