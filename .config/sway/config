@@ -17,8 +17,12 @@ set $term kitty
 output * bg ~/Data/wallpaper/cell.gif fill
 
 # Input Configuration
+## Touch Screen (Map only to touchscreen area)
+input "type:touch" map_to_output eDP-1
+
 ## Touchpad
 input "type:touchpad" {
+    drag enabled
     dwt enabled
     tap enabled
     natural_scroll enabled
@@ -29,12 +33,16 @@ input "type:touchpad" {
 input "type:keyboard" {
   ### Double shift to CapsLock
   ### Use capslock as escape
-  xkb_options shift:both_capslock,caps:escape
+  xkb_options shift:both_capslock_cancel,caps:escape
 
   ### Faster key input
   repeat_rate 50
   repeat_delay 350
 }
+
+# Seat Configuration
+## Hide cursor while typing
+seat * hide_cursor when-typing enable
 
 # Key Bindings
 ## Mandatory Keybinds
@@ -63,9 +71,6 @@ bindsym $mod+period exec ~/.scripts/dmenu_toggle.sh
 
 ### Execute Command
 bindsym $mod+comma exec (pgrep "rofi" 1>/dev/null 2>&1 && killall rofi) || rofi -show run
-
-### Screenshot
-bindsym Ctrl+Shift+p exec grim -g "$(slurp)" - | wl-copy
 
 ### Dunst
 bindsym $mod+backslash exec ~/.scripts/dnd_toggle.sh
@@ -225,7 +230,7 @@ client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 ## Idle Configuration
 exec swayidle -w \
          timeout 900 'swaylock -f -c 000000' \
-         timeout 1000 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+         timeout 1200 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          timeout 1800 'systemctl suspend ' \
          before-sleep 'swaylock -f -c 000000 && playerctl pause'
 
@@ -236,22 +241,29 @@ xwayland enable
 focus_follows_mouse no
 mouse_warping none
 
+## App-specific Workspaces
+assign [class="Chromium"] 1
+assign [class="discord"] 5
+assign [app_id="firefox"] 7
+
 ## Windowing Rules
 for_window {
   ### Browser
-  [instance="chromium"] inhibit_idle fullscreen; max_render_time off
+  [instance="chromium"] inhibit_idle fullscreen
   [title="MAX - Chromium"] floating enable; sticky enable; border pixel 1
-  [class="firefox"] inhibit_idle fullscreen;  max_render_time off
-  [app_id="firefox"] inhibit_idle fullscreen; max_render_time off
+  [class="firefox"] inhibit_idle fullscreen
+  [class="Chromium"] inhibit_idle fullscreen
+  [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable
   [app_id="firefox" title="Library"] floating enable; border pixel 1; sticky enable
-  [class="Nightly"] inhibit_idle fullscreen; max_render_time off
+  [class="Nightly"] inhibit_idle fullscreen
   # [title = "Picture in picture"] floating enable, sticky enable
 
   ### Steam/WINE related
   [class="gamescope"] inhibit_idle fullscreen; floating enable; border none
   [class="steam_app.*"] inhibit_idle fullscreen; floating enable; border none
   [class=".*.exe"] inhibit_idle fullscreen; floating enable; border none
-  [class="^Steam$" title="^Friends$"] floating enable
+  [class="^Steam$" title="^Friends *"] floating enable
+  # [class="^Steam$" title="^Friends List$"] floating enable
   [class="^Steam$" title="Steam - News"] floating enable
   [class="^Steam$" title=".* - Chat"] floating enable
   [class="^Steam$" title="^Settings$"] floating enable
@@ -260,18 +272,21 @@ for_window {
   [class="^Steam$" title="^Steam - Self Updater$"] floating enable
   [class="^Steam$" title="^Screenshot Uploader$"] floating enable
   [class="^Steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
+  [class="^Steam$" title="^Create or select new Steam library folcer:$"] floating enable
   [title="^Steam Keyboard$"] floating enable
 
   ### Desktop apps
   [app_id="zoom"] inhibit_idle fullscreen; floating enable
   [app_id="ksysguard"] floating enable; sticky enable
   [app_id="image-roll"] floating enable; border pixel 1
-  [app_id="pavucontrol"] sticky enable; floating enable
+  [app_id="pavucontrol"] sticky enable; floating enable; resize set 720px 480px
   [app_id="wdisplays"] floating enable
-  [app_id="mpv"] inhibit_idle visible; border none; max_render_time off
-  [app_id="keepassxc"] floating enable; resize set 960px 540px
+  [app_id="mpv"] inhibit_idle visible; border none
+  [app_id="keepassxc"] floating enable; border pixel 1; resize set 960px 870px
   [app_id="org.kde.kdeconnect.daemon"] floating enable
-  [class="NoiseTorch"] floating enable; resize 960px 540px
+  [class="NoiseTorch"] floating enable; resize set 720px 580px
+  [class="(\s|^)Spotify(\s|$)"] floating disable
+  [class="(\s|^)WhatsApp(\s|$)"] floating disable
 
   ### Miscellaneous
   [title="(?:Open|Save) (?:File|Folder|As)"] floating enable; sticky enable
@@ -298,8 +313,6 @@ bindswitch --reload --locked lid:off output $laptop_screen enable
 # Startup
 ## Start session target
 exec "systemctl --user import-environment; systemctl --user start sway-session.target"
-## Start GTK polkit agent
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 ## Import GTK configuration
 exec_always ~/.scripts/import-gsettings
