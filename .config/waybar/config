@@ -3,36 +3,40 @@
     "position": "bottom",
     "height": 26,
     "modules-left": ["clock", "sway/workspaces", "sway/mode"],
-    "modules-center": ["tray"],
-    "modules-right": ["custom/screenrecord","custom/pomo","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery"],
+    "modules-center": [],
+    "modules-right": ["custom/screenrecord","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery","tray"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
     "tray": {
-        "spacing": 4
+        "spacing": 2
     },
     "clock": {
+        "format" : "{: %a │ %H : %M}",
+        "format-alt": "{: %a │ %d-%m-%Y}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format" : "{:  %a │ %H : %M}",
-        "format-alt": "{:  %a │ %d-%m-%Y}"
     },
     "battery": {
+        "format": "{icon}",
+        "format-alt": "{capacity}%",
+        "format-charging": "{icon} 🗲",
+        "format-icons": ["", "", "", "", ""],
+        "format-plugged": "{icon} ",
         "states": {
             "warning": 35,
-            "critical": 15
+            "critical": 15,
         },
-        "format": "{icon}",
-        "format-charging": "{capacity}% ",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "{capacity}%",
-        "format-icons": ["", "", "", "", ""]
+        "tooltip-format-charging": "{capacity}% | {timeTo}",
     },
     "network": {
-        "format-wifi": "",
+        "format-alt": "{essid} ({signalStrength}%)",
+        "format-disconnected": "",
         "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
         "format-linked": "{ifname} (No IP)  ",
-        "format-disconnected": "睊",
-        "format-alt": "{essid} ({signalStrength}%)"
+        "format-wifi": "",
+        "max-length": 20,
+        "tooltip-format-disconnected": "Disconnected 睊",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
     },
     "pulseaudio": {
         "format": "{icon} {format_source}",
@@ -42,86 +46,90 @@
         "format-source": "",
         "format-source-muted": "",
         "format-icons": {
-            "headphone": " ",
+            "car": "",
+            "default": ["", "", ""],
             "hands-free": "",
+            "headphone": "",
             "headset": "",
             "phone": " ",
             "portable": " ",
-            "car": "",
-            "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
     },
     "custom/media": {
+        "escape": true,
+        "exec": "$HOME/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null",
         "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 35,
         "format-icons": {
             "spotify": "  ",
-            "default": "  "
+            "default": "  ",
         },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null"
+        "max-length": 35,
+        "return-type": "json",
     },
     "custom/caps_status" : {
       "exec" : "~/.config/waybar/modules/caps_status.sh",
       "return-type": "json",
-      "format": "{}",
-      "interval": 1,
+      "format": " {} ",
+      "interval": 2,
     },
     "custom/weather": {
+      "exec": "~/.config/waybar/modules/waybar-wttr.py",
+      "exec-if": "wget -q --spider http://google.com",
       "format": " {} ",
       "tooltip": true,
       "interval": 3600,
-      "exec": "~/.config/waybar/modules/waybar-wttr.py",
-      "return-type": "json"
+      "return-type": "json",
     },
     "custom/update" : {
       "exec" : "~/.config/waybar/modules/update_check.sh",
       "exec-if": "pgrep paru || pgrep pacman || exit 0",
-      "return-type": "json",
       "format": " {} ",
       "interval": 10800,
+      "return-type": "json",
       "signal": 8,
       "tooltip": true,
     },
     "custom/neomutt" : {
       "exec" : "~/.config/waybar/modules/sync_mail.sh",
       "exec-if": "exit 0",
-      "return-type": "json",
       "format": " {} ",
       "interval": 1800,
+      "return-type": "json",
       "signal": 8,
       "tooltip": true,
     },
     "custom/github": {
-      "format": " {} ",
-      "return-type": "json",
-      "interval": 120,
       "exec": "~/.config/waybar/modules/github.sh",
+      "exec-if": "wget -q --spider http://google.com",
+      "format": " {} ",
+      "interval": 300,
       "on-click": "xdg-open https://github.com/notifications",
+      "return-type": "json",
       "tooltip": true
     },
     "custom/pomo": {
-        "format": " {} ",
-        "interval": 1,
         "exec": "pomodoro status --format '⏱  %r'",
         "exec-if": "pgrep pomodoro || exit 0",
-        "on-click": "pomodoro pause"
+        "format": " {} ",
+        "interval": 2,
+        "on-click": "pomodoro pause",
     },
     "custom/dunst_status": {
-        "return-type": "json",
-        "format": " {} ",
-        "interval": 1,
         "exec": "~/.config/waybar/modules/dunst_status.sh",
+        "format": " {} ",
+        "interval": 2,
         "on-click": "dunstctl set-paused toggle",
-        "tooltip": true
+        "return-type": "json",
+        "tooltip": true,
     },
     "custom/screenrecord": {
-        "format": " {} ",
-        "interval": 1,
         "exec": "~/.config/waybar/modules/screenrecord.sh",
+        "format": " {} ",
+        "interval": 2,
+        "on-click": "pkill --signal SIGINT wf-recorder",
+        "return-type": "json",
     },
 }
 
-# vim: ft=bash
+# vim: ft=json

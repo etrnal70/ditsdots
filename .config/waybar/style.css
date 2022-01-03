@@ -1,49 +1,55 @@
 * {
-    border: none;
-    border-radius: 0;
-    font-family: "Noto Fonts Emoji", "Font Awesome 5 Free";
-    font-size: 14px;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: "Noto Fonts Emoji", "Font Awesome 5 Free";
+  font-size: 14px;
+  min-height: 0;
 }
 
 window#waybar {
-    background-color: rgba(0, 0, 0, 0.00);
-    opacity: 1.0;
-    color: #ffffff;
-    transition-property: background-color;
-    transition-duration: .5s;
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  color: #ffffff;
+  transition-property: background-color;
+  transition-duration: 0.5s;
 }
 
 window#waybar.hidden {
-    opacity: 0.2;
+  opacity: 0.2;
+}
+
+tooltip {
+  background: rgba(20, 20, 20, 0.93);
+  border: 1px solid rgba(100, 114, 125, 0.5);
+  border-radius: 8;
 }
 
 #workspaces button {
-    padding: 0 3px;
-    background-color: transparent;
-    color: #555555;
-    opacity: 0.85;
-    font-weight: bold;
+  padding: 0 2px;
+  background-color: transparent;
+  color: #555555;
+  opacity: 0.85;
+  font-weight: bold;
 }
 
 #workspaces button:hover {
-    background: rgba(0, 0, 0, 0.2);
-    box-shadow: inherit;
-    color: #ffffff;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: inherit;
+  color: #ffffff;
 }
 
 #workspaces button.focused {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 #workspaces button.urgent {
-    background-color: #eb4d4b;
+  background-color: #eb4d4b;
 }
 
 #mode {
-    background-color: #64727D;
-    border-bottom: 3px solid #ffffff;
-    opacity: 0.85;
+  background-color: #64727d;
+  border-bottom: 3px solid #ffffff;
+  opacity: 0.85;
 }
 
 #clock,
@@ -53,115 +59,111 @@ window#waybar.hidden {
 #custom-media,
 #tray,
 #mode,
-
 #mpd {
-    padding: 0 10px;
-    margin: 0 0px;
-    color: #ffffff;
+  padding: 0 10px;
+  margin: 0 0px;
+  color: #ffffff;
 }
 
 #clock.backup {
-    background-color: rgba(30,30,30,0.7);
+  background-color: rgba(30, 30, 30, 0.7);
 }
 
 #clock {
-    color: #FFFFFF;
-    background-color: rgba(66,66,66,0.8);
-    opacity: 0.6;
-    font-weight: bold;
-    margin-top: 1px;
-    margin-bottom: 1px;
-    margin-right: 8px;
-    margin-left: 10px;
-    border-radius: 12px;
+  color: #ffffff;
+  background-color: rgba(66, 66, 66, 0.8);
+  opacity: 0.6;
+  font-weight: bold;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  margin-right: 8px;
+  margin-left: 10px;
+  border-radius: 12px;
 }
 
 #battery {
-    background-color: transparent;
-    color: #FFFFFF;
+  background-color: transparent;
+  color: #ffffff;
 }
 
 #battery.charging {
-    color: #ffffff;
-    background-color: #26A65B;
+  color: #fdd835;
 }
 
 @keyframes blink {
-    to {
-        color: rgba(0, 0, 0, 0.55);
-    }
+  to {
+    color: transparent;
+  }
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
-    color: #ffffff;
-    animation-name: blink;
-    animation-duration: 0.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  color: #f53c3c;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 label:focus {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 #network {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 #network.disconnected {
-    background-color: #f53c3c;
+  background-color: #f53c3c;
 }
 
 #pulseaudio {
-    background-color: transparent;
-    color: #FFFFFF;
+  background-color: transparent;
+  color: #ffffff;
 }
 
 #pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+  background-color: #90b1b1;
+  color: #2a5c45;
 }
 
 #custom-media {
-    min-width: 100px;
-    opacity: 0.8;
+  min-width: 100px;
+  opacity: 0.8;
 }
 
 #custom-media.custom-spotify {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 #custom-media.custom-vlc {
-    background-color: #ffa000;
-    opacity: 0.8;
+  background-color: #ffa000;
+  opacity: 0.8;
 }
 
 #custom-weather {
   min-width: 25px;
-  padding: 0 2px;
 }
 
 #custom-caps_status {
   background-color: transparent;
-  border-bottom: 2px solid #FF1744;
+  border-bottom: 2px solid #ff1744;
 }
 
 #custom-github {
-  border-bottom: 2px solid #039BE5;
+  border-bottom: 2px solid #039be5;
 }
 
 #custom-update {
-  border-bottom: 2px solid #4CAF50;
+  border-bottom: 2px solid #4caf50;
 }
 
 #custom-neomutt {
-  border-bottom: 2px solid #F0932B;
+  border-bottom: 2px solid #f0932b;
 }
 
 #custom-pomo {
-  border-bottom: 2px solid #BBBBBB;
+  border-bottom: 2px solid #bbbbbb;
 }
 
 #custom-screenrecord {
@@ -174,5 +176,5 @@ label:focus {
 }
 
 #tray {
-    background-color: transparent;
+  background-color: transparent;
 }

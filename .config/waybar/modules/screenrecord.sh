@@ -1,5 +1,5 @@
 #!/bin/bash
 
 if pgrep -x "wf-recorder" > /dev/null; then
-  echo "●"
+  jo text=● tooltip="Left-click to stop recording"
 fi
