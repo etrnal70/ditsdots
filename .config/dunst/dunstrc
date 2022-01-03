@@ -19,7 +19,7 @@
     text_icon_padding = 18
     # Other
     frame_width = 0
-    frame_color = "#616161"
+    frame_color = "#515151"
     separator_height = 6
     separator_color = "#00000000"
     notification_limit = 3
@@ -28,7 +28,7 @@
     idle_threshold = 3m
 
     ### Text ###
-    font = "JetBrainsMono Nerd Font" 9
+    font = JetBrainsMono Nerd Font 9
     line_height = 0
     markup = full
     alignment = left
@@ -67,21 +67,20 @@
     mouse_right_click = do_action, close_current
 
 [urgency_low]
-    background = "#616161"
+    background = "#313131"
     foreground = "#FFFFFF"
     highlight = "#FFFFFF"
     timeout = 6
 
 [urgency_normal]
-    background = "#616161"
+    background = "#515151"
     foreground = "#FFFFFF"
     highlight = "#FFFFFF"
     timeout = 8
 
 [urgency_critical]
-    background = "#FFFFFF"
-    foreground = "#000000"
-    frame_color = "#FF0000"
+    background = "#AA0000"
+    foreground = "#FFFFFF"
     timeout = 0
 
 # Custom Rules
@@ -90,7 +89,5 @@
 [fullscreen_show_critical]
     msg_urgency = critical
     fullscreen = show
-
-# TODO: Extend custom rules for e.g. battery, volume, etc
 
 # vim: ft=cfg
