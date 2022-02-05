@@ -1,5 +1,6 @@
-local gmap = function(type, key, value)
-  vim.api.nvim_set_keymap(type, key, value, { noremap = true, silent = true })
+local map = function(mode, l, r, opts)
+  opts = opts or {}
+  vim.keymap.set(mode, l, r, opts)
 end
 
 vim.g.asyncrun_open = 6
@@ -9,5 +10,5 @@ vim.g.asynctasks_term_rows = 6
 vim.g.asynctasks_term_focus = 0
 vim.g.asynctasks_template = "~/.config/nvim/task_template.ini"
 
-gmap("n", "<leader>jr", "<cmd>AsyncTask project-run<CR>")
-gmap("n", "<leader>jb", "<cmd>AsyncTask project-build<CR>")
+map("n", "<leader>jr", "<cmd>AsyncTask project-run<CR>")
+map("n", "<leader>jb", "<cmd>AsyncTask project-build<CR>")

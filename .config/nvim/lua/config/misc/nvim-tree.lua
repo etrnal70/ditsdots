@@ -14,7 +14,7 @@ set.nvim_tree_group_empty = 1
 set.nvim_tree_disable_window_picker = 0
 set.nvim_tree_icon_padding = " "
 set.nvim_tree_show_icons = {
-  git = 0,
+  git = 1,
   folders = 1,
   files = 1,
 }

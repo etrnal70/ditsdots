@@ -1,6 +1,5 @@
 local feline = require("feline")
 local lsp = require("feline.providers.lsp")
-local status = require("lsp-status")
 
 local colors = {
   bg = "#181818",
@@ -22,6 +21,10 @@ local separator = {
   str = " ",
 }
 
+local inactive_separator = {
+  str = "  ",
+}
+
 local components = {
   active = { {}, {}, {} },
   inactive = { {}, {} },
@@ -41,47 +44,13 @@ table.insert(components.active[1], {
   left_sep = separator,
 })
 
-table.insert(components.active[1], {
-  provider = function()
-    -- TODO: Improve handling
-    local res = {}
-    local spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" }
-
-    local buf_message = status.messages()
-    for _, msg in ipairs(buf_message) do
-      local contents = ""
-      if msg.progress then
-        contents = msg.title
-        if msg.message then
-          contents = contents
-        end
-
-        if msg.percentage then
-          contents = contents
-        end
-
-        if msg.spinner then
-          contents = contents .. " " .. spinner_frames[(msg.spinner % #spinner_frames) + 1]
-        end
-      end
-
-      table.insert(res, contents)
-    end
-
-    return vim.trim(table.concat(res, " "))
-  end,
-  enabled = function()
-    return lsp.is_lsp_attached
-  end,
-  hl = {
-    fg = "grey",
-  },
-  left_sep = separator,
-})
-
 table.insert(components.active[3], {
-  provider = "file_info",
-  type = "relative-short",
+  provider = {
+    name = "file_info",
+    opts = {
+      type = "relative-short",
+    },
+  },
   hl = {
     fg = "white",
   },
@@ -127,26 +96,28 @@ table.insert(components.active[3], {
 
 -- Inactive Components
 table.insert(components.inactive[2], {
-  provider = "file_info",
-  type = "relative-short",
-  colored_icon = false,
+  provider = {
+    name = "file_info",
+    opts = {
+      type = "relative-short",
+      colored_icon = false,
+    },
+  },
   hl = {
     fg = "grey",
+    bg = "bg",
   },
-  left_sep = separator,
+  left_sep = inactive_separator,
 })
 
 table.insert(components.inactive[2], {
   provider = "position",
   hl = {
     fg = "grey",
+    bg = "bg",
   },
-  right_sep = {
-    str = "  ",
-  },
-  left_sep = {
-    str = "  ",
-  },
+  right_sep = inactive_separator,
+  left_sep = inactive_separator,
 })
 
 feline.setup({

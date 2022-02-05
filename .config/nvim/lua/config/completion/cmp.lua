@@ -1,6 +1,6 @@
 local cmp = require("cmp")
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local compare = require("cmp.config.compare")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local neogen = require("neogen")
 local luasnip = require("luasnip")
 
@@ -53,6 +53,15 @@ cmp.setup({
     maxwidth = 60,
     maxheight = 20,
   },
+  enabled = function()
+    local context = require("cmp.config.context")
+    -- Disable completion on comment
+    if vim.api.nvim_get_mode().mode == "c" then
+      return true
+    else
+      return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+    end
+  end,
   formatting = {
     format = function(entry, vim_item)
       vim_item.kind = item_kinds[vim_item.kind]
@@ -62,21 +71,18 @@ cmp.setup({
   },
   mapping = {
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if neogen.jumpable() then
-        vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
-      elseif cmp.visible() then
+      if cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
+      elseif neogen.jumpable() then
+        vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
       elseif has_words_before() then
         cmp.complete()
       else
         fallback()
       end
-    end, {
-      "i",
-      "s",
-    }),
+    end, { "i", "s", "c" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -85,16 +91,23 @@ cmp.setup({
       else
         fallback()
       end
-    end, {
-      "i",
-      "s",
-    }),
+    end, { "i", "s" }),
     ["<C-j>"] = cmp.mapping.scroll_docs(2),
     ["<C-k>"] = cmp.mapping.scroll_docs(-2),
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Insert,
       select = false,
     }),
+    ["<Space>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        local entry = cmp.get_selected_entry()
+        if entry then
+          -- TODO: Insert extra space after confirm
+          cmp.confirm()
+        end
+      end
+      fallback()
+    end),
   },
   preselect = require("cmp.types").cmp.PreselectMode.None,
   snippet = {
@@ -120,10 +133,31 @@ cmp.setup({
   sources = {
     { name = "luasnip", max_item_count = 3 },
     { name = "nvim_lsp" },
-    { name = "signature_help" },
     { name = "buffer", max_item_count = 2 },
     { name = "path" },
   },
 })
 
+-- Customization
+-- TeX function use curly braces
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "{" } }))
+
+-- Trigger autocomplete only when typing
+function _G.on_complete_check()
+  local line = vim.api.nvim_get_current_line()
+  local cursor = vim.api.nvim_win_get_cursor(0)[2]
+
+  local current = string.sub(line, cursor, cursor + 1)
+  if current == "." or current == "," or current == " " then
+    require("cmp").close()
+  end
+
+  local before_line = string.sub(line, 1, cursor + 1)
+  local after_line = string.sub(line, cursor + 1, -1)
+  if not string.match(before_line, "^%s+$") then
+    if after_line == "" or string.match(before_line, " $") or string.match(before_line, "%.$") then
+      require("cmp").complete()
+    end
+  end
+end
+vim.api.nvim_command("autocmd TextChangedI, TextChangedP * call v:lua.on_complete_check()")

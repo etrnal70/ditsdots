@@ -29,8 +29,23 @@ return packer.startup({
     use({ "nvim-lua/plenary.nvim" })
 
     -- LSP Plugins
-    use({ "nvim-lua/lsp-status.nvim" })
+    use({
+      "neovim/nvim-lspconfig",
+      config = function()
+        require("config.lsp")
+      end,
+      after = "cmp-nvim-lsp",
+    })
     use({ "ray-x/lsp_signature.nvim" })
+    use({
+      "j-hui/fidget.nvim",
+      config = function()
+        require("fidget").setup({
+          text = { spinner = "dots_negative" },
+          window = { relative = "editor", blend = 0 },
+        })
+      end,
+    })
     use({
       "ldelossa/litee.nvim",
       requires = { "ldelossa/litee-calltree.nvim", "ldelossa/litee-symboltree.nvim" },
@@ -49,12 +64,6 @@ return packer.startup({
         require("litee.symboltree").setup()
       end,
     })
-    use({
-      "neovim/nvim-lspconfig",
-      config = function()
-        require("config.lsp")
-      end,
-    })
 
     -- Completion
     use({
@@ -64,16 +73,15 @@ return packer.startup({
         require("config.completion.autocmd")
       end,
     })
-    use({ "hrsh7th/cmp-buffer" })
-    use({ "hrsh7th/cmp-omni" })
+    use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
     use({
       "petertriho/cmp-git",
       config = function()
         require("cmp_git").setup()
       end,
+      after = "nvim-cmp",
     })
     use({
       "saadparwaiz1/cmp_luasnip",
@@ -102,21 +110,21 @@ return packer.startup({
         { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
       },
     })
-    use({ "GustavoKatel/telescope-asynctasks.nvim", requires = "telescope.nvim" })
-    -- use({ "nvim-telescope/telescope-bibtex.nvim" })
     use({
-      "xiyaowong/telescope-emoji.nvim",
+      "GustavoKatel/telescope-asynctasks.nvim",
       requires = "telescope.nvim",
       config = function()
-        require("telescope").load_extension("emoji")
+        vim.keymap.set("n", "<leader>lt", require("telescope").extensions.asynctasks.all)
       end,
     })
+    -- use({ "nvim-telescope/telescope-bibtex.nvim" })
     use({
       "crispgm/telescope-heading.nvim",
       requires = "telescope.nvim",
       ft = "markdown",
       config = function()
         require("telescope").load_extension("heading")
+        vim.keymap.set("n", "<leader>lh", "<cmd>Telescope heading<CR>")
       end,
     })
 
@@ -135,6 +143,7 @@ return packer.startup({
     use({ "nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter" })
     use({ "nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter" })
     use({ "nvim-treesitter/playground", requires = "nvim-treesitter" })
+    use({ "JoosepAlviste/nvim-ts-context-commentstring", requires = "nvim-treesitter" })
     use({ "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" })
     use({
       "danymat/neogen",
@@ -149,9 +158,7 @@ return packer.startup({
       "SmiteshP/nvim-gps",
       requires = "nvim-treesitter",
       config = function()
-        require("nvim-gps").setup({
-          separator = " ❯ ",
-        })
+        require("nvim-gps").setup({ separator = " ❯ " })
       end,
     })
 
@@ -170,22 +177,16 @@ return packer.startup({
       end,
       requires = { "TamaMcGlinn/flog-forest" },
     })
-    -- use({ "TimUntersberger/neogit", disable = true, requires = "sindrets/diffview.nvim" })
     use({
       "rhysd/git-messenger.vim",
       keys = "<leader>gm",
       config = function()
-        vim.g.git_messenger_close_on_cursor_moved = true
         vim.g.git_messenger_include_diff = "current"
         vim.g.git_messenger_close_on_cursor_moved = false
-        vim.g.git_messenger_into_popup_after_show = true
         vim.g.git_messenger_always_into_popup = true
         vim.g.git_messenger_max_popup_height = 20
         vim.g.git_messenger_max_popup_width = 50
-        vim.g.git_messenger_floating_win_opts = {
-          border = "single",
-        }
-        vim.g.git_messenger_popup_content_margins = true
+        vim.g.git_messenger_floating_win_opts = { border = "solid" }
       end,
     })
     use({ "rhysd/committia.vim" })
@@ -194,9 +195,7 @@ return packer.startup({
     -- Debugger
     use({
       "rcarriga/nvim-dap-ui",
-      requires = {
-        "mfussenegger/nvim-dap",
-      },
+      requires = { "mfussenegger/nvim-dap" },
     })
     use({
       "nvim-telescope/telescope-dap.nvim",
@@ -236,15 +235,13 @@ return packer.startup({
     })
     use({ "ray-x/go.nvim" })
     use({ "folke/lua-dev.nvim" })
-    use({ "lervag/vimtex", disable = true, ft = "tex" })
+    use({ "jose-elias-alvarez/nvim-lsp-ts-utils" })
     use({
       "jose-elias-alvarez/null-ls.nvim",
       config = function()
         require("config.null_ls")
       end,
     })
-    use({ "iamcco/markdown-preview.nvim", run = "cd app && yarn install" })
-    -- use({ "dccsillag/magma-nvim" })
 
     -- Misc
     use({ "lewis6991/impatient.nvim" }) -- Remove after neovim/pull/15436 merged
@@ -263,21 +260,19 @@ return packer.startup({
     use({
       "famiu/feline.nvim",
       config = function()
-        vim.cmd("PackerLoad lsp-status.nvim")
         require("config.misc.feline")
+      end,
+    })
+    use({
+      "anuvyklack/pretty-fold.nvim",
+      config = function()
+        require("config.misc.pretty-fold")
       end,
     })
     use({
       "akinsho/bufferline.nvim",
       config = function()
         require("config.misc.bufferline")
-      end,
-    })
-    use({
-      "vhyrro/neorg",
-      requires = "vhyrro/neorg-telescope",
-      config = function()
-        require("config.misc.neorg")
       end,
     })
     use({
@@ -304,6 +299,16 @@ return packer.startup({
       requires = { "kristijanhusak/vim-dadbod", branch = "async-query" },
       setup = function()
         vim.g.db_async = 1
+        vim.g.db_ui_icons = {
+          expanded = "ᐯ",
+          collapsed = "›",
+          saved_query = "•",
+          new_query = "+",
+          tables = "",
+          buffers = "»",
+          connection_ok = "✓",
+          connection_error = "✕",
+        }
       end,
       cmd = { "DBUI" },
     })
@@ -334,16 +339,6 @@ return packer.startup({
       end,
     })
     use({
-      "RRethy/vim-illuminate",
-      config = function()
-        vim.g.Illuminate_delay = 750
-        vim.g.Illuminate_ftblacklist = {
-          "NvimTree",
-          "Telescope",
-        }
-      end,
-    })
-    use({
       "kyazdani42/nvim-tree.lua",
       cmd = { "NvimTreeToggle", "NvimTreeFocus" },
       config = function()
@@ -357,6 +352,7 @@ return packer.startup({
         require("rest-nvim").setup()
       end,
     })
+    use({ "diepm/vim-rest-console" })
     use({
       "rcarriga/nvim-notify",
       config = function()
@@ -370,7 +366,6 @@ return packer.startup({
       end,
     })
     use({ "tpope/vim-dotenv" })
-    -- use({ "soywod/himalaya", rtp = "vim" })
 
     -- Lua development
     use({ "rafcamlet/nvim-luapad", cmd = "Luapad" })

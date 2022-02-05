@@ -3,30 +3,31 @@ local dapui = require("dapui")
 
 -- Keymapping
 -- TODO: Make a command to attach to buffer
-local bmap = function(type, key, value)
-  vim.api.nvim_buf_set_keymap(0, type, key, value, { noremap = true, silent = true })
-end
-local gmap = function(type, key, value)
-  vim.api.nvim_set_keymap(type, key, value, { noremap = true, silent = true })
+local map = function(mode, l, r, opts)
+  opts = opts or {}
+  vim.keymap.set(mode, l, r, opts)
 end
 
 -- DAP Keymap
--- TODO: All keymap should be buffer, not global
-gmap("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>")
-gmap("n", "<leader>dr", "<cmd>lua require('dap').repl.open()<CR>")
-gmap("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<CR>")
-gmap("n", "<leader>di", "<cmd>lua require('dap').step_into()<CR>")
-gmap("n", "<leader>do", "<cmd>lua require('dap').step_out()<CR>")
-gmap("n", "<leader>dO", "<cmd>lua require('dap').step_over()<CR>")
-gmap("n", "<leader>dd", "<cmd>lua require('dapui').toggle()<CR>")
-gmap("n", "<leader>di", "<cmd>lua require('dap.ui.variables').hover({},{border='solid'})<CR>")
+map("n", "<leader>dc", dap.continue)
+map("n", "<leader>dC", dap.reverse_continue)
+map("n", "<leader>db", dap.toggle_breakpoint)
+map("n", "<leader>di", dap.step_into)
+map("n", "<leader>do", dap.step_out)
+map("n", "<leader>dO", dap.step_over)
+map("n", "<leader>dr", dap.repl.toggle)
+map("n", "<leader>dd", dapui.toggle)
+map("n", "<leader>df", dapui.float_element)
+map({ "n", "v" }, "<leader>de", dapui.eval)
+map("n", "<leader>du", dap.up)
+map("n", "<leader>dU", dap.down)
 
 -- Telescope keymap
-gmap("n", "<leader>dlc", "<cmd>Telescope dap commands<CR>")
-gmap("n", "<leader>dlC", "<cmd>Telescope dap configurations<CR>")
-gmap("n", "<leader>dlb", "<cmd>Telescope dap list_breakpoints<CR>")
-gmap("n", "<leader>dlv", "<cmd>Telescope dap variables<CR>")
-gmap("n", "<leader>dlf", "<cmd>Telescope dap frames<CR>")
+map("n", "<leader>dlc", "<cmd>Telescope dap commands<CR>")
+map("n", "<leader>dlC", "<cmd>Telescope dap configurations<CR>")
+map("n", "<leader>dlb", "<cmd>Telescope dap list_breakpoints<CR>")
+map("n", "<leader>dlv", "<cmd>Telescope dap variables<CR>")
+map("n", "<leader>dlf", "<cmd>Telescope dap frames<CR>")
 
 -- Set icon
 -- TODO: Don't conflict with gitsigns (Issue #10106)

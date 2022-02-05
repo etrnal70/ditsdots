@@ -54,7 +54,7 @@ opt.smarttab = true
 opt.expandtab = true
 opt.signcolumn = "auto:2"
 
-opt.laststatus = 2 -- Always show statusline
+opt.laststatus = 3 -- ULTRA
 opt.number = true -- Enable number column
 opt.relativenumber = true -- Make number column relative
 opt.cursorline = true

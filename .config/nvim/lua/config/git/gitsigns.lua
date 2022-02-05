@@ -1,33 +1,36 @@
 require("gitsigns").setup({
   signs = {
-    add = { hl = "DiffAdd", text = "│" },
-    change = { hl = "DiffChange", text = "│" },
-    delete = { hl = "DiffDelete", text = "│" },
-    topdelete = { hl = "DiffDelete", text = "│" },
-    changedelete = { hl = "DiffChange", text = "│" },
+    add = { text = "│" },
+    change = { text = "│" },
+    delete = { text = "│" },
+    topdelete = { text = "│" },
+    changedelete = { text = "│" },
   },
-  keymaps = {
-    noremap = true,
-    buffer = true,
-    ["n <leader>hs"] = "<cmd>Gitsigns stage_hunk<CR>",
-    ["v <leader>hs"] = ":Gitsigns stage_hunk<CR>",
-    ["n <leader>hS"] = "<cmd>Gitsigns stage_buffer<CR>",
-    ["n <leader>hU"] = "<cmd>Gitsigns reset_buffer_index<CR>",
-    ["n <leader>hu"] = "<cmd>Gitsigns undo_stage_hunk<CR>",
-    ["n <leader>hr"] = "<cmd>Gitsigns reset_hunk<CR>",
-    ["v <leader>hr"] = ":Gitsigns reset_hunk<CR>",
-    ["n <leader>hR"] = "<cmd>Gitsigns reset_buffer<CR>",
-    ["n <leader>hb"] = "<cmd>lua require'gitsigns'.blame_line{full=true}<CR>",
-    ["n <leader>hp"] = "<cmd>Gitsigns preview_hunk<CR>",
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
 
-    -- Text objects
-    ["o ih"] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
-    ["x ih"] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
-  },
+    map({ "n", "v" }, "<leader>hs", gs.stage_hunk)
+    map({ "n", "v" }, "<leader>hr", gs.reset_hunk)
+    map("n", "<leader>hS", gs.stage_buffer)
+    map("n", "<leader>hu", gs.undo_stage_hunk)
+    map("n", "<leader>hU", gs.reset_buffer_index)
+    map("n", "<leader>hR", gs.reset_buffer)
+    map("n", "<leader>hb", function()
+      gs.blame_line({ full = true })
+    end)
+    map("n", "<leader>hp", gs.preview_hunk)
+    map("n", "<leader>hd", gs.diffthis)
+
+    -- Text Objects
+    map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+  end,
   preview_config = {
     border = "solid",
   },
   current_line_blame = true,
-  status_formatter = nil,
-  word_diff = true,
 })

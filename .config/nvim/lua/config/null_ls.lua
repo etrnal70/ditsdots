@@ -15,10 +15,9 @@ null_ls.setup({
       "<leader>ff",
       "",
       { callback = vim.lsp.buf.formatting_seq_sync, noremap = true, silent = true }
-
-      -- Autoformat on save
-      -- vim.api.nvim_command("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()")
     )
+    -- Autoformat on save
+    -- vim.api.nvim_command("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()")
   end,
   sources = {
     -- Formatter
@@ -26,6 +25,7 @@ null_ls.setup({
     formatter.dart_format,
     formatter.deno_fmt,
     formatter.gofumpt,
+    formatter.pg_format,
     formatter.prettierd,
     formatter.rustfmt,
     formatter.shfmt.with({

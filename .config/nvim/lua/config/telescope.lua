@@ -51,8 +51,8 @@ tele.setup({
     use_less = false,
     mappings = {
       i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
+        ["<S-Tab>"] = actions.move_selection_next,
+        ["<Tab>"] = actions.move_selection_previous,
         ["<esc>"] = actions.close,
         ["<C-o>"] = actions.toggle_selection,
         ["<C-O>"] = actions.toggle_all,

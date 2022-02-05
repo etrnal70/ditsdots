@@ -1,30 +1,9 @@
 local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
 
-parser_configs.norg = {
-  install_info = {
-    url = "https://github.com/vhyrro/tree-sitter-norg",
-    files = { "src/parser.c", "src/scanner.cc" },
-    branch = "main",
-  },
-}
-
-parser_configs.norg_meta = {
-  install_info = {
-    url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
-    files = { "src/parser.c" },
-    branch = "main",
-  },
-}
-
-parser_configs.norg_table = {
-  install_info = {
-    url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
-    files = { "src/parser.c" },
-    branch = "main",
-  },
-}
-
 require("nvim-treesitter.configs").setup({
+  context_commentstring = {
+    enable = true,
+  },
   ensure_installed = "all",
   ignore_installed = {},
   highlight = {
@@ -46,7 +25,6 @@ require("nvim-treesitter.configs").setup({
   },
   indent = {
     enable = true,
-    disable = { "python" },
   },
   rainbow = {
     enable = true,
@@ -55,7 +33,7 @@ require("nvim-treesitter.configs").setup({
   },
   textobjects = {
     select = {
-      enable = true,
+      enable = false,
       keymaps = {
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
@@ -68,26 +46,9 @@ require("nvim-treesitter.configs").setup({
       },
     },
     move = {
-      enable = true,
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]["] = "@class.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[["] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[]"] = "@class.outer",
-      },
+      enable = false,
     },
   },
-  -- See treesitter details. For development only
   playground = {
     enable = false,
     updatetime = 25,

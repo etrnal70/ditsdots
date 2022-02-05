@@ -1,40 +1,39 @@
 local lsp = vim.lsp
-local lsp_status = require("lsp-status")
-pcall(vim.cmd, [[packadd cmp-nvim-lsp]])
+local cmp_lsp = require("cmp_nvim_lsp")
 
 -- LSP default override
-lsp_status.register_progress()
-lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
   border = "solid",
 })
 
 -- Custom Capabilities
-local custom_capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local custom_capabilities = cmp_lsp.update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Custom attach
 local custom_attach = function(client, bufnr)
-  local bmap = function(type, lhs, rhs, func)
-    vim.api.nvim_buf_set_keymap(bufnr, type, lhs, rhs, { callback = func, noremap = true, silent = true })
+  local map = function(mode, l, r, opts)
+    opts = opts or {}
+    opts.buffer = bufnr
+    vim.keymap.set(mode, l, r, opts)
   end
 
   -- LSP Keymapping
-  bmap("n", "K", "", vim.lsp.buf.hover)
-  bmap("n", "gh", "", vim.lsp.buf.signature_help)
-  bmap("n", "gD", "", vim.lsp.buf.declaration)
-  bmap("n", "gR", "", vim.lsp.buf.rename)
-  bmap("n", "gs", "", vim.lsp.buf.document_symbol)
-  bmap("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
-  bmap("n", "gi", "<cmd>Telescope lsp_implementations<CR>")
-  bmap("n", "gy", "<cmd>Telescope lsp_type_definitions<CR>")
-  bmap("n", "gr", "<cmd>Telescope lsp_references<CR>")
-  bmap("n", "gS", "<cmd>Telescope lsp_document_symbols<CR>")
-  bmap("n", "gw", "<cmd>Telescope lsp_workspace_symbols<CR>")
-  bmap("n", "gW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
-  bmap("n", "<leader>ci", "", vim.lsp.buf.incoming_calls)
-  bmap("n", "<leader>co", "", vim.lsp.buf.outgoing_calls)
-  bmap("n", "<leader>a", "", vim.lsp.buf.code_action)
-  bmap("v", "<leader>a", "<cmd>Telescope lsp_range_code_action<CR>")
-  -- bmap("n", "<leader>ll", "<cmd>Telescope lsp_codelens<CR>")
+  map("n", "K", lsp.buf.hover)
+  map("n", "gh", lsp.buf.signature_help)
+  map("n", "gD", lsp.buf.declaration)
+  map("n", "gR", lsp.buf.rename)
+  map("n", "gs", lsp.buf.document_symbol)
+  map("n", "gd", "<cmd>Telescope lsp_definitions<CR>")
+  map("n", "gi", "<cmd>Telescope lsp_implementations<CR>")
+  map("n", "gy", "<cmd>Telescope lsp_type_definitions<CR>")
+  map("n", "gr", "<cmd>Telescope lsp_references<CR>")
+  map("n", "gS", "<cmd>Telescope lsp_document_symbols<CR>")
+  map("n", "gw", "<cmd>Telescope lsp_workspace_symbols<CR>")
+  map("n", "gW", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
+  map("n", "<leader>ci", lsp.buf.incoming_calls)
+  map("n", "<leader>co", lsp.buf.outgoing_calls)
+  map("n", "<leader>a", lsp.buf.code_action)
+  map("v", "<leader>a", "<cmd>Telescope lsp_range_code_action<CR>")
 
   -- Disable server formatting capabilities
   client.resolved_capabilities.document_formatting = false
@@ -53,14 +52,8 @@ local custom_attach = function(client, bufnr)
     extra_trigger_chars = { "<", "[", "(", "{", ",", "." },
   })
 
-  -- vim-illuminate
-  require("illuminate").on_attach(client)
-
   -- Register nvim-cmp LSP source
-  require("cmp_nvim_lsp").setup()
-
-  -- Register LSP status
-  lsp_status.on_attach(client)
+  cmp_lsp.setup()
 
   vim.notify("[" .. client.name .. "] " .. "Language Server Protocol started")
 end
@@ -68,7 +61,7 @@ end
 -- TODO: Split to ftplugin
 local servers = {
   "clangd",
-  "denols",
+  -- "denols",
   "dockerls",
   "flutter",
   "gopls",
@@ -77,6 +70,7 @@ local servers = {
   "rust_analyzer",
   "sumneko",
   "texlab",
+  "tsserver",
   "zls",
 }
 
