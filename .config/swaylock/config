@@ -1,4 +1,3 @@
-indicator
 indicator-caps-lock
 indicator-radius=120
 indicator-idle-visible
@@ -20,5 +19,4 @@ line-color=00000000
 line-wrong-color=00000000
 line-ver-color=00000000
 line-clear-color=00000000
-fade-in=1
 image=~/Data/wallpaper/lockscreen.png
