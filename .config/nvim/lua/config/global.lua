@@ -53,6 +53,7 @@ opt.tabstop = 2
 opt.smarttab = true
 opt.expandtab = true
 opt.signcolumn = "auto:2"
+opt.showbreak = "↳ "
 
 opt.laststatus = 3 -- ULTRA
 opt.number = true -- Enable number column
@@ -117,6 +118,7 @@ opt.backspace = { "indent", "eol", "start" }
 opt.emoji = false
 
 vim.g.python3_host_prog = "/bin/python"
+vim.g.tex_flavor = "latex"
 
 -- Default Diagnostics Override
 vim.diagnostic.config({
@@ -129,11 +131,15 @@ vim.diagnostic.config({
   },
   severity_sort = true,
   underline = false,
-  update_in_insert = true,
-  virtual_text = {
-    format = function()
-      return ""
-    end,
+  update_in_insert = false,
+  -- virtual_text = {
+  --   format = function()
+  --     return ""
+  --   end,
+  --   severity = { min = vim.diagnostic.severity.WARN },
+  -- },
+  virtual_text = false,
+  virtual_lines = {
     severity = { min = vim.diagnostic.severity.WARN },
   },
 })

@@ -1,12 +1,8 @@
 local cmp = require("cmp")
-local compare = require("cmp.config.compare")
+local cmp_compare = require("cmp.config.compare")
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local neogen = require("neogen")
 local luasnip = require("luasnip")
-
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -48,6 +44,8 @@ local item_kinds = {
   TypeParameter = "ﰠ TypeParameter",
 }
 
+require("luasnip.loaders.from_vscode").lazy_load()
+
 cmp.setup({
   documentation = {
     maxwidth = 60,
@@ -73,10 +71,10 @@ cmp.setup({
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
+      elseif luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
       elseif neogen.jumpable() then
-        vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
+        neogen.jump_next()
       elseif has_words_before() then
         cmp.complete()
       else
@@ -88,21 +86,19 @@ cmp.setup({
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
         luasnip.jump(-1)
+      elseif neogen.jumpable(-1) then
+        neogen.jump_prev()
       else
         fallback()
       end
     end, { "i", "s" }),
     ["<C-j>"] = cmp.mapping.scroll_docs(2),
     ["<C-k>"] = cmp.mapping.scroll_docs(-2),
-    ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = false,
-    }),
+    ["<C-y>"] = cmp.config.disable,
     ["<Space>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         local entry = cmp.get_selected_entry()
         if entry then
-          -- TODO: Insert extra space after confirm
           cmp.confirm()
         end
       end
@@ -120,14 +116,14 @@ cmp.setup({
       function(...)
         return require("cmp_buffer"):compare_locality(...)
       end,
-      compare.offset,
-      compare.exact,
-      compare.score,
-      compare.recently_used,
-      compare.kind,
-      compare.sort_text,
-      compare.length,
-      compare.order,
+      cmp_compare.offset,
+      cmp_compare.exact,
+      cmp_compare.score,
+      cmp_compare.recently_used,
+      cmp_compare.kind,
+      cmp_compare.sort_text,
+      cmp_compare.length,
+      cmp_compare.order,
     },
   },
   sources = {
@@ -149,15 +145,19 @@ function _G.on_complete_check()
 
   local current = string.sub(line, cursor, cursor + 1)
   if current == "." or current == "," or current == " " then
-    require("cmp").close()
+    cmp.close()
   end
 
   local before_line = string.sub(line, 1, cursor + 1)
   local after_line = string.sub(line, cursor + 1, -1)
   if not string.match(before_line, "^%s+$") then
     if after_line == "" or string.match(before_line, " $") or string.match(before_line, "%.$") then
-      require("cmp").complete()
+      cmp.complete()
     end
   end
 end
 vim.api.nvim_command("autocmd TextChangedI, TextChangedP * call v:lua.on_complete_check()")
+
+-- Setup additional configs
+require("config.completion.autopairs")
+require("config.completion.autocmd")

@@ -3,10 +3,6 @@ local conds = require("nvim-autopairs.conds")
 local rule = require("nvim-autopairs.rule")
 
 npairs.setup({
-  disable_filetype = { "TelescopePrompt" },
-  enable_moveright = true,
-  enable_afterquota = true,
-  enable_check_bracket_line = true,
   check_ts = true,
 })
 

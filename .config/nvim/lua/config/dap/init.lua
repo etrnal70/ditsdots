@@ -23,11 +23,11 @@ map("n", "<leader>du", dap.up)
 map("n", "<leader>dU", dap.down)
 
 -- Telescope keymap
-map("n", "<leader>dlc", "<cmd>Telescope dap commands<CR>")
-map("n", "<leader>dlC", "<cmd>Telescope dap configurations<CR>")
-map("n", "<leader>dlb", "<cmd>Telescope dap list_breakpoints<CR>")
-map("n", "<leader>dlv", "<cmd>Telescope dap variables<CR>")
-map("n", "<leader>dlf", "<cmd>Telescope dap frames<CR>")
+map("n", "<leader>dlc", ":Telescope dap commands<CR>")
+map("n", "<leader>dlC", ":Telescope dap configurations<CR>")
+map("n", "<leader>dlb", ":Telescope dap list_breakpoints<CR>")
+map("n", "<leader>dlv", ":Telescope dap variables<CR>")
+map("n", "<leader>dlf", ":Telescope dap frames<CR>")
 
 -- Set icon
 -- TODO: Don't conflict with gitsigns (Issue #10106)

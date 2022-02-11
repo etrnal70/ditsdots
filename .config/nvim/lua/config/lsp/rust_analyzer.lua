@@ -31,11 +31,11 @@ M.setup = function(on_attach, capabilities)
         on_attach(client, bufnr)
         map("n", "K", require("rust-tools.hover_actions").hover_actions)
         map("v", "K", require("rust-tools.hover_range").hover_range)
-        map("n", "<leader>Rr", "<cmd>RustRunnables<CR>")
-        map("n", "<leader>Rc", "<cmd>RustOpenCargo<CR>")
-        map("n", "<leader>Rh", "<cmd>RustHoverActions<CR>")
-        map("n", "<leader>Rmu", "<cmd>RustMoveItemUp<CR>")
-        map("n", "<leader>Rmd", "<cmd>RustMoveItemDown<CR>")
+        map("n", "<leader>Rr", ":RustRunnables<CR>")
+        map("n", "<leader>Rc", ":RustOpenCargo<CR>")
+        map("n", "<leader>Rh", ":RustHoverActions<CR>")
+        map("n", "<leader>Rmu", ":RustMoveItemUp<CR>")
+        map("n", "<leader>Rmd", ":RustMoveItemDown<CR>")
       end,
       capabilities = capabilities,
     },

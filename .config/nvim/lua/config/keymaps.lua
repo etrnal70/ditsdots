@@ -12,18 +12,18 @@ map("", "sj", "<C-w>j")
 map("", "sl", "<C-w>l")
 
 -- Move tab
-map("n", "<leader>bn", "<cmd>tabn<CR>")
-map("n", "<leader>bp", "<cmd>tabp<CR>")
+map("n", "<leader>bn", ":tabn<CR>")
+map("n", "<leader>bp", ":tabp<CR>")
 
 -- Move lines up and down
 map("v", "J", ":m '>+1<CR>gv=gv")
 map("v", "K", ":m '>-2<CR>gv=gv")
 
 -- Resize window using Ctrl + Alt + <hjkl>
-map("n", "<C-A-k>", "<cmd>resize +2<CR>")
-map("n", "<C-A-j>", "<cmd>resize -2<CR>")
-map("n", "<C-A-h>", "<cmd>vertical resize +2<CR>")
-map("n", "<C-A-l>", "<cmd>vertical resize -2<CR>")
+map("n", "<C-A-k>", ":resize +2<CR>")
+map("n", "<C-A-j>", ":resize -2<CR>")
+map("n", "<C-A-h>", ":vertical resize +2<CR>")
+map("n", "<C-A-l>", ":vertical resize -2<CR>")
 
 -- Move one character left or right in insert mode
 -- using Alt + <hl>
@@ -39,11 +39,22 @@ map("n", "[d", vim.diagnostic.goto_prev)
 map("n", "]d", vim.diagnostic.goto_prev)
 map("n", "<leader>lq", require("telescope.builtin").diagnostics)
 
+-- Git-related
+map("n", "<leader>gs", ":Git<CR>")
+map("n", "<leader>gl", ":Git log<CR>")
+map("n", "<leader>gp", ":Git push<CR>")
+map("n", "<leader>gP", ":Git pull<CR>")
+map("n", "<leader>gd", ":tabnew | Gvdiffsplit!<CR>")
+map("n", "<leader>gch", ":diffget //2<CR>")
+map("n", "<leader>gcl", ":diffget //3<CR>")
+map("n", "<leader>gC", require("telescope.builtin").git_commits)
+map("n", "<leader>gb", require("telescope.builtin").git_branches)
+
 -- nvim-tree.lua
-map("n", "<leader>st", "<cmd>NvimTreeToggle<CR>")
+map("n", "<leader>st", ":NvimTreeToggle<CR>")
 
 -- Telescope
-map("n", "<leader>lf", require("config.telescope").project_files)
+map("n", "<leader>lf", require("config.telescope.custom").project_files)
 map("n", "<leader>ls", require("telescope.builtin").live_grep)
 map("n", "<leader>lb", require("telescope.builtin").buffers)
 map("n", "<leader>lo", require("telescope.builtin").oldfiles)

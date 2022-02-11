@@ -10,5 +10,5 @@ vim.g.asynctasks_term_rows = 6
 vim.g.asynctasks_term_focus = 0
 vim.g.asynctasks_template = "~/.config/nvim/task_template.ini"
 
-map("n", "<leader>jr", "<cmd>AsyncTask project-run<CR>")
-map("n", "<leader>jb", "<cmd>AsyncTask project-build<CR>")
+map("n", "<leader>jr", ":AsyncTask project-run<CR>")
+map("n", "<leader>jb", ":AsyncTask project-build<CR>")

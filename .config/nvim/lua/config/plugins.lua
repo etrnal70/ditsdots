@@ -37,6 +37,7 @@ return packer.startup({
       after = "cmp-nvim-lsp",
     })
     use({ "ray-x/lsp_signature.nvim" })
+    use({ "https://git.sr.ht/~whynothugo/lsp_lines.nvim" })
     use({
       "j-hui/fidget.nvim",
       config = function()
@@ -51,16 +52,16 @@ return packer.startup({
       requires = { "ldelossa/litee-calltree.nvim", "ldelossa/litee-symboltree.nvim" },
       config = function()
         require("litee.lib").setup({
-          notify = { enabled = false },
+          notify = { enabled = true },
           panel = {
             orientation = "right",
             panel_size = 45,
           },
-          tree = {
-            icons = "nerd",
-          },
+          tree = { icons = "nerd" },
         })
-        require("litee.calltree").setup()
+        require("litee.calltree").setup({
+          on_open = "panel",
+        })
         require("litee.symboltree").setup()
       end,
     })
@@ -69,9 +70,9 @@ return packer.startup({
     use({
       "hrsh7th/nvim-cmp",
       config = function()
-        require("config.completion.cmp")
-        require("config.completion.autocmd")
+        require("config.completion")
       end,
+      after = "nvim-treesitter",
     })
     use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
@@ -85,9 +86,6 @@ return packer.startup({
     })
     use({
       "saadparwaiz1/cmp_luasnip",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
       requires = { "L3MON4D3/LuaSnip" },
       after = "nvim-cmp",
     })
@@ -106,25 +104,44 @@ return packer.startup({
       config = function()
         require("config.telescope")
       end,
-      requires = {
-        { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-      },
+      requires = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
     })
     use({
       "GustavoKatel/telescope-asynctasks.nvim",
-      requires = "telescope.nvim",
+      after = "telescope.nvim",
       config = function()
         vim.keymap.set("n", "<leader>lt", require("telescope").extensions.asynctasks.all)
       end,
     })
-    -- use({ "nvim-telescope/telescope-bibtex.nvim" })
     use({
       "crispgm/telescope-heading.nvim",
-      requires = "telescope.nvim",
+      after = "telescope.nvim",
       ft = "markdown",
       config = function()
         require("telescope").load_extension("heading")
-        vim.keymap.set("n", "<leader>lh", "<cmd>Telescope heading<CR>")
+        vim.keymap.set("n", "<leader>lh", ":Telescope heading<CR>")
+      end,
+    })
+    use({
+      "folke/todo-comments.nvim",
+      after = "telescope.nvim",
+      config = function()
+        require("todo-comments").setup({
+          signs = false,
+        })
+        vim.keymap.set("n", "<leader>lT", ":TodoTelescope<CR>")
+      end,
+    })
+    use({ "nvim-telescope/telescope-bibtex.nvim", after = "telescope.nvim" })
+
+    -- User Interface
+    use({ "MunifTanjim/nui.nvim" })
+    use({
+      "wthollingsworth/pomodoro.nvim",
+      config = function()
+        require("pomodoro").setup()
+        vim.keymap.set("n", "<leader>Ps", ":PomodoroStart<CR>", { silent = true })
+        vim.keymap.set("n", "<leader>PS", ":PomodoroStop<CR>", { silent = true })
       end,
     })
 
@@ -137,26 +154,24 @@ return packer.startup({
       "nvim-treesitter/nvim-treesitter",
       run = ":TSUpdate",
       config = function()
-        require("config.treesitter")
+        require("config.misc.treesitter")
       end,
     })
-    use({ "nvim-treesitter/nvim-treesitter-textobjects", requires = "nvim-treesitter" })
-    use({ "nvim-treesitter/nvim-treesitter-refactor", requires = "nvim-treesitter" })
-    use({ "nvim-treesitter/playground", requires = "nvim-treesitter" })
-    use({ "JoosepAlviste/nvim-ts-context-commentstring", requires = "nvim-treesitter" })
-    use({ "p00f/nvim-ts-rainbow", requires = "nvim-treesitter" })
+    use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
+    use({ "nvim-treesitter/nvim-treesitter-refactor", after = "nvim-treesitter" })
+    use({ "nvim-treesitter/playground", after = "nvim-treesitter" })
+    use({ "JoosepAlviste/nvim-ts-context-commentstring", after = "nvim-treesitter" })
+    use({ "p00f/nvim-ts-rainbow", after = "nvim-treesitter" })
     use({
       "danymat/neogen",
-      requires = "nvim-treesitter",
+      after = "nvim-treesitter",
       config = function()
-        require("neogen").setup({
-          enabled = true,
-        })
+        require("neogen").setup()
       end,
     })
     use({
       "SmiteshP/nvim-gps",
-      requires = "nvim-treesitter",
+      after = "nvim-treesitter",
       config = function()
         require("nvim-gps").setup({ separator = " ❯ " })
       end,
@@ -196,9 +211,13 @@ return packer.startup({
     use({
       "rcarriga/nvim-dap-ui",
       requires = { "mfussenegger/nvim-dap" },
+      config = function()
+        require("config.dap")
+      end,
     })
     use({
       "nvim-telescope/telescope-dap.nvim",
+      after = "telescope.nvim",
       config = function()
         require("telescope").load_extension("dap")
       end,
@@ -224,8 +243,12 @@ return packer.startup({
     })
 
     -- Language-related
+    use({ "p00f/clangd_extensions.nvim" })
     use({ "akinsho/flutter-tools.nvim" })
     use({ "simrat39/rust-tools.nvim" })
+    use({ "mfussenegger/nvim-jdtls" })
+    use({ "scalameta/nvim-metals" })
+    use({ "nanotee/sqls.nvim" })
     use({
       "Saecki/crates.nvim",
       event = "BufRead Cargo.toml",
@@ -239,22 +262,16 @@ return packer.startup({
     use({
       "jose-elias-alvarez/null-ls.nvim",
       config = function()
-        require("config.null_ls")
+        require("config.misc.null_ls")
       end,
     })
 
     -- Misc
-    use({ "lewis6991/impatient.nvim" }) -- Remove after neovim/pull/15436 merged
+    use({ "lewis6991/impatient.nvim" })
     use({
       "goolord/alpha-nvim",
       config = function()
         require("config.misc.alpha")
-      end,
-    })
-    use({
-      "stevearc/dressing.nvim",
-      config = function()
-        require("config.dressing")
       end,
     })
     use({
@@ -279,12 +296,6 @@ return packer.startup({
       "luukvbaal/stabilize.nvim",
       config = function()
         require("stabilize").setup()
-      end,
-    })
-    use({
-      "https://gitlab.com/yorickpeterse/nvim-pqf.git",
-      config = function()
-        require("pqf").setup()
       end,
     })
     use({
@@ -331,7 +342,7 @@ return packer.startup({
       end,
     })
     use({ "gyim/vim-boxdraw", opt = true })
-    use({ "machakann/vim-sandwich", event = "InsertEnter" })
+    use({ "machakann/vim-sandwich" })
     use({
       "norcalli/nvim-colorizer.lua",
       config = function()
@@ -340,7 +351,6 @@ return packer.startup({
     })
     use({
       "kyazdani42/nvim-tree.lua",
-      cmd = { "NvimTreeToggle", "NvimTreeFocus" },
       config = function()
         require("config.misc.nvim-tree")
       end,
@@ -352,13 +362,14 @@ return packer.startup({
         require("rest-nvim").setup()
       end,
     })
-    use({ "diepm/vim-rest-console" })
     use({
       "rcarriga/nvim-notify",
       config = function()
         vim.notify = require("notify")
         require("notify").setup({
           background_colour = "#000000",
+          max_width = 65,
+          max_height = 3,
           minimum_width = 35,
           render = "minimal",
           stages = "fade",
@@ -370,8 +381,4 @@ return packer.startup({
     -- Lua development
     use({ "rafcamlet/nvim-luapad", cmd = "Luapad" })
   end,
-  config = {
-    -- Move to lua dir so impatient.nvim can cache it
-    compile_path = vim.fn.stdpath("config") .. "/lua/packer_compiled.lua",
-  },
 })

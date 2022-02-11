@@ -12,7 +12,7 @@ local default_ivy = {
 tele.setup({
   defaults = {
     extensions = {
-      fzf = {
+      ["fzf"] = {
         fuzzy = true,
         override_generic_sorter = false,
         override_file_sorter = true,
@@ -51,8 +51,8 @@ tele.setup({
     use_less = false,
     mappings = {
       i = {
-        ["<S-Tab>"] = actions.move_selection_next,
-        ["<Tab>"] = actions.move_selection_previous,
+        ["<S-Tab>"] = actions.move_selection_previous,
+        ["<Tab>"] = actions.move_selection_next,
         ["<esc>"] = actions.close,
         ["<C-o>"] = actions.toggle_selection,
         ["<C-O>"] = actions.toggle_all,
@@ -78,7 +78,7 @@ tele.setup({
     diagnostics = default_ivy,
     lsp_code_actions = {
       theme = "cursor",
-      layout_config = { width = 50 },
+      layout_config = { width = 60 },
     },
     lsp_definitions = default_ivy,
     lsp_implementations = default_ivy,
@@ -86,14 +86,3 @@ tele.setup({
     lsp_type_definitions = default_ivy,
   },
 })
-
-local M = {}
-
-M.project_files = function()
-  local ok = pcall(require("telescope.builtin").git_files, {})
-  if not ok then
-    require("telescope.builtin").find_files({})
-  end
-end
-
-return M

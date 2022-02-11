@@ -36,11 +36,16 @@ hl("TelescopePromptTitle", { fg = "#1F1F1F", bg = "#A0B9D8" })
 hl("TelescopePromptCounter", { fg = "#A0B9D8" })
 hl("TelescopePromptPrefix", { fg = "#A0B9D8" })
 
+-- hl("DiagnosticError", { bg = "#462215" })
+-- hl("DiagnosticWarn", { bg = "#332B16" })
+-- hl("DiagnosticHint", { bg = "#1D2F31" })
+-- hl("DiagnosticInfo", { bg = "#232C38" })
+
 -- Completion-related
 hl("Pmenu", { bg = "#292927" })
 hl("PmenuSel", { fg = "NONE", bg = "#393937" })
 hl("CmpItemAbbrMatch", { fg = "#A0B9D8" })
-hl("CmpItemAbbrMatchFuzzy", { guifg = "#CF8164" })
+hl("CmpItemAbbrMatchFuzzy", { fg = "#CF8164" })
 hl("CmpItemAbbr", { fg = "#777777" })
 hl("CmpItemKindText", { italic = true, bg = "NONE", fg = "#CDD3DE" })
 hl("CmpItemKindMethod", { italic = true, bg = "NONE", fg = "#6699CC" })

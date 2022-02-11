@@ -35,9 +35,14 @@ M.setup = function(on_attach, capabilities)
     },
     lsp = {
       on_attach = function(client, bufnr)
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
         on_attach(client, bufnr)
         require("telescope").load_extension("flutter")
-        vim.keymap.set("n", "<leader>Fl", "<cmd>Telescope flutter commands<CR>", { buffer = bufnr })
+        map("n", "<leader>Fl", ":Telescope flutter commands<CR>")
       end,
       capabilities = capabilities,
       settings = {
