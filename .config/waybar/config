@@ -1,4 +1,6 @@
 {
+    "bar_id": "bar-0",
+    "ipc": true,
     "layer": "top",
     "position": "bottom",
     "height": 26,
@@ -12,8 +14,8 @@
         "spacing": 2
     },
     "clock": {
-        "format" : "{: %a │ %H : %M}",
-        "format-alt": "{: %a │ %d-%m-%Y}",
+        "format" : "{:%a│%H : %M}",
+        "format-alt": "{:%a│%d-%m-%Y}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     },
     "battery": {
