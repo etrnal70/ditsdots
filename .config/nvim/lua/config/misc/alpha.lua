@@ -32,6 +32,7 @@ dashboard.section.header.val = {
 }
 
 dashboard.section.buttons.val = {
+  dashboard.button("r", "神 Restore Session", ":lua require'persistence'.load()<CR>"),
   dashboard.button("e", "  New File    ", ":enew<CR>"),
   dashboard.button("f", "  Find File   ", ":Telescope find_files<CR>"),
   dashboard.button("t", "  Find Text   ", ":Telescope live_grep<CR>"),

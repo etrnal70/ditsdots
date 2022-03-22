@@ -1,6 +1,6 @@
 local M = {}
 
-local extension_path = vim.fn.expand("$HOME/.vscode/extensions/vadimcn.vscode-lldb-1.6.10/")
+local extension_path = vim.env.HOME .. "/.vscode/extensions/vadimcn.vscode-lldb-1.6.10/"
 local codelldb_path = extension_path .. "adapter/codelldb"
 local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
 
@@ -11,17 +11,22 @@ M.setup = function(on_attach, capabilities)
     },
     tools = {
       autoSetHints = false,
+      executor = require("rust-tools.executors").toggleterm,
+      hover_with_actions = false,
       inlay_hints = {
         show_parameter_hints = false,
         parameter_hints_prefix = " » ",
         other_hints_prefix = " ❱ ",
       },
-      hover_actions = {
-        border = "solid",
-        auto_focus = false,
-      },
+      on_initialized = function()
+        vim.api.nvim_create_autocmd(
+          { "BufEnter", "CursorHold", "InsertLeave" },
+          { pattern = "*.rs", callback = vim.lsp.codelens.refresh }
+        )
+      end,
     },
     server = {
+      standalone = false,
       on_attach = function(client, bufnr)
         local function map(mode, l, r, opts)
           opts = opts or {}
@@ -29,8 +34,6 @@ M.setup = function(on_attach, capabilities)
           vim.keymap.set(mode, l, r, opts)
         end
         on_attach(client, bufnr)
-        map("n", "K", require("rust-tools.hover_actions").hover_actions)
-        map("v", "K", require("rust-tools.hover_range").hover_range)
         map("n", "<leader>Rr", ":RustRunnables<CR>")
         map("n", "<leader>Rc", ":RustOpenCargo<CR>")
         map("n", "<leader>Rh", ":RustHoverActions<CR>")

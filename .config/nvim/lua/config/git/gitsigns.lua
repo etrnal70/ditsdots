@@ -32,5 +32,5 @@ require("gitsigns").setup({
   preview_config = {
     border = "solid",
   },
-  current_line_blame = true,
+  sign_priority = 1,
 })

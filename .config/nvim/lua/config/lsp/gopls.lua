@@ -2,6 +2,28 @@ local M = {}
 
 M.setup = function(on_attach, capabilities)
   require("lspconfig").gopls.setup({
+    settings = {
+      gopls = {
+        analyses = { unusedparams = true, unreachable = true },
+        codelenses = {
+          generate = true,
+          gc_details = true,
+          test = true,
+          tidy = true,
+        },
+        usePlaceholders = true,
+        semanticTokens = true,
+        completeUnimported = true,
+        staticcheck = true,
+        matcher = "Fuzzy",
+        diagnosticsDelay = "500ms",
+        experimentalWatchedFileDelay = "100ms",
+        gofumpt = false,
+        buildFlags = { "-tags", "integration" },
+        experimentalPostfixCompletions = true,
+        experimentalUseInvalidMetadata = true,
+      },
+    },
     on_attach = function(client, bufnr)
       local function map(mode, l, r, opts)
         opts = opts or {}
@@ -20,13 +42,7 @@ M.setup = function(on_attach, capabilities)
         dap_debug_vt = false,
       })
       on_attach(client, bufnr)
-      map("n", "<leader>Gd", ":GoCmt<CR>")
-      map("n", "<leader>Gl", ":GoLint<CR>")
-      map("n", "<leader>Gta", ":GoAddTag<CR>")
-      map("n", "<leader>Gtr", ":GoRmTag<CR>")
-      map("n", "<leader>Gtc", ":GoClearTag<CR>")
       map("n", "<leader>Gfs", ":GoFillStruct<CR>")
-      map("n", "<leader>Grt", ":GoRmTag<CR>")
     end,
     capabilities = capabilities,
   })

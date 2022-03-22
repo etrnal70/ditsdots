@@ -1,15 +1,14 @@
 local opt = vim.opt
 
-opt.encoding = "utf-8"
-opt.showmode = true
+opt.showmode = false
 opt.termguicolors = true -- Use GUI colors in terminal
 
 opt.hidden = true -- Hide unloaded buffer
-opt.lazyredraw = true -- Don't redraw easily
-opt.ttyfast = true -- Performance related
+-- opt.lazyredraw = true -- Currently clashing with global statusline
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
 opt.mouse = "n" -- Mouse only on normal mode
-opt.updatetime = 250 -- Editor update time in ms
+opt.updatetime = 500 -- Editor update time in ms
+opt.laststatus = 3
 
 opt.foldlevel = 99 -- Open folds when opening file
 opt.foldenable = true -- Prevent folding upon opening file
@@ -18,6 +17,8 @@ opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 opt.splitright = true -- Vertical split always on the right
 opt.splitbelow = true -- Horizontal split always on the bottom
+
+opt.conceallevel = 2
 opt.fillchars = {
   vert = "│",
   fold = " ",
@@ -38,32 +39,19 @@ opt.listchars = {
   trail = "•",
 }
 
-opt.autoindent = true
-opt.smartindent = true
-opt.breakindent = true
-opt.joinspaces = true
-
-opt.breakindentopt = "shift:2,min:40,sbr"
-opt.lbr = true -- Enable line break
-opt.wrap = true
-
 opt.shiftwidth = 2
 opt.softtabstop = 2
 opt.tabstop = 2
-opt.smarttab = true
 opt.expandtab = true
-opt.signcolumn = "auto:2"
-opt.showbreak = "↳ "
+opt.joinspaces = true
 
-opt.laststatus = 3 -- ULTRA
-opt.number = true -- Enable number column
-opt.relativenumber = true -- Make number column relative
+opt.number = true
+opt.relativenumber = true
 opt.cursorline = true
 opt.cursorlineopt = "number"
+opt.signcolumn = "auto:1-2"
 
-opt.wildmenu = true -- Use wildmenu
-opt.wildoptions = "pum" -- Use popup style for wildmenu
-opt.pumheight = 4 -- Set popup height to 4 entry
+opt.pumheight = 4
 
 opt.wildignorecase = true
 opt.wildignore = {
@@ -94,27 +82,33 @@ opt.shortmess = {
   c = true,
 }
 
+-- opt.smartindent = true
+opt.wrap = true
+opt.linebreak = true
+opt.breakindent = true
+opt.breakindentopt = {
+  shift = 0,
+  min = 40,
+  sbr = true,
+}
 opt.formatoptions = {
   ["1"] = true,
   ["2"] = true,
   q = true,
+  p = true,
   c = true,
   r = true,
   n = true,
-  t = false,
+  t = true,
   j = true,
-  l = true,
+  l = false,
   v = true,
+  w = true,
 }
 
-opt.swapfile = false -- Tbh swap file are disturbing af
-opt.backup = false -- Disable backup file
+opt.swapfile = false
 opt.writebackup = false
-opt.undofile = false
 opt.autowriteall = true
-
-opt.backspace = { "indent", "eol", "start" }
-
 opt.emoji = false
 
 vim.g.python3_host_prog = "/bin/python"
@@ -130,16 +124,19 @@ vim.diagnostic.config({
     severity = { min = vim.diagnostic.severity.WARN },
   },
   severity_sort = true,
-  underline = false,
-  update_in_insert = false,
-  -- virtual_text = {
-  --   format = function()
-  --     return ""
-  --   end,
-  --   severity = { min = vim.diagnostic.severity.WARN },
-  -- },
-  virtual_text = false,
-  virtual_lines = {
+  underline = true,
+  update_in_insert = true,
+  virtual_text = {
+    format = function(diag)
+      if #diag > 1 then
+        return diag.message
+      end
+
+      if string.len(diag.message) > 35 then
+        return string.sub(diag.message, 1, 35) .. "..."
+      end
+      return diag.message
+    end,
     severity = { min = vim.diagnostic.severity.WARN },
   },
 })
@@ -148,3 +145,6 @@ vim.fn.sign_define("DiagnosticSignError", { text = "", numhl = "DiagnosticError"
 vim.fn.sign_define("DiagnosticSignWarn", { text = "", numhl = "DiagnosticWarn" })
 vim.fn.sign_define("DiagnosticSignInfo", { text = "", numhl = "DiagnosticInfo" })
 vim.fn.sign_define("DiagnosticSignHint", { text = "", numhl = "DiagnosticHint" })
+
+-- UI Override
+require("config.ui").override_input()

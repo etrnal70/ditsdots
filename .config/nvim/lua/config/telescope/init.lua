@@ -1,8 +1,6 @@
 local tele = require("telescope")
 local actions = require("telescope.actions")
-
--- Load telescope extension
-tele.load_extension("fzf")
+local themes = require("telescope.themes")
 
 local default_ivy = {
   theme = "ivy",
@@ -11,14 +9,6 @@ local default_ivy = {
 
 tele.setup({
   defaults = {
-    extensions = {
-      ["fzf"] = {
-        fuzzy = true,
-        override_generic_sorter = false,
-        override_file_sorter = true,
-        case_mode = "smart_case",
-      },
-    },
     layout_strategy = "flex",
     layout_config = {
       flex = {
@@ -32,23 +22,20 @@ tele.setup({
         mirror = false,
       },
     },
-    path_display = {
-      "absolute",
-    },
-    prompt_prefix = " ➤ ",
-    selection_caret = " • ",
-    color_devicons = true,
-    windblend = 10,
+    path_display = { "truncate" },
+    prompt_prefix = "➤  ",
+    selection_caret = "• ",
+    wrap_results = true,
     file_ignore_patterns = {
       "__pycache__/*",
       "__init__.py",
       "%.env",
       "node_modules/*",
       "scratch/.*",
+      "sessions/*",
       "%.dll",
       "go/pkg/*",
     },
-    use_less = false,
     mappings = {
       i = {
         ["<S-Tab>"] = actions.move_selection_previous,
@@ -58,6 +45,21 @@ tele.setup({
         ["<C-O>"] = actions.toggle_all,
       },
     },
+  },
+  extensions = {
+    ["fzf"] = {
+      fuzzy = true,
+      override_generic_sorter = false,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
+    ["ui-select"] = themes.get_dropdown({
+      initial_mode = "normal",
+      layout_config = {
+        height = 7,
+        width = 45,
+      },
+    }),
   },
   pickers = {
     find_files = {
@@ -72,13 +74,15 @@ tele.setup({
         },
         vertical = {
           mirror = false,
+          preview_height = 0.65,
         },
       },
     },
     diagnostics = default_ivy,
     lsp_code_actions = {
+      initial_mode = "normal",
       theme = "cursor",
-      layout_config = { width = 60 },
+      layout_config = { width = 55 },
     },
     lsp_definitions = default_ivy,
     lsp_implementations = default_ivy,
@@ -86,3 +90,7 @@ tele.setup({
     lsp_type_definitions = default_ivy,
   },
 })
+
+-- Load telescope extension
+tele.load_extension("fzf")
+tele.load_extension("ui-select")

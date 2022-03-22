@@ -1,7 +1,6 @@
-local cmd = vim.api.nvim_command
-
 local map = function(mode, l, r, opts)
   opts = opts or {}
+  opts.silent = true
   vim.keymap.set(mode, l, r, opts)
 end
 
@@ -33,28 +32,42 @@ map("i", "<A-h>", "<esc>i")
 -- Terminal
 map("t", "<esc>", "<C-\\><C-n>")
 
--- Neovim Diagnostics
+-- Diagnostics
 map("n", "<leader>e", vim.diagnostic.open_float)
 map("n", "[d", vim.diagnostic.goto_prev)
 map("n", "]d", vim.diagnostic.goto_prev)
 map("n", "<leader>lq", require("telescope.builtin").diagnostics)
 
 -- Git-related
-map("n", "<leader>gs", ":Git<CR>")
+map("n", "<leader>gg", ":Git<CR>")
 map("n", "<leader>gl", ":Git log<CR>")
-map("n", "<leader>gp", ":Git push<CR>")
-map("n", "<leader>gP", ":Git pull<CR>")
-map("n", "<leader>gd", ":tabnew | Gvdiffsplit!<CR>")
+map("n", "<leader>gL", ":Flogsplit<CR>")
+map("n", "<leader>gp", require("config.git.commands").async_gpush)
+map("n", "<leader>gP", require("config.git.commands").async_gpull)
+map("n", "<leader>gf", require("config.git.commands").async_gfetch)
+map("n", "<leader>gd", ":Gvdiffsplit!<CR>")
 map("n", "<leader>gch", ":diffget //2<CR>")
 map("n", "<leader>gcl", ":diffget //3<CR>")
+map("n", "<leader>lF", require("telescope.builtin").git_files)
 map("n", "<leader>gC", require("telescope.builtin").git_commits)
 map("n", "<leader>gb", require("telescope.builtin").git_branches)
+
+-- vim-ultest
+map("n", "<leader>ta", ":UltestAttach<CR>")
+map("n", "<leader>tn", ":UltestNearest<CR>")
+map("n", "<leader>tf", ":Ultest<CR>")
+map("n", "<leader>tl", ":UltestLast<CR>")
+map("n", "<leader>td", ":UltestDebug<CR>")
+map("n", "<leader>to", ":UltestOutput<CR>")
+map("n", "<leader>ts", ":UltestStop<CR>")
+map("n", "<leader>tt", ":UltestSummary<CR>")
+map("n", "<leader>tc", ":UltestClear<CR>")
 
 -- nvim-tree.lua
 map("n", "<leader>st", ":NvimTreeToggle<CR>")
 
 -- Telescope
-map("n", "<leader>lf", require("config.telescope.custom").project_files)
+map("n", "<leader>lf", require("telescope.builtin").find_files)
 map("n", "<leader>ls", require("telescope.builtin").live_grep)
 map("n", "<leader>lb", require("telescope.builtin").buffers)
 map("n", "<leader>lo", require("telescope.builtin").oldfiles)
@@ -68,4 +81,4 @@ map("n", "<leader>rr", "<Plug>RestNvim")
 map("n", "<leader>rp", "<Plug>RestNvimPreview")
 
 -- autocmd
-cmd("autocmd TermOpen * setlocal nonumber norelativenumber")
+vim.api.nvim_create_autocmd("TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber" })

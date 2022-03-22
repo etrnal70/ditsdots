@@ -1,11 +1,11 @@
 -- Set <leader> to space
 vim.g.mapleader = " "
 
--- General neovim options
-require("config.global")
-
 -- Plugins
 require("config.plugins")
+
+-- General neovim options
+require("config.options")
 
 -- Load impatient plugin
 require("impatient")

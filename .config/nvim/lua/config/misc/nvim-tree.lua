@@ -56,6 +56,7 @@ local custom_keybinds = {
   { key = "p", cb = tree_cb("paste") },
   { key = "y", cb = tree_cb("copy_name") },
   { key = "Y", cb = tree_cb("copy_path") },
+  { key = "<C-k>", cb = tree_cb("show_file_info") },
   { key = "gy", cb = tree_cb("copy_absolute_path") },
   { key = "[c", cb = tree_cb("prev_git_item") },
   { key = "]c", cb = tree_cb("next_git_item") },
@@ -66,13 +67,20 @@ local custom_keybinds = {
 }
 
 require("nvim-tree").setup({
+  actions = {
+    resize_window = true,
+  },
   auto_close = true,
+  disable_netrw = true,
   filters = {
     dotfiles = true,
     custom = { ".git", "node_modules", ".cache", "__pycache__" },
   },
+  hijack_cursor = true,
+  system_open = {
+    cmd = "xdg-open",
+  },
   view = {
-    auto_resize = true,
     mappings = {
       custom_only = true,
       list = custom_keybinds,

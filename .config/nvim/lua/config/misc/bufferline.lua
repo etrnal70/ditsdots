@@ -3,19 +3,10 @@ local diagnostic = vim.diagnostic
 require("bufferline").setup({
   options = {
     diagnostics = false,
-    offsets = {
-      { filetype = "NvimTree", text = "File Explorer" },
-      { filetype = "dbui", text = "Dadbod-UI" },
-    },
-    show_buffer_icons = true,
-    show_buffer_close_icons = false,
     show_close_icon = false,
-    show_tab_indicators = true,
-    persist_buffer_sort = true,
     separator_style = "thin",
     enforce_regular_tabs = false,
     always_show_bufferline = true,
-    sort_by = "relative_directory",
     custom_filter = function()
       return false
     end,
@@ -47,11 +38,15 @@ require("bufferline").setup({
         end
 
         -- Git branch
-        -- TODO: Remove fugitive dependency
+        -- TODO: Switch to gitsigns
+        -- local git_status = vim.g.gitsigns_head
         local git_status = vim.fn["fugitive#statusline"]()
         if git_status ~= "" then
           git_status = git_status:match("%((.*)%)")
-          table.insert(result, { text = "  " .. git_status .. " ", guifg = "#222222", guibg = "#FF8800" })
+          table.insert(
+            result,
+            { text = "  " .. git_status .. " ", guifg = "#222222", guibg = "#FF8800", gui = "bold,italic" }
+          )
         end
 
         return result
