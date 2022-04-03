@@ -39,6 +39,11 @@ return packer.startup({
       "j-hui/fidget.nvim",
       config = function()
         require("fidget").setup({
+          align = { bottom = false },
+          fmt = { max_width = 65 },
+          sources = {
+            ["null-ls"] = { ignore = true },
+          },
           text = { spinner = "dots_negative" },
           window = { relative = "editor", blend = 0 },
         })
@@ -73,12 +78,11 @@ return packer.startup({
     })
     use({
       "saadparwaiz1/cmp_luasnip",
-      requires = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets", "honza/vim-snippets" },
+      requires = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
       after = "nvim-cmp",
     })
     use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
     use({
       "petertriho/cmp-git",
@@ -157,6 +161,15 @@ return packer.startup({
     use({ "JoosepAlviste/nvim-ts-context-commentstring", after = "nvim-treesitter" })
     use({ "p00f/nvim-ts-rainbow", after = "nvim-treesitter" })
     use({
+      "m-demare/hlargs.nvim",
+      config = function()
+        require("hlargs").setup({
+          color = "#A0B9D8",
+        })
+      end,
+      after = "nvim-treesitter",
+    })
+    use({
       "andymass/vim-matchup",
       setup = function()
         vim.g.matchup_motion_enabled = 0
@@ -203,10 +216,11 @@ return packer.startup({
         vim.g.git_messenger_always_into_popup = true
         vim.g.git_messenger_max_popup_height = 20
         vim.g.git_messenger_max_popup_width = 50
-        vim.g.git_messenger_floating_win_opts = { border = "solid" }
+        vim.g.git_messenger_floating_win_opts = { border = require("config.utils").border }
       end,
     })
     use({ "rhysd/committia.vim" })
+    use({ "rhysd/conflict-marker.vim" })
     use({ "ThePrimeagen/git-worktree.nvim" })
 
     -- Debugger
@@ -260,13 +274,16 @@ return packer.startup({
     use({ "nanotee/sqls.nvim" })
     use({ "b0o/schemastore.nvim" })
     use({
-      "Saecki/crates.nvim",
-      event = "BufRead Cargo.toml",
+      "ray-x/go.nvim",
+      ft = { "go", "gomod", "gowork", "gohtmltmpl" },
       config = function()
-        require("crates").setup()
+        require("go").setup({
+          tag_transform = true,
+          dap_debug_keymap = false,
+          dap_debug_vt = false,
+        })
       end,
     })
-    use({ "ray-x/go.nvim" })
     use({ "folke/lua-dev.nvim" })
     use({ "jose-elias-alvarez/nvim-lsp-ts-utils" })
     use({
@@ -384,9 +401,9 @@ return packer.startup({
       end,
     })
     use({
-      "kyazdani42/nvim-tree.lua",
+      "nvim-neo-tree/neo-tree.nvim",
       config = function()
-        require("config.misc.nvim-tree")
+        require("config.misc.neo-tree")
       end,
     })
     use({
@@ -407,12 +424,21 @@ return packer.startup({
       config = function()
         vim.notify = require("notify")
         require("notify").setup({
-          background_colour = "#000000",
-          max_width = 65,
+          background_colour = "NormalFloat",
+          max_width = 45,
           max_height = 3,
-          minimum_width = 35,
+          minimum_width = 45,
+          stages = "static",
           render = "minimal",
-          stages = "fade",
+          on_open = function(win)
+            vim.api.nvim_win_set_config(win, {
+              border = require("config.utils").border,
+              relative = "editor",
+              anchor = "SE",
+              row = vim.o.lines - vim.o.cmdheight - 2,
+              col = vim.o.columns - vim.wo.numberwidth - 2,
+            })
+          end,
         })
       end,
     })

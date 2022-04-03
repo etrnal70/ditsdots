@@ -1,7 +1,6 @@
 local npairs = require("nvim-autopairs")
 local conds = require("nvim-autopairs.conds")
 local rule = require("nvim-autopairs.rule")
-local luasnip_types = require("luasnip.util.types")
 
 local M = {}
 
@@ -10,18 +9,6 @@ M.load_luasnip = function()
     history = false,
     delete_check_events = "InsertLeave",
     region_check_events = "InsertEnter",
-    ext_opts = {
-      [luasnip_types.choiceNode] = {
-        active = {
-          virt_text = { { "●", "TSError" } },
-        },
-      },
-      [luasnip_types.insertNode] = {
-        active = {
-          virt_text = { { "●", "TSFunction" } },
-        },
-      },
-    },
   })
   require("luasnip.loaders.from_vscode").lazy_load()
   -- require("luasnip.loaders.from_snipmate").lazy_load()

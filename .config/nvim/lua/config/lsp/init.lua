@@ -13,15 +13,18 @@ local servers = {
   -- "jdtls",
   "jsonls",
   -- "metals",
-  "pyright",
+  "pylsp",
+  -- "pyright",
   "rust_analyzer",
   "sumneko",
+  "taplo",
   "texlab",
   "tsserver",
   "yamlls",
   "zls",
 }
 
+-- vim.lsp.set_log_level("debug")
 for _, server in ipairs(servers) do
   require("config.lsp." .. server).setup(utils.on_attach, utils.capabilities)
 end

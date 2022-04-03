@@ -4,9 +4,6 @@ vim.g.mapleader = " "
 -- Plugins
 require("config.plugins")
 
--- General neovim options
-require("config.options")
-
 -- Load impatient plugin
 require("impatient")
 
@@ -15,3 +12,9 @@ require("config.theme")
 
 -- Keymapping
 require("config.keymaps")
+
+-- Autocommands
+require("config.autocmds")
+
+-- General neovim options
+require("config.options")

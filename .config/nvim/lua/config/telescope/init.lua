@@ -62,6 +62,10 @@ tele.setup({
     }),
   },
   pickers = {
+    commands = {
+      theme = "ivy",
+      layout_config = { height = 8 },
+    },
     find_files = {
       layout_strategy = "flex",
       layout_config = {

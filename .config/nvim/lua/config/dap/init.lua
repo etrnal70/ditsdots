@@ -31,9 +31,11 @@ map("n", "<leader>dlv", ":Telescope dap variables<CR>")
 map("n", "<leader>dlf", ":Telescope dap frames<CR>")
 
 -- Set icon
-vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })
+vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#EC5F67" })
+vim.api.nvim_set_hl(0, "DapStopped", { fg = "#99C794" })
+vim.fn.sign_define("DapBreakpoint", { text = "⬤", texthl = "DapBreakpoint", linehl = "", numhl = "" })
 vim.fn.sign_define("DapLogpoint", { text = "", texthl = "", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped", { text = "🟢", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = "⬤", texthl = "DapStopped", linehl = "", numhl = "" })
 
 -- Language-specific configuration
 dap.adapters.lldb = {

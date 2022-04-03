@@ -1,18 +1,18 @@
 local opt = vim.opt
 
-opt.showmode = false
 opt.termguicolors = true -- Use GUI colors in terminal
-
 opt.hidden = true -- Hide unloaded buffer
 -- opt.lazyredraw = true -- Currently clashing with global statusline
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
 opt.mouse = "n" -- Mouse only on normal mode
-opt.updatetime = 500 -- Editor update time in ms
+opt.updatetime = 100
 opt.laststatus = 3
+
+opt.cmdheight = 0
 
 opt.foldlevel = 99 -- Open folds when opening file
 opt.foldenable = true -- Prevent folding upon opening file
-opt.foldmethod = "expr"
+opt.foldmethod = "indent"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 opt.splitright = true -- Vertical split always on the right
@@ -82,7 +82,7 @@ opt.shortmess = {
   c = true,
 }
 
--- opt.smartindent = true
+opt.smartindent = true
 opt.wrap = true
 opt.linebreak = true
 opt.breakindent = true

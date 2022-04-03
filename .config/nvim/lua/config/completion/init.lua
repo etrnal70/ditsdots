@@ -1,4 +1,5 @@
 local cmp = require("cmp")
+local cmp_compare = require("cmp.config.compare")
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local luasnip = require("luasnip")
 local utils = require("config.completion.utils")
@@ -61,8 +62,7 @@ cmp.setup({
         cmp.confirm()
         -- Don't try to add space when entry is a snippet
         if not entry.completion_item.insertTextFormat == require("cmp.types.lsp").InsertTextFormat.Snippet then
-          local kind = entry:get_kind()
-          if utils.allow_append_space(kind) then
+          if utils.allow_append_space(entry:get_kind()) then
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Space>", true, true, true), "", true)
           end
         end
@@ -72,6 +72,20 @@ cmp.setup({
     end),
   },
   preselect = require("cmp.types").cmp.PreselectMode.None,
+  sorting = {
+    comparators = {
+      cmp_compare.offset,
+      cmp_compare.exact,
+      cmp_compare.scopes,
+      cmp_compare.score,
+      cmp_compare.recently_used,
+      cmp_compare.locality,
+      cmp_compare.kind,
+      cmp_compare.sort_text,
+      cmp_compare.length,
+      cmp_compare.order,
+    },
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
@@ -80,7 +94,6 @@ cmp.setup({
   sources = {
     { name = "luasnip", max_item_count = 2 },
     { name = "nvim_lsp" },
-    { name = "nvim_lsp_signature_help" },
     { name = "path" },
   },
 })

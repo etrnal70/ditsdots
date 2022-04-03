@@ -23,7 +23,7 @@ hl("StatusLine", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineTerm", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineNC", { fg = nil, bg = "#1F1F1E" })
 hl("StatusLineTermNC", { fg = nil, bg = "#1F1F1E" })
-hl("WinSeparator", { fg = "#2F2F2F", bg = nil })
+hl("WinSeparator", { fg = "#2F2F2F", bg = nil, bold = true })
 hl("DiffAdd", { fg = "#92C47E" })
 hl("DiffChange", { fg = "#A0B9D8" })
 hl("DiffDelete", { fg = "#FE9F7C" })
@@ -101,6 +101,7 @@ hl("LspOperator", { link = "TSOperator" })
 hl("LspReferenceRead", { link = "CursorLine" })
 hl("LspReferenceText", { link = "CursorLine" })
 hl("LspReferenceWrite", { link = "CursorLine" })
+hl("LspSignatureActiveParameter", { bg = "#404040", bold = true, italic = true })
 hl("LspCodeLens", { fg = "#666666", bold = true })
 hl("LspCodeLensText", { link = "LspCodeLens" })
 hl("LspCodeLensTextSign", { fg = "#777777" })
@@ -109,6 +110,13 @@ hl("LspCodeLensTextSeparator", { link = "LspCodeLensSeparator" })
 
 -- git-messenger
 hl("gitMessengerPopupNormal", { link = "NormalFloat" })
+
+-- conflict-marker
+hl("ConflictMarkerBegin", { bg = "#2f7366" })
+hl("ConflictMarkerOurs", { bg = "#2e5049" })
+hl("ConflictMarkerTheirs", { bg = "#344f69" })
+hl("ConflictMarkerEnd", { bg = "#2f628e" })
+hl("ConflictMarkerCommonAncestorsHunk", { bg = "#754a81" })
 
 --nvim-tree.lua
 hl("NvimTreeFolderIcon", { fg = "gray" })

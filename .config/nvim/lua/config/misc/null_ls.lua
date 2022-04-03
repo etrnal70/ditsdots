@@ -42,6 +42,7 @@ null_ls.setup({
         return { "--edition=2021" }
       end,
     }),
+    formatter.taplo,
     formatter.shfmt.with({
       extra_args = function(utils)
         if utils.root_has_file(".editorconfig") then
@@ -55,6 +56,7 @@ null_ls.setup({
         return utils.root_has_file(".stylua.toml") or utils.root_has_file("stylua.toml")
       end,
     }),
+    formatter.sqlfluff,
     formatter.yapf,
     -- Diagnostics
     linter.chktex,
@@ -63,6 +65,7 @@ null_ls.setup({
         return utils.root_has_file(".flake8") or utils.root_has_file("setup.cfg") or utils.root_has_file("tox.ini")
       end,
     }),
+    linter.golangci_lint,
     linter.hadolint,
     linter.markdownlint.with({
       extra_args = function(params)
@@ -86,5 +89,6 @@ null_ls.setup({
       end,
     }),
     linter.shellcheck,
+    linter.sqlfluff,
   },
 })

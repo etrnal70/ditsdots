@@ -27,19 +27,7 @@ M.setup = function(on_attach, capabilities)
     },
     server = {
       standalone = false,
-      on_attach = function(client, bufnr)
-        local function map(mode, l, r, opts)
-          opts = opts or {}
-          opts.buffer = bufnr
-          vim.keymap.set(mode, l, r, opts)
-        end
-        on_attach(client, bufnr)
-        map("n", "<leader>Rr", ":RustRunnables<CR>")
-        map("n", "<leader>Rc", ":RustOpenCargo<CR>")
-        map("n", "<leader>Rh", ":RustHoverActions<CR>")
-        map("n", "<leader>Rmu", ":RustMoveItemUp<CR>")
-        map("n", "<leader>Rmd", ":RustMoveItemDown<CR>")
-      end,
+      on_attach = on_attach,
       capabilities = capabilities,
     },
   })

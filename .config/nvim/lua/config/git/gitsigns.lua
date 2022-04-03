@@ -14,6 +14,28 @@ require("gitsigns").setup({
       vim.keymap.set(mode, l, r, opts)
     end
 
+    -- Navigation
+    map("n", "]c", function()
+      if vim.wo.diff then
+        return "]c"
+      end
+      vim.schedule(function()
+        gs.next_hunk()
+      end)
+      return "<Ignore>"
+    end, { expr = true })
+
+    map("n", "[c", function()
+      if vim.wo.diff then
+        return "[c"
+      end
+      vim.schedule(function()
+        gs.prev_hunk()
+      end)
+      return "<Ignore>"
+    end, { expr = true })
+
+    -- Actions
     map({ "n", "v" }, "<leader>hs", gs.stage_hunk)
     map({ "n", "v" }, "<leader>hr", gs.reset_hunk)
     map("n", "<leader>hS", gs.stage_buffer)
@@ -25,6 +47,9 @@ require("gitsigns").setup({
     end)
     map("n", "<leader>hp", gs.preview_hunk)
     map("n", "<leader>hd", gs.diffthis)
+    map("n", "<leader>hD", function()
+      gs.diffthis("~")
+    end)
 
     -- Text Objects
     map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")

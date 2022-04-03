@@ -64,9 +64,10 @@ map("n", "<leader>tt", ":UltestSummary<CR>")
 map("n", "<leader>tc", ":UltestClear<CR>")
 
 -- nvim-tree.lua
-map("n", "<leader>st", ":NvimTreeToggle<CR>")
+map("n", "<leader>st", ":Neotree toggle<CR>")
 
 -- Telescope
+map("n", "<leader>lc", require("telescope.builtin").commands)
 map("n", "<leader>lf", require("telescope.builtin").find_files)
 map("n", "<leader>ls", require("telescope.builtin").live_grep)
 map("n", "<leader>lb", require("telescope.builtin").buffers)
@@ -79,6 +80,3 @@ map("n", "<leader>dg", require("neogen").generate)
 -- rest.nvim
 map("n", "<leader>rr", "<Plug>RestNvim")
 map("n", "<leader>rp", "<Plug>RestNvimPreview")
-
--- autocmd
-vim.api.nvim_create_autocmd("TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber" })

@@ -1,5 +1,4 @@
 local feline = require("feline")
-local lsp = require("feline.providers.lsp")
 local dap = require("dap")
 
 local colors = {
@@ -174,30 +173,6 @@ table.insert(components.inactive[2], {
     str = "  ",
   },
 })
--- table.insert(components.inactive[2], {
---   provider = {
---     name = "file_info",
---     opts = {
---       type = "relative-short",
---       colored_icon = false,
---     },
---   },
---   hl = {
---     fg = "grey",
---     bg = "bg",
---   },
---   left_sep = inactive_separator,
--- })
---
--- table.insert(components.inactive[2], {
---   provider = "position",
---   hl = {
---     fg = "grey",
---     bg = "bg",
---   },
---   right_sep = inactive_separator,
---   left_sep = inactive_separator,
--- })
 
 feline.setup({
   colors = {
@@ -205,9 +180,6 @@ feline.setup({
     bg = "bg",
   },
   components = components,
-  disable = {
-    filetypes = {},
-  },
   force_inactive = {
     filetypes = {},
     buftypes = {},

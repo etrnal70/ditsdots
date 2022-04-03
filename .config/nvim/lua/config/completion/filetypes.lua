@@ -29,7 +29,6 @@ cmp.setup.filetype("tex", {
   sources = {
     { name = "luasnip", max_item_count = 2 },
     { name = "nvim_lsp" },
-    { name = "nvim_lsp_signature_help" },
     { name = "latex_symbols", max_item_count = 2 },
     { name = "path" },
   },
@@ -38,7 +37,7 @@ cmp.setup.filetype("tex", {
 -- Toml
 cmp.setup.filetype("toml", {
   sources = {
-    { name = "crates" },
+    { name = "nvim_lsp" },
     { name = "buffer" },
   },
 })
@@ -60,6 +59,5 @@ cmp.setup.filetype("TelescopePrompt", {
 cmp.setup.filetype({ "sql", "msql", "plsql" }, {
   { name = "luasnip", max_item_count = 2 },
   { name = "nvim_lsp" },
-  { name = "nvim_lsp_signature_help" },
   { name = "vim-dadbod-completion" },
 })
