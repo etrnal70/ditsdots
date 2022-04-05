@@ -84,6 +84,7 @@ return packer.startup({
     use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-emoji", after = "nvim-cmp" })
     use({
       "petertriho/cmp-git",
       config = function()
@@ -91,6 +92,7 @@ return packer.startup({
       end,
       after = "nvim-cmp",
     })
+    use({ "davidsierradz/cmp-conventionalcommits", after = "nvim-cmp" })
     use({ "kdheepak/cmp-latex-symbols", after = "nvim-cmp" })
     use({ "windwp/nvim-autopairs" })
 
@@ -304,7 +306,7 @@ return packer.startup({
     use({
       "feline-nvim/feline.nvim",
       config = function()
-        require("config.misc.feline")
+        require("config.misc.feline").setup()
       end,
     })
     use({
@@ -314,9 +316,9 @@ return packer.startup({
       end,
     })
     use({
-      "akinsho/bufferline.nvim",
+      "rafcamlet/tabline-framework.nvim",
       config = function()
-        require("config.misc.bufferline")
+        require("config.misc.tabline")
       end,
     })
     use({
@@ -402,7 +404,15 @@ return packer.startup({
     })
     use({
       "nvim-neo-tree/neo-tree.nvim",
+      requires = { "s1n7ax/nvim-window-picker" },
       config = function()
+        require("window-picker").setup({
+          filter = {
+            bo = { filetype = { "neo-tree" } },
+          },
+          current_win_hl_color = "#6699CC",
+          other_win_hl_color = "#2F628E",
+        })
         require("config.misc.neo-tree")
       end,
     })
@@ -432,7 +442,7 @@ return packer.startup({
           render = "minimal",
           on_open = function(win)
             vim.api.nvim_win_set_config(win, {
-              border = require("config.utils").border,
+              border = "solid",
               relative = "editor",
               anchor = "SE",
               row = vim.o.lines - vim.o.cmdheight - 2,

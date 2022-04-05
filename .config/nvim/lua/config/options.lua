@@ -5,8 +5,16 @@ opt.hidden = true -- Hide unloaded buffer
 -- opt.lazyredraw = true -- Currently clashing with global statusline
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
 opt.mouse = "n" -- Mouse only on normal mode
-opt.updatetime = 100
+opt.updatetime = 500
+opt.showtabline = 2
 opt.laststatus = 3
+opt.diffopt = {
+  "internal",
+  "filler",
+  "closeoff",
+  "algorithm:histogram",
+  "indent-heuristic",
+}
 
 opt.cmdheight = 0
 
@@ -23,7 +31,7 @@ opt.fillchars = {
   vert = "│",
   fold = " ",
   eob = " ",
-  diff = "",
+  diff = "╱",
   msgsep = "‾",
   foldopen = "▾",
   foldsep = "│",

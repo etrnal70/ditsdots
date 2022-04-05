@@ -1,6 +1,8 @@
 local feline = require("feline")
 local dap = require("dap")
 
+local M = {}
+
 local colors = {
   bg = "#212121",
   white = "#FFFFFF",
@@ -18,10 +20,6 @@ local separator = {
     fg = "bg",
   },
   str = " ",
-}
-
-local inactive_separator = {
-  str = "  ",
 }
 
 local components = {
@@ -98,90 +96,23 @@ table.insert(components.active[3], {
 })
 
 table.insert(components.active[3], {
-  provider = "position",
-  hl = {
-    fg = "grey",
-  },
-  right_sep = {
-    str = "  ",
-  },
-  left_sep = {
-    str = "  ",
-  },
-})
-
--- Inactive Components
-table.insert(components.inactive[1], {
   provider = function()
-    return require("nvim-gps").get_location()
+    return "  "
   end,
-  enabled = function()
-    return require("nvim-gps").is_available()
-  end,
-  hl = {
-    fg = "white",
-  },
-  left_sep = separator,
 })
 
-table.insert(components.inactive[2], {
-  provider = {
-    name = "file_info",
-    opts = {
-      type = "relative-short",
+M.setup = function()
+  feline.setup({
+    colors = {
+      fg = "white",
+      bg = "bg",
     },
-  },
-  hl = {
-    fg = "white",
-  },
-  left_sep = separator,
-})
+    components = components,
+    force_inactive = {
+      filetypes = {},
+      buftypes = {},
+    },
+  })
+end
 
-table.insert(components.inactive[2], {
-  provider = "git_diff_added",
-  hl = {
-    fg = "green",
-  },
-  icon = " ",
-})
-
-table.insert(components.inactive[2], {
-  provider = "git_diff_changed",
-  hl = {
-    fg = "orange",
-  },
-  icon = " ",
-})
-
-table.insert(components.inactive[2], {
-  provider = "git_diff_removed",
-  hl = {
-    fg = "red",
-  },
-  icon = " ",
-})
-
-table.insert(components.inactive[2], {
-  provider = "position",
-  hl = {
-    fg = "grey",
-  },
-  right_sep = {
-    str = "  ",
-  },
-  left_sep = {
-    str = "  ",
-  },
-})
-
-feline.setup({
-  colors = {
-    fg = "white",
-    bg = "bg",
-  },
-  components = components,
-  force_inactive = {
-    filetypes = {},
-    buftypes = {},
-  },
-})
+return M

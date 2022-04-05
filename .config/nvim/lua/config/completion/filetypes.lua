@@ -20,6 +20,7 @@ cmp.setup.filetype({ "c", "cpp", "h", "hpp" }, {
 cmp.setup.filetype("markdown", {
   sources = {
     { name = "luasnip" },
+    { name = "emoji" },
     { name = "path" },
   },
 })
@@ -46,7 +47,9 @@ cmp.setup.filetype("toml", {
 cmp.setup.filetype("gitcommit", {
   sources = {
     { name = "luasnip", max_item_count = 2 },
+    { name = "conventionalcommits" },
     { name = "cmp_git" },
+    { name = "emoji", insert = true },
   },
 })
 

@@ -55,6 +55,8 @@ require("gitsigns").setup({
     map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
   end,
   preview_config = {
+    width = 40,
+    height = 12,
     border = "solid",
   },
   sign_priority = 1,

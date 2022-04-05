@@ -121,7 +121,7 @@ M.on_attach = function(client, bufnr)
   -- Register nvim-cmp LSP source
   require("cmp_nvim_lsp").setup()
 
-  print("[" .. client.name .. "] " .. "Language server started")
+  vim.notify("[" .. client.name .. "] " .. "Language server started")
 end
 
 return M

@@ -2,7 +2,7 @@ local M = {}
 
 M.setup = function(on_attach, capabilities)
   require("lspconfig").gopls.setup({
-    cmd = { "gopls", "-verbose" },
+    cmd = { "gopls", "-remote=auto" },
     settings = {
       gopls = {
         ["build.allowImplicitNetworkAccess"] = true,
@@ -25,7 +25,11 @@ M.setup = function(on_attach, capabilities)
         experimentalUseInvalidMetadata = true,
       },
     },
-    on_attach = on_attach,
+    on_attach = function(client, bufnr)
+      -- TODO: Make this work
+      -- client.resolved_capabilities.semantic_tokens_full = true
+      on_attach(client, bufnr)
+    end,
     capabilities = capabilities,
   })
 end

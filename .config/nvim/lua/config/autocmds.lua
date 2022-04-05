@@ -9,8 +9,23 @@ vim.api.nvim_create_autocmd({ "VimLeave", "VimSuspend" }, {
 })
 
 -- Disable statusline on command
-vim.api.nvim_create_autocmd("CmdlineEnter", { pattern = "*", command = "set laststatus=0" })
-vim.api.nvim_create_autocmd("CmdlineLeave", { pattern = "*", command = "set laststatus=3" })
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+  pattern = "*",
+  callback = function()
+    vim.opt.laststatus = 0
+    vim.opt.statusline = "%{%v:lua.require'config.utils'.generate_line()%}"
+    vim.cmd("hi StatusLine guifg=#2F2F2F guibg=NONE")
+    vim.cmd("redraws")
+  end,
+})
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  pattern = "*",
+  callback = function()
+    vim.cmd("hi StatusLine guifg=NONE guibg=#1F1F1F")
+    vim.opt.laststatus = 3
+    require("config.misc.feline").setup()
+  end,
+})
 
 -- Disable number column on terminal
 vim.api.nvim_create_autocmd("TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber" })
