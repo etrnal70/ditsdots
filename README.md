@@ -6,13 +6,14 @@
 
 <details>
   <summary> Installation </summary>
-    <br>
+
     ```bash
       alias dfs="/usr/bin/git --git-dir $HOME/.dotfiles/ --work-tree=$HOME"
       git clone --bare git@github.com:etrnal70/ditsdots.git $HOME/.dotfiles
       dfs checkout
       dfs config --local status.showUntrackedFiles no
-    ```  
+    ```
+
 </details>
 
 ## Setup
