@@ -6,7 +6,7 @@
     "height": 26,
     "modules-left": ["clock", "sway/workspaces", "sway/mode"],
     "modules-center": [],
-    "modules-right": ["custom/screenrecord","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","battery","tray"],
+    "modules-right": ["custom/screenrecord","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","upower","tray"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -16,7 +16,7 @@
     "clock": {
         "format" : "{:%a│%H : %M}",
         "format-alt": "{:%a│%d-%m-%Y}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "battery": {
         "format": "{icon}",
@@ -26,9 +26,9 @@
         "format-plugged": "{icon} ",
         "states": {
             "warning": 35,
-            "critical": 15,
+            "critical": 15
         },
-        "tooltip-format-charging": "{capacity}% | {timeTo}",
+        "tooltip-format-charging": "{capacity}% | {timeTo}"
     },
     "network": {
         "format-alt": "{essid} ({signalStrength}%)",
@@ -38,7 +38,7 @@
         "format-wifi": "",
         "max-length": 20,
         "tooltip-format-disconnected": "Disconnected 睊",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) "
     },
     "pulseaudio": {
         "format": "{icon} {format_source}",
@@ -54,9 +54,16 @@
             "headphone": "",
             "headset": "",
             "phone": " ",
-            "portable": " ",
+            "portable": " "
         },
         "on-click": "pavucontrol"
+    },
+    "upower": {
+      "format": "",
+      "format-alt": " {percentage} ",
+      "icon-size": 12,
+      "tooltip": true,
+      "tooltip-spacing": 4
     },
     "custom/media": {
         "escape": true,
@@ -64,16 +71,16 @@
         "format": "{icon} {}",
         "format-icons": {
             "spotify": "  ",
-            "default": "  ",
+            "default": "  "
         },
         "max-length": 35,
-        "return-type": "json",
+        "return-type": "json"
     },
     "custom/caps_status" : {
       "exec" : "~/.config/waybar/modules/caps_status.sh",
       "return-type": "json",
       "format": " {} ",
-      "interval": 2,
+      "interval": 2
     },
     "custom/weather": {
       "exec": "~/.config/waybar/modules/waybar-wttr.py",
@@ -81,7 +88,7 @@
       "format": " {} ",
       "tooltip": true,
       "interval": 3600,
-      "return-type": "json",
+      "return-type": "json"
     },
     "custom/update" : {
       "exec" : "~/.config/waybar/modules/update_check.sh",
@@ -90,7 +97,7 @@
       "interval": 10800,
       "return-type": "json",
       "signal": 8,
-      "tooltip": true,
+      "tooltip": true
     },
     "custom/neomutt" : {
       "exec" : "~/.config/waybar/modules/sync_mail.sh",
@@ -99,7 +106,7 @@
       "interval": 1800,
       "return-type": "json",
       "signal": 8,
-      "tooltip": true,
+      "tooltip": true
     },
     "custom/github": {
       "exec": "~/.config/waybar/modules/github.sh",
@@ -115,7 +122,7 @@
         "exec-if": "pgrep pomodoro || exit 0",
         "format": " {} ",
         "interval": 2,
-        "on-click": "pomodoro pause",
+        "on-click": "pomodoro pause"
     },
     "custom/dunst_status": {
         "exec": "~/.config/waybar/modules/dunst_status.sh",
@@ -123,15 +130,15 @@
         "interval": 2,
         "on-click": "dunstctl set-paused toggle",
         "return-type": "json",
-        "tooltip": true,
+        "tooltip": true
     },
     "custom/screenrecord": {
         "exec": "~/.config/waybar/modules/screenrecord.sh",
         "format": " {} ",
         "interval": 2,
         "on-click": "pkill --signal SIGINT wf-recorder",
-        "return-type": "json",
-    },
+        "return-type": "json"
+    }
 }
 
-# vim: ft=json
+# vim: ft=json 

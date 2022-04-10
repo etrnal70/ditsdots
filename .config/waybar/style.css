@@ -54,6 +54,7 @@ tooltip {
 
 #clock,
 #battery,
+#upower,
 #network,
 #pulseaudio,
 #custom-media,
@@ -177,4 +178,8 @@ label:focus {
 
 #tray {
   background-color: transparent;
+}
+
+#upower.charging {
+  color: #fdd835;
 }
