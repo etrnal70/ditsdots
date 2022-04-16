@@ -2,7 +2,7 @@
 
 # Defaults
 ## Key Modifier
-set $mod Mod4
+set $mod Mod1
 
 ## Home row direction keys
 set $left h
@@ -11,7 +11,7 @@ set $up k
 set $right l
 
 ## Terminal Emulator
-set $term kitty
+set $term foot
 
 ## Wallpaper
 output * bg ~/Data/wallpaper/cell.gif fill
@@ -33,7 +33,7 @@ input "type:touchpad" {
 input "type:keyboard" {
   ### Double shift to CapsLock
   ### Use capslock as escape
-  xkb_options shift:both_capslock_cancel,caps:escape
+  xkb_options shift:both_capslock_cancel
 
   ### Faster key input
   repeat_rate 50
@@ -52,9 +52,8 @@ bindsym $mod+Return exec $term
 ### Kill focused window
 bindsym $mod+q kill
 
-### Start default launcher
-bindsym --release Super_L exec (pgrep "wofi" 1>/dev/null 2>&1 && killall wofi) || wofi -a --show=drun
-bindsym --release Super_R exec (pgrep "wofi" 1>/dev/null 2>&1 && killall wofi) || wofi -a --show=drun
+### Desktop launcher
+bindsym $mod+d exec (pgrep "wofi" 1>/dev/null 2>&1 && killall wofi) || wofi -a --show=drun
 
 ### Floating Modifier
 floating_modifier $mod normal
@@ -70,10 +69,13 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 bindsym $mod+period exec ~/.scripts/dmenu_toggle.sh
 
 ### Execute Command
-bindsym $mod+comma exec (pgrep "rofi" 1>/dev/null 2>&1 && killall rofi) || rofi -show run
+bindsym $mod+comma exec (pgrep "rofi" 1>/dev/null 2>&1 && killall rofi) || rofi -show run -config ~/.config/rofi/run.rasi
 
 ### Dunst
 bindsym $mod+backslash exec ~/.scripts/dnd_toggle.sh
+
+### Waybar
+bindsym $mod+w exec swaymsg bar mode toggle
 
 ## Movement Keybinds
 ### Move your focus around
@@ -81,10 +83,6 @@ bindsym $mod+$left focus left
 bindsym $mod+$down focus down
 bindsym $mod+$up focus up
 bindsym $mod+$right focus right
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
 
 ### Move the focused window with the same, but add Shift
 bindsym $mod+Shift+$left move left
@@ -96,7 +94,7 @@ bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-## Workspaces Keybinds
+## Workspaces
 ### Switch to workspace
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
@@ -128,7 +126,7 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 ### Switch back and forth
-bindsym Mod1+Tab workspace back_and_forth
+bindsym $mod+Tab workspace back_and_forth
 
 ## Layout Keybinds
 ### Split
@@ -152,6 +150,9 @@ bindsym $mod+space focus mode_toggle
 ### Move focus to the parent container
 bindsym $mod+a focus parent
 
+## Focus to urgent window
+bindsym $mod+x [urgent=latest] focus
+
 ### Scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
@@ -169,18 +170,18 @@ bindsym XF86MonBrightnessUp exec ~/.scripts/backlight.sh up
 bindsym XF86MonBrightnessDown exec ~/.scripts/backlight.sh down
 
 ### Alternative
-bindsym $mod+Mod1+7 exec playerctl previous
-bindsym $mod+Mod1+8 exec playerctl play-pause
-bindsym $mod+Mod1+9 exec playerctl next
-bindsym $mod+Mod1+0 exec ~/.scripts/volume.sh down
-bindsym $mod+Mod1+minus exec ~/.scripts/volume.sh mute
-bindsym $mod+Mod1+equal exec ~/.scripts/volume.sh up
+bindsym $mod+Mod4+7 exec playerctl previous
+bindsym $mod+Mod4+8 exec playerctl play-pause
+bindsym $mod+Mod4+9 exec playerctl next
+bindsym $mod+Mod4+0 exec ~/.scripts/volume.sh down
+bindsym $mod+Mod4+minus exec ~/.scripts/volume.sh mute
+bindsym $mod+Mod4+equal exec ~/.scripts/volume.sh up
 
 ### Arrow Keys
-bindsym $mod+Mod1+Left exec playerctl previous
-bindsym $mod+Mod1+Right exec playerctl next
-bindsym $mod+Mod1+Down exec ~/.scripts/volume.sh down
-bindsym $mod+Mod1+Up exec ~/.scripts/volume.sh up
+bindsym $mod+Mod4+Left exec playerctl previous
+bindsym $mod+Mod4+Right exec playerctl next
+bindsym $mod+Mod4+Down exec ~/.scripts/volume.sh down
+bindsym $mod+Mod4+Up exec ~/.scripts/volume.sh up
 
 ## Container Keybinds
 ### Resize
@@ -229,10 +230,10 @@ client.urgent           $cl_urge $cl_urge $cl_fore $cl_urge $cl_urge
 
 ## Idle Configuration
 exec swayidle -w \
-         timeout 900 'swaylock -f -c 000000' \
+         timeout 900 'swaylock -f -F -e' \
          timeout 1200 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
          timeout 1800 'systemctl suspend ' \
-         before-sleep 'swaylock -f -c 000000 && playerctl pause'
+         before-sleep 'swaylock -f -F -e && playerctl pause'
 
 ## XWayland
 xwayland enable
@@ -240,11 +241,6 @@ xwayland enable
 ## Mouse
 focus_follows_mouse no
 mouse_warping none
-
-## App-specific Workspaces
-assign [class="Chromium"] 1
-assign [class="discord"] 5
-assign [app_id="firefox"] 7
 
 ## Windowing Rules
 for_window {
@@ -287,9 +283,10 @@ for_window {
   [class="NoiseTorch"] floating enable; resize set 720px 580px
   [class="(\s|^)Spotify(\s|$)"] floating disable
   [class="(\s|^)WhatsApp(\s|$)"] floating disable
+  [class="Spotify"] move window to workspace number 3
 
   ### Miscellaneous
-  [title="(?:Open|Save) (?:File|Folder|As)"] floating enable; sticky enable
+  [title="(?:Open|Save|Image|Local) (?:File|Folder|As)"] floating enable; sticky enable
   [window_role = "pop-up"] floating enable
   [window_role = "bubble"] floating enable
   [window_role = "dialog"] floating enable
@@ -309,6 +306,15 @@ set $sleep sleep 3 && systemctl suspend
 ### Assign with lid detection
 bindswitch --reload --locked lid:on exec "[$(swaymsg -t get_outputs | grep name | wc -l) == 1] && ($sleep) || (notify-send 'Clamshell Mode' 'Laptop screen off' && swaymsg output $laptop_screen disable)"
 bindswitch --reload --locked lid:off output $laptop_screen enable
+
+# Bar
+bar {
+  swaybar_command waybar
+  position bottom
+  hidden_state hide
+  mode dock
+  modifier Mod4
+}
 
 # Startup
 ## Start session target
