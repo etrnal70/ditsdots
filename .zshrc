@@ -31,6 +31,14 @@ source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+function osc7 {
+    setopt localoptions extendedglob
+    input=( ${(s::)PWD} )
+    uri=${(j::)input/(#b)([^A-Za-z0-9_.\!~*\'\(\)-\/])/%${(l:2::0:)$(([##16]#match))}}
+    print -n "\e]7;file://${HOSTNAME}${uri}\e\\"
+}
+add-zsh-hook -Uz chpwd osc7
+
 ## zinit plugins
 zinit wait lucid light-mode for \
   zdharma-continuum/fast-syntax-highlighting \
@@ -86,6 +94,9 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools/
 export PATH=$PATH:$ANDROID_HOME/build-tools/
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 
+# Dart
+export PATH=$PATH:$HOME/.pub-cache/bin
+
 # Flutter
 export PATH=$PATH:$HOME/.sdk_dir/flutter/bin
 export CHROME_EXECUTABLE=/usr/bin/chromium
@@ -102,6 +113,9 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
 
+# Zig
+export PATH=$PATH:$HOME/.zls/bin
+
 # FZF
 export FZF_DEFAULT_OPTS="--ansi --height 40% --layout=reverse --border=none"
 # source /usr/share/fzf/key-bindings.zsh
@@ -110,6 +124,7 @@ source /usr/share/fzf/completion.zsh
 # Misc
 export OPENCV_LOG_LEVEL=ERROR
 export EDITOR=nvim
+export PRETTIERD_DEFAULT_CONFIG=$HOME/.config/nvim/.prettierrc.json
 
 # Source alias file
 source $HOME/.config/aliasrc

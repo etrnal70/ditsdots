@@ -5,7 +5,8 @@ function kp() {kill $(ps aux -u $USER | fzf | awk $4);}
 alias dfs="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 # Miscellaneous
-alias cfnv="cd ~/.config/nvim && nvim"
+alias cfnv="cd ~/.config/nvim && GIT_DIR=$HOME/.dotfiles/ GIT_WORK_TREE=$HOME nvim"
+alias de="GIT_DIR=$HOME/.dotfiles/ GIT_WORK_TREE=$HOME"
 alias ls="exa"
 alias cls="clear"
 
