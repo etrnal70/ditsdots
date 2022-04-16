@@ -5,4 +5,4 @@ RefuseManualStart=no
 StopWhenUnneeded=no
 
 [Install]
-WantedBy=sway-session.target
+Wants=sway-session.target
