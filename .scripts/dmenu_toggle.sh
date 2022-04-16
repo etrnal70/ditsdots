@@ -3,7 +3,7 @@
 entries=$(cat ~/.scripts/commandlist)
 script=~/.scripts
 
-selected=$(echo -e "$entries" | rofi -dmenu -i)
+selected=$(echo -e "$entries" | rofi -dmenu -config "$HOME/.config/rofi/theme.rasi" -i)
 
 case $selected in
   "Audio Mute Toggle")
@@ -13,7 +13,7 @@ case $selected in
     exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
     ;;
   "Touchscreen Toggle")
-    exec $script/input_toggle.sh touchscreen
+    exec $script/input_toggle.sh touchscreen toggle
     ;;
   "Touchpad Toggle")
     exec $script/input_toggle.sh touchpad
@@ -26,9 +26,6 @@ case $selected in
     ;;
   "Restart Kanshi")
     exec systemctl --user restart kanshi
-    ;;
-  "Restart Waybar")
-    exec systemctl --user restart waybar
     ;;
   "Restart Pipewire")
     exec systemctl --user daemon-reload
