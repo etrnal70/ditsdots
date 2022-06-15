@@ -19,21 +19,21 @@
     text_icon_padding = 18
     # Other
     frame_width = 0
-    frame_color = "#515151"
+    frame_color = "#414141F9"
     separator_height = 6
-    separator_color = "#00000000"
+    gap_size = 8
     notification_limit = 3
     indicate_hidden = true
     sort = true
     idle_threshold = 3m
 
     ### Text ###
-    font = JetBrainsMono Nerd Font 9
+    font = JetBrainsMono Nerd Font 10
     line_height = 0
     markup = full
     alignment = left
     vertical_alignment = center
-    show_age_threshold = 5m
+    show_age_threshold = 15m
     word_wrap = true
     ellipsize = middle
     ignore_newline = false
@@ -45,15 +45,14 @@
     icon_position = left
     enable_recursive_icon_lookup = true
     icon_theme = "Papirus, Adwaita, breeze"
-    icon_size = 48
-    min_icon_size = 48 # Mark for upcoming breaking changes
-    max_icon_size = 48 # Mark for upcoming breaking changes
+    min_icon_size = 48
+    max_icon_size = 64
 
     ### History ###
     history_length = 10
 
     ### External ###
-    dmenu = "/usr/bin/wofi -d dunst"
+    dmenu = "/usr/bin/rofi -markup -dmenu -config '~/.config/rofi/theme.rasi'"
     browser = "/usr/bin/xdg-open"
     corner_radius = 5
     ignore_dbusclose = false
@@ -67,13 +66,13 @@
     mouse_right_click = do_action, close_current
 
 [urgency_low]
-    background = "#313131"
+    background = "#313131F9"
     foreground = "#FFFFFF"
     highlight = "#FFFFFF"
     timeout = 6
 
 [urgency_normal]
-    background = "#515151"
+    background = "#414141F9"
     foreground = "#FFFFFF"
     highlight = "#FFFFFF"
     timeout = 8
@@ -88,6 +87,16 @@
     fullscreen = pushback
 [fullscreen_show_critical]
     msg_urgency = critical
+    fullscreen = show
+[spotify]
+    desktop_entry = "Spotify"
+    timeout = 3
+    history_ignore = yes
+[system_info]
+    appname = "system_info"
+    urgency = low
+    history_ignore = yes
+    timeout = 3
     fullscreen = show
 
 # vim: ft=cfg
