@@ -4,18 +4,18 @@
     "layer": "top",
     "position": "bottom",
     "height": 26,
-    "modules-left": ["clock", "sway/workspaces", "sway/mode"],
-    "modules-center": [],
-    "modules-right": ["custom/screenrecord","custom/caps_status","custom/github","custom/update","custom/weather","custom/dunst_status","pulseaudio","network","upower","tray"],
+    "modules-left": ["clock", "sway/workspaces", "sway/mode", "custom/scratchpad_indicator"],
+    "modules-center": ["tray"],
+    "modules-right": ["custom/screenrecord","custom/caps_status","custom/github","custom/update","custom/dunst_status","custom/weather","pulseaudio","bluetooth","network","custom/upower_battery", "custom/upower_batterycharging"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
     "tray": {
-        "spacing": 2
+        "spacing": 1
     },
     "clock": {
-        "format" : "{:%a│%H : %M}",
-        "format-alt": "{:%a│%d-%m-%Y}",
+        "format" : " {:%a │ %H:%M} ",
+        "format-alt": " {:%a │ %d-%m-%Y} ",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "battery": {
@@ -30,29 +30,82 @@
         },
         "tooltip-format-charging": "{capacity}% | {timeTo}"
     },
+    "bluetooth": {
+        "format": "",
+        "format-off": "",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias} {device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}: {device_battery_percentage}%"
+    },
+    "custom/upower_battery": {
+        "format": "{icon}",
+        "format-alt": "{icon} {percentage}%",
+        "return-type": "json",
+        "exec": "~/.config/waybar/modules/supower.py --model '/org/freedesktop/UPower/devices/battery_BAT0' --text '' --tooltip 'Time to empty: {TimeToEmpty}' --class '{BatteryLevel}' | jq --unbuffered --compact-output",
+        "exec-if": "~/.config/waybar/modules/supower.py --model '/org/freedesktop/UPower/devices/line_power_AC' --check 'Online'",
+        "interval": 5,
+        "format-icons": ["", "", "", "", ""]
+    },
+    "custom/upower_batterycharging": {
+        "format": "{icon}",
+        "format-alt": "{icon} {percentage}%",
+        "return-type": "json",
+        "exec": "~/.config/waybar/modules/supower.py --model '/org/freedesktop/UPower/devices/battery_BAT0' --text '' --tooltip 'Time to full: {TimeToFull}' | jq --unbuffered --compact-output",
+        "exec-if": "! ~/.config/waybar/modules/supower.py --model '/org/freedesktop/UPower/devices/line_power_AC' --check 'Online'",
+        "interval": 5,
+        "format-icons": [" 🗲", " 🗲", " 🗲", " 🗲", " 🗲",""]
+    },
     "network": {
+        "format": "{ifname}",
         "format-alt": "{essid} ({signalStrength}%)",
-        "format-disconnected": "",
-        "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
-        "format-linked": "{ifname} (No IP)  ",
-        "format-wifi": "",
+        "format-disconnected": "",
+        "format-wifi": "",
+        "format-ethernet": "",
         "max-length": 20,
-        "tooltip-format-disconnected": "Disconnected 睊",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%) "
+        "tooltip-format-disconnected": "",
+        "tooltip-format-wifi": "Wireless: {essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "Wired: {ipaddr}",
+    },
+    "network#wireless": {
+        "format": "",
+        "format-alt": "{essid} ({signalStrength}%)",
+        "format-disconnected": "",
+        "format-wifi": "",
+        "interface": "wl*",
+        "max-length": 20,
+        "tooltip-format-disconnected": "",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)"
+    },
+    "network#wired": {
+        "format": "",
+        "format-disconnected": "",
+        "format-ethernet": "",
+        "interface": "en*",
+        "max-length": 20,
+        "tooltip-format-disconnected": "",
+        "tooltip-format-ethernet": "Wired: {ipaddr}"
+    },
+    "network#usb_tether": {
+        "format-disconnected": "",
+        "format-ethernet": "ﴓ",
+        "interface": "enp0s20f0*",
+        "max-length": 20,
+        "tooltip-format-disconnected": "",
+        "tooltip-format-ethernet": "USB Tethering: {ipaddr}"
     },
     "pulseaudio": {
-        "format": "{icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "",
+        "format": " {icon}{format_source} ",
+        "format-muted": " {format_source} ",
+        "format-bluetooth": " {icon}{format_source} ",
+        "format-bluetooth-muted": "  {icon}{format_source} ",
+        "format-source": "",
         "format-source-muted": "",
         "format-icons": {
             "car": "",
             "default": ["", "", ""],
             "hands-free": "",
             "headphone": "",
-            "headset": "",
+            "headset": "",
             "phone": " ",
             "portable": " "
         },
@@ -60,7 +113,7 @@
     },
     "upower": {
       "format": "",
-      "format-alt": " {percentage} ",
+      "format-alt": "{percentage}",
       "icon-size": 12,
       "tooltip": true,
       "tooltip-spacing": 4
@@ -79,22 +132,22 @@
     "custom/caps_status" : {
       "exec" : "~/.config/waybar/modules/caps_status.sh",
       "return-type": "json",
-      "format": " {} ",
+      "format": "{}",
       "interval": 2
     },
     "custom/weather": {
-      "exec": "~/.config/waybar/modules/waybar-wttr.py",
+      "exec": "curl -s 'https://wttr.in/?format=1' > /tmp/wttr; jo text=$(cat /tmp/wttr | awk '{print $1}') tooltip=\"$(cat /tmp/wttr)\"",
       "exec-if": "wget -q --spider http://google.com",
       "format": " {} ",
-      "tooltip": true,
+      "format-alt": " {} ",
+      "return-type": "json",
       "interval": 3600,
-      "return-type": "json"
     },
     "custom/update" : {
       "exec" : "~/.config/waybar/modules/update_check.sh",
       "exec-if": "pgrep paru || pgrep pacman || exit 0",
-      "format": " {} ",
-      "interval": 10800,
+      "format": "{}",
+      "interval": 7200,
       "return-type": "json",
       "signal": 8,
       "tooltip": true
@@ -102,7 +155,7 @@
     "custom/neomutt" : {
       "exec" : "~/.config/waybar/modules/sync_mail.sh",
       "exec-if": "exit 0",
-      "format": " {} ",
+      "format": "{}",
       "interval": 1800,
       "return-type": "json",
       "signal": 8,
@@ -111,7 +164,7 @@
     "custom/github": {
       "exec": "~/.config/waybar/modules/github.sh",
       "exec-if": "wget -q --spider http://google.com",
-      "format": " {} ",
+      "format": "{}",
       "interval": 300,
       "on-click": "xdg-open https://github.com/notifications",
       "return-type": "json",
@@ -120,13 +173,13 @@
     "custom/pomo": {
         "exec": "pomodoro status --format '⏱  %r'",
         "exec-if": "pgrep pomodoro || exit 0",
-        "format": " {} ",
+        "format": "{}",
         "interval": 2,
         "on-click": "pomodoro pause"
     },
     "custom/dunst_status": {
         "exec": "~/.config/waybar/modules/dunst_status.sh",
-        "format": " {} ",
+        "format": "{}",
         "interval": 2,
         "on-click": "dunstctl set-paused toggle",
         "return-type": "json",
@@ -134,11 +187,16 @@
     },
     "custom/screenrecord": {
         "exec": "~/.config/waybar/modules/screenrecord.sh",
-        "format": " {} ",
+        "format": "{}",
         "interval": 2,
         "on-click": "pkill --signal SIGINT wf-recorder",
         "return-type": "json"
-    }
-}
-
-# vim: ft=json 
+    },
+    "custom/scratchpad_indicator": {
+       "interval": 5,
+       "exec": "swaymsg -t get_tree | jq 'recurse(.nodes[]) | first(select(.name==\"__i3_scratch\")) | .floating_nodes | length | select(. >= 1)'",
+       "format": " {}",
+       "on-click": "swaymsg 'scratchpad show'",
+       "on-click-right": "swaymsg 'move scratchpad'"
+    },
+},

@@ -1,8 +1,11 @@
 * {
   border: none;
   border-radius: 0;
-  font-family: "Noto Sans", "Noto Fonts Emoji", "Font Awesome 6 Free";
+  font-family: "JetBrains Mono", "Noto Fonts Emoji", "Font Awesome 6 Free";
   font-size: 14px;
+  font-weight: bold;
+  padding-left: 2px;
+  padding-right: 5px;
   min-height: 0;
 }
 
@@ -21,7 +24,7 @@ window#waybar.hidden {
 tooltip {
   background: rgba(20, 20, 20, 0.93);
   border: 1px solid rgba(100, 114, 125, 0.5);
-  border-radius: 8;
+  border-radius: 8px;
 }
 
 #workspaces button {
@@ -54,18 +57,14 @@ tooltip {
 
 #clock,
 #battery,
+#bluetooth,
 #upower,
 #network,
 #pulseaudio,
 #custom-media,
 #tray,
 #mode,
-#mpd {
-  padding: 0 10px;
-  margin: 0 0px;
-  color: #ffffff;
-}
-
+#mpd,
 #clock.backup {
   background-color: rgba(30, 30, 30, 0.7);
 }
@@ -123,11 +122,6 @@ label:focus {
   color: #ffffff;
 }
 
-#pulseaudio.muted {
-  background-color: #90b1b1;
-  color: #2a5c45;
-}
-
 #custom-media {
   min-width: 100px;
   opacity: 0.8;
@@ -171,6 +165,27 @@ label:focus {
   color: #ff1744;
   animation-name: blink;
   animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#custom-upower_batterycharging {
+  color: #fdd835;
+}
+
+#custom-upower_battery.low {
+  color: #f53c3c;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+#custom-upower_battery.critical {
+  color: #f53c3c;
+  animation-name: blink;
+  animation-duration: 1s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-direction: alternate;
