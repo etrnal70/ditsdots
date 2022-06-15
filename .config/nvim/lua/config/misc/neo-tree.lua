@@ -8,32 +8,13 @@ require("neo-tree").setup({
       },
       align = "right",
     },
-  },
-  enable_diagnostics = false,
-  event_handlers = {
-    {
-      event = "file_open_requested",
-      handler = function(args)
-        if args.state.current_position == "current" then
-          return
-        end
-        local path = args.path
-        local cmd = args.open_cmd
-
-        if cmd == "tabnew" then
-          vim.cmd(cmd)
-          vim.cmd("edit " .. vim.fn.fnameescape(path))
-          return { handled = true }
-        end
-        local picked_window_id = require("window-picker").pick_window()
-        if picked_window_id then
-          vim.api.nvim_set_current_win(picked_window_id)
-          vim.cmd(cmd)
-          vim.cmd("edit " .. vim.fn.fnameescape(path))
-        end
-        return { handled = true }
-      end,
+    modified = {
+      symbol = "⏺",
     },
+  },
+  enable_diagnostics = true,
+  enable_git_status = false,
+  event_handlers = {
     {
       event = "neo_tree_buffer_enter",
       handler = function()
@@ -58,14 +39,21 @@ require("neo-tree").setup({
       },
     },
   },
-  use_libuv_file_watcher = true,
   popup_border_style = "double",
   sort_case_insensitive = true,
+  use_libuv_file_watcher = true,
   window = {
     mappings = {
-      ["<C-t>"] = "open_tabnew",
-      ["<C-x>"] = "open_split",
-      ["<C-v>"] = "open_vsplit",
+      ["<space>"] = {
+        "toggle_node",
+        nowait = true,
+      },
+      ["<CR>"] = "open_with_window_picker",
+      ["<c-x>"] = "split_with_window_picker",
+      ["<c-v>"] = "vsplit_with_window_picker",
+      ["s"] = "",
+      ["S"] = "",
+      ["<c-t>"] = "open_tabnew",
       o = function(state)
         vim.cmd("silent !xdg-open " .. state.tree:get_node():get_id())
       end,

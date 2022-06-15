@@ -7,6 +7,8 @@ M.setup = function(on_attach, capabilities)
         plugins = {
           flake8 = { enabled = false },
           pycodestyle = { enabled = false },
+          pylsp_mypy = { enabled = true },
+          rope = { enabled = true },
         },
       },
     },

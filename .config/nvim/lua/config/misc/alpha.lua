@@ -3,9 +3,6 @@ local dashboard = require("alpha.themes.dashboard")
 
 dashboard.section.header.val = {
   "                                        ",
-  "                                        ",
-  "                                        ",
-  "                                        ",
   "         //                 /*          ",
   "      ,(/(//,               *###        ",
   "    ((((((////.             /####%*     ",
@@ -25,8 +22,6 @@ dashboard.section.header.val = {
   "    /(((((.             .(((#%##%%/*    ",
   "      ,(((.               /(#%%#        ",
   "        ./.                 #*          ",
-  "                                        ",
-  "                                        ",
   "                                        ",
   "                                        ",
 }

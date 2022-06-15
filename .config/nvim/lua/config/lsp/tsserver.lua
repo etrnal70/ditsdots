@@ -2,6 +2,7 @@ local M = {}
 
 M.setup = function(on_attach, capabilities)
   require("lspconfig").tsserver.setup({
+    -- filetypes = { "javascript" },
     init_options = require("nvim-lsp-ts-utils").init_options,
     on_attach = function(client, bufnr)
       local ts_utils = require("nvim-lsp-ts-utils")

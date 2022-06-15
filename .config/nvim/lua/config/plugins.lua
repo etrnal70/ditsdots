@@ -41,30 +41,19 @@ return packer.startup({
         require("fidget").setup({
           align = { bottom = false },
           fmt = { max_width = 65 },
-          sources = {
-            ["null-ls"] = { ignore = true },
-          },
-          text = { spinner = "dots_negative" },
+          sources = { ["null-ls"] = { ignore = true } },
+          text = { spinner = "dots" },
           window = { relative = "editor", blend = 0 },
         })
       end,
     })
     use({
-      "ldelossa/litee.nvim",
-      requires = { "ldelossa/litee-calltree.nvim", "ldelossa/litee-symboltree.nvim" },
+      "kosayoda/nvim-lightbulb",
       config = function()
-        require("litee.lib").setup({
-          notify = { enabled = true },
-          panel = {
-            orientation = "right",
-            panel_size = 45,
-          },
-          tree = { icons = "nerd" },
+        require("nvim-lightbulb").setup({
+          sign = { enabled = false },
+          virtual_text = { enabled = true },
         })
-        require("litee.calltree").setup({
-          on_open = "panel",
-        })
-        require("litee.symboltree").setup()
       end,
     })
 
@@ -82,9 +71,11 @@ return packer.startup({
       after = "nvim-cmp",
     })
     use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-omni", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-emoji", after = "nvim-cmp" })
+    use({ "ray-x/cmp-treesitter", after = "nvim-cmp" })
     use({
       "petertriho/cmp-git",
       config = function()
@@ -160,14 +151,23 @@ return packer.startup({
     use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
     use({ "nvim-treesitter/nvim-treesitter-refactor", after = "nvim-treesitter" })
     use({ "nvim-treesitter/playground", after = "nvim-treesitter" })
+    use({ "RRethy/nvim-treesitter-textsubjects", after = "nvim-treesitter" })
     use({ "JoosepAlviste/nvim-ts-context-commentstring", after = "nvim-treesitter" })
     use({ "p00f/nvim-ts-rainbow", after = "nvim-treesitter" })
     use({
-      "m-demare/hlargs.nvim",
+      "AckslD/nvim-trevJ.lua",
+      module = "trevj",
+      setup = function()
+        vim.keymap.set("n", "<leader>j", function()
+          require("trevj").format_at_cursor()
+        end)
+      end,
+      after = "nvim-treesitter",
+    })
+    use({
+      "nvim-treesitter/nvim-treesitter-context",
       config = function()
-        require("hlargs").setup({
-          color = "#A0B9D8",
-        })
+        require("treesitter-context").setup()
       end,
       after = "nvim-treesitter",
     })
@@ -188,9 +188,9 @@ return packer.startup({
       after = "nvim-treesitter",
     })
     use({
-      "SmiteshP/nvim-gps",
+      "SmiteshP/nvim-navic",
       config = function()
-        require("nvim-gps").setup({ separator = " ❯ " })
+        require("nvim-navic").setup({ highlight = true, separator = " ❯ " })
       end,
       after = "nvim-treesitter",
     })
@@ -203,6 +203,13 @@ return packer.startup({
       end,
     })
     use({ "tpope/vim-fugitive" })
+    use({
+      "f-person/git-blame.nvim",
+      setup = function()
+        vim.g.gitblame_display_virtual_text = 0
+        vim.g.gitblame_message_template = "<author> • <summary>"
+      end,
+    })
     use({
       "rbong/vim-flog",
       setup = function()
@@ -218,7 +225,7 @@ return packer.startup({
         vim.g.git_messenger_always_into_popup = true
         vim.g.git_messenger_max_popup_height = 20
         vim.g.git_messenger_max_popup_width = 50
-        vim.g.git_messenger_floating_win_opts = { border = require("config.utils").border }
+        vim.g.git_messenger_floating_win_opts = { border = "solid" }
       end,
     })
     use({ "rhysd/committia.vim" })
@@ -245,6 +252,7 @@ return packer.startup({
     -- Testing and Runner
     use({
       "rcarriga/vim-ultest",
+      disable = true,
       requires = { "vim-test/vim-test" },
       setup = function()
         vim.g.ultest_icons = 0
@@ -260,6 +268,17 @@ return packer.startup({
       run = ":UpdateRemotePlugins",
     })
     use({
+      "rcarriga/neotest",
+      requires = { "vim-test/vim-test", "rcarriga/neotest-vim-test" },
+      setup = function()
+        require("neotest").setup({
+          adapters = {
+            require("neotest-vim-test"),
+          },
+        })
+      end,
+    })
+    use({
       "skywind3000/asyncrun.vim",
       config = function()
         require("config.misc.asynctasks").setup()
@@ -271,16 +290,13 @@ return packer.startup({
     use({ "p00f/clangd_extensions.nvim" })
     use({ "akinsho/flutter-tools.nvim" })
     use({ "simrat39/rust-tools.nvim" })
-    use({ "mfussenegger/nvim-jdtls" })
-    use({ "scalameta/nvim-metals" })
-    use({ "nanotee/sqls.nvim" })
     use({ "b0o/schemastore.nvim" })
     use({
       "ray-x/go.nvim",
       ft = { "go", "gomod", "gowork", "gohtmltmpl" },
       config = function()
         require("go").setup({
-          tag_transform = true,
+          tag_transform = "snakecase",
           dap_debug_keymap = false,
           dap_debug_vt = false,
         })
@@ -330,7 +346,9 @@ return packer.startup({
     use({
       "luukvbaal/stabilize.nvim",
       config = function()
-        require("stabilize").setup()
+        require("stabilize").setup({
+          ignore = { filetype = { "neo-tree" } },
+        })
       end,
     })
     use({
@@ -367,18 +385,28 @@ return packer.startup({
     use({
       "numToStr/Comment.nvim",
       config = function()
-        require("Comment").setup({
-          sticky = false,
-        })
+        require("Comment").setup({})
       end,
     })
     use({
       "jbyuki/venn.nvim",
       config = function()
-        vim.api.nvim_add_user_command("VennToggle", require("config.misc.venn").toggle_venn, {})
+        vim.api.nvim_create_user_command("VennToggle", require("config.misc.venn").toggle_venn, {})
       end,
     })
     use({ "machakann/vim-sandwich" })
+    use({ "rainbowhxch/accelerated-jk.nvim" })
+    use({
+      "stevearc/aerial.nvim",
+      config = function()
+        require("aerial").setup({
+          highlight_on_hover = true,
+          show_guides = true,
+          placement_editor_edge = true,
+          min_width = 25,
+        })
+      end,
+    })
     use({
       "eugen0329/vim-esearch",
       setup = function()
@@ -407,9 +435,6 @@ return packer.startup({
       requires = { "s1n7ax/nvim-window-picker" },
       config = function()
         require("window-picker").setup({
-          filter = {
-            bo = { filetype = { "neo-tree" } },
-          },
           current_win_hl_color = "#6699CC",
           other_win_hl_color = "#2F628E",
         })
@@ -435,16 +460,34 @@ return packer.startup({
         vim.notify = require("notify")
         require("notify").setup({
           background_colour = "NormalFloat",
-          max_width = 45,
-          max_height = 3,
           minimum_width = 45,
           stages = "static",
           render = "minimal",
+          -- render = function(bufnr, notif, hl)
+          --   local namespace = require("notify.render.base").namespace()
+          --   notif.message = notif.icon .. " | " .. notif.message
+          --   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, notif.message)
+          --   vim.api.nvim_buf_set_extmark(bufnr, namespace, 0, 0, {
+          --     hl_group = hl.icon,
+          --     end_line = #notif.message - 1,
+          --     end_col = #notif.message[#notif.message],
+          --     priority = 50,
+          --   })
+          -- end,
           on_open = function(win)
+            local buf = vim.api.nvim_win_get_buf(win)
+            local line = vim.api.nvim_buf_get_lines(buf, 0, -1, false)[1]
+            local max_width = 45
+            local height = math.floor(#line / max_width) + 1
+            vim.keymap.set("n", "j", "gj", { buffer = buf })
+            vim.keymap.set("n", "k", "gk", { buffer = buf })
+            vim.wo[win].wrap = true
             vim.api.nvim_win_set_config(win, {
+              anchor = "SE",
               border = "solid",
               relative = "editor",
-              anchor = "SE",
+              width = max_width,
+              height = height,
               row = vim.o.lines - vim.o.cmdheight - 2,
               col = vim.o.columns - vim.wo.numberwidth - 2,
             })

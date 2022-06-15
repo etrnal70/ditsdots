@@ -6,13 +6,7 @@ require("nvim-treesitter.configs").setup({
     use_languagetree = true,
   },
   incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = ";",
-      scope_incremental = ";",
-      node_incremental = ".",
-      node_decremental = ",",
-    },
+    enable = false,
   },
   indent = { enable = true },
   matchup = {
@@ -30,7 +24,7 @@ require("nvim-treesitter.configs").setup({
   },
   textobjects = {
     select = {
-      enable = false,
+      enable = true,
       keymaps = {
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
@@ -43,6 +37,15 @@ require("nvim-treesitter.configs").setup({
       },
     },
     move = { enable = false },
+  },
+  textsubjects = {
+    enable = true,
+    prev_selection = ",",
+    keymaps = {
+      ["."] = "textsubjects-smart",
+      [";"] = "textsubjects-container-outer",
+      ["i;"] = "textsubjects-container-inner",
+    },
   },
   playground = {
     enable = false,

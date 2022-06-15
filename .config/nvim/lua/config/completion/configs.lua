@@ -11,7 +11,6 @@ M.load_luasnip = function()
     region_check_events = "InsertEnter",
   })
   require("luasnip.loaders.from_vscode").lazy_load()
-  -- require("luasnip.loaders.from_snipmate").lazy_load()
 end
 
 M.load_autopairs = function()

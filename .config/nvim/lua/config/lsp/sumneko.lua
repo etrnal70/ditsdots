@@ -1,19 +1,23 @@
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-  local luadev = require("lua-dev").setup({
+  require("lspconfig").sumneko_lua.setup(require("lua-dev").setup({
     library = {
       vimruntime = true,
       types = true,
       plugins = true,
     },
     lspconfig = {
-      cmd = { "lua-language-server" },
+      settings = {
+        Lua = {
+          completion = { callSnippet = "Disable" },
+          workspace = { maxPreload = 8000 },
+        },
+      },
       on_attach = on_attach,
       capabilities = capabilities,
     },
-  })
-  require("lspconfig").sumneko_lua.setup(luadev)
+  }))
 end
 
 return M

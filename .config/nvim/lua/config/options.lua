@@ -5,22 +5,17 @@ opt.hidden = true -- Hide unloaded buffer
 -- opt.lazyredraw = true -- Currently clashing with global statusline
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
 opt.mouse = "n" -- Mouse only on normal mode
-opt.updatetime = 500
+opt.updatetime = 750
+opt.ttimeoutlen = 0
 opt.showtabline = 2
 opt.laststatus = 3
-opt.diffopt = {
-  "internal",
-  "filler",
-  "closeoff",
-  "algorithm:histogram",
-  "indent-heuristic",
-}
+opt.diffopt:append({ "algorithm:histogram", "indent-heuristic" })
 
 opt.cmdheight = 0
 
 opt.foldlevel = 99 -- Open folds when opening file
 opt.foldenable = true -- Prevent folding upon opening file
-opt.foldmethod = "indent"
+opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 opt.splitright = true -- Vertical split always on the right

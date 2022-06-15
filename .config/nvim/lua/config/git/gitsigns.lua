@@ -1,10 +1,10 @@
 require("gitsigns").setup({
   signs = {
-    add = { text = "│" },
-    change = { text = "│" },
-    delete = { text = "│" },
-    topdelete = { text = "│" },
-    changedelete = { text = "│" },
+    add = { text = "┃" },
+    change = { text = "┃" },
+    delete = { text = "┃" },
+    topdelete = { text = "┃" },
+    changedelete = { text = "┃" },
   },
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
@@ -15,9 +15,9 @@ require("gitsigns").setup({
     end
 
     -- Navigation
-    map("n", "]c", function()
+    map("n", "]h", function()
       if vim.wo.diff then
-        return "]c"
+        return "]h"
       end
       vim.schedule(function()
         gs.next_hunk()
@@ -25,9 +25,9 @@ require("gitsigns").setup({
       return "<Ignore>"
     end, { expr = true })
 
-    map("n", "[c", function()
+    map("n", "[h", function()
       if vim.wo.diff then
-        return "[c"
+        return "[h"
       end
       vim.schedule(function()
         gs.prev_hunk()
@@ -60,4 +60,6 @@ require("gitsigns").setup({
     border = "solid",
   },
   sign_priority = 1,
+  _threaded_diff = true,
+  _extmark_signs = true,
 })

@@ -23,6 +23,7 @@ hl("StatusLine", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineTerm", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineNC", { link = "WinSeparator" })
 hl("StatusLineTermNC", { link = "WinSeparator" })
+hl("WinBar", { bg = nil, bold = true })
 hl("WinSeparator", { fg = "#2F2F2F", bg = nil, bold = true })
 hl("TabLineFill", { fg = nil, bg = nil })
 
@@ -30,11 +31,11 @@ hl("TabLineFill", { fg = nil, bg = nil })
 -- hl("DiffChange", { fg = "#D2B45F" })
 -- hl("DiffDelete", { fg = "#FE9F7C" })
 hl("DiffAdd", { fg = nil, bg = "#152310" })
-hl("DiffChange", { fg = nil, bg = "#28200B", bold = true })
+hl("DiffChange", { fg = nil, bg = "#281F0B" })
 hl("DiffDelete", { fg = nil, bg = "#320E01" })
-hl("DiffText", { bg = "#28200B" })
+hl("DiffText", { bg = "#3C2E10", bold = true })
 hl("diffAdded", { fg = nil, bg = "#152310" })
-hl("diffChanged", { fg = nil, bg = "#28200B" })
+hl("diffChanged", { fg = nil, bg = "#281F0B" })
 hl("diffRemoved", { fg = nil, bg = "#320E01" })
 
 -- Telescope
@@ -117,6 +118,13 @@ hl("LspCodeLensTextSign", { fg = "#777777" })
 hl("LspCodeLensSeparator", { fg = "#333333", bold = true })
 hl("LspCodeLensTextSeparator", { link = "LspCodeLensSeparator" })
 
+-- fidget.nvim
+hl("FidgetTitle", { fg = "#A0B9D8" })
+hl("FidgetTask", { fg = "#555555" })
+
+-- symbols-outline
+hl("FocusedSymbol", { link = "CursorLine" })
+
 -- git-messenger
 hl("gitMessengerPopupNormal", { link = "NormalFloat" })
 
@@ -126,6 +134,31 @@ hl("ConflictMarkerOurs", { bg = "#2E5049" })
 hl("ConflictMarkerTheirs", { bg = "#344F69" })
 hl("ConflictMarkerEnd", { bg = "#2F628E" })
 hl("ConflictMarkerCommonAncestorsHunk", { bg = "#754A81" })
+
+-- nvim-navic
+hl("NavicText", { fg = "#AAAAAA" })
+hl("NavicIconsNamespace", { link = "CmpItemKindNamespace" })
+hl("NavicIconsType", { link = "CmpItemKindType" })
+hl("NavicIconsClass", { link = "CmpItemKindClass" })
+hl("NavicIconsEnum", { link = "CmpItemKindEnum" })
+hl("NavicIconsInterface", { link = "CmpItemKindInterface" })
+hl("NavicIconsStruct", { link = "Structure" })
+hl("NavicIconsTypeParameter", { link = "CmpItemKindParameter" })
+hl("NavicIconsParameter", { link = "CmpItemKindParameter" })
+hl("NavicIconsVariable", { link = "CmpItemKindVariable" })
+hl("NavicIconsProperty", { link = "CmpItemKindProperty" })
+hl("NavicIconsEnumMember", { link = "Constant" })
+hl("NavicIconsEvent", { link = "Keyword" })
+hl("NavicIconsFunction", { link = "CmpItemKindFunction" })
+hl("NavicIconsMethod", { link = "CmpItemKindMethod" })
+hl("NavicIconsMacro", { link = "CmpItemKindFuncMacro" })
+hl("NavicIconsKeyword", { link = "CmpItemKindKeyword" })
+hl("NavicIconsModifier", { link = "StorageClass" })
+hl("NavicIconsComment", { link = "CmpItemKindComment" })
+hl("NavicIconsString", { link = "CmpItemKindString" })
+hl("NavicIconsNumber", { link = "CmpItemKindNumber" })
+hl("NavicIconsRegexp", { link = "CmpItemKindStringRegex" })
+hl("NavicIconsOperator", { link = "CmpItemKindOperator" })
 
 -- nvim-notify
 hl("NotifyERRORBody", { bg = "#222222" })

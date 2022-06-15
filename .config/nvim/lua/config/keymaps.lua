@@ -10,9 +10,10 @@ map("", "sk", "<C-w>k")
 map("", "sj", "<C-w>j")
 map("", "sl", "<C-w>l")
 
--- Move tab
+-- Tab operation
 map("n", "<leader>bn", ":tabn<CR>")
 map("n", "<leader>bp", ":tabp<CR>")
+map("n", "<leader>bc", ":tabclose<CR>")
 
 -- Move lines up and down
 map("v", "J", ":m '>+1<CR>gv=gv")
@@ -25,9 +26,8 @@ map("n", "<C-A-h>", ":vertical resize +2<CR>")
 map("n", "<C-A-l>", ":vertical resize -2<CR>")
 
 -- Move one character left or right in insert mode
--- using Alt + <hl>
-map("i", "<A-l>", "<esc>la")
-map("i", "<A-h>", "<esc>i")
+map("i", "<C-l>", "<esc>la")
+map("i", "<C-h>", "<esc>i")
 
 -- Terminal
 map("t", "<esc>", "<C-\\><C-n>")
@@ -42,10 +42,10 @@ map("n", "<leader>lq", require("telescope.builtin").diagnostics)
 map("n", "<leader>gg", ":Git<CR>")
 map("n", "<leader>gl", ":Git log<CR>")
 map("n", "<leader>gL", ":Flogsplit<CR>")
-map("n", "<leader>gp", require("config.git.commands").async_gpush)
+map("n", "<leader>gp", ":Git! push<CR>")
 map("n", "<leader>gP", require("config.git.commands").async_gpull)
-map("n", "<leader>gf", require("config.git.commands").async_gfetch)
-map("n", "<leader>gd", ":Gvdiffsplit!<CR>")
+map("n", "<leader>gf", ":Git! fetch<CR>")
+map("n", "<leader>gd", ":tabedit % | Gvdiffsplit!<CR>")
 map("n", "<leader>gch", ":diffget //2<CR>")
 map("n", "<leader>gcl", ":diffget //3<CR>")
 map("n", "<leader>lF", require("telescope.builtin").git_files)
@@ -63,8 +63,15 @@ map("n", "ts", ":UltestStop<CR>")
 map("n", "tt", ":UltestSummary<CR>")
 map("n", "tc", ":UltestClear<CR>")
 
--- nvim-tree.lua
+-- File tree
 map("n", "<leader>st", ":Neotree toggle<CR>")
+
+-- accelerated-jk
+map("n", "j", "<Plug>(accelerated_jk_j)")
+map("n", "k", "<Plug>(accelerated_jk_k)")
+
+-- aerial
+map("n", "<leader>ss", ":AerialToggle<CR>")
 
 -- Telescope
 map("n", "<leader>lc", require("telescope.builtin").commands)

@@ -56,8 +56,8 @@ tele.setup({
     ["ui-select"] = themes.get_dropdown({
       initial_mode = "normal",
       layout_config = {
-        height = 7,
-        width = 45,
+        height = 12,
+        width = 60,
       },
     }),
   },

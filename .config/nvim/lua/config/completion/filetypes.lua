@@ -1,21 +1,5 @@
 local cmp = require("cmp")
 
--- C/C++
-cmp.setup.filetype({ "c", "cpp", "h", "hpp" }, {
-  sorting = {
-    comparators = {
-      cmp.config.compare.offset,
-      cmp.config.compare.exact,
-      cmp.config.compare.recently_used,
-      require("clangd_extensions.cmp_scores"),
-      cmp.config.compare.kind,
-      cmp.config.compare.sort_text,
-      cmp.config.compare.length,
-      cmp.config.compare.order,
-    },
-  },
-})
-
 -- Markdown
 cmp.setup.filetype("markdown", {
   sources = {
@@ -48,7 +32,7 @@ cmp.setup.filetype("gitcommit", {
   sources = {
     { name = "luasnip", max_item_count = 2 },
     { name = "conventionalcommits" },
-    { name = "cmp_git" },
+    { name = "git" },
     { name = "emoji", insert = true },
   },
 })

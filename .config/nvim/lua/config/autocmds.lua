@@ -29,3 +29,13 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 
 -- Disable number column on terminal
 vim.api.nvim_create_autocmd("TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber" })
+
+-- Recalculate fold, fix telescope folding bug
+vim.api.nvim_create_autocmd("BufRead", {
+  callback = function()
+    vim.api.nvim_create_autocmd("BufWinEnter", {
+      once = true,
+      command = "normal! zx zM zR",
+    })
+  end,
+})

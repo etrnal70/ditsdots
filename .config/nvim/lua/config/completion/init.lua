@@ -5,11 +5,8 @@ local luasnip = require("luasnip")
 local utils = require("config.completion.utils")
 local configs = require("config.completion.configs")
 
+--- @diagnostic disable-next-line
 cmp.setup({
-  documentation = {
-    maxwidth = 60,
-    maxheight = 20,
-  },
   enabled = function()
     local context = require("cmp.config.context")
     -- Disable completion on comment
@@ -22,7 +19,7 @@ cmp.setup({
       return vim_item
     end,
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -55,22 +52,15 @@ cmp.setup({
     end),
     ["<C-j>"] = cmp.mapping.scroll_docs(2),
     ["<C-k>"] = cmp.mapping.scroll_docs(-2),
-    ["<C-y>"] = cmp.config.disable,
     ["<Space>"] = cmp.mapping(function(fallback)
       local entry = cmp.get_selected_entry()
       if entry then
         cmp.confirm()
-        -- Don't try to add space when entry is a snippet
-        if not entry.completion_item.insertTextFormat == require("cmp.types.lsp").InsertTextFormat.Snippet then
-          if utils.allow_append_space(entry:get_kind()) then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Space>", true, true, true), "", true)
-          end
-        end
       else
         fallback()
       end
     end),
-  },
+  }),
   preselect = require("cmp.types").cmp.PreselectMode.None,
   sorting = {
     comparators = {
@@ -96,10 +86,18 @@ cmp.setup({
     { name = "nvim_lsp" },
     { name = "path" },
   },
+  window = {
+    documentation = {
+      max_width = 55,
+      max_height = 20,
+    },
+  },
 })
 
 -- TeX function use curly braces
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "{" } }))
+-- Try to append space after completion
+cmp.event:on("confirm_done", utils.append_space())
 
 -- Additional configs
 configs.load_autopairs()

@@ -2,18 +2,13 @@ local M = {}
 
 M.setup = function(on_attach, capabilities)
   require("flutter-tools").setup({
-    decorations = {
-      statusline = {
-        app_version = true,
-        device = false,
-      },
-    },
     experimental = {
       lsp_derive_paths = true,
     },
     flutter_lookup_cmd = nil,
     debugger = {
       enabled = true,
+      run_via_dap = true,
     },
     widget_guides = {
       enabled = true,
@@ -45,11 +40,6 @@ M.setup = function(on_attach, capabilities)
         map("n", "<leader>Fl", ":Telescope flutter commands<CR>")
       end,
       capabilities = capabilities,
-      settings = {
-        showTodos = true,
-        completeFunctionCalls = false,
-        analysisExcludedFolders = { vim.fn.expand("$HOME/.sdk_dir/flutter/packages") },
-      },
     },
   })
 end

@@ -6,13 +6,11 @@ utils.override_handlers()
 
 local servers = {
   "clangd",
-  "denols",
-  "dockerls",
+  -- "denols",
+  -- "dockerls",
   "flutter",
   "gopls",
-  -- "jdtls",
   "jsonls",
-  -- "metals",
   "pylsp",
   -- "pyright",
   "rust_analyzer",
@@ -24,7 +22,6 @@ local servers = {
   "zls",
 }
 
--- vim.lsp.set_log_level("debug")
 for _, server in ipairs(servers) do
   require("config.lsp." .. server).setup(utils.on_attach, utils.capabilities)
 end
