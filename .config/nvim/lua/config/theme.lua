@@ -18,7 +18,7 @@ hl("CursorLineNr", { fg = "white", bg = nil })
 
 hl("EndOfBuffer", { bg = nil })
 hl("ModeMsg", { fg = "white" })
-hl("Folded", { fg = "#555555", bg = "#151515" })
+hl("Folded", { fg = "#555555", bg = "#140F05" })
 hl("StatusLine", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineTerm", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineNC", { link = "WinSeparator" })
@@ -26,6 +26,7 @@ hl("StatusLineTermNC", { link = "WinSeparator" })
 hl("WinBar", { bg = nil, bold = true })
 hl("WinSeparator", { fg = "#2F2F2F", bg = nil, bold = true })
 hl("TabLineFill", { fg = nil, bg = nil })
+-- hl("MsgArea", { fg = "#BBBBBB", bg = "#1F1F1F" })
 
 -- hl("DiffAdd", { fg = "#92C47E" })
 -- hl("DiffChange", { fg = "#D2B45F" })
@@ -127,6 +128,11 @@ hl("FocusedSymbol", { link = "CursorLine" })
 
 -- git-messenger
 hl("gitMessengerPopupNormal", { link = "NormalFloat" })
+
+-- vim-illuminate
+hl("IlluminatedWordText", { bg = "#1F1F1F" })
+hl("IlluminatedWordRead", { link = "IlluminatedWordText" })
+hl("IlluminatedWordWrite", { link = "IlluminatedWordText" })
 
 -- conflict-marker
 hl("ConflictMarkerBegin", { bg = "#2F7366" })

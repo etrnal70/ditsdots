@@ -1,6 +1,7 @@
 require("nvim-treesitter.configs").setup({
   context_commentstring = { enable = true },
   ensure_installed = "all",
+  ignore_install = { "comment", "c" },
   highlight = {
     enable = true,
     use_languagetree = true,
@@ -10,6 +11,7 @@ require("nvim-treesitter.configs").setup({
   },
   indent = { enable = true },
   matchup = {
+    disable = { "c", "cpp" },
     enable = true,
     disable_virtual_text = true,
     include_match_words = true,

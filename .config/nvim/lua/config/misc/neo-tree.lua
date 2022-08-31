@@ -1,4 +1,9 @@
+require("window-picker").setup({
+  current_win_hl_color = "#6699CC",
+  other_win_hl_color = "#2F628E",
+})
 require("neo-tree").setup({
+  open_files_in_last_window = false,
   close_if_last_window = true,
   default_component_configs = {
     git_status = {
@@ -12,8 +17,8 @@ require("neo-tree").setup({
       symbol = "⏺",
     },
   },
-  enable_diagnostics = true,
-  enable_git_status = false,
+  enable_diagnostics = false,
+  enable_git_status = true,
   event_handlers = {
     {
       event = "neo_tree_buffer_enter",
@@ -39,16 +44,12 @@ require("neo-tree").setup({
       },
     },
   },
-  popup_border_style = "double",
+  popup_border_style = "rounded",
   sort_case_insensitive = true,
   use_libuv_file_watcher = true,
   window = {
     mappings = {
-      ["<space>"] = {
-        "toggle_node",
-        nowait = true,
-      },
-      ["<CR>"] = "open_with_window_picker",
+      ["<cr>"] = "open_with_window_picker",
       ["<c-x>"] = "split_with_window_picker",
       ["<c-v>"] = "vsplit_with_window_picker",
       ["s"] = "",

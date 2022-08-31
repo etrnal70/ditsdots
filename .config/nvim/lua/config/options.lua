@@ -14,9 +14,8 @@ opt.diffopt:append({ "algorithm:histogram", "indent-heuristic" })
 opt.cmdheight = 0
 
 opt.foldlevel = 99 -- Open folds when opening file
+opt.foldlevelstart = 99
 opt.foldenable = true -- Prevent folding upon opening file
-opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 opt.splitright = true -- Vertical split always on the right
 opt.splitbelow = true -- Horizontal split always on the bottom
@@ -148,6 +147,3 @@ vim.fn.sign_define("DiagnosticSignError", { text = "", numhl = "DiagnosticError"
 vim.fn.sign_define("DiagnosticSignWarn", { text = "", numhl = "DiagnosticWarn" })
 vim.fn.sign_define("DiagnosticSignInfo", { text = "", numhl = "DiagnosticInfo" })
 vim.fn.sign_define("DiagnosticSignHint", { text = "", numhl = "DiagnosticHint" })
-
--- UI Override
-require("config.ui").override_input()

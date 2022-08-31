@@ -56,6 +56,28 @@ return packer.startup({
         })
       end,
     })
+    use({
+      "simrat39/inlay-hints.nvim",
+      config = function()
+        require("inlay-hints").setup({
+          hints = {
+            parameter = { show = false },
+          },
+        })
+      end,
+    })
+    use({
+      "zbirenbaum/neodim",
+      disable = true,
+      event = "LspAttach",
+      config = function()
+        require("neodim").setup({
+          update_in_insert = {
+            delay = 1000,
+          },
+        })
+      end,
+    })
 
     -- Completion
     use({
@@ -71,11 +93,10 @@ return packer.startup({
       after = "nvim-cmp",
     })
     use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
-    use({ "hrsh7th/cmp-omni", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" })
+    use({ "hrsh7th/cmp-nvim-lsp-signature-help", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
     use({ "hrsh7th/cmp-emoji", after = "nvim-cmp" })
-    use({ "ray-x/cmp-treesitter", after = "nvim-cmp" })
     use({
       "petertriho/cmp-git",
       config = function()
@@ -96,13 +117,6 @@ return packer.startup({
       requires = { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
     })
     use({ "nvim-telescope/telescope-ui-select.nvim" })
-    use({
-      "GustavoKatel/telescope-asynctasks.nvim",
-      after = "telescope.nvim",
-      config = function()
-        require("config.misc.asynctasks").mapping()
-      end,
-    })
     use({
       "crispgm/telescope-heading.nvim",
       after = "telescope.nvim",
@@ -139,31 +153,12 @@ return packer.startup({
         require("config.misc.treesitter")
       end,
     })
-    use({
-      "theHamsta/nvim-semantic-tokens",
-      config = function()
-        require("nvim-semantic-tokens").setup({
-          preset = "default",
-          highlight = { require("nvim-semantic-tokens.table-highlighter") },
-        })
-      end,
-    })
     use({ "nvim-treesitter/nvim-treesitter-textobjects", after = "nvim-treesitter" })
     use({ "nvim-treesitter/nvim-treesitter-refactor", after = "nvim-treesitter" })
     use({ "nvim-treesitter/playground", after = "nvim-treesitter" })
     use({ "RRethy/nvim-treesitter-textsubjects", after = "nvim-treesitter" })
     use({ "JoosepAlviste/nvim-ts-context-commentstring", after = "nvim-treesitter" })
     use({ "p00f/nvim-ts-rainbow", after = "nvim-treesitter" })
-    use({
-      "AckslD/nvim-trevJ.lua",
-      module = "trevj",
-      setup = function()
-        vim.keymap.set("n", "<leader>j", function()
-          require("trevj").format_at_cursor()
-        end)
-      end,
-      after = "nvim-treesitter",
-    })
     use({
       "nvim-treesitter/nvim-treesitter-context",
       config = function()
@@ -206,6 +201,7 @@ return packer.startup({
     use({
       "f-person/git-blame.nvim",
       setup = function()
+        vim.g.gitblame_enabled = 0
         vim.g.gitblame_display_virtual_text = 0
         vim.g.gitblame_message_template = "<author> • <summary>"
       end,
@@ -229,7 +225,16 @@ return packer.startup({
       end,
     })
     use({ "rhysd/committia.vim" })
-    use({ "rhysd/conflict-marker.vim" })
+    -- use({ "rhysd/conflict-marker.vim" })
+    use({
+      "akinsho/git-conflict.nvim",
+      config = function()
+        require("git-conflict").setup({
+          default_mappings = false,
+          disable_diagnostics = true,
+        })
+      end,
+    })
     use({ "ThePrimeagen/git-worktree.nvim" })
 
     -- Debugger
@@ -251,39 +256,22 @@ return packer.startup({
 
     -- Testing and Runner
     use({
-      "rcarriga/vim-ultest",
-      disable = true,
-      requires = { "vim-test/vim-test" },
-      setup = function()
-        vim.g.ultest_icons = 0
-        vim.g.ultest_virtual_text = 1
-        vim.g.ultest_use_pty = 1
-        vim.g.ultest_max_threads = 4
-        vim.g.ultest_output_on_run = 0
-        vim.g.ultest_output_on_line = 0
-        vim.g.ultest_output_max_width = 65
-        vim.g.ultest_output_max_height = 20
-        vim.g.ultest_summary_width = 45
-      end,
-      run = ":UpdateRemotePlugins",
-    })
-    use({
-      "rcarriga/neotest",
-      requires = { "vim-test/vim-test", "rcarriga/neotest-vim-test" },
-      setup = function()
-        require("neotest").setup({
-          adapters = {
-            require("neotest-vim-test"),
-          },
-        })
-      end,
-    })
-    use({
-      "skywind3000/asyncrun.vim",
+      "nvim-neotest/neotest",
+      requires = {
+        "vim-test/vim-test",
+        "nvim-neotest/neotest-vim-test",
+        "nvim-neotest/neotest-go",
+        "rouge8/neotest-rust",
+      },
       config = function()
-        require("config.misc.asynctasks").setup()
+        require("config.misc.neotest")
       end,
-      requires = { "skywind3000/asynctasks.vim" },
+    })
+    use({
+      "stevearc/overseer.nvim",
+      config = function()
+        require("overseer").setup()
+      end,
     })
 
     -- Language-related
@@ -302,8 +290,7 @@ return packer.startup({
         })
       end,
     })
-    use({ "folke/lua-dev.nvim" })
-    use({ "jose-elias-alvarez/nvim-lsp-ts-utils" })
+    use({ "jose-elias-alvarez/typescript.nvim" })
     use({
       "jose-elias-alvarez/null-ls.nvim",
       config = function()
@@ -312,6 +299,19 @@ return packer.startup({
     })
 
     -- Misc
+    use({
+      "stevearc/dressing.nvim",
+      config = function()
+        require("dressing").setup({
+          input = {
+            winhighlight = "Normal",
+          },
+          select = {
+            backend = { "telescope", "builtin", "nui" },
+          },
+        })
+      end,
+    })
     use({ "lewis6991/impatient.nvim" })
     use({
       "goolord/alpha-nvim",
@@ -326,9 +326,10 @@ return packer.startup({
       end,
     })
     use({
-      "anuvyklack/pretty-fold.nvim",
+      "kevinhwang91/nvim-ufo",
+      requires = "kevinhwang91/promise-async",
       config = function()
-        require("config.misc.pretty-fold")
+        require("config.misc.nvim-ufo")
       end,
     })
     use({
@@ -344,14 +345,6 @@ return packer.startup({
       end,
     })
     use({
-      "luukvbaal/stabilize.nvim",
-      config = function()
-        require("stabilize").setup({
-          ignore = { filetype = { "neo-tree" } },
-        })
-      end,
-    })
-    use({
       "pwntester/octo.nvim",
       cmd = "Octo",
       config = function()
@@ -359,28 +352,10 @@ return packer.startup({
       end,
     })
     use({
-      "kristijanhusak/vim-dadbod-ui",
-      requires = { "tpope/vim-dadbod" },
+      "frabjous/knap",
       setup = function()
-        vim.g.db_async = 1
-        vim.g.db_ui_icons = {
-          expanded = "ᐯ",
-          collapsed = "›",
-          saved_query = "•",
-          new_query = "+",
-          tables = "",
-          buffers = "»",
-          connection_ok = "✓",
-          connection_error = "✕",
-        }
-        vim.g.db_ui_save_location = "~/Queries"
+        vim.g.knap_settings = { delay = 500 }
       end,
-      cmd = { "DBUI" },
-    })
-    use({
-      "kristijanhusak/vim-dadbod-completion",
-      after = "vim-dadbod",
-      ft = { "sql", "msql", "plsql" },
     })
     use({
       "numToStr/Comment.nvim",
@@ -394,16 +369,19 @@ return packer.startup({
         vim.api.nvim_create_user_command("VennToggle", require("config.misc.venn").toggle_venn, {})
       end,
     })
-    use({ "machakann/vim-sandwich" })
-    use({ "rainbowhxch/accelerated-jk.nvim" })
+    -- use({ "machakann/vim-sandwich" })
     use({
-      "stevearc/aerial.nvim",
+      "kylechui/nvim-surround",
+      tag = "*",
       config = function()
-        require("aerial").setup({
-          highlight_on_hover = true,
-          show_guides = true,
-          placement_editor_edge = true,
-          min_width = 25,
+        require("nvim-surround").setup({ highlights = { duration = 0 } })
+      end,
+    })
+    use({
+      "simrat39/symbols-outline.nvim",
+      config = function()
+        require("symbols-outline").setup({
+          relative_width = false,
         })
       end,
     })
@@ -425,19 +403,16 @@ return packer.startup({
       end,
     })
     use({
-      "norcalli/nvim-colorizer.lua",
+      "NvChad/nvim-colorizer.lua",
       config = function()
-        require("colorizer").setup({ "css", "dart", "lua" }, { names = false, RRGGBBAA = true })
+        require("colorizer").setup({ "css", "dart", "lua" }, { names = false, RRGGBBAA = true, mode = "virtualtext" })
       end,
     })
+    use({ "RRethy/vim-illuminate" })
     use({
       "nvim-neo-tree/neo-tree.nvim",
       requires = { "s1n7ax/nvim-window-picker" },
       config = function()
-        require("window-picker").setup({
-          current_win_hl_color = "#6699CC",
-          other_win_hl_color = "#2F628E",
-        })
         require("config.misc.neo-tree")
       end,
     })
@@ -448,7 +423,21 @@ return packer.startup({
       end,
     })
     use({
-      "NTBBloodbath/rest.nvim",
+      "andrewferrier/textobj-diagnostic.nvim",
+      config = function()
+        require("textobj-diagnostic").setup()
+      end,
+    })
+    use({
+      "Darazaki/indent-o-matic",
+      config = function()
+        require("indent-o-matic").setup({
+          max_lines = 5000,
+        })
+      end,
+    })
+    use({
+      "rest-nvim/rest.nvim",
       ft = "http",
       config = function()
         require("rest-nvim").setup()

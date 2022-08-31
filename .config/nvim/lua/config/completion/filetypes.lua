@@ -1,4 +1,5 @@
 local cmp = require("cmp")
+local cmp_compare = require("cmp.config.compare")
 
 -- Markdown
 cmp.setup.filetype("markdown", {
@@ -46,5 +47,4 @@ cmp.setup.filetype("TelescopePrompt", {
 cmp.setup.filetype({ "sql", "msql", "plsql" }, {
   { name = "luasnip", max_item_count = 2 },
   { name = "nvim_lsp" },
-  { name = "vim-dadbod-completion" },
 })

@@ -92,6 +92,8 @@ tele.setup({
     lsp_implementations = default_ivy,
     lsp_references = default_ivy,
     lsp_type_definitions = default_ivy,
+    lsp_incoming_calls = default_ivy,
+    lsp_outgoing_calls = default_ivy,
   },
 })
 

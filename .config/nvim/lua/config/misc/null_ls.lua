@@ -38,7 +38,7 @@ null_ls.setup({
     linter.buf,
     -- formatter.clang_format,
     formatter.dart_format,
-    formatter.deno_fmt,
+    -- formatter.deno_fmt,
     formatter.gofumpt,
     formatter.pg_format,
     formatter.prettierd,

@@ -11,9 +11,9 @@ map("", "sj", "<C-w>j")
 map("", "sl", "<C-w>l")
 
 -- Tab operation
-map("n", "<leader>bn", ":tabn<CR>")
-map("n", "<leader>bp", ":tabp<CR>")
-map("n", "<leader>bc", ":tabclose<CR>")
+map("n", "<leader>tn", ":tabn<CR>")
+map("n", "<leader>tp", ":tabp<CR>")
+map("n", "<leader>tc", ":tabclose<CR>")
 
 -- Move lines up and down
 map("v", "J", ":m '>+1<CR>gv=gv")
@@ -52,26 +52,37 @@ map("n", "<leader>lF", require("telescope.builtin").git_files)
 map("n", "<leader>gC", require("telescope.builtin").git_commits)
 map("n", "<leader>gb", require("telescope.builtin").git_branches)
 
--- vim-ultest
-map("n", "ta", ":UltestAttach<CR>")
-map("n", "tn", ":UltestNearest<CR>")
-map("n", "tf", ":Ultest<CR>")
-map("n", "tl", ":UltestLast<CR>")
-map("n", "td", ":UltestDebug<CR>")
-map("n", "to", ":UltestOutput<CR>")
-map("n", "ts", ":UltestStop<CR>")
-map("n", "tt", ":UltestSummary<CR>")
-map("n", "tc", ":UltestClear<CR>")
+-- neotest
+map("n", "ta", function()
+  require("neotest").run.attach()
+end)
+map("n", "tn", function()
+  require("neotest").run.run()
+end)
+map("n", "tf", function()
+  require("neotest").run.run(vim.fn.expand("%"))
+end)
+map("n", "tl", function()
+  require("neotest").run.run_last()
+end)
+map("n", "td", function()
+  require("neotest").run.run({ strategy = "dap" })
+end)
+map("n", "to", function()
+  require("neotest").output.open({ enter = true })
+end)
+map("n", "ts", function()
+  require("neotest").run.stop()
+end)
+map("n", "tt", function()
+  require("neotest").summary.toggle()
+end)
 
 -- File tree
 map("n", "<leader>st", ":Neotree toggle<CR>")
 
--- accelerated-jk
-map("n", "j", "<Plug>(accelerated_jk_j)")
-map("n", "k", "<Plug>(accelerated_jk_k)")
-
--- aerial
-map("n", "<leader>ss", ":AerialToggle<CR>")
+-- symbols-outline
+map("n", "<leader>ss", ":SymbolsOutline<CR>")
 
 -- Telescope
 map("n", "<leader>lc", require("telescope.builtin").commands)

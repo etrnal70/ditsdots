@@ -5,6 +5,8 @@ local telescope = require("telescope.builtin")
 
 M.override_handlers = function()
   -- lsp.handlers["textDocument/codeAction"] = telescope.lsp_code_actions
+  lsp.handlers["callHierarchy/incomingCalls"] = telescope.lsp_incoming_calls
+  lsp.handlers["callHierarchy/outgoingCalls"] = telescope.lsp_outgoing_calls
   lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
   lsp.handlers["textDocument/documentSymbol"] = telescope.lsp_document_symbols
   lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
@@ -19,6 +21,10 @@ M.override_handlers = function()
 end
 
 M.capabilities = require("cmp_nvim_lsp").update_capabilities(lsp.protocol.make_client_capabilities())
+M.capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true,
+}
 
 M.on_attach = function(client, bufnr)
   local map = function(mode, l, r, opts)
@@ -38,8 +44,7 @@ M.on_attach = function(client, bufnr)
   map("n", "gr", lsp.buf.references)
   map("n", "gs", lsp.buf.document_symbol)
   map("n", "gw", lsp.buf.workspace_symbol)
-  map("n", "ga", lsp.buf.code_action)
-  map("v", "ga", lsp.buf.range_code_action)
+  map({ "n", "v" }, "ga", lsp.buf.code_action)
   map("n", "gW", telescope.lsp_dynamic_workspace_symbols)
   map("i", "<C-k>", lsp.buf.signature_help)
   map("n", "<leader>wl", function()
@@ -66,12 +71,6 @@ M.on_attach = function(client, bufnr)
     )
   end
 
-  -- Document Highlight
-  if client.supports_method("textDocument/documentHighlight") then
-    vim.api.nvim_create_autocmd("CursorHold", { buffer = bufnr, callback = lsp.buf.document_highlight })
-    vim.api.nvim_create_autocmd("CursorMoved", { buffer = bufnr, callback = lsp.buf.clear_references })
-  end
-
   -- Semantic Token
   -- if client.supports_method("textDocument/semanticTokens/full") then
   --   vim.api.nvim_create_autocmd(
@@ -80,8 +79,10 @@ M.on_attach = function(client, bufnr)
   --   )
   -- end
 
-  -- Aerial
-  require("aerial").on_attach(client, bufnr)
+  -- Inlay Hints
+  -- if client.supports_method("textDocument/inlayHints") then
+  --   require("inlay-hints").on_attach(client, bufnr)
+  -- end
 
   -- nvim-navic
   require("nvim-navic").attach(client, bufnr)

@@ -1,5 +1,4 @@
 local npairs = require("nvim-autopairs")
-local conds = require("nvim-autopairs.conds")
 local rule = require("nvim-autopairs.rule")
 
 local M = {}
@@ -16,15 +15,6 @@ end
 M.load_autopairs = function()
   npairs.setup({
     check_ts = true,
-  })
-
-  npairs.add_rules({
-    rule("$", "$", { "tex", "latex" })
-      :with_pair(conds.not_after_regex_check("%%"))
-      :with_pair(conds.not_before_regex_check("xxx", 3))
-      :with_move(conds.none())
-      :with_del(conds.not_after_regex_check("xx"))
-      :with_cr(conds.none()),
   })
 
   npairs.add_rules({
