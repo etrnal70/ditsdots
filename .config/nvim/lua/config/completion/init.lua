@@ -1,6 +1,5 @@
 local cmp = require("cmp")
 local cmp_compare = require("cmp.config.compare")
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local luasnip = require("luasnip")
 local utils = require("config.completion.utils")
 local configs = require("config.completion.configs")
@@ -64,8 +63,8 @@ cmp.setup({
   preselect = require("cmp.types").cmp.PreselectMode.None,
   sorting = {
     comparators = {
-      cmp_compare.locality,
       cmp_compare.recently_used,
+      cmp_compare.locality,
       cmp_compare.score,
       cmp_compare.offset,
       cmp_compare.order,
@@ -77,8 +76,7 @@ cmp.setup({
     end,
   },
   sources = {
-    { name = "nvim_lsp_signature_help" },
-    { name = "luasnip", max_item_count = 2 },
+    { name = "luasnip", max_item_count = 2, option = { show_autosnippets = true } },
     { name = "nvim_lsp" },
     { name = "path" },
   },
@@ -90,10 +88,11 @@ cmp.setup({
   },
 })
 
--- TeX function use curly braces
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "{" } }))
+-- Custom filetype options
+cmp.event:on("confirm_done", utils.on_confirm_done)
+
 -- Try to append space after completion
-cmp.event:on("confirm_done", utils.append_space())
+cmp.event:on("confirm_done", utils.append_space)
 
 -- Additional configs
 configs.load_autopairs()

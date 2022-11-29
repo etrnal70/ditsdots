@@ -1,7 +1,9 @@
 local M = {}
 
--- local context = require("cmp.config.context")
+local context = require("cmp.config.context")
 local kinds = require("cmp.types.lsp").CompletionItemKind
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+local handlers = require("nvim-autopairs.completion.handlers")
 
 M.item_kinds = {
   Text = " Text",
@@ -92,5 +94,19 @@ M.concat_str = function(str)
   end
   return str
 end
+
+M.on_confirm_done = cmp_autopairs.on_confirm_done({
+  filetypes = {
+    tex = {
+      ["{"] = {
+        kind = {
+          kinds.Function,
+          kinds.Method,
+        },
+        handler = handlers["*"],
+      },
+    },
+  },
+})
 
 return M

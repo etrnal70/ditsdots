@@ -1,36 +1,39 @@
-local cmd = vim.api.nvim_command
-
 vim.g.substrata_italic_comments = true
 vim.g.substrata_italic_booleans = true
 vim.g.substrata_italic_functions = true
 vim.g.substrata_transparent = true
-cmd("colorscheme substrata")
+-- vim.cmd.colorscheme("substrata")
+vim.cmd.colorscheme("tundra")
 
 local hl = function(name, opts)
   vim.api.nvim_set_hl(0, name, opts)
 end
 
 hl("Normal", { bg = nil })
+hl("NormalNC", { link = "Normal" })
 hl("NormalFloat", { bg = "#222222" })
 hl("FloatBorder", { bg = "#222222" })
+hl("FloatTitle", { bg = nil })
 hl("LineNr", { fg = "#4F4F4F", bg = nil })
+hl("CursorLine", { bg = "#2F2F2F", bold = true })
 hl("CursorLineNr", { fg = "white", bg = nil })
 
 hl("EndOfBuffer", { bg = nil })
-hl("ModeMsg", { fg = "white" })
+hl("ModeMsg", { fg = "white", bg = "#212121" })
+hl("MsgArea", { link = "StatusLine" })
 hl("Folded", { fg = "#555555", bg = "#140F05" })
 hl("StatusLine", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineTerm", { fg = nil, bg = "#1F1F1F" })
 hl("StatusLineNC", { link = "WinSeparator" })
 hl("StatusLineTermNC", { link = "WinSeparator" })
 hl("WinBar", { bg = nil, bold = true })
+hl("WinBarNC", { bg = nil, bold = true })
 hl("WinSeparator", { fg = "#2F2F2F", bg = nil, bold = true })
 hl("TabLineFill", { fg = nil, bg = nil })
--- hl("MsgArea", { fg = "#BBBBBB", bg = "#1F1F1F" })
 
--- hl("DiffAdd", { fg = "#92C47E" })
--- hl("DiffChange", { fg = "#D2B45F" })
--- hl("DiffDelete", { fg = "#FE9F7C" })
+hl("GitSignsAdd", { fg = "#92C47E" })
+hl("GitSignsChange", { fg = "#D2B45F" })
+hl("GitSignsDelete", { fg = "#FE9F7C" })
 hl("DiffAdd", { fg = nil, bg = "#152310" })
 hl("DiffChange", { fg = nil, bg = "#281F0B" })
 hl("DiffDelete", { fg = nil, bg = "#320E01" })
@@ -38,6 +41,9 @@ hl("DiffText", { bg = "#3C2E10", bold = true })
 hl("diffAdded", { fg = nil, bg = "#152310" })
 hl("diffChanged", { fg = nil, bg = "#281F0B" })
 hl("diffRemoved", { fg = nil, bg = "#320E01" })
+
+-- hl("TreesitterContext", { bg = "#181818", blend = 100 })
+-- hl("TreesitterContextLineNumber", { fg = "#8F8F8F" })
 
 -- Telescope
 hl("TelescopeNormal", { bg = "#1F1F1F" })
@@ -109,6 +115,7 @@ hl("LspRegexp", { link = "TSStringRegex" })
 hl("LspOperator", { link = "TSOperator" })
 
 -- LSP-related
+hl("LspInlayHint", { fg = "#6E6F70", bg = "#16161F" })
 hl("LspReferenceRead", { link = "CursorLine" })
 hl("LspReferenceText", { link = "CursorLine" })
 hl("LspReferenceWrite", { link = "CursorLine" })
@@ -124,7 +131,7 @@ hl("FidgetTitle", { fg = "#A0B9D8" })
 hl("FidgetTask", { fg = "#555555" })
 
 -- symbols-outline
-hl("FocusedSymbol", { link = "CursorLine" })
+-- hl("FocusedSymbol", { link = "CursorLine" })
 
 -- git-messenger
 hl("gitMessengerPopupNormal", { link = "NormalFloat" })
@@ -177,3 +184,9 @@ hl("NotifyDEBUGBody", { bg = "#222222" })
 hl("NotifyDEBUGBorder", { bg = "#222222" })
 hl("NotifyTRACEBody", { bg = "#222222" })
 hl("NotifyTRACEBorder", { bg = "#222222" })
+
+-- headline
+hl("Headline1", { bg = "#1E2718" })
+hl("Headline2", { bg = "#21262D" })
+hl("CodeBlock", { bg = "#1C1C1C" })
+hl("Dash", { bg = "#D19A66", bold = true })

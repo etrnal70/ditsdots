@@ -1,4 +1,4 @@
-local utils = require("config.lsp.utils")
+local utils = require "config.lsp.utils"
 pcall(require, "cmp_nvim_lsp")
 
 -- Override handlers
@@ -6,18 +6,22 @@ utils.override_handlers()
 
 local servers = {
   "clangd",
-  -- "denols",
+  "denols",
   -- "dockerls",
   "flutter",
   "gopls",
   "jsonls",
-  "pylsp",
-  -- "pyright",
+  "marksman",
+  "prismals",
+  "pylance",
+  -- "pylsp",
+  -- "rome",
   "rust_analyzer",
   "sumneko",
   "taplo",
   "texlab",
-  "tsserver",
+  -- "tsserver",
+  "vts",
   "yamlls",
   "zls",
 }

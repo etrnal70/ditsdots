@@ -1,10 +1,9 @@
 local M = {}
 
 local lsp = vim.lsp
-local telescope = require("telescope.builtin")
+local telescope = require "telescope.builtin"
 
 M.override_handlers = function()
-  -- lsp.handlers["textDocument/codeAction"] = telescope.lsp_code_actions
   lsp.handlers["callHierarchy/incomingCalls"] = telescope.lsp_incoming_calls
   lsp.handlers["callHierarchy/outgoingCalls"] = telescope.lsp_outgoing_calls
   lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
@@ -20,7 +19,7 @@ M.override_handlers = function()
   lsp.handlers["workspace/symbol"] = telescope.lsp_workspace_symbols
 end
 
-M.capabilities = require("cmp_nvim_lsp").update_capabilities(lsp.protocol.make_client_capabilities())
+M.capabilities = require("cmp_nvim_lsp").default_capabilities()
 M.capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true,
@@ -38,10 +37,13 @@ M.on_attach = function(client, bufnr)
   map("n", "gD", lsp.buf.declaration)
   map("n", "gR", lsp.buf.rename)
   map("n", "gc", lsp.codelens.run)
-  map("n", "gd", lsp.buf.definition)
-  map("n", "gi", lsp.buf.implementation)
+  -- map("n", "gd", lsp.buf.definition)
+  map("n", "gd", ":Glance definitions<CR>")
+  -- map("n", "gi", lsp.buf.implementation)
+  map("n", "gi", ":Glance implementations<CR>")
   map("n", "gy", lsp.buf.type_definition)
-  map("n", "gr", lsp.buf.references)
+  -- map("n", "gr", lsp.buf.references)
+  map("n", "gr", ":Glance references<CR>")
   map("n", "gs", lsp.buf.document_symbol)
   map("n", "gw", lsp.buf.workspace_symbol)
   map({ "n", "v" }, "ga", lsp.buf.code_action)
@@ -56,7 +58,7 @@ M.on_attach = function(client, bufnr)
   map("n", "<leader>co", lsp.buf.outgoing_calls)
 
   -- Code Action (lightbulb)
-  if client.supports_method("textDocument/codeAction") then
+  if client.supports_method "textDocument/codeAction" then
     vim.api.nvim_create_autocmd(
       { "CursorHold", "CursorHoldI" },
       { buffer = bufnr, callback = require("nvim-lightbulb").update_lightbulb }
@@ -64,7 +66,7 @@ M.on_attach = function(client, bufnr)
   end
 
   -- Code Lens
-  if client.supports_method("textDocument/codeLens") and client.name ~= "rust_analyzer" then
+  if client.supports_method "textDocument/codeLens" and client.name ~= "rust_analyzer" then
     vim.api.nvim_create_autocmd(
       { "BufEnter", "CursorHold", "InsertLeave" },
       { buffer = bufnr, callback = lsp.codelens.refresh }
@@ -72,20 +74,23 @@ M.on_attach = function(client, bufnr)
   end
 
   -- Semantic Token
-  -- if client.supports_method("textDocument/semanticTokens/full") then
-  --   vim.api.nvim_create_autocmd(
-  --     { "CursorHold", "BufEnter" },
-  --     { buffer = bufnr, callback = lsp.buf.semantic_tokens_full }
-  --   )
-  -- end
+  if client.supports_method "textDocument/semanticTokens/full" then
+    vim.api.nvim_create_autocmd(
+      { "CursorHold", "BufEnter" },
+      { buffer = bufnr, callback = lsp.buf.semantic_tokens_full }
+    )
+  end
 
   -- Inlay Hints
   -- if client.supports_method("textDocument/inlayHints") then
-  --   require("inlay-hints").on_attach(client, bufnr)
+  --   require("lsp-inlayhints").on_attach(client, bufnr)
   -- end
 
   -- nvim-navic
-  require("nvim-navic").attach(client, bufnr)
+
+  if client.supports_method "textDocument/documentSymbol" then
+    require("nvim-navic").attach(client, bufnr)
+  end
 
   -- Register nvim-cmp LSP source
   if client.name ~= "null-ls" then

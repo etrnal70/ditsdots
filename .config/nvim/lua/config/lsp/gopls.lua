@@ -38,6 +38,8 @@ M.setup = function(on_attach, capabilities)
       -- TODO: Make this work
       -- client.resolved_capabilities.semantic_tokens_full = true
       on_attach(client, bufnr)
+      vim.keymap.del({ "n", "v" }, "ga", { buffer = bufnr })
+      vim.keymap.set({ "n", "v" }, "ga", ":GoCodeAction<CR>", { buffer = bufnr })
     end,
     capabilities = capabilities,
   })

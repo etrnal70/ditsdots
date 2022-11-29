@@ -29,12 +29,19 @@ map("n", "<C-A-l>", ":vertical resize -2<CR>")
 map("i", "<C-l>", "<esc>la")
 map("i", "<C-h>", "<esc>i")
 
+map(
+  "i",
+  "<C-r>",
+  "<C-r><C-o>",
+  { noremap = true, desc = "Insert contents of named register. Inserts text literally, not as if you typed it." }
+)
+
 -- Terminal
 map("t", "<esc>", "<C-\\><C-n>")
 
 -- Diagnostics
 map("n", "<leader>e", vim.diagnostic.open_float)
-map("n", "[d", vim.diagnostic.goto_prev)
+map("n", "[d", vim.diagnostic.goto_next)
 map("n", "]d", vim.diagnostic.goto_prev)
 map("n", "<leader>lq", require("telescope.builtin").diagnostics)
 
@@ -91,6 +98,15 @@ map("n", "<leader>ls", require("telescope.builtin").live_grep)
 map("n", "<leader>lb", require("telescope.builtin").buffers)
 map("n", "<leader>lo", require("telescope.builtin").oldfiles)
 map("n", "<leader>lH", require("telescope.builtin").help_tags)
+
+-- overseer
+map("n", "<leader>ot", ":OverseerToggle!<CR>")
+map("n", "<leader>or", ":OverseerRun<CR>")
+
+-- ssr.nvim
+map({ "n", "x" }, "<leader>Sr", function()
+  require("ssr").open()
+end)
 
 -- neogen
 map("n", "<leader>dg", require("neogen").generate)

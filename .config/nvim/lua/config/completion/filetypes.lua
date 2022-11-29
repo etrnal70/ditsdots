@@ -4,7 +4,7 @@ local cmp_compare = require("cmp.config.compare")
 -- Markdown
 cmp.setup.filetype("markdown", {
   sources = {
-    { name = "luasnip" },
+    { name = "luasnip", option = { show_autosnippets = true } },
     { name = "emoji" },
     { name = "path" },
   },
@@ -13,12 +13,26 @@ cmp.setup.filetype("markdown", {
 -- Tex
 cmp.setup.filetype("tex", {
   sources = {
-    { name = "luasnip", max_item_count = 2 },
-    { name = "nvim_lsp" },
-    { name = "latex_symbols", max_item_count = 2 },
+    { name = "luasnip", max_item_count = 2, option = { show_autosnippets = true } },
+    { name = "omni" },
+    -- { name = "latex_symbols", max_item_count = 2 },
     { name = "path" },
   },
 })
+
+-- Python
+-- cmp.setup.filetype("python", {
+--   sorting = {
+--     comparators = {
+--       cmp_compare.locality,
+--       cmp_compare.recently_used,
+--       cmp_compare.score,
+--       require("cmp-under-comparator").under,
+--       cmp_compare.offset,
+--       cmp_compare.order,
+--     },
+--   },
+-- })
 
 -- Toml
 cmp.setup.filetype("toml", {
@@ -31,7 +45,7 @@ cmp.setup.filetype("toml", {
 -- Gitcommit
 cmp.setup.filetype("gitcommit", {
   sources = {
-    { name = "luasnip", max_item_count = 2 },
+    { name = "luasnip", max_item_count = 2, option = { show_autosnippets = true } },
     { name = "conventionalcommits" },
     { name = "git" },
     { name = "emoji", insert = true },

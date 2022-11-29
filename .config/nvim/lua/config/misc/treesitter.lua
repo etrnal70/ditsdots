@@ -3,6 +3,7 @@ require("nvim-treesitter.configs").setup({
   ensure_installed = "all",
   ignore_install = { "comment", "c" },
   highlight = {
+    disable = { "c", "cpp" },
     enable = true,
     use_languagetree = true,
   },

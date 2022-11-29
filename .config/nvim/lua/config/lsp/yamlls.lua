@@ -11,4 +11,5 @@ M.setup = function(on_attach, capabilities)
     capabilities = capabilities,
   })
 end
+
 return M

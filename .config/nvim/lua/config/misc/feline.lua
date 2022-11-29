@@ -19,6 +19,13 @@ local separator = {
   str = " ",
 }
 
+local debug_separator = {
+  hl = {
+    fg = colors.orange,
+  },
+  str = " ",
+}
+
 local winbar_components = {
   active = { {}, {}, {} },
   inactive = { {}, {} },
@@ -120,10 +127,10 @@ table.insert(statusline_components.active[1], {
 
 table.insert(statusline_components.active[1], {
   provider = function()
-    return require("gitblame").get_current_blame_text()
+    return vim.g.gitsigns_line_blame
   end,
   enabled = function()
-    return require("gitblame").is_blame_text_available()
+    return vim.g.gitsigns_line_blame ~= nil
   end,
   hl = {
     fg = "#888888",
@@ -142,7 +149,7 @@ table.insert(statusline_components.active[1], {
     fg = "bg",
     bg = colors.orange,
   },
-  left_sep = separator,
+  left_sep = debug_separator,
 })
 
 table.insert(statusline_components.active[3], {
@@ -155,6 +162,9 @@ table.insert(statusline_components.active[3], {
 
 table.insert(statusline_components.active[3], {
   provider = "git_diff_added",
+  enabled = function()
+    return dap.status() == ""
+  end,
   hl = {
     fg = "green",
   },
@@ -163,6 +173,9 @@ table.insert(statusline_components.active[3], {
 
 table.insert(statusline_components.active[3], {
   provider = "git_diff_changed",
+  enabled = function()
+    return dap.status() == ""
+  end,
   hl = {
     fg = colors.orange,
   },
@@ -171,21 +184,13 @@ table.insert(statusline_components.active[3], {
 
 table.insert(statusline_components.active[3], {
   provider = "git_diff_removed",
+  enabled = function()
+    return dap.status() == ""
+  end,
   hl = {
     fg = "red",
   },
   icon = "  ",
-})
-
-table.insert(statusline_components.active[3], {
-  provider = function()
-    return " "
-  end,
-})
-
-table.insert(statusline_components.active[3], {
-  provider = "position",
-  right_sep = separator,
 })
 
 M.setup = function()

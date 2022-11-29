@@ -4,7 +4,7 @@ require("toggleterm").setup({
   open_mapping = [[<leader>sm]],
   size = function(term)
     if term.direction == "horizontal" then
-      return 8
+      return 12
     elseif term.direction == "vertical" then
       return vim.o.columns * 0.4
     end

@@ -14,9 +14,7 @@ M.setup = function(on_attach, capabilities)
       executor = require("rust-tools.executors").toggleterm,
       hover_with_actions = false,
       inlay_hints = {
-        show_parameter_hints = false,
-        parameter_hints_prefix = " » ",
-        other_hints_prefix = " ❱ ",
+        auto = false,
       },
       on_initialized = function()
         vim.api.nvim_create_autocmd(
@@ -26,6 +24,7 @@ M.setup = function(on_attach, capabilities)
       end,
     },
     server = {
+      -- cmd = { "ra-multiplex" },
       standalone = false,
       on_attach = on_attach,
       capabilities = capabilities,

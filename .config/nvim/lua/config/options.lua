@@ -9,7 +9,7 @@ opt.updatetime = 750
 opt.ttimeoutlen = 0
 opt.showtabline = 2
 opt.laststatus = 3
-opt.diffopt:append({ "algorithm:histogram", "indent-heuristic" })
+opt.diffopt:append({ "algorithm:histogram", "indent-heuristic", "linematch:60" })
 
 opt.cmdheight = 0
 
@@ -19,6 +19,7 @@ opt.foldenable = true -- Prevent folding upon opening file
 
 opt.splitright = true -- Vertical split always on the right
 opt.splitbelow = true -- Horizontal split always on the bottom
+opt.splitkeep = "topline"
 
 opt.conceallevel = 2
 opt.fillchars = {

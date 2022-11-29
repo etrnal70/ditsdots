@@ -5,15 +5,17 @@ M.setup = function(on_attach, capabilities)
     settings = {
       texlab = {
         auxDirectory = "build",
+        chktex = {
+          onEdit = true,
+        },
         build = {
-          -- latexmk
-          executable = "latexmk",
-          args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "-outdir=build", "%f" },
-          -- tectonic
-          -- executable = "tectonic",
-          -- args = { "--synctex", "--keep-logs", "--keep-intermediate", "--outdir", "build" },
-          forwardSearchAfter = true,
-          onSave = true,
+          -- executable = "latexmk",
+          -- args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "-outdir=build", "%f" },
+          executable = "tectonic",
+          -- args = { "-X", "compile", "%f", "--synctex", "--keep-logs", "--keep-intermediates", "--outdir", "build" },
+          args = { "-X", "compile", "%f", "--synctex", "--keep-logs", "--keep-intermediates", "--outdir", "build" },
+          forwardSearchAfter = false,
+          onSave = false,
         },
         forwardSearch = {
           executable = "zathura",

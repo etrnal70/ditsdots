@@ -5,6 +5,7 @@ M.setup = function(on_attach, capabilities)
     filetypes = { "typescript" },
     on_attach = on_attach,
     capabilities = capabilities,
+    root_dir = require("lspconfig").util.root_pattern("deno.json", "deno.jsonc"),
   })
 end
 

@@ -45,7 +45,8 @@ require("gitsigns").setup({
     map("n", "<leader>hb", function()
       gs.blame_line({ full = true })
     end)
-    map("n", "<leader>hp", gs.preview_hunk)
+    map("n", "<leader>hp", gs.preview_hunk_inline)
+    map("n", "<leader>hP", gs.preview_hunk)
     map("n", "<leader>hd", gs.diffthis)
     map("n", "<leader>hD", function()
       gs.diffthis("~")
@@ -59,11 +60,7 @@ require("gitsigns").setup({
     height = 12,
     border = "solid",
   },
-  current_line_blame_opts = {
-    virt_text_pos = "right_align",
-    delay = 2000,
-    ignore_whitespace = true,
-  },
+  current_line_blame = false,
   sign_priority = 1,
   update_debounce = 500,
   _threaded_diff = true,
