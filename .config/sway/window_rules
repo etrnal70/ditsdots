@@ -1,0 +1,62 @@
+## Windowing Rules
+for_window {
+  ### Browser
+  [instance="chromium"] inhibit_idle fullscreen
+  [title="MAX - Chromium"] floating enable; border pixel 1
+  [class="firefox"] inhibit_idle fullscreen
+  [class="Chromium"] inhibit_idle fullscreen
+  [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable, move to scratchpad
+  [app_id="firefox" title="Library"] floating enable; border pixel 1;
+  [class="Nightly"] inhibit_idle fullscreen
+  # [title = "Picture in picture"] floating enable, sticky enable
+
+  ### Steam/WINE related
+  [class="gamescope"] inhibit_idle fullscreen; floating enable; border none
+  [class="steam_app.*"] inhibit_idle fullscreen; floating enable; border none
+  [class=".*.exe"] inhibit_idle fullscreen; floating enable; border none
+  [class="^Steam$" title="^Friends *"] floating enable
+  # [class="^Steam$" title="^Friends List$"] floating enable
+  [class="^Steam$" title="Steam - News"] floating enable
+  [class="^Steam$" title=".* - Chat"] floating enable
+  [class="^Steam$" title="^Settings$"] floating enable
+  [class="^Steam$" title=".* - event started"] floating enable
+  [class="^Steam$" title=".* CD key"] floating enable
+  [class="^Steam$" title="^Steam - Self Updater$"] floating enable
+  [class="^Steam$" title="^Screenshot Uploader$"] floating enable
+  [class="^Steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
+  [class="^Steam$" title="^Create or select new Steam library folder:$"] floating enable
+  [title="^Steam Keyboard$"] floating enable
+
+  ### Desktop apps
+  [app_id="zoom"] inhibit_idle fullscreen; floating enable
+  [app_id="ksysguard"] floating enable; sticky enable
+  [app_id="image-roll"] floating enable; border pixel 1
+  [app_id="pavucontrol"] sticky enable; floating enable; resize set 720px 480px
+  [app_id="wdisplays"] floating enable
+  [app_id="mpv"] inhibit_idle visible; border none
+  [app_id="keepassxc"] floating enable; border pixel 1; resize set 960px 870px
+  [app_id="org.kde.kdeconnect.daemon"] floating enable
+  [class="NoiseTorch"] floating enable; resize set 720px 580px
+  [class="(\s|^)Spotify(\s|$)"] floating disable
+  [class="(\s|^)WhatsApp(\s|$)"] floating disable
+  [class="Spotify"] move window to workspace number 3
+
+  ### Miscellaneous
+  [title="(?:Open|Save|Image|Local) (?:File|Folder|As)"] floating enable; sticky enable
+  [app_id = "xdg-desktop-portal-gtk"] floating enable
+  [app_id = "xdg-desktop-portal-gtk"] move position center
+  [window_role = "GtkFileChooserDialog"] resize set 800 600
+  [window_role = "GtkFileChooserDialog"] move position center
+  [window_role = "pop-up"] floating enable
+  [window_role = "bubble"] floating enable
+  [window_role = "dialog"] floating enable
+  [window_type = "dialog"] floating enable
+  [window_role = "task_dialog"] floating enable
+  [window_role = "Preferences"] floating enable
+  [window_type = "menu"] floating enable
+  [app_id = "floating"] floating enable
+  [class="^.*"] inhibit_idle fullscreen
+  [app_id="^.*"] inhibit_idle fullscreen
+}
+
+# vim:filetype=swayconfig

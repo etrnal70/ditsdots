@@ -1,0 +1,25 @@
+# Input Configuration
+## Touch Screen (Map only to touchscreen area)
+input "type:touch" map_to_output eDP-1
+
+## Touchpad
+input "type:touchpad" {
+    drag enabled
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
+
+## Keyboard
+input "type:keyboard" {
+  ### Double shift to CapsLock
+  ### Use capslock as escape
+  xkb_options shift:both_capslock_cancel
+
+  ### Faster key input
+  repeat_rate 50
+  repeat_delay 350
+}
+
+# vim:filetype=swayconfig
