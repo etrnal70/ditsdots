@@ -22,8 +22,8 @@
 
 **Bar** : waybar  
 **Launcher** : wofi  
-**Shell** : zsh + starship
-**Terminal** : foot + tmux
+**Shell** : zsh + starship  
+**Terminal** : foot + tmux  
 **Editor** : neovim-git
 
 ![Desktop](https://github.com/etrnal70/ditsdots/blob/master/pic.png)
