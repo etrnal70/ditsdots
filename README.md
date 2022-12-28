@@ -18,8 +18,7 @@
 
 ## Setup
 
-    **WM** : sway
-
+**WM** : sway  
 **Bar** : waybar  
 **Launcher** : wofi  
 **Shell** : zsh + starship  
