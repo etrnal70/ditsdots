@@ -1,9 +1,4 @@
-vim.g.substrata_italic_comments = true
-vim.g.substrata_italic_booleans = true
-vim.g.substrata_italic_functions = true
-vim.g.substrata_transparent = true
--- vim.cmd.colorscheme("substrata")
-vim.cmd.colorscheme("tundra")
+vim.cmd.colorscheme "tundra"
 
 local hl = function(name, opts)
   vim.api.nvim_set_hl(0, name, opts)
@@ -47,7 +42,9 @@ hl("diffRemoved", { fg = nil, bg = "#320E01" })
 
 -- Telescope
 hl("TelescopeNormal", { bg = "#1F1F1F" })
-hl("TelescopePromptNormal", { bg = "#2F2F2F" })
+hl("TelescopePromptNormal", { bg = "#1F1F1F" })
+hl("TelescopePreviewNormal", { bg = "#1F1F1F" })
+hl("TelescopeResultsNormal", { bg = "#1F1F1F" })
 hl("TelescopeBorder", { bg = "#1F1F1F" })
 hl("TelescopePreviewBorder", { fg = "#1F1F1F", bg = "#1F1F1F" })
 hl("TelescopePromptBorder", { fg = "#2F2F2F", bg = "#2F2F2F" })

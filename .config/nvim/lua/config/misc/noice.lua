@@ -1,4 +1,4 @@
-require("noice").setup({
+require("noice").setup {
   cmdline = { enabled = false },
   messages = { enabled = false },
   popupmenu = { enabled = true },
@@ -35,4 +35,4 @@ require("noice").setup({
     },
     signature = { enabled = false },
   },
-})
+}

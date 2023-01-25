@@ -26,8 +26,8 @@ map("n", "<C-A-h>", ":vertical resize +2<CR>")
 map("n", "<C-A-l>", ":vertical resize -2<CR>")
 
 -- Move one character left or right in insert mode
-map("i", "<C-l>", "<esc>la")
-map("i", "<C-h>", "<esc>i")
+map("i", "<C-l>", "<Right>")
+map("i", "<C-h>", "<Left>")
 
 map(
   "i",
@@ -67,16 +67,16 @@ map("n", "tn", function()
   require("neotest").run.run()
 end)
 map("n", "tf", function()
-  require("neotest").run.run(vim.fn.expand("%"))
+  require("neotest").run.run(vim.fn.expand "%")
 end)
 map("n", "tl", function()
   require("neotest").run.run_last()
 end)
 map("n", "td", function()
-  require("neotest").run.run({ strategy = "dap" })
+  require("neotest").run.run { strategy = "dap" }
 end)
 map("n", "to", function()
-  require("neotest").output.open({ enter = true })
+  require("neotest").output.open { enter = true }
 end)
 map("n", "ts", function()
   require("neotest").run.stop()

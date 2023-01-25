@@ -34,10 +34,12 @@ null_ls.setup {
     action.shellcheck,
     -- Formatter
     formatter.dart_format,
-    formatter.deno_fmt,
     formatter.gofumpt,
     formatter.pg_format,
-    -- formatter.prettierd,
+    formatter.prettierd.with {
+      disabled_filetypes = { "javascript", "typescript" },
+    },
+    formatter.rome,
     formatter.rustfmt.with {
       extra_args = function(params)
         local Path = require "plenary.path"
@@ -82,5 +84,10 @@ null_ls.setup {
     linter.hadolint,
     linter.shellcheck,
     linter.sqlfluff,
+    linter.tsc.with {
+      condition = function(utils)
+        return utils.root_has_file "tsconfig.json"
+      end,
+    },
   },
 }

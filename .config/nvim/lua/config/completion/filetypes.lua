@@ -1,5 +1,5 @@
-local cmp = require("cmp")
-local cmp_compare = require("cmp.config.compare")
+local cmp = require "cmp"
+local cmp_compare = require "cmp.config.compare"
 
 -- Markdown
 cmp.setup.filetype("markdown", {
@@ -14,7 +14,7 @@ cmp.setup.filetype("markdown", {
 cmp.setup.filetype("tex", {
   sources = {
     { name = "luasnip", max_item_count = 2, option = { show_autosnippets = true } },
-    { name = "omni" },
+    { name = "nvim_lsp" },
     -- { name = "latex_symbols", max_item_count = 2 },
     { name = "path" },
   },

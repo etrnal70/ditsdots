@@ -1,5 +1,5 @@
-local feline = require("feline")
-local dap = require("dap")
+local feline = require "feline"
+local dap = require "dap"
 
 local M = {}
 
@@ -193,8 +193,14 @@ table.insert(statusline_components.active[3], {
   icon = "  ",
 })
 
+table.insert(statusline_components.active[3], {
+  provider = function()
+    return " "
+  end,
+})
+
 M.setup = function()
-  feline.setup({
+  feline.setup {
     colors = {
       fg = "white",
       bg = "bg",
@@ -204,8 +210,8 @@ M.setup = function()
       filetypes = {},
       buftypes = {},
     },
-  })
-  feline.winbar.setup({
+  }
+  feline.winbar.setup {
     colors = {
       -- fg = "white",
       bg = "NONE",
@@ -215,7 +221,7 @@ M.setup = function()
       filetypes = { "neo-tree" },
       buftypes = {},
     },
-  })
+  }
 end
 
 return M

@@ -74,12 +74,12 @@ M.on_attach = function(client, bufnr)
   end
 
   -- Semantic Token
-  if client.supports_method "textDocument/semanticTokens/full" then
-    vim.api.nvim_create_autocmd(
-      { "CursorHold", "BufEnter" },
-      { buffer = bufnr, callback = lsp.buf.semantic_tokens_full }
-    )
-  end
+  -- if client.supports_method "textDocument/semanticTokens/full" then
+  --   vim.api.nvim_create_autocmd(
+  --     { "CursorHold", "BufEnter" },
+  --     { buffer = bufnr, callback = lsp.buf.semantic_tokens_full }
+  --   )
+  -- end
 
   -- Inlay Hints
   -- if client.supports_method("textDocument/inlayHints") then
