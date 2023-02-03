@@ -5,9 +5,6 @@ setopt beep notify
 setopt autocd
 bindkey -v
 
-# Benchmark purpose
-zmodload zsh/zprof
-
 # compinstall
 zstyle :compinstall filename '~/.zshrc'
 autoload -Uz compinit
@@ -43,7 +40,9 @@ add-zsh-hook -Uz chpwd osc7
 zinit wait lucid light-mode for \
   zdharma-continuum/fast-syntax-highlighting \
   zsh-users/zsh-autosuggestions \
-  zsh-users/zsh-completions
+  zsh-users/zsh-completions \
+  ael-code/zsh-colored-man-pages \
+  tj/git-extras
 
 ## zinit plugin config
 zstyle ':completion:*' matcher-list 'r:|?=** m:{a-z\-}={A-Z\_}'
@@ -87,8 +86,14 @@ export PATH="$GOPATH/bin:$PATH"
 # SSH Agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
+# SDK Collection
+export SDK_HOME=$HOME/.sdk_dir
+
+# Java
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+
 # Android SDK
-export ANDROID_HOME=$HOME/.sdk_dir/android_sdk
+export ANDROID_HOME=$SDK_HOME/android_sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools/
 export PATH=$PATH:$ANDROID_HOME/build-tools/
@@ -104,7 +109,7 @@ export CHROME_EXECUTABLE=/usr/bin/chromium
 # CMake
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-# Python lib
+# extra lib
 export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
 export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
@@ -128,3 +133,9 @@ export PRETTIERD_DEFAULT_CONFIG=$HOME/.config/nvim/.prettierrc.json
 
 # Source alias file
 source $HOME/.config/aliasrc
+
+# pnpm
+export PNPM_HOME="/home/hanifrmdhn/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm package completion (tabtab source for packages)
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
