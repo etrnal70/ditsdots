@@ -11,10 +11,10 @@ set $up k
 set $right l
 
 ## Terminal Emulator
-set $term foot
+set $term footclient
 
 ## Wallpaper
-# output * bg ~/Data/wallpaper/cell.gif fill
+output * bg ~/Data/wallpaper/abstract.jpg fill
 
 # Key Bindings
 ## Mandatory Keybinds
@@ -25,7 +25,7 @@ bindsym $mod+Return exec $term
 bindsym $mod+q kill
 
 ### Desktop launcher
-bindsym $mod+d exec (pgrep "rofi" 1>/dev/null 2>&1 && killall rofi) || rofi -show drun -config ~/.config/rofi/desktop.rasi
+bindsym $mod+d exec (pgrep "fuzzel" 1>/dev/null 2>&1 && killall fuzzel) || fuzzel -F name
 
 ### Floating Modifier
 floating_modifier $mod normal
@@ -41,6 +41,7 @@ bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 bindsym $mod+period exec ~/.scripts/dmenu_toggle.sh
 
 ### Execute Command
+# TODO Switch to fuzzel
 bindsym $mod+comma exec (pgrep "rofi" 1>/dev/null 2>&1 && killall rofi) || rofi -show run -config ~/.config/rofi/run.rasi
 
 ### Dunst
@@ -49,6 +50,7 @@ bindsym $mod+bar exec swaync-client -C
 
 ### Waybar
 bindsym $mod+w exec swaymsg bar mode toggle
+# bindsym $mod+Shift+w exec pidof waybar | xargs kill -SIGUSR2
 
 ## Movement Keybinds
 ### Move your focus around
@@ -136,15 +138,15 @@ bindsym $mod+minus scratchpad show
 
 ## Hardware Keybinds
 ### Generic Hardware Button
-bindsym XF86AudioRaiseVolume exec ~/.scripts/volume.sh up
-bindsym XF86AudioLowerVolume exec ~/.scripts/volume.sh down
-bindsym XF86AudioMute exec ~/.scripts/volume.sh mute
-bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-bindsym XF86AudioPlay exec playerctl -p spotify play-pause
-bindsym XF86AudioNext exec playerctl -p spotify next
-bindsym XF86AudioPrev exec playerctl -p spotify previous
-bindsym XF86MonBrightnessUp exec ~/.scripts/backlight.sh up
-bindsym XF86MonBrightnessDown exec ~/.scripts/backlight.sh down
+bindsym --locked XF86AudioRaiseVolume exec ~/.scripts/volume.sh up
+bindsym --locked XF86AudioLowerVolume exec ~/.scripts/volume.sh down
+bindsym --locked XF86AudioMute exec ~/.scripts/volume.sh mute
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym --locked XF86AudioPlay exec playerctl -p spotify play-pause
+bindsym --locked XF86AudioNext exec playerctl -p spotify next
+bindsym --locked XF86AudioPrev exec playerctl -p spotify previous
+bindsym --locked XF86MonBrightnessUp exec ~/.scripts/backlight.sh up
+bindsym --locked XF86MonBrightnessDown exec ~/.scripts/backlight.sh down
 
 ### Alternative
 bindsym $mod+Mod4+7 exec playerctl -p spotify previous
@@ -155,10 +157,10 @@ bindsym $mod+Mod4+minus exec ~/.scripts/volume.sh mute
 bindsym $mod+Mod4+equal exec ~/.scripts/volume.sh up
 
 ### Arrow Keys
-bindsym $mod+Mod4+Left exec playerctl -p spotify previous
-bindsym $mod+Mod4+Right exec playerctl -p spotify next
-bindsym $mod+Mod4+Down exec ~/.scripts/volume.sh down
-bindsym $mod+Mod4+Up exec ~/.scripts/volume.sh up
+bindsym --locked $mod+Mod4+Left exec playerctl -p spotify previous
+bindsym --locked $mod+Mod4+Right exec playerctl -p spotify next
+bindsym --locked $mod+Mod4+Down exec ~/.scripts/volume.sh down
+bindsym --locked $mod+Mod4+Up exec ~/.scripts/volume.sh up
 
 ## Container Keybinds
 ### Resize
@@ -173,10 +175,6 @@ mode "resize_containers" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize_containers"
-
-## Gesture Keybinds
-# bindgesture swipe:4:down TODO Screenshot
-# bindgesture hold:3 exec ~/.config/eww/dashboard/launch_dashboard
 
 # Additional Settings
 ## Idle Configuration
@@ -212,7 +210,21 @@ bar {
 
 # Startup
 ## Start session target
-exec "systemctl --user import-environment DISPLAY; systemctl --user start sway-session.target"
+# exec "systemctl --user import-environment; systemctl --user start sway-session.target"
+exec "systemctl --user import-environment \
+DISPLAY SWAYSOCK WAYLAND_DISPLAY \
+XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE \
+GTK_THEME XCURSOR_THEME XCURSOR_SIZE SSH_AUTH_SOCK \
+MOZ_ENABLE_WAYLAND MOZ_USE_XINPUT MOZ_DBUS_REMOTE \
+CLUTTER_BACKEND SAL_USE_VCLPLUGIN \
+QT_AUTO_SCREEN_SCALE_FACTOR QT_QPA_PLATFORM QT_WAYLAND_DISABLE_WINDOWDECORATION \
+_JAVA_AWT_WM_NONPARENTING \
+ELM_ENGINE ECORE_EVAS_ENGINE \
+SDL_VIDEODRIVER NO_AT_BRIDGE; \
+systemctl --user start sway-session.target"
+
+## Assign cgroups
+exec /usr/local/bin/assign-cgroups.py
 
 ## Import GTK configuration
 exec_always ~/.scripts/import-gsettings

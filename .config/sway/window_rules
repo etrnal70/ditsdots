@@ -8,7 +8,7 @@ for_window {
   [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable, move to scratchpad
   [app_id="firefox" title="Library"] floating enable; border pixel 1;
   [class="Nightly"] inhibit_idle fullscreen
-  # [title = "Picture in picture"] floating enable, sticky enable
+  [title="Picture-in-Picture"] floating enable; sticky enable; resize set 480px 270px;
 
   ### Steam/WINE related
   [class="gamescope"] inhibit_idle fullscreen; floating enable; border none
@@ -34,11 +34,16 @@ for_window {
   [app_id="pavucontrol"] sticky enable; floating enable; resize set 720px 480px
   [app_id="wdisplays"] floating enable
   [app_id="mpv"] inhibit_idle visible; border none
-  [app_id="keepassxc"] floating enable; border pixel 1; resize set 960px 870px
+  [app_id="org.keepassxc.KeePassXC"] floating enable; border pixel 1; resize set 960px 870px
   [app_id="org.kde.kdeconnect.daemon"] floating enable
+  [app_id="java"] floating enable
   [class="NoiseTorch"] floating enable; resize set 720px 580px
   [class="(\s|^)Spotify(\s|$)"] floating disable
   [class="(\s|^)WhatsApp(\s|$)"] floating disable
+  [class="(\s|^)WebApp(\s|$)"] floating enable; resize set 720px 580px
+
+  ### Preferred Workspace
+  [class="Ferdium"] move window to workspace number 1
   [class="Spotify"] move window to workspace number 3
 
   ### Miscellaneous
