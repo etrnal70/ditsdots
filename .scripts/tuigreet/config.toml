@@ -2,5 +2,5 @@
 vt = 1
 
 [default_session]
-command = "tuigreet --time --asterisks -r --remember-session --cmd sway-run.sh"
+command = "tuigreet --time --asterisks -r --remember-session -s /usr/local/bin --cmd sway-run.sh"
 user = "greeter"
