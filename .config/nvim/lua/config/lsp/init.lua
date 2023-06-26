@@ -1,31 +1,11 @@
 local utils = require "config.lsp.utils"
-pcall(require, "cmp_nvim_lsp")
 
--- Override handlers
 utils.override_handlers()
+utils.setup_autocmds()
 
-local servers = {
-  "clangd",
-  "denols",
-  -- "dockerls",
-  "flutter",
-  "gopls",
-  "jsonls",
-  "marksman",
-  "prismals",
-  "pylance",
-  -- "pylsp",
-  -- "rome",
-  "rust_analyzer",
-  "sumneko",
-  "taplo",
-  "texlab",
-  -- "tsserver",
-  "vts",
-  "yamlls",
-  "zls",
-}
-
-for _, server in ipairs(servers) do
-  require("config.lsp." .. server).setup(utils.on_attach, utils.capabilities)
+for _, server in pairs(utils.servers) do
+  require("config.lsp.server_configs." .. server).setup(utils.capabilities)
 end
+
+-- Java-only
+vim.api.nvim_create_user_command("JavaStart", require("config.lsp.server_configs.jdtls").setup, {})

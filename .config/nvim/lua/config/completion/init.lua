@@ -1,15 +1,16 @@
-local cmp = require("cmp")
-local cmp_compare = require("cmp.config.compare")
-local luasnip = require("luasnip")
-local utils = require("config.completion.utils")
-local configs = require("config.completion.configs")
+local cmp = require "cmp"
+local cmp_types = require "cmp.types"
+local cmp_compare = require "cmp.config.compare"
+local luasnip = require "luasnip"
+local utils = require "config.completion.utils"
+local configs = require "config.completion.configs"
 
 --- @diagnostic disable-next-line
-cmp.setup({
+cmp.setup {
   enabled = function()
-    local context = require("cmp.config.context")
+    local context = require "cmp.config.context"
     -- Disable completion on comment
-    return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+    return not context.in_treesitter_capture "comment" and not context.in_syntax_group "Comment"
   end,
   formatting = {
     format = function(_, vim_item)
@@ -18,7 +19,7 @@ cmp.setup({
       return vim_item
     end,
   },
-  mapping = cmp.mapping.preset.insert({
+  mapping = cmp.mapping.preset.insert {
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -59,8 +60,8 @@ cmp.setup({
         fallback()
       end
     end),
-  }),
-  preselect = require("cmp.types").cmp.PreselectMode.None,
+  },
+  preselect = cmp_types.cmp.PreselectMode.None,
   sorting = {
     comparators = {
       cmp_compare.recently_used,
@@ -76,7 +77,7 @@ cmp.setup({
     end,
   },
   sources = {
-    { name = "luasnip", max_item_count = 2, option = { show_autosnippets = true } },
+    { name = "luasnip", option = { show_autosnippets = true } },
     { name = "nvim_lsp" },
     { name = "path" },
   },
@@ -86,9 +87,9 @@ cmp.setup({
       max_height = 20,
     },
   },
-})
+  experimental = { ghost_text = true },
+}
 
--- Custom filetype options
 cmp.event:on("confirm_done", utils.on_confirm_done)
 
 -- Try to append space after completion
@@ -97,4 +98,4 @@ cmp.event:on("confirm_done", utils.append_space)
 -- Additional configs
 configs.load_autopairs()
 configs.load_luasnip()
-require("config.completion.filetypes")
+require "config.completion.filetypes"

@@ -8,7 +8,7 @@ hl("Normal", { bg = nil })
 hl("NormalNC", { link = "Normal" })
 hl("NormalFloat", { bg = "#222222" })
 hl("FloatBorder", { bg = "#222222" })
-hl("FloatTitle", { bg = nil })
+hl("FloatTitle", { fg = "#1F1F1F", bg = "#A0B9D8" })
 hl("LineNr", { fg = "#4F4F4F", bg = nil })
 hl("CursorLine", { bg = "#2F2F2F", bold = true })
 hl("CursorLineNr", { fg = "white", bg = nil })
@@ -24,7 +24,7 @@ hl("StatusLineTermNC", { link = "WinSeparator" })
 hl("WinBar", { bg = nil, bold = true })
 hl("WinBarNC", { bg = nil, bold = true })
 hl("WinSeparator", { fg = "#2F2F2F", bg = nil, bold = true })
-hl("TabLineFill", { fg = nil, bg = nil })
+-- hl("TabLineFill", { fg = nil, bg = nil })
 
 hl("GitSignsAdd", { fg = "#92C47E" })
 hl("GitSignsChange", { fg = "#D2B45F" })
@@ -39,6 +39,7 @@ hl("diffRemoved", { fg = nil, bg = "#320E01" })
 
 -- hl("TreesitterContext", { bg = "#181818", blend = 100 })
 -- hl("TreesitterContextLineNumber", { fg = "#8F8F8F" })
+hl("TSDefinitionUsage", { bg = "#0F0F0F" })
 
 -- Telescope
 hl("TelescopeNormal", { bg = "#1F1F1F" })
@@ -50,8 +51,9 @@ hl("TelescopePreviewBorder", { fg = "#1F1F1F", bg = "#1F1F1F" })
 hl("TelescopePromptBorder", { fg = "#2F2F2F", bg = "#2F2F2F" })
 hl("TelescopeResultsBorder", { fg = "#1F1F1F", bg = "#1F1F1F" })
 hl("TelescopeTitle", { fg = "#1F1F1F", bg = "#A0B9D8" })
-hl("TelescopePreviewTitle", { fg = "#1F1F1F", bg = "#A0B9D8" })
-hl("TelescopePromptTitle", { fg = "#1F1F1F", bg = "#A0B9D8" })
+hl("TelescopePreviewTitle", { link = "FloatTitle" })
+hl("TelescopePromptTitle", { link = "FloatTitle" })
+hl("TelescopeResultsTitle", { link = "FloatTitle" })
 hl("TelescopePromptCounter", { fg = "#A0B9D8" })
 hl("TelescopePromptPrefix", { fg = "#A0B9D8" })
 
@@ -112,7 +114,7 @@ hl("LspRegexp", { link = "TSStringRegex" })
 hl("LspOperator", { link = "TSOperator" })
 
 -- LSP-related
-hl("LspInlayHint", { fg = "#6E6F70", bg = "#16161F" })
+hl("LspInlayHint", { fg = "#808080", bg = "#16161F" })
 hl("LspReferenceRead", { link = "CursorLine" })
 hl("LspReferenceText", { link = "CursorLine" })
 hl("LspReferenceWrite", { link = "CursorLine" })
@@ -129,6 +131,9 @@ hl("FidgetTask", { fg = "#555555" })
 
 -- symbols-outline
 -- hl("FocusedSymbol", { link = "CursorLine" })
+
+-- local-highlight
+hl("LocalHighlight", { bg = "#29313D" })
 
 -- git-messenger
 hl("gitMessengerPopupNormal", { link = "NormalFloat" })
@@ -170,17 +175,22 @@ hl("NavicIconsNumber", { link = "CmpItemKindNumber" })
 hl("NavicIconsRegexp", { link = "CmpItemKindStringRegex" })
 hl("NavicIconsOperator", { link = "CmpItemKindOperator" })
 
--- nvim-notify
-hl("NotifyERRORBody", { bg = "#222222" })
-hl("NotifyERRORBorder", { bg = "#222222" })
-hl("NotifyWARNBody", { bg = "#222222" })
-hl("NotifyWARNBorder", { bg = "#222222" })
-hl("NotifyINFOBody", { bg = "#222222" })
-hl("NotifyINFOBorder", { bg = "#222222" })
-hl("NotifyDEBUGBody", { bg = "#222222" })
-hl("NotifyDEBUGBorder", { bg = "#222222" })
-hl("NotifyTRACEBody", { bg = "#222222" })
-hl("NotifyTRACEBorder", { bg = "#222222" })
+-- dap
+hl("DapBreakpoint", { fg = "#E41B25", bg = nil })
+hl("DapLineBreakpoint", { bg = "#5B0B0F", fg = nil })
+hl("DapBreakpointCondition", { fg = "#E68A00", bg = nil })
+hl("DapLineBreakpointCondition", { bg = "#4D2E00", fg = nil })
+hl("DapBreakpointStopped", { fg = "#EC5F67", bg = nil })
+hl("DapLineBreakpointStopped", { bg = "#EC5F67", fg = nil })
+hl("DapStopped", { fg = "#99C794", bg = nil })
+hl("DapLineStopped", { bg = "#264323", fg = nil })
+
+-- noice
+hl("NoiceMini", { bg = nil })
+hl("NoiceLspProgressTitle", { bg = nil, fg = "#AAAAAA" })
+hl("NotificationInfo", { fg = "#A5B4FC", bg = nil })
+hl("NotificationError", { fg = "#FCA5A5", bg = nil })
+hl("NotificationWarning", { fg = "#FBC19D", bg = nil })
 
 -- headline
 hl("Headline1", { bg = "#1E2718" })

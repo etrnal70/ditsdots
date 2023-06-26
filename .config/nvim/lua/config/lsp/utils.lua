@@ -1,7 +1,29 @@
 local M = {}
 
 local lsp = vim.lsp
+local utils = require "config.utils"
 local telescope = require "telescope.builtin"
+
+M.servers = {
+  "clangd",
+  "denols",
+  -- "dockerls",
+  "flutter",
+  "gopls",
+  "jsonls",
+  "lua_lsp",
+  -- "marksman",
+  "prismals",
+  -- "pylyzer",
+  "pyright",
+  -- "rome",
+  "rust_analyzer",
+  -- "taplo",
+  "texlab",
+  "vts",
+  "yamlls",
+  "zls",
+}
 
 M.override_handlers = function()
   lsp.handlers["callHierarchy/incomingCalls"] = telescope.lsp_incoming_calls
@@ -19,83 +41,136 @@ M.override_handlers = function()
   lsp.handlers["workspace/symbol"] = telescope.lsp_workspace_symbols
 end
 
-M.capabilities = require("cmp_nvim_lsp").default_capabilities()
-M.capabilities.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = true,
+M.capabilities = lsp.protocol.make_client_capabilities()
+M.capabilities.textDocument = {
+  completion = {
+    dynamicRegistration = false,
+    completionItem = {
+      snippetSupport = true,
+      commitCharactersSupport = true,
+      deprecatedSupport = true,
+      preselectSupport = true,
+      tagSupport = { valueSet = { 1 } },
+      insertReplaceSupport = true,
+      resolveSupport = {
+        properties = {
+          "documentation",
+          "detail",
+          "additionalTextEdits",
+          "sortText",
+          "filterText",
+          "insertText",
+          "textEdit",
+          "insertTextFormat",
+          "insertTextMode",
+        },
+      },
+      insertTextModeSupport = { valueSet = { 1, 2 } },
+      labelDetailsSupport = true,
+    },
+    contextSupport = true,
+    insertTextMode = 1,
+    completionList = {
+      itemDefaults = {
+        "commitCharacters",
+        "editRange",
+        "insertTextFormat",
+        "insertTextMode",
+        "data",
+      },
+    },
+  },
+  foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true,
+  },
 }
 
-M.on_attach = function(client, bufnr)
-  local map = function(mode, l, r, opts)
-    opts = opts or {}
-    opts.buffer = bufnr
-    vim.keymap.set(mode, l, r, opts)
-  end
+M.setup_autocmds = function()
+  vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+      if not (args.data and args.data.client_id) then
+        return
+      end
 
-  -- LSP Keymapping
-  map("n", "K", lsp.buf.hover)
-  map("n", "gD", lsp.buf.declaration)
-  map("n", "gR", lsp.buf.rename)
-  map("n", "gc", lsp.codelens.run)
-  -- map("n", "gd", lsp.buf.definition)
-  map("n", "gd", ":Glance definitions<CR>")
-  -- map("n", "gi", lsp.buf.implementation)
-  map("n", "gi", ":Glance implementations<CR>")
-  map("n", "gy", lsp.buf.type_definition)
-  -- map("n", "gr", lsp.buf.references)
-  map("n", "gr", ":Glance references<CR>")
-  map("n", "gs", lsp.buf.document_symbol)
-  map("n", "gw", lsp.buf.workspace_symbol)
-  map({ "n", "v" }, "ga", lsp.buf.code_action)
-  map("n", "gW", telescope.lsp_dynamic_workspace_symbols)
-  map("i", "<C-k>", lsp.buf.signature_help)
-  map("n", "<leader>wl", function()
-    print(vim.inspect(lsp.buf.list_workspace_folders()))
-  end)
-  map("n", "<leader>wa", lsp.buf.add_workspace_folder)
-  map("n", "<leader>wr", lsp.buf.remove_workspace_folder)
-  map("n", "<leader>ci", lsp.buf.incoming_calls)
-  map("n", "<leader>co", lsp.buf.outgoing_calls)
+      local bufnr = args.buf
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      local map = utils.keymap
 
-  -- Code Action (lightbulb)
-  if client.supports_method "textDocument/codeAction" then
-    vim.api.nvim_create_autocmd(
-      { "CursorHold", "CursorHoldI" },
-      { buffer = bufnr, callback = require("nvim-lightbulb").update_lightbulb }
-    )
-  end
+      if client.name == "null-ls" then
+        return
+      end
 
-  -- Code Lens
-  if client.supports_method "textDocument/codeLens" and client.name ~= "rust_analyzer" then
-    vim.api.nvim_create_autocmd(
-      { "BufEnter", "CursorHold", "InsertLeave" },
-      { buffer = bufnr, callback = lsp.codelens.refresh }
-    )
-  end
+      -- LSP Keymapping
+      map(bufnr, "n", "K", lsp.buf.hover)
+      map(bufnr, "n", "gD", lsp.buf.declaration)
+      map(bufnr, "n", "gR", lsp.buf.rename)
+      map(bufnr, "n", "gc", lsp.codelens.run)
+      map(bufnr, "n", "gd", ":Glance definitions<CR>")
+      map(bufnr, "n", "gi", ":Glance implementations<CR>")
+      map(bufnr, "n", "gy", ":Glance type_definitons<CR>")
+      map(bufnr, "n", "gr", ":Glance references<CR>")
+      map(bufnr, "n", "gs", lsp.buf.document_symbol)
+      map(bufnr, "n", "gw", lsp.buf.workspace_symbol)
+      map(bufnr, { "n", "v" }, "ga", lsp.buf.code_action)
+      map(bufnr, "n", "gW", telescope.lsp_dynamic_workspace_symbols)
+      map(bufnr, "i", "<C-k>", lsp.buf.signature_help)
+      map(bufnr, "n", "<leader>wl", function()
+        vim.notify(vim.inspect(lsp.buf.list_workspace_folders()))
+      end)
+      map(bufnr, "n", "<leader>wa", lsp.buf.add_workspace_folder)
+      map(bufnr, "n", "<leader>wr", lsp.buf.remove_workspace_folder)
+      map(bufnr, "n", "<leader>ci", lsp.buf.incoming_calls)
+      map(bufnr, "n", "<leader>co", lsp.buf.outgoing_calls)
 
-  -- Semantic Token
-  -- if client.supports_method "textDocument/semanticTokens/full" then
-  --   vim.api.nvim_create_autocmd(
-  --     { "CursorHold", "BufEnter" },
-  --     { buffer = bufnr, callback = lsp.buf.semantic_tokens_full }
-  --   )
-  -- end
+      -- Formatting (Autoformat on save)
+      if client.supports_method "textDocument/formatting" then
+        vim.api.nvim_create_autocmd("BufWritePre", {
+          buffer = bufnr,
+          callback = function()
+            lsp.buf.format { bufnr = bufnr }
+          end,
+        })
+      end
 
-  -- Inlay Hints
-  -- if client.supports_method("textDocument/inlayHints") then
-  --   require("lsp-inlayhints").on_attach(client, bufnr)
-  -- end
+      -- Code Lens
+      if
+        client.supports_method "textDocument/codeLens"
+        -- TODO Remove once codelens support virtual lines
+        and client.name ~= "rust_analyzer"
+        and client.name ~= "jdtls"
+      then
+        vim.api.nvim_create_autocmd(
+          { "BufEnter", "CursorHold", "InsertLeave" },
+          { buffer = bufnr, callback = lsp.codelens.refresh }
+        )
+      end
 
-  -- nvim-navic
+      -- TODO Workaround for gopls semantic tokens
+      -- Remove when dyanmicRegistration support semanticTokens
+      if client.name == "gopls" and not client.server_capabilities.semanticTokensProvider then
+        local semantic = client.config.capabilities.textDocument.semanticTokens
+        client.server_capabilities.semanticTokensProvider = {
+          full = true,
+          legend = { tokenModifiers = semantic.tokenModifiers, tokenTypes = semantic.tokenTypes },
+          range = true,
+        }
+      end
 
-  if client.supports_method "textDocument/documentSymbol" then
-    require("nvim-navic").attach(client, bufnr)
-  end
+      -- Inlay Hints
+      if client.supports_method "textDocument/inlayHint" then
+        lsp.buf.inlay_hint(bufnr, true)
+      end
 
-  -- Register nvim-cmp LSP source
-  if client.name ~= "null-ls" then
-    require("cmp_nvim_lsp").setup()
-  end
+      -- nvim-navic
+      if client.supports_method "textDocument/documentSymbol" then
+        require("nvim-navic").attach(client, bufnr)
+      end
+
+      -- Register nvim-cmp LSP source
+      require("cmp_nvim_lsp").setup()
+    end,
+  })
 end
 
 return M

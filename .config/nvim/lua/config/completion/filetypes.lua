@@ -13,9 +13,8 @@ cmp.setup.filetype("markdown", {
 -- Tex
 cmp.setup.filetype("tex", {
   sources = {
-    { name = "luasnip", max_item_count = 2, option = { show_autosnippets = true } },
+    { name = "luasnip", option = { show_autosnippets = true } },
     { name = "nvim_lsp" },
-    -- { name = "latex_symbols", max_item_count = 2 },
     { name = "path" },
   },
 })
@@ -45,7 +44,7 @@ cmp.setup.filetype("toml", {
 -- Gitcommit
 cmp.setup.filetype("gitcommit", {
   sources = {
-    { name = "luasnip", max_item_count = 2, option = { show_autosnippets = true } },
+    { name = "luasnip", option = { show_autosnippets = true } },
     { name = "conventionalcommits" },
     { name = "git" },
     { name = "emoji", insert = true },
@@ -59,6 +58,12 @@ cmp.setup.filetype("TelescopePrompt", {
 
 -- SQL Family
 cmp.setup.filetype({ "sql", "msql", "plsql" }, {
-  { name = "luasnip", max_item_count = 2 },
+  { name = "luasnip" },
   { name = "nvim_lsp" },
+})
+
+cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+  sources = {
+    { name = "dap" },
+  },
 })

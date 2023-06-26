@@ -43,11 +43,8 @@ map("t", "<esc>", "<C-\\><C-n>")
 map("n", "<leader>e", vim.diagnostic.open_float)
 map("n", "[d", vim.diagnostic.goto_next)
 map("n", "]d", vim.diagnostic.goto_prev)
-map("n", "<leader>lq", require("telescope.builtin").diagnostics)
 
 -- Git-related
-map("n", "<leader>gg", ":Git<CR>")
-map("n", "<leader>gl", ":Git log<CR>")
 map("n", "<leader>gL", ":Flogsplit<CR>")
 map("n", "<leader>gp", ":Git! push<CR>")
 map("n", "<leader>gP", require("config.git.commands").async_gpull)
@@ -55,62 +52,6 @@ map("n", "<leader>gf", ":Git! fetch<CR>")
 map("n", "<leader>gd", ":tabedit % | Gvdiffsplit!<CR>")
 map("n", "<leader>gch", ":diffget //2<CR>")
 map("n", "<leader>gcl", ":diffget //3<CR>")
-map("n", "<leader>lF", require("telescope.builtin").git_files)
-map("n", "<leader>gC", require("telescope.builtin").git_commits)
-map("n", "<leader>gb", require("telescope.builtin").git_branches)
-
--- neotest
-map("n", "ta", function()
-  require("neotest").run.attach()
-end)
-map("n", "tn", function()
-  require("neotest").run.run()
-end)
-map("n", "tf", function()
-  require("neotest").run.run(vim.fn.expand "%")
-end)
-map("n", "tl", function()
-  require("neotest").run.run_last()
-end)
-map("n", "td", function()
-  require("neotest").run.run { strategy = "dap" }
-end)
-map("n", "to", function()
-  require("neotest").output.open { enter = true }
-end)
-map("n", "ts", function()
-  require("neotest").run.stop()
-end)
-map("n", "tt", function()
-  require("neotest").summary.toggle()
-end)
-
--- File tree
-map("n", "<leader>st", ":Neotree toggle<CR>")
 
 -- symbols-outline
 map("n", "<leader>ss", ":SymbolsOutline<CR>")
-
--- Telescope
-map("n", "<leader>lc", require("telescope.builtin").commands)
-map("n", "<leader>lf", require("telescope.builtin").find_files)
-map("n", "<leader>ls", require("telescope.builtin").live_grep)
-map("n", "<leader>lb", require("telescope.builtin").buffers)
-map("n", "<leader>lo", require("telescope.builtin").oldfiles)
-map("n", "<leader>lH", require("telescope.builtin").help_tags)
-
--- overseer
-map("n", "<leader>ot", ":OverseerToggle!<CR>")
-map("n", "<leader>or", ":OverseerRun<CR>")
-
--- ssr.nvim
-map({ "n", "x" }, "<leader>Sr", function()
-  require("ssr").open()
-end)
-
--- neogen
-map("n", "<leader>dg", require("neogen").generate)
-
--- rest.nvim
-map("n", "<leader>rr", "<Plug>RestNvim")
-map("n", "<leader>rp", "<Plug>RestNvimPreview")

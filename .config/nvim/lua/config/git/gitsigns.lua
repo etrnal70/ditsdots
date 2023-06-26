@@ -1,4 +1,4 @@
-require("gitsigns").setup({
+require("gitsigns").setup {
   signs = {
     add = { text = "┃" },
     change = { text = "┃" },
@@ -43,13 +43,13 @@ require("gitsigns").setup({
     map("n", "<leader>hU", gs.reset_buffer_index)
     map("n", "<leader>hR", gs.reset_buffer)
     map("n", "<leader>hb", function()
-      gs.blame_line({ full = true })
+      gs.blame_line { full = true }
     end)
     map("n", "<leader>hp", gs.preview_hunk_inline)
     map("n", "<leader>hP", gs.preview_hunk)
     map("n", "<leader>hd", gs.diffthis)
     map("n", "<leader>hD", function()
-      gs.diffthis("~")
+      gs.diffthis "~"
     end)
 
     -- Text Objects
@@ -60,9 +60,11 @@ require("gitsigns").setup({
     height = 12,
     border = "solid",
   },
-  current_line_blame = false,
-  sign_priority = 1,
+  current_line_blame = true,
+  current_line_blame_formatter = "<author> • <author_time:%Y-%m-%d> - <summary>",
+  current_line_blame_opts = {
+    virt_text = false,
+  },
   update_debounce = 500,
-  _threaded_diff = true,
   _extmark_signs = true,
-})
+}

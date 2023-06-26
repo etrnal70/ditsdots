@@ -2,7 +2,7 @@ local opt = vim.opt
 
 opt.termguicolors = true -- Use GUI colors in terminal
 opt.hidden = true -- Hide unloaded buffer
--- opt.lazyredraw = true -- Currently clashing with global statusline
+opt.lazyredraw = false
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
 opt.mouse = "n" -- Mouse only on normal mode
 opt.updatetime = 250
@@ -12,16 +12,18 @@ opt.laststatus = 3
 opt.diffopt:append { "algorithm:histogram", "indent-heuristic", "linematch:60" }
 
 opt.cmdheight = 0
+opt.autoread = false
 
 opt.foldlevel = 99 -- Open folds when opening file
 opt.foldlevelstart = 99
 opt.foldenable = true -- Prevent folding upon opening file
-opt.foldcolumn = "1"
+opt.foldcolumn = "0"
 
 opt.splitright = true -- Vertical split always on the right
 opt.splitbelow = true -- Horizontal split always on the bottom
-opt.splitkeep = "topline"
+opt.splitkeep = "screen"
 
+opt.smoothscroll = true
 opt.conceallevel = 2
 opt.fillchars = {
   vert = "│",
@@ -84,6 +86,7 @@ opt.shortmess = {
   s = true,
   W = true,
   c = true,
+  I = true,
 }
 
 opt.smartindent = true
@@ -115,7 +118,6 @@ opt.writebackup = false
 opt.autowriteall = true
 opt.emoji = false
 
-vim.g.python3_host_prog = "/bin/python"
 vim.g.tex_flavor = "latex"
 
 -- Default Diagnostics Override
@@ -144,6 +146,7 @@ vim.diagnostic.config {
     severity = { min = vim.diagnostic.severity.WARN },
   },
 }
+
 -- Disable diagnostic on SignColumn
 vim.fn.sign_define("DiagnosticSignError", { text = "", numhl = "DiagnosticError" })
 vim.fn.sign_define("DiagnosticSignWarn", { text = "", numhl = "DiagnosticWarn" })
