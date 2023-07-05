@@ -159,7 +159,7 @@ M.setup_autocmds = function()
 
       -- Inlay Hints
       if client.supports_method "textDocument/inlayHint" then
-        lsp.buf.inlay_hint(bufnr, true)
+        lsp.inlay_hint(bufnr, true)
       end
 
       -- nvim-navic

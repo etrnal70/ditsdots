@@ -8,6 +8,9 @@
 --   command = "set guicursor=a:block-blinkon0",
 -- })
 
+-- Clear jumplist on new session
+vim.api.nvim_create_autocmd("VimEnter", { pattern = "*", command = "clearjumps" })
+
 -- Disable number column on terminal
 vim.api.nvim_create_autocmd("TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber" })
 

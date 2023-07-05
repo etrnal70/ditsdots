@@ -28,11 +28,6 @@ return {
         refactor = {
           highlight_definitions = { enable = false },
         },
-        rainbow = {
-          enable = true,
-          query = { "rainbow-parens" },
-          max_file_lines = 5000,
-        },
         textobjects = {
           select = {
             enable = true,
@@ -71,7 +66,20 @@ return {
       "nvim-treesitter/nvim-treesitter-refactor",
       "RRethy/nvim-treesitter-textsubjects",
       "JoosepAlviste/nvim-ts-context-commentstring",
-      "HiPhish/nvim-ts-rainbow2",
+      {
+        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
+        init = function()
+          local rainbow_delimiters = require "rainbow-delimiters"
+
+          vim.g.rainbow_delimiters = {
+            strategy = { [""] = rainbow_delimiters.strategy["global"] },
+            query = {
+              [""] = "rainbow-delimiters",
+              lua = "rainbow-blocks",
+            },
+          }
+        end,
+      },
       { "danymat/neogen", config = true },
       {
         "nvim-treesitter/nvim-treesitter-context",

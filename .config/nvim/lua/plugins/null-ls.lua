@@ -57,6 +57,7 @@ return {
             end,
           },
           formatter.sqlfluff,
+          formatter.yamlfmt,
           formatter.yapf,
           -- Diagnostics
           linter.buf,
@@ -68,6 +69,7 @@ return {
           linter.hadolint,
           linter.mypy,
           linter.shellcheck,
+          linter.spectral,
           linter.sqlfluff,
           linter.tsc.with {
             condition = function(utils)
