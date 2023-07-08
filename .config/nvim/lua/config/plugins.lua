@@ -183,14 +183,15 @@ require("lazy").setup {
     },
     { "tpope/vim-fugitive", lazy = true },
     {
-      -- "TimUntersberger/neogit",
-      "CKolkey/neogit",
+      "NeogitOrg/neogit",
+      branch = "CKolkey",
       cmd = "Neogit",
       keys = {
         { "<leader>gg", "<cmd>Neogit kind=split<CR>" },
         { "<leader>gl", "<cmd>Neogit log<CR>" },
       },
       opts = {
+        disable_commit_confirmation = true,
         disable_builtin_notifications = true,
         kind = "split",
         integrations = { diffview = true },

@@ -185,6 +185,13 @@ hl("DapLineBreakpointStopped", { bg = "#EC5F67", fg = nil })
 hl("DapStopped", { fg = "#99C794", bg = nil })
 hl("DapLineStopped", { bg = "#264323", fg = nil })
 
+-- neogit
+hl("NeogitDiffAddHighlight", { bg = "#404040", fg = "#859900" })
+hl("NeogitDiffDeleteHighlight", { bg = "#404040", fg = "#DC233F" })
+hl("NeogitDiffContextHighlight", { bg = "#333333", fg = "#B2B2B2" })
+hl("NeogitHunkHeader", { fg = "#CCCCCC", bg = "#404040" })
+hl("NeogitHunkHeaderHighlight", { bg = "#4D4D4D", fg = "#cccccc" })
+
 -- noice
 hl("NoiceMini", { bg = nil })
 hl("NoiceLspProgressTitle", { bg = nil, fg = "#AAAAAA" })
