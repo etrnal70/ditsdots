@@ -1,11 +1,11 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("typescript").setup({
+  require("typescript-tools").setup {
     server = {
       capabilities = capabilities,
     },
-  })
+  }
 end
 
 return M

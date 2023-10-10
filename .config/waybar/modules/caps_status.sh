@@ -1,5 +1,7 @@
 #!/bin/sh
-status="$(cat /sys/class/leds/input4::capslock/brightness)"
+
+dev="$(find /sys/class/leds | grep capslock | head -n 1)"
+status="$(cat "$dev"/brightness)"
 
 if [ "$status" = "1" ]; then 
   jo text="" tooltip="CapsLock is on"

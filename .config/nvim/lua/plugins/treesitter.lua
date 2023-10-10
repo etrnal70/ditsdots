@@ -9,13 +9,21 @@ return {
           enable = true,
           use_languagetree = true,
           disable = function(_, buf)
+            fName = vim.api.nvim_buf_get_name(buf)
+            -- Check filetype
+            if vim.filetype.match { filename = fName } == "csv" then
+              return true
+            end
+
+            -- Check size
             local max_filesize = 4000 * 1024 -- 4 MB
-            local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+            local ok, stats = pcall(vim.uv.fs_stat, fName)
             if ok and stats and stats.size > max_filesize then
               return true
             end
           end,
         },
+        ignore_install = { "comment" },
         incremental_selection = { enable = false },
         indent = { enable = true },
         matchup = {
@@ -84,6 +92,7 @@ return {
         "nvim-treesitter/nvim-treesitter-context",
         config = true,
       },
+      { "CKolkey/ts-node-action", config = true },
       {
         "andymass/vim-matchup",
         init = function()

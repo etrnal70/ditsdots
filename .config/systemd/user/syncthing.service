@@ -1,9 +1,0 @@
-[Unit]
-Description=Syncthing - Multi device synchronization daemon
-Documentation=man:syncthing
-
-[Service]
-ExecStart=/usr/bin/syncthing -no-browser
-
-[Install]
-WantedBy=autostart.target

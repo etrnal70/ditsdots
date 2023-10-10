@@ -1,0 +1,14 @@
+[Unit]
+Description=Foot terminal server mode for WAYLAND_DISPLAY
+Documentation=man:foot(1)
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+StartLimitIntervalSec=0
+
+[Service]
+ExecStart=/usr/bin/foot --server
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target

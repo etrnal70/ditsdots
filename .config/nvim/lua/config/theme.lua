@@ -12,6 +12,8 @@ hl("FloatTitle", { fg = "#1F1F1F", bg = "#A0B9D8" })
 hl("LineNr", { fg = "#4F4F4F", bg = nil })
 hl("CursorLine", { bg = "#2F2F2F", bold = true })
 hl("CursorLineNr", { fg = "white", bg = nil })
+hl("FloatShadow", { bg = nil })
+hl("FloatShadowThrough", { bg = nil })
 
 hl("EndOfBuffer", { bg = nil })
 hl("ModeMsg", { fg = "white", bg = "#212121" })
@@ -125,10 +127,6 @@ hl("LspCodeLensTextSign", { fg = "#777777" })
 hl("LspCodeLensSeparator", { fg = "#333333", bold = true })
 hl("LspCodeLensTextSeparator", { link = "LspCodeLensSeparator" })
 
--- fidget.nvim
-hl("FidgetTitle", { fg = "#A0B9D8" })
-hl("FidgetTask", { fg = "#555555" })
-
 -- symbols-outline
 -- hl("FocusedSymbol", { link = "CursorLine" })
 
@@ -185,19 +183,35 @@ hl("DapLineBreakpointStopped", { bg = "#EC5F67", fg = nil })
 hl("DapStopped", { fg = "#99C794", bg = nil })
 hl("DapLineStopped", { bg = "#264323", fg = nil })
 
--- neogit
-hl("NeogitDiffAddHighlight", { bg = "#404040", fg = "#859900" })
-hl("NeogitDiffDeleteHighlight", { bg = "#404040", fg = "#DC233F" })
-hl("NeogitDiffContextHighlight", { bg = "#333333", fg = "#B2B2B2" })
-hl("NeogitHunkHeader", { fg = "#CCCCCC", bg = "#404040" })
-hl("NeogitHunkHeaderHighlight", { bg = "#4D4D4D", fg = "#cccccc" })
-
 -- noice
-hl("NoiceMini", { bg = nil })
+hl("NoiceMini", { link = "Normal" })
 hl("NoiceLspProgressTitle", { bg = nil, fg = "#AAAAAA" })
 hl("NotificationInfo", { fg = "#A5B4FC", bg = nil })
 hl("NotificationError", { fg = "#FCA5A5", bg = nil })
 hl("NotificationWarning", { fg = "#FBC19D", bg = nil })
+
+-- glance
+hl("GlancePreviewNormal", { link = "TelescopeResultsNormal" })
+hl("GlancePreviewMatch", { bg = "#503E16" })
+hl("GlancePreviewCursorLine", { link = "TelescopeSelection" })
+hl("GlancePreviewSignColumn", { link = "SignColumn" })
+hl("GlancePreviewEndOfBuffer", { link = "String" })
+hl("GlancePreviewLineNr", { link = "LineNr" })
+hl("GlancePreviewBorderBottom", { link = "TelescopePromptBorder" })
+hl("GlanceWinBarFilename", { bg = "#3f3f3f" })
+hl("GlanceWinBarFilepath", { bg = "#3f3f3f" })
+hl("GlanceWinBarTitle", { bg = "#3f3f3f" })
+hl("GlanceListNormal", { bg = "#2a2a2a" })
+hl("GlanceListFilename", { link = "MatchParen" })
+hl("GlanceListFilepath", { link = "TelescopeMatching" })
+hl("GlanceListCount", { link = "TelescopePromptCounter" })
+hl("GlanceListMatch", { link = "GlancePreviewMatch" })
+hl("GlanceListCursorLine", { link = "Visual" })
+hl("GlanceListEndOfBuffer", { link = "String" })
+hl("GlanceListBorderBottom", { link = "TelescopePromptBorder" })
+hl("GlanceFoldIcon", { link = "Comment" })
+hl("GlanceIndent", { link = "Comment" })
+hl("GlanceBorderTop", { bg = "#3f3f3f" })
 
 -- headline
 hl("Headline1", { bg = "#1E2718" })

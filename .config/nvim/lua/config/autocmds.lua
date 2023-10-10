@@ -37,6 +37,11 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.cmd "set cursorlineopt=both"
   end,
 })
+-- vim.api.nvim_create_autocmd("FileType", {
+--     pattern = { "Neogit*" },
+--   callback = function ()
+--   end
+-- })
 -- TODO This is a universal autocmd. Rethink a better approach hm
 -- vim.api.nvim_create_autocmd("BufLeave", {
 --   pattern = "*",

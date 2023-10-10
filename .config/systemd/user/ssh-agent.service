@@ -1,0 +1,12 @@
+[Unit]
+Description=SSH key agent
+
+[Service]
+Type=simple
+# DISPLAY required for ssh-askpass to work
+Environment=DISPLAY=:0
+Environment=SSH_AUTH_SOCK%t/ssh-agent.socket
+ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
+
+[Install]
+WantedBy=default.target

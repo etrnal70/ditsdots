@@ -1,7 +1,7 @@
 * {
   border: none;
   font-family: "JetBrainsMonoNL Nerd Font", "Font Awesome 6 Free";
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bolder;
   padding-left: 2px;
   padding-right: 5px;
@@ -32,9 +32,10 @@ tooltip {
 }
 
 #workspaces button {
-  /* padding: 0 2px; */
+  padding: 0px;
   background-color: transparent;
-  color: #6f6f6f;
+  /* color: #6f6f6f; */
+  color: #ffffff;
   opacity: 0.85;
   font-weight: bold;
 }
@@ -46,7 +47,8 @@ tooltip {
 }
 
 #workspaces button.focused {
-  color: #ffffff;
+  color: #000000;
+  background: #ffffff;
 }
 
 #workspaces button.active {
@@ -59,7 +61,6 @@ tooltip {
 }
 
 #mode {
-  background-color: #64727d;
   border-bottom: 3px solid #ffffff;
   opacity: 0.85;
 }
@@ -90,11 +91,11 @@ tooltip {
 
 #battery {
   color: #ffffff;
-  background-color: rgba(66, 66, 66, 0.75);
+  background-color: rgba(66, 66, 66, 0.6);
   font-weight: bold;
-  margin-right: 6;
+  margin-right: 6px;
   padding-left: 6px;
-  padding-right: 12;
+  padding-right: 12px;
   border-radius: 0px 100px 100px 0px;
 }
 
@@ -119,7 +120,7 @@ tooltip {
 
 #bluetooth {
   color: #ffffff;
-  background-color: rgba(66, 66, 66, 0.75);
+  background-color: rgba(66, 66, 66, 0.6);
   font-weight: bold;
   padding: 0px 6px;
 }
@@ -138,7 +139,7 @@ label:focus {
 }
 
 #network {
-  background-color: rgba(66, 66, 66, 0.75);
+  background-color: rgba(66, 66, 66, 0.6);
   font-weight: bold;
   padding: 0px 6px;
 }
@@ -149,42 +150,44 @@ label:focus {
 
 #pulseaudio {
   color: #ffffff;
-  background-color: rgba(66, 66, 66, 0.75);
+  background-color: rgba(66, 66, 66, 0.6);
   font-weight: bold;
-  margin-left: 6;
-  padding-left: 12;
+  margin-left: 6px;
+  padding-left: 12px;
   padding-right: 6px;
   border-radius: 100px 0px 0px 100px;
 }
 
 #wireplumber {
   color: #ffffff;
-  background-color: rgba(66, 66, 66, 0.75);
+  background-color: rgba(66, 66, 66, 0.6);
   font-weight: bold;
-  margin-left: 6;
-  padding-left: 12;
+  margin-left: 6px;
+  padding-left: 12px;
   padding-right: 6px;
   border-radius: 100px 0px 0px 100px;
 }
 
 #custom-media {
-  min-width: 100px;
   opacity: 0.8;
 }
 
 #custom-media.custom-spotify {
-  opacity: 0.8;
-  border-bottom: 2px solid #1db954;
+  background-color: rgba(29, 185, 84, 0.6);
+  font-weight: bold;
+  margin-right: 8px;
+  margin-left: 8px;
+  padding: 0px 8px;
+  border-radius: 100px;
 }
 
 #custom-media.custom-vlc {
   background-color: #ffa000;
-  opacity: 0.8;
 }
 
 #custom-weather {
   min-width: 25px;
-  border-bottom: 2px solid #99ccff;
+  padding-top: 5px;
 }
 
 #custom-caps_status {
@@ -196,11 +199,11 @@ label:focus {
   border-bottom: 2px solid #039be5;
 }
 
-#custom-update {
-  border-bottom: 2px solid #f0932b;
+#custom-gitlab {
+  border-bottom: 2px solid #fc6d26;
 }
 
-#custom-neomutt {
+#custom-update {
   border-bottom: 2px solid #f0932b;
 }
 
@@ -242,12 +245,21 @@ label:focus {
   padding-top: 5px;
 }
 
-#tray {
-  background-color: rgba(255, 255, 255, 0.4);
+#custom-vpn {
+  background-color: rgba(228, 174, 68, 0.6);
   font-weight: bold;
-  margin-right: 8;
-  margin-left: 8;
-  padding: 0 12;
+  margin-right: 8px;
+  margin-left: 8px;
+  padding: 0px 8px;
+  border-radius: 100px;
+}
+
+#tray {
+  background-color: rgba(255, 255, 255, 0.25);
+  font-weight: bold;
+  margin-right: 8px;
+  margin-left: 8px;
+  padding: 0px 12px;
   border-radius: 100px;
 }
 

@@ -46,12 +46,13 @@ map("n", "]d", vim.diagnostic.goto_prev)
 
 -- Git-related
 map("n", "<leader>gL", ":Flogsplit<CR>")
-map("n", "<leader>gp", ":Git! push<CR>")
-map("n", "<leader>gP", require("config.git.commands").async_gpull)
-map("n", "<leader>gf", ":Git! fetch<CR>")
 map("n", "<leader>gd", ":tabedit % | Gvdiffsplit!<CR>")
 map("n", "<leader>gch", ":diffget //2<CR>")
 map("n", "<leader>gcl", ":diffget //3<CR>")
+
+map("n", "[c", function()
+  require("treesitter-context").go_to_context()
+end)
 
 -- symbols-outline
 map("n", "<leader>ss", ":SymbolsOutline<CR>")

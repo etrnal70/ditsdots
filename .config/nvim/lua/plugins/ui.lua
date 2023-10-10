@@ -1,8 +1,7 @@
 return {
   -- Dashboard
   {
-    "glepnir/dashboard-nvim",
-    event = "VimEnter",
+    "nvimdev/dashboard-nvim",
     opts = {
       theme = "doom",
       hide = {
@@ -155,7 +154,7 @@ return {
             },
           },
           lualine_c = {},
-          lualine_x = {},
+          lualine_x = { "overseer" },
           lualine_y = {
             {
               "diff",
@@ -239,10 +238,11 @@ return {
     dependencies = {
       {
         "s1n7ax/nvim-window-picker",
-        opts = {
-          current_win_hl_color = "#6699CC",
-          other_win_hl_color = "#2F628E",
-        },
+        version = "2.*",
+        -- opts = {
+        --   current_win_hl_color = "#6699CC",
+        --   other_win_hl_color = "#2F628E",
+        -- },
       },
       { "miversen33/netman.nvim" },
     },

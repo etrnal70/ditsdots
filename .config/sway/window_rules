@@ -14,33 +14,40 @@ for_window {
   [class="gamescope"] inhibit_idle fullscreen; floating enable; border none
   [class="steam_app.*"] inhibit_idle fullscreen; floating enable; border none
   [class=".*.exe"] inhibit_idle fullscreen; floating enable; border none
-  [class="^Steam$" title="^Friends *"] floating enable
+  [class="^(S|s)team$" title="^Friends *"] floating enable
+  [class="^(S|s)team$" title="^Shutdown$"] floating enable
   # [class="^Steam$" title="^Friends List$"] floating enable
-  [class="^Steam$" title="Steam - News"] floating enable
-  [class="^Steam$" title=".* - Chat"] floating enable
-  [class="^Steam$" title="^Settings$"] floating enable
-  [class="^Steam$" title=".* - event started"] floating enable
-  [class="^Steam$" title=".* CD key"] floating enable
-  [class="^Steam$" title="^Steam - Self Updater$"] floating enable
-  [class="^Steam$" title="^Screenshot Uploader$"] floating enable
-  [class="^Steam$" title="^Steam Guard - Computer Authorization Required$"] floating enable
-  [class="^Steam$" title="^Create or select new Steam library folder:$"] floating enable
+  [class="^(S|s)team$" title="Steam - News"] floating enable
+  [class="^(S|s)team$" title=".* - Chat"] floating enable
+  [class="^(S|s)team$" title="^Steam Settings$"] floating enable
+  [class="^(S|s)team$" title=".* - event started"] floating enable
+  [class="^(S|s)team$" title=".* CD key"] floating enable
+  [class="^(S|s)team$" title="^Steam - Self Updater$"] floating enable
+  [class="^(S|s)team$" title="^Screenshot Uploader$"] floating enable
+  [class="^(S|s)team$" title="^Steam Guard - Computer Authorization Required$"] floating enable
+  [class="^(S|s)team$" title="^Create or select new Steam library folder$"] floating enable
+  [class="^(S|s)team$" title="^Add Non-Steam Game$"] floating enable
+  [class="^(S|s)team$" title="^Pick game to add$"] floating enable
   [title="^Steam Keyboard$"] floating enable
 
   ### Desktop apps
   [app_id="zoom"] inhibit_idle fullscreen; floating enable
+  [app_id="zoom" title="as_toolbar"] floating enable; sticky enable; move position 35ppt 0ppt
   [app_id="ksysguard"] floating enable; sticky enable
   [app_id="image-roll"] floating enable; border pixel 1
   [app_id="pavucontrol"] sticky enable; floating enable; resize set 720px 480px
   [app_id="wdisplays"] floating enable
+  [app_id="connman-gtk"] floating enable
+  [app_id="syncthing-gtk"] floating enable
   [app_id="mpv"] inhibit_idle visible; border none
   [app_id="org.keepassxc.KeePassXC"] floating enable; border pixel 1; resize set 960px 870px
-  [app_id="org.kde.kdeconnect.daemon"] floating enable
+  [app_id="org.kde.kdeconnect.app"] floating enable
   [app_id="java"] floating enable
   [class="NoiseTorch"] floating enable; resize set 720px 580px
   [class="(\s|^)Spotify(\s|$)"] floating disable
   [class="(\s|^)WhatsApp(\s|$)"] floating disable
   [class="(\s|^)WebApp(\s|$)"] floating enable; resize set 720px 580px
+  [app_id="blueman-manager"] floating enable; resize set 720px 580px
 
   ### Preferred Workspace
   [class="Ferdium"] move window to workspace number 1

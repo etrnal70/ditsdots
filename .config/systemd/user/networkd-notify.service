@@ -1,0 +1,11 @@
+[Unit]
+Description=networkd notification daemon
+PartOf=graphical-session.target
+After=systemd-networkd.service
+
+[Service]
+ExecStart=/usr/bin/networkd-notify
+Restart=on-failure
+
+[Install]
+WantedBy=sway-session.target

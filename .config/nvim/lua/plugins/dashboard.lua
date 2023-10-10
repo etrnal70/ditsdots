@@ -1,5 +1,5 @@
 return {
-  "glepnir/dashboard-nvim",
+  "nvimdev/dashboard-nvim",
   opts = {
     theme = "doom",
     hide = {

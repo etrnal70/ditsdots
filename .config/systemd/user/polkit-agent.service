@@ -1,0 +1,11 @@
+[Unit]
+Description=GTK-based polkit agent
+Documentation=man:polkit
+BindsTo=sway-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+[Install]
+WantedBy=sway-session.target

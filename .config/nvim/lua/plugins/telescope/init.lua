@@ -91,7 +91,11 @@ return {
               },
             },
           },
-          diagnostics = default_ivy,
+          diagnostics = {
+            theme = "ivy",
+            layout_config = { height = 13 },
+            sort_by = "severity",
+          },
           lsp_code_actions = {
             initial_mode = "normal",
             theme = "cursor",

@@ -66,6 +66,9 @@ export LC_ALL="en_US.UTF-8"
 # custom script
 export PATH=$PATH:$HOME/.scripts
 
+# libva driver
+export LIBVA_DRIVER_NAME=iHD
+
 # Starship
 eval "$(starship init zsh)"
 
@@ -77,7 +80,7 @@ eval "$(zoxide init zsh)"
 
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
-export RUSTC_WRAPPER=sccache
+# export RUSTC_WRAPPER=sccache
 
 # Golang
 export GOPATH=$HOME/go
@@ -89,8 +92,11 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 # SDK Collection
 export SDK_HOME=$HOME/.sdk_dir
 
-# Java
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+# Chromium depot-tools
+export PATH=$PATH:$SDK_HOME/depot_tools
+
+# Kotlin
+export PATH=$PATH:$SDK_HOME/kotlin/bin
 
 # Android SDK
 export ANDROID_HOME=$SDK_HOME/android_sdk
@@ -98,28 +104,27 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools/
 export PATH=$PATH:$ANDROID_HOME/build-tools/
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+export NDK_HOME=$ANDROID_HOME/ndk/25.0.8775105
 
 # Dart
 export PATH=$PATH:$HOME/.pub-cache/bin
 
 # Flutter
 export PATH=$PATH:$HOME/.sdk_dir/flutter/bin
-export CHROME_EXECUTABLE=/usr/bin/chromium
+# export CHROME_EXECUTABLE=/usr/bin/chromium
 
 # CMake
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 # extra lib
-export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
-export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include
+# export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
+unset LD_LIBRARY_PATH
 
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
-
-# Zig
-export PATH=$PATH:$HOME/.zls/bin
 
 # FZF
 export FZF_DEFAULT_OPTS="--ansi --height 40% --layout=reverse --border=none"
@@ -137,5 +142,16 @@ source $HOME/.config/aliasrc
 # pnpm
 export PNPM_HOME="/home/hanifrmdhn/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
-# pnpm package completion (tabtab source for packages)
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+
+# bun
+[ -s "/home/hanifrmdhn/.bun/_bun" ] && source "/home/hanifrmdhn/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

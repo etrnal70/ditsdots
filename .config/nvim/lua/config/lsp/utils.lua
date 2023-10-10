@@ -13,13 +13,16 @@ M.servers = {
   "jsonls",
   "lua_lsp",
   -- "marksman",
+  "neodev",
   "prismals",
+  "pylsp",
   -- "pylyzer",
-  "pyright",
+  -- "pyright",
   -- "rome",
   "rust_analyzer",
   -- "taplo",
   "texlab",
+  "typst",
   "vts",
   "yamlls",
   "zls",
@@ -111,9 +114,9 @@ M.setup_autocmds = function()
       map(bufnr, "n", "gy", ":Glance type_definitons<CR>")
       map(bufnr, "n", "gr", ":Glance references<CR>")
       map(bufnr, "n", "gs", lsp.buf.document_symbol)
-      map(bufnr, "n", "gw", lsp.buf.workspace_symbol)
+      -- map(bufnr, "n", "gw", lsp.buf.workspace_symbol)
       map(bufnr, { "n", "v" }, "ga", lsp.buf.code_action)
-      map(bufnr, "n", "gW", telescope.lsp_dynamic_workspace_symbols)
+      map(bufnr, "n", "gw", telescope.lsp_dynamic_workspace_symbols)
       map(bufnr, "i", "<C-k>", lsp.buf.signature_help)
       map(bufnr, "n", "<leader>wl", function()
         vim.notify(vim.inspect(lsp.buf.list_workspace_folders()))

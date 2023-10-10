@@ -16,7 +16,7 @@ require("lazy").setup {
     { import = "plugins" },
     -- stdlib
     { "nvim-lua/plenary.nvim", lazy = true },
-    { "MunifTanjim/nui.nvim", lazy = true },
+    { "MunifTanjim/nui.nvim",  lazy = true },
 
     -- LSP Plugins
     {
@@ -51,6 +51,15 @@ require("lazy").setup {
           config = function()
             local actions = require("glance").actions
             require("glance").setup {
+              indent_lines = {
+                enable = true,
+                icon = "  •",
+              },
+              preview_win_opts = { -- Configure preview window options
+                cursorline = true,
+                number = true,
+                wrap = true,
+              },
               mappings = {
                 list = {
                   ["<C-x>"] = actions.jump_split,
@@ -74,10 +83,6 @@ require("lazy").setup {
             }
           end,
         },
-        -- {
-        --   "VidocqH/lsp-lens.nvim",
-        --   config = true,
-        -- },
         {
           "lvimuser/document-color.nvim",
           config = true,
@@ -88,8 +93,12 @@ require("lazy").setup {
         "simrat39/rust-tools.nvim",
         "mfussenegger/nvim-jdtls",
         "b0o/schemastore.nvim",
-        "jose-elias-alvarez/typescript.nvim",
+        "pmizio/typescript-tools.nvim",
         "yioneko/nvim-vtsls",
+        {
+          "folke/neodev.nvim",
+          opts = {},
+        },
       },
     },
 
@@ -135,10 +144,13 @@ require("lazy").setup {
         plugins = {
           lsp = true,
           treesitter = true,
+          telescope = true,
+          nvimtree = true,
           cmp = true,
           context = true,
           dbui = true,
-          telescope = true,
+          gitsigns = true,
+          neogit = true,
         },
       },
     },
@@ -181,21 +193,19 @@ require("lazy").setup {
         require "config.git.gitsigns"
       end,
     },
-    { "tpope/vim-fugitive", lazy = true },
     {
       "NeogitOrg/neogit",
-      branch = "CKolkey",
-      cmd = "Neogit",
       keys = {
-        { "<leader>gg", "<cmd>Neogit kind=split<CR>" },
+        { "<leader>gg", "<cmd>Neogit kind=tab<CR>" },
         { "<leader>gl", "<cmd>Neogit log<CR>" },
       },
-      opts = {
-        disable_commit_confirmation = true,
-        disable_builtin_notifications = true,
-        kind = "split",
-        integrations = { diffview = true },
-      },
+      config = function()
+        require("neogit").setup {
+          disable_commit_confirmation = true,
+          disable_builtin_notifications = true,
+          kind = "tab",
+        }
+      end,
       dependencies = {
         {
           "sindrets/diffview.nvim",
@@ -203,7 +213,7 @@ require("lazy").setup {
         },
       },
     },
-    { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
+    { "rbong/vim-flog",              cmd = { "Flog", "Flogsplit" } },
     {
       "rhysd/git-messenger.vim",
       keys = "<leader>gm",
@@ -230,17 +240,18 @@ require("lazy").setup {
     -- Testing and Runner
     {
       "nvim-neotest/neotest",
-      lazy = true,
+      -- lazy = true,
       dependencies = {
         "nvim-neotest/neotest-go",
+        "nvim-neotest/neotest-python",
         "rouge8/neotest-rust",
         "sidlatau/neotest-dart",
         "haydenmeade/neotest-jest",
         "marilari88/neotest-vitest",
       },
-      init = function()
-        vim.api.nvim_create_user_command("Neotest", "Lazy load neotest", {})
-      end,
+      -- init = function()
+      --   vim.api.nvim_create_user_command("Neotest", "Lazy load neotest", {})
+      -- end,
       config = function()
         require("config.misc.neotest").setup()
       end,
@@ -254,7 +265,9 @@ require("lazy").setup {
         { "<leader>ol", "<cmd>OverseerOpenLogLast<CR>" },
       },
       config = function()
-        require("config.overseer").setup()
+        require("config.overseer").setup {
+          dap = false,
+        }
       end,
     },
 
@@ -352,6 +365,19 @@ require("lazy").setup {
       end,
     },
     {
+      "lewis6991/satellite.nvim",
+      opts = {
+        excluded_filetypes = { "neo-tree" },
+        winblend = 0, -- Workaround, winblend broken (black bg)
+        handlers = {
+          diagnostic = { enable = false },
+          gitsigns = { enable = false },
+          quickfix = { enable = false },
+          cursor = { enable = false },
+        },
+      },
+    },
+    {
       "pwntester/octo.nvim",
       cmd = "Octo",
       config = true,
@@ -439,7 +465,7 @@ require("lazy").setup {
       "tzachar/local-highlight.nvim",
       event = "BufReadPre",
       opts = {
-        file_types = { "*" },
+        disable_file_types = { "Glance", "neo-tree" },
       },
     },
     {
@@ -482,10 +508,32 @@ require("lazy").setup {
       config = true,
       event = "VeryLazy",
     },
+    {
+      "cameron-wags/rainbow_csv.nvim",
+      config = true,
+      init = function()
+        vim.g.disable_rainbow_hover = 1
+      end,
+      ft = {
+        "csv",
+        "tsv",
+        "csv_semicolon",
+        "csv_whitespace",
+        "csv_pipe",
+        "rfc_csv",
+        "rfc_semicolon",
+      },
+      cmd = {
+        "RainbowDelim",
+        "RainbowDelimSimple",
+        "RainbowDelimQuoted",
+        "RainbowMultiDelim",
+      },
+    },
 
     -- Lua development
-    { "rafcamlet/nvim-luapad", cmd = "Luapad" },
-    { "paretje/nvim-man", cmd = { "Man", "VMan" } },
+    { "rafcamlet/nvim-luapad",     cmd = "Luapad" },
+    { "paretje/nvim-man",          cmd = { "Man", "VMan" } },
   },
   {
     change_detection = {

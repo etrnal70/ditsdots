@@ -4,7 +4,6 @@ return {
     event = "BufWinEnter",
     dependencies = "kevinhwang91/promise-async",
     opts = {
-
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}
         local suffix = ("  %d "):format(endLnum - lnum)

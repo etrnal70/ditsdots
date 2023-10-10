@@ -1,0 +1,10 @@
+[Unit]
+Description=Location Lookup Service
+BindsTo=sway-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/geoclue-2.0/demos/agent
+
+[Install]
+WantedBy=sway-session.target

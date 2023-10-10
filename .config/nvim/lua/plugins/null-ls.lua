@@ -36,6 +36,7 @@ return {
           -- Action
           action.gitrebase,
           action.shellcheck,
+          action.ts_node_action,
           -- Formatter
           formatter.pg_format,
           formatter.prettierd.with {
@@ -67,7 +68,9 @@ return {
             end,
           },
           linter.hadolint,
-          linter.mypy,
+          linter.mypy.with {
+            extra_args = { "--check-untyped-defs" },
+          },
           linter.shellcheck,
           linter.spectral,
           linter.sqlfluff,

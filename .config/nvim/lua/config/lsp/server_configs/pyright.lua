@@ -7,7 +7,7 @@ M.setup = function(capabilities)
       python = {
         analysis = {
           autoSearchPaths = true,
-          diagnosticMode = "workspace",
+          diagnosticMode = "openFilesOnly",
           typeCheckingMode = "strict",
           useLibraryCodeForTypes = true,
         },

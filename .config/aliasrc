@@ -7,8 +7,10 @@ alias dfs="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 # Miscellaneous
 alias cfnv="cd ~/.config/nvim && GIT_DIR=$HOME/.dotfiles/ GIT_WORK_TREE=$HOME nvim"
 alias de="GIT_DIR=$HOME/.dotfiles/ GIT_WORK_TREE=$HOME"
-alias ls="exa"
+alias ls="eza"
 alias cls="clear"
+alias vim="nvim -u NORC"
+alias podman="env DBUS_SESSION_BUS_ADDRESS= podman"
 
 # Taskell
 alias todos="taskell $HOME/todo.md"

@@ -1,222 +1,269 @@
 {
-    "bar_id": "bar-0",
-    "ipc": true,
-    "layer": "top",
-    "position": "bottom",
-    "height": 20,
-    "modules-left": [
-        "clock",
-        "sway/workspaces",
-        "sway/scratchpad",
-        "sway/mode",
-        "sway/window"
+  "bar_id": "bar-0",
+  "ipc": true,
+  "layer": "top",
+  "position": "bottom",
+  "height": 20,
+  "modules-left": [
+    "clock",
+    "sway/workspaces",
+    "sway/scratchpad",
+    "sway/mode",
+    "sway/window"
+  ],
+  "modules-center": [],
+  "modules-right": [
+    "custom/screenrecord",
+    "custom/caps_status",
+    "custom/online",
+    "custom/github",
+    "custom/gitlab",
+    "custom/update",
+    "tray",
+    "custom/vpn",
+    "custom/media",
+    "pulseaudio",
+    // "wireplumber",
+    "bluetooth",
+    "network",
+    "battery",
+    "custom/weather",
+    "custom/notification"
+  ],
+  "sway/mode": {
+    "format": "<span style='italic'>{}</span>"
+  },
+  "sway/scratchpad": {
+    "format": "{icon} {count}",
+    "show-empty": false,
+    "format-icons": " ",
+    "tooltip": true,
+    "tooltip-format": "{app}: {title}",
+  },
+  "sway/window": {
+    "max-length": 20,
+  },
+  "tray": {
+    "icon-size": 14,
+    "spacing": 1
+  },
+  "clock": {
+    "format": " {:%a │ %H:%M} ",
+    "format-alt": " {:%a │ %d-%m-%Y} ",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+  },
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-icons": [
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
     ],
-    "modules-center": [],
-    "modules-right": [
-        "custom/media",
-        "custom/screenrecord",
-        "custom/caps_status",
-        "custom/github",
-        "custom/update",
-        "custom/weather",
-        "tray",
-        "pulseaudio",
-        "bluetooth",
-        "network",
-        "battery",
-        "custom/notification"
-    ],
-    "sway/mode": {
-        "format": "<span style='italic'>{}</span>"
+    "format-full": "{icon} {capacity}%",
+    "format-charging": "󰠠 {capacity}%",
+    "format-plugged": "",
+    "states": {
+      "warning": 35,
+      "critical": 15
     },
-    "sway/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": " ",
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}",
+    "tooltip-format-charging": "{capacity}% | {timeTo}"
+  },
+  "bluetooth": {
+    "format": "<span color='#29B6F6'></span>",
+    "format-off": "󰂲",
+    "format-on": "",
+    "tooltip-format-connected": "{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias} {device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}: {device_battery_percentage}%"
+  },
+  "network": {
+    "format": "{ifname}",
+    "format-disconnected": "󰞃 Disconnected",
+    "format-wifi": "󰘊 {essid}",
+    "format-ethernet": "󰈀 {ifname}",
+    "max-length": 15,
+    "tooltip-format-disconnected": "",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)",
+    "tooltip-format-ethernet": "{ifname} ({ipaddr})",
+  },
+  "network#wireless": {
+    "format": "",
+    "format-alt": "{essid} ({signalStrength}%)",
+    "format-disconnected": "",
+    "format-wifi": "",
+    "interface": "wl*",
+    "max-length": 20,
+    "tooltip-format-disconnected": "",
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)"
+  },
+  "network#wired": {
+    "format": "󰈀",
+    "format-disconnected": "",
+    "format-ethernet": "󰈀",
+    "interface": "en*",
+    "max-length": 20,
+    "tooltip-format-disconnected": "",
+    "tooltip-format-ethernet": "Wired: {ipaddr}"
+  },
+  "network#usb_tether": {
+    "format-disconnected": "",
+    "format-ethernet": "ﴓ",
+    "interface": "enp0s20f0*",
+    "max-length": 20,
+    "tooltip-format-disconnected": "",
+    "tooltip-format-ethernet": "USB Tethering: {ipaddr}"
+  },
+  "pulseaudio": {
+    "format": "{icon}{format_source}",
+    "format-muted": " {format_source}",
+    "format-bluetooth": "{icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-source": "",
+    "format-source-muted": " ",
+    "format-icons": {
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ],
+      "hands-free": "",
+      "headphone": "",
+      "headset": "",
+      "phone": "",
+      "portable": ""
     },
-    "sway/window": {
-        "max-length": 20,
+    "on-click": "pavucontrol"
+  },
+  "wireplumber": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "on-click": "pavucontrol",
+    "tooltip-format": "{node_name}",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
     },
-    "tray": {
-        "spacing": 1
+  },
+  "custom/media": {
+    "escape": true,
+    "exec": "$HOME/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null",
+    "format": "{icon}{}",
+    "format-icons": {
+      "spotify": "<span color='#1DB954'></span> ",
+      "default": " "
     },
-    "clock": {
-        "format": " {:%a │ %H:%M} ",
-        "format-alt": " {:%a │ %d-%m-%Y} ",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    "max-length": 30,
+    "return-type": "json"
+  },
+  "custom/caps_status": {
+    "exec": "~/.config/waybar/modules/caps_status.sh",
+    "return-type": "json",
+    "format": "{}",
+    "interval": 2
+  },
+  "custom/weather": {
+    "exec": "curl -s 'https://wttr.in/?format=1' > /tmp/wttr; jo text=$(cat /tmp/wttr | awk '{print $1}') tooltip=\"$(cat /tmp/wttr)\"",
+    "exec-if": "wget -q --spider http://google.com",
+    "format": "{}",
+    "format-alt": "{}",
+    "return-type": "json",
+    "interval": 3600,
+  },
+  "custom/update": {
+    "exec": "~/.config/waybar/modules/update_check.sh",
+    "exec-if": "pgrep paru || pgrep pacman || exit 0",
+    "format": " {} ",
+    "interval": 7200,
+    "return-type": "json",
+    "signal": 8,
+    "tooltip": true
+  },
+  "custom/neomutt": {
+    "exec": "~/.config/waybar/modules/sync_mail.sh",
+    "exec-if": "exit 0",
+    "format": "{}",
+    "interval": 1800,
+    "return-type": "json",
+    "signal": 8,
+    "tooltip": true
+  },
+  "custom/github": {
+    "exec": "~/.config/waybar/modules/github.sh",
+    "exec-if": "wget -q --spider http://google.com",
+    "format": " {} ",
+    "interval": 300,
+    "on-click": "xdg-open https://github.com/notifications",
+    "return-type": "json",
+    "tooltip": true
+  },
+  "custom/gitlab": {
+    "exec": "~/.config/waybar/modules/gitlab.sh",
+    "exec-if": "wget -q --spider http://google.com",
+    "format": " {} <span color='#FC6D26'></span> ",
+    "interval": 300,
+    "return-type": "json",
+    "tooltip": true
+  },
+  "custom/pomo": {
+    "exec": "pomodoro status --format '⏱  %r'",
+    "exec-if": "pgrep pomodoro || exit 0",
+    "format": "{}",
+    "interval": 2,
+    "on-click": "pomodoro pause"
+  },
+  "custom/screenrecord": {
+    "exec": "~/.config/waybar/modules/screenrecord.sh",
+    "format": "{}",
+    "interval": 2,
+    "on-click": "pkill --signal SIGINT wf-recorder",
+    "return-type": "json"
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "<span foreground='red'></span>",
+      "none": "",
+      "dnd-notification": " <span foreground='red'></span>",
+      "dnd-none": ""
     },
-    "battery": {
-        "format": "{icon} {capacity}%",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        "format-full": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": "",
-        "states": {
-            "warning": 35,
-            "critical": 15
-        },
-        "tooltip-format-charging": "{capacity}% | {timeTo}"
-    },
-    "bluetooth": {
-        "format": "<span color='#29B6F6'></span>",
-        "format-off": "",
-        "format-on": "",
-        "tooltip-format-connected": "{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias} {device_address}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}: {device_battery_percentage}%"
-    },
-    "network": {
-        "format": "{ifname}",
-        "format-disconnected": "ﲁ Disconnected",
-        "format-wifi": "說 {essid}",
-        "format-ethernet": " {ifname}",
-        "max-length": 15,
-        "tooltip-format-disconnected": "",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-        "tooltip-format-ethernet": "{ifname} ({ipaddr})",
-    },
-    "network#wireless": {
-        "format": "",
-        "format-alt": "{essid} ({signalStrength}%)",
-        "format-disconnected": "",
-        "format-wifi": "",
-        "interface": "wl*",
-        "max-length": 20,
-        "tooltip-format-disconnected": "",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%)"
-    },
-    "network#wired": {
-        "format": "",
-        "format-disconnected": "",
-        "format-ethernet": "",
-        "interface": "en*",
-        "max-length": 20,
-        "tooltip-format-disconnected": "",
-        "tooltip-format-ethernet": "Wired: {ipaddr}"
-    },
-    "network#usb_tether": {
-        "format-disconnected": "",
-        "format-ethernet": "ﴓ",
-        "interface": "enp0s20f0*",
-        "max-length": 20,
-        "tooltip-format-disconnected": "",
-        "tooltip-format-ethernet": "USB Tethering: {ipaddr}"
-    },
-    "pulseaudio": {
-        "format": "{icon}{format_source}",
-        "format-muted": "{format_source}",
-        "format-bluetooth": "{icon}{format_source}",
-        "format-bluetooth-muted": " {icon}{format_source}",
-        "format-source": "",
-        "format-source-muted": "",
-        "format-icons": {
-            "car": "",
-            "default": [
-                "",
-                "",
-                ""
-            ],
-            "hands-free": "",
-            "headphone": "",
-            "headset": "",
-            "phone": "",
-            "portable": ""
-        },
-        "on-click": "pavucontrol"
-    },
-    "custom/media": {
-        "escape": true,
-        "exec": "$HOME/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null",
-        "format": "{icon}{}",
-        "format-icons": {
-            "spotify": "<span color='#1DB954'></span> ",
-            "default": " "
-        },
-        "max-length": 30,
-        "return-type": "json"
-    },
-    "custom/caps_status": {
-        "exec": "~/.config/waybar/modules/caps_status.sh",
-        "return-type": "json",
-        "format": "{}",
-        "interval": 2
-    },
-    "custom/weather": {
-        "exec": "curl -s 'https://wttr.in/?format=1' > /tmp/wttr; jo text=$(cat /tmp/wttr | awk '{print $1}') tooltip=\"$(cat /tmp/wttr)\"",
-        "exec-if": "wget -q --spider http://google.com",
-        "format": "{}",
-        "format-alt": "{}",
-        "return-type": "json",
-        "interval": 3600,
-    },
-    "custom/update": {
-        "exec": "~/.config/waybar/modules/update_check.sh",
-        "exec-if": "pgrep paru || pgrep pacman || exit 0",
-        "format": " {} ",
-        "interval": 7200,
-        "return-type": "json",
-        "signal": 8,
-        "tooltip": true
-    },
-    "custom/neomutt": {
-        "exec": "~/.config/waybar/modules/sync_mail.sh",
-        "exec-if": "exit 0",
-        "format": "{}",
-        "interval": 1800,
-        "return-type": "json",
-        "signal": 8,
-        "tooltip": true
-    },
-    "custom/github": {
-        "exec": "~/.config/waybar/modules/github.sh",
-        "exec-if": "wget -q --spider http://google.com",
-        "format": " {} ",
-        "interval": 300,
-        "on-click": "xdg-open https://github.com/notifications",
-        "return-type": "json",
-        "tooltip": true
-    },
-    "custom/pomo": {
-        "exec": "pomodoro status --format '⏱  %r'",
-        "exec-if": "pgrep pomodoro || exit 0",
-        "format": "{}",
-        "interval": 2,
-        "on-click": "pomodoro pause"
-    },
-    "custom/screenrecord": {
-        "exec": "~/.config/waybar/modules/screenrecord.sh",
-        "format": "{}",
-        "interval": 2,
-        "on-click": "pkill --signal SIGINT wf-recorder",
-        "return-type": "json"
-    },
-    "custom/notification": {
-        "tooltip": false,
-        "format": "{icon}",
-        "format-icons": {
-            "notification": "<span foreground='red'></span>",
-            "none": "",
-            "dnd-notification": " <span foreground='red'></span>",
-            "dnd-none": ""
-        },
-        "return-type": "json",
-        "exec-if": "which swaync-client",
-        "exec": "swaync-client -swb",
-        "on-click": "swaync-client -t -sw",
-        "on-click-right": "swaync-client -d -sw",
-        "escape": true
-    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "custom/online": {
+    "interval": 5,
+    "tooltip": false,
+    "format": "{} <span foreground='red'>󰲛</span>",
+    "return-type": "json",
+    "exec": "~/.config/waybar/modules/network.sh"
+  },
+  "custom/vpn": {
+    "interval": 5,
+    "tooltip": false,
+    "format": "{}",
+    "return-type": "json",
+    "exec": "/usr/local/bin/wbm_vpn zthnhknm5s"
+  },
 },
 // vim:ft=jsonc

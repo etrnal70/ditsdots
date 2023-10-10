@@ -10,6 +10,7 @@ function M.setup()
       require "neotest-rust",
       require "neotest-jest",
       require "neotest-vitest",
+      require "neotest-python",
     },
     floating = {
       border = "solid",

@@ -33,11 +33,13 @@ return {
       {
         "theHamsta/nvim-dap-virtual-text",
         opts = {
+          enabled = false,
           clear_on_continue = false,
           virt_text_pos = "inline",
           show_stop_reason = false,
         },
       },
+      { "stevearc/overseer.nvim" },
       {
         "mfussenegger/nvim-dap",
         keys = {
@@ -110,6 +112,7 @@ return {
           },
         },
         config = function()
+          require("overseer").patch_dap(true)
           local dap = require "dap"
           -- Language-specific configuration
           dap.adapters.lldb = {
@@ -186,8 +189,12 @@ return {
   {
     "leoluz/nvim-dap-go",
     ft = "go",
-    config = true,
     dependencies = "rcarriga/nvim-dap-ui",
+    opts = {
+      delve = {
+        args = { "--check-go-version=false" },
+      },
+    },
   },
   {
     "mxsdev/nvim-dap-vscode-js",
