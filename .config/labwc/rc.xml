@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+
+<labwc_config>
+  <core>
+    <gap>10</gap>
+    <adaptiveSync>yes</adaptiveSync>
+  </core>
+
+  <theme>
+    <name>Qogir-Dark</name>
+    <cornerRadius>8</cornerRadius>
+    <font name="sans" size="11" />
+  </theme>
+
+  <desktops>
+    <popupTime>500</popupTime>
+    <names>
+      <name>1</name>
+      <name>2</name>
+      <name>3</name>
+      <name>4</name>
+      <name>5</name>
+      <name>6</name>
+      <name>7</name>
+      <name>8</name>
+      <name>9</name>
+      <name>0</name>
+    </names>
+  </desktops>
+
+  <keyboard>
+    <numlock>on</numlock>
+    <repeatRate>50</repeatRate>
+    <repeatDelay>350</repeatDelay>
+
+    <keybind key="A-Return">
+      <action name="Execute" command="foot" />
+    </keybind>
+    <keybind key="A-S-C">
+      <action name="Execute" command="labwc --reconfigure" />
+    </keybind>
+    <keybind key="A-Tab">
+      <action name="NextWindow" />
+    </keybind>
+    <keybind key="A-q">
+      <action name="Close" />
+    </keybind>
+    <keybind key="A-f">
+      <action name="ToggleFullscreen" />
+    </keybind>
+    <keybind key="A-m">
+      <action name="ToggleMaximize" />
+    </keybind>
+    <keybind key="A-S-m">
+      <action name="Iconify" />
+    </keybind>
+
+    <keybind key="A-d">
+      <action name="Execute" command="fuzzel -F name" />
+    </keybind>
+    <keybind key="A-Period">
+      <action name="Execute" command="~/.scripts/dmenu_toggle.sh" />
+    </keybind>
+
+    <keybind key="A-Backslash">
+      <action name="Execute" command="swaync-client -d" />
+    </keybind>
+    <keybind key="A-Bar">
+      <action name="Execute" command="swaync-client -c" />
+    </keybind>
+
+    <keybind key="A-h">
+      <action name="SnapToEdge" direction="left" />
+    </keybind>
+    <keybind key="A-j">
+      <action name="SnapToEdge" direction="down" />
+    </keybind>
+    <keybind key="A-k">
+      <action name="SnapToEdge" direction="up" />
+    </keybind>
+    <keybind key="A-l">
+      <action name="SnapToEdge" direction="right" />
+    </keybind>
+
+    <!-- Desktop -->
+    <keybind key="A-1">
+      <action name="GoToDesktop" to="1"/>
+    </keybind>
+    <keybind key="A-2">
+      <action name="GoToDesktop" to="2"/>
+    </keybind>
+    <keybind key="A-3">
+      <action name="GoToDesktop" to="3"/>
+    </keybind>
+    <keybind key="A-4">
+      <action name="GoToDesktop" to="4"/>
+    </keybind>
+    <keybind key="A-5">
+      <action name="GoToDesktop" to="5"/>
+    </keybind>
+    <keybind key="A-6">
+      <action name="GoToDesktop" to="6"/>
+    </keybind>
+    <keybind key="A-7">
+      <action name="GoToDesktop" to="7"/>
+    </keybind>
+    <keybind key="A-8">
+      <action name="GoToDesktop" to="8"/>
+    </keybind>
+    <keybind key="A-9">
+      <action name="GoToDesktop" to="9"/>
+    </keybind>
+    <keybind key="A-0">
+      <action name="GoToDesktop" to="0"/>
+    </keybind>
+    <keybind key="A-S-1">
+      <action name="SendToDesktop" to="1" follow="false"/>
+    </keybind>
+    <keybind key="A-S-2">
+      <action name="SendToDesktop" to="2" follow="false"/>
+    </keybind>
+    <keybind key="A-S-3">
+      <action name="SendToDesktop" to="3" follow="false"/>
+    </keybind>
+    <keybind key="A-S-4">
+      <action name="SendToDesktop" to="4" follow="false"/>
+    </keybind>
+    <keybind key="A-S-5">
+      <action name="SendToDesktop" to="5" follow="false"/>
+    </keybind>
+    <keybind key="A-S-6">
+      <action name="SendToDesktop" to="6" follow="false"/>
+    </keybind>
+    <keybind key="A-S-7">
+      <action name="SendToDesktop" to="7" follow="false"/>
+    </keybind>
+    <keybind key="A-S-8">
+      <action name="SendToDesktop" to="8" follow="false"/>
+    </keybind>
+    <keybind key="A-S-9">
+      <action name="SendToDesktop" to="9" follow="false"/>
+    </keybind>
+    <keybind key="A-S-0">
+      <action name="SendToDesktop" to="0" follow="false"/>
+    </keybind>
+
+    <!-- Media -->
+    <keybind key="XF86_AudioLowerVolume">
+      <action name="Execute" command="~/.scripts/volume.sh down" />
+    </keybind>
+    <keybind key="XF86_AudioRaiseVolume">
+      <action name="Execute" command="~/.scripts/volume.sh up" />
+    </keybind>
+    <keybind key="XF86_AudioMute">
+      <action name="Execute" command="~/.scripts/volume.sh mute" />
+    </keybind>
+    <keybind key="XF86_AudioMicMute">
+      <action name="Execute" command="pactl set-source-mute @DEFAULT_SOURCE@ toggle" />
+    </keybind>
+    <keybind key="XF86_MonBrightnessUp">
+      <action name="Execute" command="~/.scripts/backlight.sh up" />
+    </keybind>
+    <keybind key="XF86_MonBrightnessDown">
+      <action name="Execute" command="~/.scripts/backlight.sh down" />
+    </keybind>
+    <keybind key="W-A-Up">
+      <action name="Execute" command="~/.scripts/volume.sh up" />
+    </keybind>
+    <keybind key="W-A-Down">
+      <action name="Execute" command="~/.scripts/volume.sh down" />
+    </keybind>
+    <keybind key="W-A-Left">
+      <action name="Execute" command="playerctl -p spotify previous" />
+    </keybind>
+    <keybind key="W-A-Right">
+      <action name="Execute" command="playerctl -p spotify next" />
+    </keybind>
+  </keyboard>
+
+  <mouse>
+    <default />
+    <!-- Show a custom menu on desktop right click -->
+    <context name="Root">
+      <mousebind button="Right" action="Press">
+        <action name="ShowMenu" menu="some-custom-menu" />
+      </mousebind>
+    </context>
+  </mouse>
+
+  <libinput>
+    <device category="MSFT0001:00 04F3:31B8 Touchpad">
+      <naturalScroll>yes</naturalScroll>
+      <leftHanded></leftHanded>
+      <pointerSpeed></pointerSpeed>
+      <accelProfile></accelProfile>
+      <tap>yes</tap>
+      <tapButtonMap></tapButtonMap>
+      <tapAndDrag></tapAndDrag>
+      <dragLock>yes</dragLock>
+      <middleEmulation>yes</middleEmulation>
+      <disableWhileTyping></disableWhileTyping>
+    </device>
+  </libinput>
+</labwc_config>

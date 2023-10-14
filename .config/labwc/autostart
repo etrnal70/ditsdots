@@ -1,0 +1,16 @@
+# Example autostart file
+
+# Set background color.
+swaybg -i '/home/hanifrmn/wallpaper/abstract.jpg' >/dev/null 2>&1 &
+
+kanshi >/dev/null 2>&1 &
+
+# Launch a panel such as yambar or waybar.
+waybar >/dev/null 2>&1 &
+
+swayidle -w \
+  timeout 900 'swaylock -f -F -e' \
+  timeout 1200 'wlopm --off \*' resume 'wlopm --on \*' \
+  timeout 1800 'systemctl suspend' \
+  before-sleep 'swaylock -f -F -e && playerctl pause'
+
