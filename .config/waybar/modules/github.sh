@@ -1,8 +1,12 @@
 #!/bin/bash
 
-token=$(cat ~/.config/github/notifications.token)
-count=$(curl -s -u etrnal70:"$token" https://api.github.com/notifications | jq '. | length')
+FILE=~/.config/github/notifications.token
 
-if [[ "$count" != "0" ]]; then
-  jo text="$count " tooltip="You have $count GitHub notifications"
+if [ -f "$FILE" ]; then
+  token=$(cat $FILE)
+  count=$(curl -s -u etrnal70:"$token" https://api.github.com/notifications | jq '. | length')
+  
+  if [[ "$count" != "0" ]]; then
+    jo text="$count " tooltip="You have $count GitHub notifications"
+  fi
 fi
