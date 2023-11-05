@@ -1,27 +1,27 @@
 #!/bin/bash
-touchscreenID="92370"
-touchpadID="92371"
+
+file=/tmp/libinput-toggle
 touch_toggle() {
-  STATUS=$(swaymsg -t get_inputs -r | jq '.[] | select(.type=="touch") | .libinput.send_events' | tr -d \")
+  STATUS=$(swaymsg -t get_inputs -r | jq -r '.[] | select(.type=="touch") | .libinput.send_events')
   if [[ "$STATUS" == "disabled" ]]; then
     swaymsg input type:touch events toggle
-    notify-send "Touchscreen Input" "Enabled" -i mouse-touchpad-clicking -r $touchscreenID
+    notify-send.sh --replace-file=$file "Touchscreen Input" "Enabled" -i mouse-touchpad-clicking
   elif [[ "$STATUS" == "enabled" ]]; then
     swaymsg input type:touch events toggle
-    notify-send "Touchscreen Input" "Disabled" -i mouse-touchpad-clicking -r $touchscreenID
+    notify-send.sh --replace-file=$file "Touchscreen Input" "Disabled" -i mouse-touchpad-clicking
   fi
 }
 
 touchpad_toggle() {
-  STATUS=$(swaymsg -t get_inputs -r | jq '.[] | select(.identifier=="1739:33521:SYNA3071:00_06CB:82F1_Touchpad") | .libinput.send_events' | tr -d \")
+  STATUS=$(swaymsg -t get_inputs -r | jq -r '.[] | select(.type=="touchpad") | .libinput.send_events')
   if [[ "$STATUS" == "disabled" ]]; then
     swaymsg input type:touchpad events enabled
-    notify-send "Touchpad" "Enabled" -i input-touchpad-on -r $touchpadID
+    notify-send.sh --replace-file=$file "Touchpad" "Enabled" -i input-touchpad-on
   elif [[ "$STATUS" == "enabled" ]]; then
     swaymsg input type:touchpad events disabled
-    notify-send "Touchpad" "Disabled" -i input-touchpad-off -r $touchpadID
+    notify-send.sh --replace-file=$file "Touchpad" "Disabled" -i input-touchpad-off
   elif [[ "$STATUS" = "disabled_on_external_mouse" ]]; then
-    notify-send "Touchpad" "Disabled on external mouse" -i input-touchpad-off -r $touchpadID
+    notify-send.sh --replace-file=$file "Touchpad" "Disabled on external mouse" -i input-touchpad-off
   fi
 }
 

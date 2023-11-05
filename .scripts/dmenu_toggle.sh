@@ -21,6 +21,9 @@ case $selected in
   "Mic Mute Toggle")
     exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
     ;;
+  "Output Toggle")
+    exec $script/output_toggle.sh
+    ;;
   "Touchscreen Toggle")
     exec $script/input_toggle.sh touchscreen toggle
     ;;
@@ -31,10 +34,10 @@ case $selected in
     exec $script/turbo_toggle.sh
     ;;
   "Screenshot")
-    exec grim -g "$(slurp)" - | wl-copy
+    exec $script/screenshot.sh
     ;;
   "Screenrecord")
-    exec wf-recorder -g "$(slurp)"
+    exec $script/screenrecord.sh record
     ;;
   "Restart Kanshi")
     exec kanshictl reload

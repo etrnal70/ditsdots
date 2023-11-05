@@ -84,6 +84,27 @@ require("lazy").setup {
           end,
         },
         {
+          "zbirenbaum/neodim",
+          event = "LspAttach",
+          opts = {
+            refresh_delay = 250,
+            alpha = 0.45,
+            blend_color = "#000000",
+            hide = {
+              underline = true,
+              virtual_text = true,
+              signs = true,
+            },
+            regex = {
+              "[uU]nused",
+              "[nN]ever [rR]ead",
+              "[nN]ot [rR]ead",
+            },
+            priority = 128,
+            disable = {},
+          },
+        },
+        {
           "lvimuser/document-color.nvim",
           config = true,
         },
