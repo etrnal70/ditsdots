@@ -38,10 +38,10 @@
     "show-empty": false,
     "format-icons": " ",
     "tooltip": true,
-    "tooltip-format": "{app}: {title}",
+    "tooltip-format": "{app}: {title}"
   },
   "sway/window": {
-    "max-length": 20,
+    "max-length": 20
   },
   "tray": {
     "icon-size": 14,
@@ -91,7 +91,7 @@
     "max-length": 15,
     "tooltip-format-disconnected": "",
     "tooltip-format-wifi": "{essid} ({signalStrength}%)",
-    "tooltip-format-ethernet": "{ifname} ({ipaddr})",
+    "tooltip-format-ethernet": "{ifname} ({ipaddr})"
   },
   "network#wireless": {
     "format": "",
@@ -159,7 +159,7 @@
         "",
         ""
       ]
-    },
+    }
   },
   "custom/media": {
     "escape": true,
@@ -184,7 +184,7 @@
     "format": "{}",
     "format-alt": "{}",
     "return-type": "json",
-    "interval": 3600,
+    "interval": 3600
   },
   "custom/update": {
     "exec": "~/.config/waybar/modules/update_check.sh",
@@ -229,10 +229,10 @@
     "on-click": "pomodoro pause"
   },
   "custom/screenrecord": {
-    "exec": "~/.config/waybar/modules/screenrecord.sh",
+    "exec": "~/.scripts/screenrecord.sh detect",
     "format": "{}",
     "interval": 2,
-    "on-click": "pkill --signal SIGINT wf-recorder",
+    "on-click": "pkill --signal SIGINT wl-screenrec",
     "return-type": "json"
   },
   "custom/notification": {
@@ -264,6 +264,6 @@
     "format": "{}",
     "return-type": "json",
     "exec": "/usr/local/bin/wbm_vpn zthnhknm5s"
-  },
-},
+  }
+}
 // vim:ft=jsonc
