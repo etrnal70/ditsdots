@@ -5,7 +5,6 @@ for_window {
   [title="MAX - Chromium"] floating enable; border pixel 1
   [class="firefox"] inhibit_idle fullscreen
   [class="Chromium"] inhibit_idle fullscreen
-  [app_id="firefox" title="Firefox — Sharing Indicator"] floating enable, move to scratchpad
   [app_id="firefox" title="Library"] floating enable; border pixel 1;
   [class="Nightly"] inhibit_idle fullscreen
   [title="Picture-in-Picture"] floating enable; sticky enable; resize set 480px 270px;
@@ -16,7 +15,6 @@ for_window {
   [class=".*.exe"] inhibit_idle fullscreen; floating enable; border none
   [class="^(S|s)team$" title="^Friends *"] floating enable
   [class="^(S|s)team$" title="^Shutdown$"] floating enable
-  # [class="^Steam$" title="^Friends List$"] floating enable
   [class="^(S|s)team$" title="Steam - News"] floating enable
   [class="^(S|s)team$" title=".* - Chat"] floating enable
   [class="^(S|s)team$" title="^Steam Settings$"] floating enable
@@ -33,6 +31,9 @@ for_window {
   ### Desktop apps
   [app_id="zoom"] inhibit_idle fullscreen; floating enable
   [app_id="zoom" title="as_toolbar"] floating enable; sticky enable; move position 35ppt 0ppt
+  [instance="zoom.real"] floating enable; inhibit_idle fullscreen
+  [title="^Zoom$"] floating enable
+  [class="zoom"] floating enable
   [app_id="ksysguard"] floating enable; sticky enable
   [app_id="image-roll"] floating enable; border pixel 1
   [app_id="pavucontrol"] sticky enable; floating enable; resize set 720px 480px
@@ -48,6 +49,7 @@ for_window {
   [class="(\s|^)WhatsApp(\s|$)"] floating disable
   [class="(\s|^)WebApp(\s|$)"] floating enable; resize set 720px 580px
   [app_id="blueman-manager"] floating enable; resize set 720px 580px
+  [app_id="ArmCord" title="ArmCord Setup"] floating enable
 
   ### Preferred Workspace
   [class="Ferdium"] move window to workspace number 1
@@ -55,10 +57,8 @@ for_window {
 
   ### Miscellaneous
   [title="(?:Open|Save|Image|Local) (?:File|Folder|As)"] floating enable; sticky enable
-  [app_id = "xdg-desktop-portal-gtk"] floating enable
-  [app_id = "xdg-desktop-portal-gtk"] move position center
-  [window_role = "GtkFileChooserDialog"] resize set 800 600
-  [window_role = "GtkFileChooserDialog"] move position center
+  [app_id = "xdg-desktop-portal-gtk"] floating enable; move position center
+  [window_role = "GtkFileChooserDialog"] move position center; resize set 800 600
   [window_role = "pop-up"] floating enable
   [window_role = "bubble"] floating enable
   [window_role = "dialog"] floating enable
@@ -67,8 +67,8 @@ for_window {
   [window_role = "Preferences"] floating enable
   [window_type = "menu"] floating enable
   [app_id = "floating"] floating enable
-  [class="^.*"] inhibit_idle fullscreen
-  [app_id="^.*"] inhibit_idle fullscreen
+  # [class="^.*"] inhibit_idle fullscreen
+  # [app_id="^.*"] inhibit_idle fullscreen
 }
 
 # vim:filetype=swayconfig
