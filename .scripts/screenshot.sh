@@ -7,7 +7,7 @@ len=$(echo -e "$output" | wc -l)
 if [ "$len" -gt "1" ]; then
   selected=$(echo -e "Full\nOutput\nRegion" | fuzzel --dmenu)
 else
-  selected=$(echo -e "Full\nOutput" | fuzzel --dmenu)
+  selected=$(echo -e "Full\nRegion" | fuzzel --dmenu)
 fi
 
 region () {
