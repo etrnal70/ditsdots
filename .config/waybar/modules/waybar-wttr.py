@@ -88,7 +88,7 @@ def main():
     condition = weather['current_condition'][0]
     code = WEATHER_CODES[condition['weatherCode']]
 
-    data['text'] = condition['temp_C'] + "°" + code[0]
+    data['text'] = code[0]
 
     data[
         'tooltip'] = f"<b>{condition['weatherDesc'][0]['value']} {condition['temp_C']}°</b>\n"

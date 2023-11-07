@@ -79,6 +79,7 @@
     "format": "<span color='#29B6F6'></span>",
     "format-off": "󰂲",
     "format-on": "",
+    "on-click": "foot --app-id=floating bluetuith",
     "tooltip-format-connected": "{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias} {device_address}",
     "tooltip-format-enumerate-connected-battery": "{device_alias}: {device_battery_percentage}%"
@@ -179,7 +180,7 @@
     "interval": 2
   },
   "custom/weather": {
-    "exec": "curl -s 'https://wttr.in/?format=1' > /tmp/wttr; jo text=$(cat /tmp/wttr | awk '{print $1}') tooltip=\"$(cat /tmp/wttr)\"",
+    "exec": "~/.config/waybar/modules/waybar-wttr.py",
     "exec-if": "wget -q --spider http://google.com",
     "format": "{}",
     "format-alt": "{}",
@@ -191,15 +192,6 @@
     "exec-if": "pgrep paru || pgrep pacman || exit 0",
     "format": " {} ",
     "interval": 7200,
-    "return-type": "json",
-    "signal": 8,
-    "tooltip": true
-  },
-  "custom/neomutt": {
-    "exec": "~/.config/waybar/modules/sync_mail.sh",
-    "exec-if": "exit 0",
-    "format": "{}",
-    "interval": 1800,
     "return-type": "json",
     "signal": 8,
     "tooltip": true
