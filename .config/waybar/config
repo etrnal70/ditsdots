@@ -11,9 +11,10 @@
     "sway/mode",
     "sway/window"
   ],
-  "modules-center": [],
+  "modules-center": ["privacy"],
   "modules-right": [
     "custom/screenrecord",
+    "custom/mirroring",
     "custom/caps_status",
     "custom/online",
     "custom/github",
@@ -164,7 +165,7 @@
   },
   "custom/media": {
     "escape": true,
-    "exec": "$HOME/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null",
+    "exec": "~/.config/waybar/modules/mediaplayer.py --player spotify 2> /dev/null",
     "format": "{icon}{}",
     "format-icons": {
       "spotify": "<span color='#1DB954'></span> ",
@@ -225,6 +226,13 @@
     "format": "{}",
     "interval": 2,
     "on-click": "pkill --signal SIGINT wl-screenrec",
+    "return-type": "json"
+  },
+  "custom/mirroring": {
+    "exec": "~/.scripts/mirroring.sh",
+    "format": "{}",
+    "interval": 2,
+    "on-click": "pkill --signal SIGINT wl-mirror",
     "return-type": "json"
   },
   "custom/notification": {
