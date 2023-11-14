@@ -16,7 +16,7 @@ require("lazy").setup {
     { import = "plugins" },
     -- stdlib
     { "nvim-lua/plenary.nvim", lazy = true },
-    { "MunifTanjim/nui.nvim",  lazy = true },
+    { "MunifTanjim/nui.nvim", lazy = true },
 
     -- LSP Plugins
     {
@@ -34,6 +34,14 @@ require("lazy").setup {
             hint_inline = function()
               return false
             end,
+          },
+        },
+        {
+          "j-hui/fidget.nvim",
+          event = "LspAttach",
+          opts = {
+            progress = { ignore_done_already = false },
+            window = { winblend = 0 },
           },
         },
         {
@@ -234,7 +242,7 @@ require("lazy").setup {
         },
       },
     },
-    { "rbong/vim-flog",              cmd = { "Flog", "Flogsplit" } },
+    { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
     {
       "rhysd/git-messenger.vim",
       keys = "<leader>gm",
@@ -553,8 +561,8 @@ require("lazy").setup {
     },
 
     -- Lua development
-    { "rafcamlet/nvim-luapad",     cmd = "Luapad" },
-    { "paretje/nvim-man",          cmd = { "Man", "VMan" } },
+    { "rafcamlet/nvim-luapad", cmd = "Luapad" },
+    { "paretje/nvim-man", cmd = { "Man", "VMan" } },
   },
   {
     change_detection = {

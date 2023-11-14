@@ -26,10 +26,10 @@ return {
           ["cmp.entry.get_documentation"] = false,
         },
         progress = {
-          enabled = true,
+          enabled = false,
           format = {
-            { "{spinner} ", hl_group = "NoiceLspProgressSpinner" },
-            { "{data.progress.title} ", hl_group = "NoiceLspProgressTitle" },
+            { "{spinner} ",              hl_group = "NoiceLspProgressSpinner" },
+            { "{data.progress.title} ",  hl_group = "NoiceLspProgressTitle" },
             { "{data.progress.client} ", hl_group = "NoiceLspProgressClient" },
           },
           opts = {
