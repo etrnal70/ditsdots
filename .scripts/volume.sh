@@ -2,8 +2,7 @@
 
 # Dependencies
 # - notify-send.sh
-# - pamixer
-# - pactl
+# - wpctl
 # - ePapirus (icon)
 
 appname="system_info"
@@ -11,20 +10,24 @@ file=/tmp/volume_notification
 
 case "$1" in
   "up")
-    pactl set-sink-volume @DEFAULT_SINK@ +5%
+    wpctl set-volume @DEFAULT_SINK@ 5%+
     ;;
 
   "down")
-    pactl set-sink-volume @DEFAULT_SINK@ -5%
+    wpctl set-volume @DEFAULT_SINK@ 5%-
     ;;
 
   "mute")
-    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    wpctl set-mute @DEFAULT_SINK@ toggle
     ;;
 esac
 
-isMuted="$(pamixer --get-mute)"
-volume="$(pamixer --get-volume)"
+volume="$(wpctl get-volume @DEFAULT_SINK@ | sed -e 's/Volume: //' -e 's/\.//' -e 's/^0//')"
+if [[ "$volume" == *"MUTED"* ]]; then
+  isMuted="true"
+else
+  isMuted="false"
+fi
 
 if [ "$isMuted" = "false" ]; then
   if [ "$volume" -gt "100" ]; then
