@@ -4,13 +4,13 @@ return {
     event = "VeryLazy",
     opts = {
       cmdline = {
-        enabled = true,
+        enabled = false,
         view = "cmdline",
       },
       messages = { enabled = false },
       popupmenu = { enabled = true },
       notify = {
-        enabled = true,
+        enabled = false,
         view = "mini",
         replace = true,
       },
@@ -28,8 +28,8 @@ return {
         progress = {
           enabled = false,
           format = {
-            { "{spinner} ",              hl_group = "NoiceLspProgressSpinner" },
-            { "{data.progress.title} ",  hl_group = "NoiceLspProgressTitle" },
+            { "{spinner} ", hl_group = "NoiceLspProgressSpinner" },
+            { "{data.progress.title} ", hl_group = "NoiceLspProgressTitle" },
             { "{data.progress.client} ", hl_group = "NoiceLspProgressClient" },
           },
           opts = {

@@ -3,7 +3,7 @@ return {
   opts = {
     theme = "doom",
     hide = {
-      statusline = true,
+      statusline = false,
       tabline = true,
       winbar = true,
     },

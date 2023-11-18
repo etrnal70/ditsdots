@@ -38,10 +38,13 @@ require("lazy").setup {
         },
         {
           "j-hui/fidget.nvim",
-          event = "LspAttach",
           opts = {
             progress = { ignore_done_already = false },
-            window = { winblend = 0 },
+            notification = {
+              filter = vim.log.levels.WARN,
+              override_vim_notify = true,
+              window = { winblend = 0, max_width = 75 },
+            },
           },
         },
         {
@@ -564,22 +567,20 @@ require("lazy").setup {
     { "rafcamlet/nvim-luapad", cmd = "Luapad" },
     { "paretje/nvim-man", cmd = { "Man", "VMan" } },
   },
-  {
-    change_detection = {
-      enabled = false,
-      notify = false,
-    },
-    install = { colorscheme = { "tundra" } },
-    performance = {
-      rtp = {
-        disabled_plugins = {
-          "gzip",
-          "netrwPlugin",
-          "tarPlugin",
-          "tohtml",
-          "tutor",
-          "zipPlugin",
-        },
+  change_detection = {
+    enabled = false,
+    notify = false,
+  },
+  install = { colorscheme = { "tundra" } },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
       },
     },
   },

@@ -87,17 +87,23 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "WhoIsSethDaniel/lualine-lsp-progress.nvim" },
     config = function()
+      local custom = require "lualine.themes.ayu_dark"
+      custom.normal.c.bg = "#1F1F1F"
+      custom.insert.b.bg = "#1F1F1F"
+      custom.inactive.c.bg = "#1F1F1F"
+      custom.replace.b.bg = "#1F1F1F"
+      custom.visual.b.bg = "#1F1F1F"
+
       require("lualine").setup {
         options = {
+          theme = custom,
           component_separators = { left = " ", right = " " },
           section_separators = { left = " ", right = " " },
           always_divide_middle = true,
-          refresh = {
-            statusline = 500,
-          },
+          globalstatuus = false,
         },
+        extensions = { "overseer", "aerial", "neo-tree", "toggleterm" },
         sections = {
           lualine_a = {
             {
@@ -131,7 +137,7 @@ return {
             {
               "encoding",
               fmt = function(str)
-                return string.upper(str)
+                return string.upper(str) .. " "
               end,
               color = { fg = "white", bg = "#212121", gui = "italic,bold" },
             },
@@ -238,11 +244,23 @@ return {
     dependencies = {
       {
         "s1n7ax/nvim-window-picker",
-        version = "2.*",
-        -- opts = {
-        --   current_win_hl_color = "#6699CC",
-        --   other_win_hl_color = "#2F628E",
-        -- },
+        opts = {
+          picker_config = {
+            statusline_winbar_picker = { use_winbar = "always" },
+          },
+          highlights = {
+            winbar = {
+              focused = { bg = "#6699CC" },
+              unfocused = { bg = "#2F628E" },
+            },
+          },
+          filter_rules = {
+            bo = {
+              filetype = { "NvimTree", "neo-tree", "notify" },
+              buftype = { "terminal", "nofile" },
+            },
+          },
+        },
       },
       { "miversen33/netman.nvim" },
     },
