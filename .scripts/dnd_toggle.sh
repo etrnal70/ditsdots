@@ -1,11 +1,11 @@
 #!/bin/bash
 
-STATUS=$(dunstctl is-paused)
+STATUS=$(swaync-client -D)
 
 if [[ "$STATUS" = "false" ]]; then
-  dunstctl set-paused true
+  swaync-client -dn
   gsettings set org.gnome.desktop.sound event-sounds false
 elif [[ "$STATUS" = "true" ]]; then
-  dunstctl set-paused false
+  swaync-client -df
   gsettings set org.gnome.desktop.sound event-sounds true
 fi

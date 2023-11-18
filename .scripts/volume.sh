@@ -22,7 +22,7 @@ case "$1" in
     ;;
 esac
 
-volume="$(wpctl get-volume @DEFAULT_SINK@ | sed -e 's/Volume: //' -e 's/\.//' -e 's/^0//')"
+volume="$(wpctl get-volume @DEFAULT_SINK@ | sed -e 's/Volume: //' -e 's/\.//' -e 's/^0*//')"
 if [[ "$volume" == *"MUTED"* ]]; then
   isMuted="true"
 else
@@ -31,7 +31,7 @@ fi
 
 if [ "$isMuted" = "false" ]; then
   if [ "$volume" -gt "100" ]; then
-    notify-send.sh --replace-file=$file "Volume $volume%" -h int:value:"$volume" -h string:fgcolor:#ff4444 -h string:frcolor:#ff4444 -i /notification-audio-volume-high -a $appname
+    notify-send.sh --replace-file=$file "Volume $volume%" -h int:value:"$volume" -h string:fgcolor:#ff4444 -h string:frcolor:#ff4444 -i notification-audio-volume-high -a $appname
   elif [ "$volume" -gt "65" ]; then
     notify-send.sh --replace-file=$file "Volume $volume%" -h int:value:"$volume" -i notification-audio-volume-high -a $appname
   elif [ "$volume" -gt "20" ]; then

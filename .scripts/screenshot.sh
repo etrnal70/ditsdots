@@ -47,3 +47,5 @@ case $selected in
     ;;
 esac
 
+canberra-gtk-play -i screen-capture -d "screenShot"
+
