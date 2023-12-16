@@ -25,6 +25,9 @@ map("n", "<C-A-j>", ":resize -2<CR>")
 map("n", "<C-A-h>", ":vertical resize +2<CR>")
 map("n", "<C-A-l>", ":vertical resize -2<CR>")
 
+-- Search in range
+map("x", "/", "<Esc>/\\%V")
+
 -- Move one character left or right in insert mode
 map("i", "<C-l>", "<Right>")
 map("i", "<C-h>", "<Left>")

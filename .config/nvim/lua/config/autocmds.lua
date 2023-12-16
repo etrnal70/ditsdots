@@ -14,14 +14,6 @@ vim.api.nvim_create_autocmd("VimEnter", { pattern = "*", command = "clearjumps" 
 -- Disable number column on terminal
 vim.api.nvim_create_autocmd("TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber" })
 
--- Update statusline on LSP progress update
-vim.api.nvim_create_autocmd("User", {
-  pattern = { "LspProgressStatusUpdated" },
-  callback = function()
-    require("lualine").refresh()
-  end,
-})
-
 -- Filetype-specific
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = { "*.md", "*.tex" },

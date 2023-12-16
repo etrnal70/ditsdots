@@ -1,11 +1,11 @@
 local opt = vim.opt
 
-opt.termguicolors = true          -- Use GUI colors in terminal
-opt.hidden = true                 -- Hide unloaded buffer
+opt.termguicolors = true -- Use GUI colors in terminal
+opt.hidden = true -- Hide unloaded buffer
 opt.lazyredraw = false
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
-opt.mouse = "n"                   -- Mouse only on normal mode
-opt.updatetime = 250
+opt.mouse = "n" -- Mouse only on normal mode
+opt.updatetime = 100
 opt.ttimeoutlen = 0
 opt.showtabline = 2
 opt.laststatus = 3
@@ -14,7 +14,7 @@ opt.diffopt:append { "algorithm:histogram", "indent-heuristic", "linematch:60" }
 opt.cmdheight = 0
 opt.autoread = false
 
-opt.foldlevel = 99    -- Open folds when opening file
+opt.foldlevel = 99 -- Open folds when opening file
 opt.foldlevelstart = 99
 opt.foldenable = true -- Prevent folding upon opening file
 opt.foldcolumn = "0"
@@ -128,6 +128,18 @@ vim.diagnostic.config {
   },
   signs = {
     severity = { min = vim.diagnostic.severity.WARN },
+    text = {
+      [vim.diagnostic.severity.ERROR] = "",
+      [vim.diagnostic.severity.WARN] = "",
+      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.HINT] = "",
+    },
+    numhl = {
+      [vim.diagnostic.severity.ERROR] = "DiagnosticError",
+      [vim.diagnostic.severity.WARN] = "DiagnosticWarn",
+      [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+      [vim.diagnostic.severity.HINT] = "DiagnosticHint",
+    },
   },
   severity_sort = true,
   underline = true,
@@ -146,9 +158,3 @@ vim.diagnostic.config {
     severity = { min = vim.diagnostic.severity.WARN },
   },
 }
-
--- Disable diagnostic on SignColumn
-vim.fn.sign_define("DiagnosticSignError", { text = "", numhl = "DiagnosticError" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = "", numhl = "DiagnosticWarn" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = "", numhl = "DiagnosticInfo" })
-vim.fn.sign_define("DiagnosticSignHint", { text = "", numhl = "DiagnosticHint" })

@@ -235,6 +235,138 @@ return {
       end,
     },
   },
+  -- Telescope
+  {
+    "nvim-telescope/telescope.nvim",
+    keys = {
+      { "<leader>lq", "<cmd>Telescope diagnostics<CR>" },
+      { "<leader>lf", "<cmd>Telescope find_files<CR>" },
+      { "<leader>lF", "<cmd>Telescope git_files<CR>" },
+      { "<leader>gC", "<cmd>Telescope git_commits<CR>" },
+      { "<leader>gb", "<cmd>Telescope git_branches<CR>" },
+      { "<leader>lc", "<cmd>Telescope commands<CR>" },
+      { "<leader>ls", "<cmd>Telescope live_grep<CR>" },
+      { "<leader>lb", "<cmd>Telescope buffers<CR>" },
+      { "<leader>lo", "<cmd>Telescope oldfiles<CR>" },
+      { "<leader>lH", "<cmd>Telescope help_tags<CR>" },
+    },
+    config = function()
+      local tele = require "telescope"
+      local actions = require "telescope.actions"
+      local themes = require "telescope.themes"
+
+      local default_ivy = {
+        theme = "ivy",
+        layout_config = { height = 13 },
+      }
+
+      tele.setup {
+        defaults = {
+          layout_strategy = "flex",
+          layout_config = {
+            flex = {
+              flip_columns = 130,
+            },
+            horizontal = {
+              mirror = false,
+              width = 0.8,
+            },
+            vertical = {
+              mirror = false,
+            },
+          },
+          path_display = { "truncate" },
+          prompt_prefix = "➤  ",
+          selection_caret = "• ",
+          wrap_results = true,
+          file_ignore_patterns = {
+            "__pycache__/*",
+            "__init__.py",
+            "%.env",
+            "node_modules/*",
+            "scratch/.*",
+            "sessions/*",
+            "%.dll",
+            "go/pkg/*",
+          },
+          mappings = {
+            i = {
+              ["<S-Tab>"] = actions.move_selection_previous,
+              ["<Tab>"] = actions.move_selection_next,
+              ["<esc>"] = actions.close,
+              ["<C-o>"] = actions.toggle_selection,
+              ["<C-O>"] = actions.toggle_all,
+            },
+          },
+        },
+        extensions = {
+          ["fzf"] = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+          },
+        },
+        pickers = {
+          commands = {
+            theme = "ivy",
+            layout_config = { height = 8 },
+          },
+          find_files = {
+            layout_strategy = "flex",
+            layout_config = {
+              flex = {
+                flip_columns = 130,
+              },
+              horizontal = {
+                mirror = false,
+                width = 0.8,
+              },
+              vertical = {
+                mirror = false,
+                preview_height = 0.65,
+              },
+            },
+          },
+          diagnostics = {
+            theme = "ivy",
+            layout_config = { height = 13 },
+            sort_by = "severity",
+          },
+          lsp_code_actions = {
+            initial_mode = "normal",
+            theme = "cursor",
+            layout_config = { width = 55 },
+          },
+          lsp_definitions = default_ivy,
+          lsp_implementations = default_ivy,
+          lsp_references = default_ivy,
+          lsp_type_definitions = default_ivy,
+          lsp_incoming_calls = default_ivy,
+          lsp_outgoing_calls = default_ivy,
+        },
+      }
+
+      -- Load telescope extension
+      tele.load_extension "fzf"
+    end,
+    dependencies = {
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+      },
+    },
+  },
+  { "nvim-telescope/telescope-bibtex.nvim", ft = { "tex", "bib" }, dependencies = "telescope.nvim" },
+  {
+    "crispgm/telescope-heading.nvim",
+    ft = "markdown",
+    config = function()
+      require("telescope").load_extension "heading"
+      vim.keymap.set("n", "<leader>lh", ":Telescope heading theme=ivy<CR>", { silent = true })
+    end,
+    dependencies = "telescope.nvim",
+  },
   -- File tree
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -363,6 +495,236 @@ return {
         },
         width = 35,
       },
+    },
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      cmdline = {
+        enabled = true,
+        view = "cmdline",
+      },
+      messages = { enabled = false },
+      popupmenu = { enabled = false },
+      notify = {
+        enabled = false,
+        view = "mini",
+        replace = true,
+      },
+      lsp = {
+        hover = {
+          opts = {
+            size = { max_height = 19, max_width = 60 },
+          },
+        },
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+          ["vim.lsp.util.stylize_markdown"] = false,
+          ["cmp.entry.get_documentation"] = false,
+        },
+        progress = { enabled = false },
+        signature = { enabled = false },
+      },
+      health = { checker = false },
+      views = {
+        mini = {
+          win_options = {
+            winblend = 0,
+          },
+        },
+      },
+    },
+  },
+  {
+    "stevearc/dressing.nvim",
+    lazy = true,
+    init = function()
+      vim.ui.select = function(...)
+        require("lazy").load { plugins = { "dressing.nvim" } }
+        return vim.ui.select(...)
+      end
+      vim.ui.input = function(...)
+        require("lazy").load { plugins = { "dressing.nvim" } }
+        return vim.ui.input(...)
+      end
+    end,
+    opts = {
+      input = {
+        border = "solid",
+        win_options = { winhighlight = "NormalFloat:Normal" },
+      },
+      select = {
+        backend = { "builtin" },
+        builtin = {
+          relative = "editor",
+          border = "solid",
+          max_width = { 45, 0.35 },
+          min_width = { 30, 0.15 },
+          max_height = 0.3,
+          min_height = { 4, 0.1 },
+          win_options = {
+            winblend = 0,
+          },
+        },
+        get_config = function(opts)
+          if opts.kind == "codeaction" then
+            return {
+              builtin = {
+                relative = "cursor",
+              },
+            }
+          end
+        end,
+      },
+    },
+  },
+  {
+    "luukvbaal/statuscol.nvim",
+    branch = "0.10",
+    config = function()
+      local builtin = require "statuscol.builtin"
+      require("statuscol").setup {
+        setopt = true,
+        relculright = true,
+        ft_ignore = { "Neogit", "neo-tree", "Outline", "dapui_*" },
+        bt_ignore = { "terminal", "nofile" },
+        segments = {
+          {
+            sign = { namespace = { "gitsigns_extmark_signs_" }, maxwidth = 1, colwidth = 1, auto = false },
+            click = "v:lua.ScSa",
+          },
+          {
+            text = { builtin.lnumfunc, " " },
+            condition = { true, builtin.not_empty },
+            click = "v:lua.ScLa",
+          },
+          {
+            sign = { name = { "Dap" }, maxwidth = 1, colwidth = 2, auto = true },
+            click = "v:lua.ScSa",
+          },
+        },
+      }
+    end,
+  },
+  {
+    "lewis6991/satellite.nvim",
+    opts = {
+      excluded_filetypes = { "neo-tree" },
+      winblend = 0, -- Workaround, winblend broken (black bg)
+      handlers = {
+        diagnostic = { enable = false },
+        gitsigns = { enable = false },
+        quickfix = { enable = false },
+        cursor = { enable = false },
+      },
+    },
+  },
+  {
+    "stevearc/aerial.nvim",
+    config = true,
+  },
+  { "xiyaowong/virtcolumn.nvim", event = "VeryLazy" },
+  {
+    "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutline",
+    config = function()
+      require("symbols-outline").setup {
+        border = require("config.utils").transparent_border,
+        preview_bg_highlight = "NormalNC",
+        relative_width = false,
+        show_symbol_details = false,
+        width = 35,
+      }
+    end,
+  },
+  {
+    "eugen0329/vim-esearch",
+    keys = "<leader>ff",
+    init = function()
+      vim.g.esearch = {
+        win_update_throttle_wait = 250,
+        root_markers = {
+          ".git",
+          "Makefile",
+          "node_modules",
+          "Cargo.toml",
+          "go.mod",
+          "go.work",
+          "__pycache__",
+        },
+      }
+    end,
+  },
+  -- TODO Can this be replaced with neodim ?
+  {
+    "levouh/tint.nvim",
+    event = "BufWinEnter",
+    opts = {
+      tint = -20,
+      highlight_ignore_patterns = { "WinSeparator", "Status.*" },
+      window_ignore_function = function(winid)
+        local buf = vim.api.nvim_win_get_buf(winid)
+        local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+
+        if ft == "neo-tree" then
+          return true
+        end
+
+        return false
+      end,
+    },
+  },
+  {
+    "kevinhwang91/nvim-ufo",
+    event = "BufWinEnter",
+    dependencies = "kevinhwang91/promise-async",
+    opts = {
+      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = ("  %d "):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, { suffix, "CmpItemKindSnippet" })
+        return newVirtText
+      end,
+    },
+  },
+  {
+    "akinsho/toggleterm.nvim",
+    keys = "<leader>sm",
+    opts = {
+      direction = "horizontal",
+      insert_mappings = false,
+      open_mapping = [[<leader>sm]],
+      size = function(term)
+        if term.direction == "horizontal" then
+          return 12
+        elseif term.direction == "vertical" then
+          return vim.o.columns * 0.4
+        end
+      end,
+      start_in_insert = false,
+      terminal_mappings = false,
     },
   },
 }

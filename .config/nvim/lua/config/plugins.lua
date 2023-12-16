@@ -18,122 +18,6 @@ require("lazy").setup {
     { "nvim-lua/plenary.nvim", lazy = true },
     { "MunifTanjim/nui.nvim", lazy = true },
 
-    -- LSP Plugins
-    {
-      "neovim/nvim-lspconfig",
-      config = function()
-        require "config.lsp"
-      end,
-      dependencies = {
-        {
-          "ray-x/lsp_signature.nvim",
-          opts = {
-            floating_window = false,
-            always_trigger = true,
-            hint_prefix = " ",
-            hint_inline = function()
-              return false
-            end,
-          },
-        },
-        {
-          "j-hui/fidget.nvim",
-          opts = {
-            progress = { ignore_done_already = false },
-            notification = {
-              filter = vim.log.levels.WARN,
-              override_vim_notify = true,
-              window = { winblend = 0, max_width = 75 },
-            },
-          },
-        },
-        {
-          "linrongbin16/lsp-progress.nvim",
-          config = function()
-            require("lsp-progress").setup {
-              format = function(client_messages)
-                return #client_messages > 0 and (table.concat(client_messages, " ")) or ""
-              end,
-            }
-          end,
-        },
-        {
-          "DNLHC/glance.nvim",
-          config = function()
-            local actions = require("glance").actions
-            require("glance").setup {
-              indent_lines = {
-                enable = true,
-                icon = "  •",
-              },
-              preview_win_opts = { -- Configure preview window options
-                cursorline = true,
-                number = true,
-                wrap = true,
-              },
-              mappings = {
-                list = {
-                  ["<C-x>"] = actions.jump_split,
-                  ["<C-v>"] = actions.jump_vsplit,
-                  ["<C-t>"] = actions.jump_tab,
-                },
-              },
-              folds = {
-                fold_closed = "",
-                fold_open = "",
-              },
-              hooks = {
-                before_open = function(results, open, jump, _)
-                  if #results == 1 then
-                    jump(results[1])
-                  else
-                    open(results)
-                  end
-                end,
-              },
-            }
-          end,
-        },
-        {
-          "zbirenbaum/neodim",
-          event = "LspAttach",
-          opts = {
-            refresh_delay = 250,
-            alpha = 0.45,
-            blend_color = "#000000",
-            hide = {
-              underline = true,
-              virtual_text = true,
-              signs = true,
-            },
-            regex = {
-              "[uU]nused",
-              "[nN]ever [rR]ead",
-              "[nN]ot [rR]ead",
-            },
-            priority = 128,
-            disable = {},
-          },
-        },
-        {
-          "lvimuser/document-color.nvim",
-          config = true,
-        },
-        "yioneko/nvim-type-fmt",
-        "p00f/clangd_extensions.nvim",
-        "akinsho/flutter-tools.nvim",
-        "simrat39/rust-tools.nvim",
-        "mfussenegger/nvim-jdtls",
-        "b0o/schemastore.nvim",
-        "pmizio/typescript-tools.nvim",
-        "yioneko/nvim-vtsls",
-        {
-          "folke/neodev.nvim",
-          opts = {},
-        },
-      },
-    },
-
     -- Completion
     {
       "hrsh7th/nvim-cmp",
@@ -145,7 +29,13 @@ require("lazy").setup {
         "hrsh7th/cmp-nvim-lsp",
         {
           "saadparwaiz1/cmp_luasnip",
-          dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
+          dependencies = {
+            {
+              "L3MON4D3/LuaSnip",
+              build = "make install_jsregexp",
+            },
+            "rafamadriz/friendly-snippets",
+          },
         },
         {
           "petertriho/cmp-git",
@@ -186,88 +76,6 @@ require("lazy").setup {
         },
       },
     },
-
-    -- Treesitter
-    {
-      "utilyre/barbecue.nvim",
-      version = "*",
-      event = "BufWinEnter",
-      dependencies = { "SmiteshP/nvim-navic" },
-      init = function()
-        vim.api.nvim_create_autocmd({
-          "WinScrolled",
-          "BufWinEnter",
-          "CursorHold",
-          "InsertLeave",
-          "BufWritePost",
-          "TextChanged",
-          "TextChangedI",
-        }, {
-          group = vim.api.nvim_create_augroup("barbecue#create_autocmd", {}),
-          callback = function()
-            require("barbecue.ui").update()
-          end,
-        })
-      end,
-      opts = {
-        create_autocmd = false,
-        symbols = { separator = "❯" },
-        show_dirname = false,
-        context_follow_icon_color = false,
-      },
-    },
-
-    -- Git
-    {
-      "lewis6991/gitsigns.nvim",
-      event = "BufReadPost",
-      config = function()
-        require "config.git.gitsigns"
-      end,
-    },
-    {
-      "NeogitOrg/neogit",
-      keys = {
-        { "<leader>gg", "<cmd>Neogit kind=tab<CR>" },
-        { "<leader>gl", "<cmd>Neogit log<CR>" },
-      },
-      config = function()
-        require("neogit").setup {
-          disable_commit_confirmation = true,
-          disable_builtin_notifications = true,
-          kind = "tab",
-        }
-      end,
-      dependencies = {
-        {
-          "sindrets/diffview.nvim",
-          opts = { enhanced_diff_hl = true },
-        },
-      },
-    },
-    { "rbong/vim-flog", cmd = { "Flog", "Flogsplit" } },
-    {
-      "rhysd/git-messenger.vim",
-      keys = "<leader>gm",
-      init = function()
-        vim.g.git_messenger_include_diff = "current"
-        vim.g.git_messenger_close_on_cursor_moved = false
-        vim.g.git_messenger_always_into_popup = true
-        vim.g.git_messenger_max_popup_height = 20
-        vim.g.git_messenger_max_popup_width = 50
-        vim.g.git_messenger_floating_win_opts = { border = "solid" }
-      end,
-    },
-    "rhysd/committia.vim",
-    {
-      "akinsho/git-conflict.nvim",
-      event = "BufReadPre",
-      opts = {
-        default_mappings = true,
-        disable_diagnostics = true,
-      },
-    },
-    -- "ThePrimeagen/git-worktree.nvim",
 
     -- Testing and Runner
     {
@@ -312,7 +120,6 @@ require("lazy").setup {
         auto_lint = false,
         auto_format = false,
         maintain_cursor_pos = true,
-        lint_prompt_style = "vt",
       },
     },
     {
@@ -323,222 +130,6 @@ require("lazy").setup {
           headline_highlights = false,
         },
       },
-    },
-
-    -- Misc
-    {
-      "stevearc/dressing.nvim",
-      lazy = true,
-      init = function()
-        vim.ui.select = function(...)
-          require("lazy").load { plugins = { "dressing.nvim" } }
-          return vim.ui.select(...)
-        end
-        vim.ui.input = function(...)
-          require("lazy").load { plugins = { "dressing.nvim" } }
-          return vim.ui.input(...)
-        end
-      end,
-      opts = {
-        input = {
-          border = "solid",
-          win_options = { winhighlight = "NormalFloat:Normal" },
-        },
-        select = {
-          backend = { "builtin" },
-          builtin = {
-            relative = "editor",
-            border = "solid",
-            max_width = { 45, 0.35 },
-            min_width = { 30, 0.15 },
-            max_height = 0.3,
-            min_height = { 4, 0.1 },
-            win_options = {
-              winblend = 0,
-            },
-          },
-          get_config = function(opts)
-            if opts.kind == "codeaction" then
-              return {
-                builtin = {
-                  relative = "cursor",
-                },
-              }
-            end
-          end,
-        },
-      },
-    },
-    {
-      "luukvbaal/statuscol.nvim",
-      config = function()
-        local builtin = require "statuscol.builtin"
-        require("statuscol").setup {
-          setopt = true,
-          relculright = true,
-          ft_ignore = { "Neogit", "neo-tree", "Outline", "dapui_*" },
-          bt_ignore = { "terminal", "nofile" },
-          segments = {
-            {
-              sign = { namespace = { "gitsigns_extmark_signs_" }, maxwidth = 1, colwidth = 1, auto = false },
-              click = "v:lua.ScSa",
-            },
-            {
-              text = { builtin.lnumfunc, " " },
-              condition = { true, builtin.not_empty },
-              click = "v:lua.ScLa",
-            },
-            {
-              sign = { name = { "Dap" }, maxwidth = 1, colwidth = 2, auto = true },
-              click = "v:lua.ScSa",
-            },
-          },
-        }
-      end,
-    },
-    {
-      "lewis6991/satellite.nvim",
-      opts = {
-        excluded_filetypes = { "neo-tree" },
-        winblend = 0, -- Workaround, winblend broken (black bg)
-        handlers = {
-          diagnostic = { enable = false },
-          gitsigns = { enable = false },
-          quickfix = { enable = false },
-          cursor = { enable = false },
-        },
-      },
-    },
-    {
-      "pwntester/octo.nvim",
-      cmd = "Octo",
-      config = true,
-    },
-    {
-      "numToStr/Comment.nvim",
-      config = true,
-    },
-    {
-      "jbyuki/venn.nvim",
-      init = function()
-        vim.api.nvim_create_user_command("VennToggle", require("config.misc.venn").toggle_venn, {})
-      end,
-    },
-    -- { "machakann/vim-sandwich" })
-    {
-      "kylechui/nvim-surround",
-      opts = { highlights = { duration = 0 } },
-    },
-    {
-      "stevearc/aerial.nvim",
-      config = true,
-    },
-    {
-      "simrat39/symbols-outline.nvim",
-      cmd = "SymbolsOutline",
-      config = function()
-        require("symbols-outline").setup {
-          border = require("config.utils").transparent_border,
-          preview_bg_highlight = "NormalNC",
-          relative_width = false,
-          show_symbol_details = false,
-          width = 35,
-        }
-      end,
-    },
-    {
-      "eugen0329/vim-esearch",
-      keys = "<leader>ff",
-      init = function()
-        vim.g.esearch = {
-          win_update_throttle_wait = 250,
-          root_markers = {
-            ".git",
-            "Makefile",
-            "node_modules",
-            "Cargo.toml",
-            "go.mod",
-            "go.work",
-            "__pycache__",
-          },
-        }
-      end,
-    },
-    {
-      "levouh/tint.nvim",
-      event = "BufWinEnter",
-      opts = {
-        tint = -20,
-        highlight_ignore_patterns = { "WinSeparator", "Status.*" },
-        window_ignore_function = function(winid)
-          local buf = vim.api.nvim_win_get_buf(winid)
-          local ft = vim.api.nvim_buf_get_option(buf, "filetype")
-
-          if ft == "neo-tree" then
-            return true
-          end
-
-          return false
-        end,
-      },
-    },
-    {
-      "NvChad/nvim-colorizer.lua",
-      ft = { "css", "dart", "lua" },
-      opts = {
-        filetypes = { "css", "dart", "lua" },
-        user_default_options = {
-          names = false,
-          mode = "virtualtext",
-        },
-      },
-    },
-    {
-      "tzachar/local-highlight.nvim",
-      event = "BufReadPre",
-      opts = {
-        disable_file_types = { "Glance", "neo-tree" },
-      },
-    },
-    {
-      "andrewferrier/textobj-diagnostic.nvim",
-      event = "BufWinEnter",
-      config = true,
-    },
-    {
-      "glepnir/hlsearch.nvim",
-      event = "BufWinEnter",
-      config = true,
-    },
-    {
-      "Darazaki/indent-o-matic",
-      event = "BufWinEnter",
-      opts = {
-        max_lines = 5000,
-      },
-    },
-    {
-      "rest-nvim/rest.nvim",
-      ft = "http",
-      keys = {
-        { "<leader>rr", "<Plug>RestNvim" },
-        { "<leader>rp", "<Plug>RestNvimPreview" },
-      },
-      config = true,
-    },
-    { "xiyaowong/virtcolumn.nvim", event = "VeryLazy" },
-    {
-      "willothy/flatten.nvim",
-      opts = {
-        window = { open = "alternate" },
-      },
-      lazy = false,
-      priority = 1001,
-    },
-    {
-      "chrisgrieser/nvim-early-retirement",
-      config = true,
-      event = "VeryLazy",
     },
     {
       "cameron-wags/rainbow_csv.nvim",
@@ -563,6 +154,31 @@ require("lazy").setup {
       },
     },
 
+    -- Misc
+    {
+      "rest-nvim/rest.nvim",
+      ft = "http",
+      keys = {
+        { "<leader>rr", "<Plug>RestNvim" },
+        { "<leader>rp", "<Plug>RestNvimPreview" },
+      },
+      config = true,
+    },
+    {
+      -- TODO Integrate with window-picker
+      "willothy/flatten.nvim",
+      opts = {
+        window = { open = "alternate" },
+      },
+      lazy = false,
+      priority = 1001,
+    },
+    {
+      "chrisgrieser/nvim-early-retirement",
+      config = true,
+      event = "VeryLazy",
+    },
+
     -- Lua development
     { "rafcamlet/nvim-luapad", cmd = "Luapad" },
     { "paretje/nvim-man", cmd = { "Man", "VMan" } },
@@ -575,11 +191,22 @@ require("lazy").setup {
   performance = {
     rtp = {
       disabled_plugins = {
-        "gzip",
+        "2html_plugin",
+        "getscript",
+        "getscriptPlugin",
+        "logiPat",
+        "matchit",
+        "matchparen",
+        "netrw",
+        "netrwFileHandlers",
         "netrwPlugin",
+        "netrwSettings",
+        "rrhelper",
+        "tar",
         "tarPlugin",
-        "tohtml",
-        "tutor",
+        "vimball",
+        "vimballPlugin",
+        "zip",
         "zipPlugin",
       },
     },
