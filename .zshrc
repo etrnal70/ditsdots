@@ -73,7 +73,7 @@ export LIBVA_DRIVER_NAME=iHD
 eval "$(starship init zsh)"
 
 # fnm
-eval "$(fnm env)"
+# eval "$(fnm env)"
 
 # zoxide
 eval "$(zoxide init zsh)"
@@ -116,11 +116,10 @@ export PATH=$PATH:$HOME/.sdk_dir/flutter/bin
 # CMake
 export CMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-# extra lib
-# export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include
-# export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
-# export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
-unset LD_LIBRARY_PATH
+# extra lib (sway dev)
+export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/include
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
 
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH

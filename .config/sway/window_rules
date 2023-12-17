@@ -67,8 +67,8 @@ for_window {
   [window_role = "Preferences"] floating enable
   [window_type = "menu"] floating enable
   [app_id = "floating"] floating enable
-  # [class="^.*"] inhibit_idle fullscreen
-  # [app_id="^.*"] inhibit_idle fullscreen
+  [class="^.*"] inhibit_idle fullscreen
+  [app_id="^.*"] inhibit_idle fullscreen
 }
 
 # vim:filetype=swayconfig
