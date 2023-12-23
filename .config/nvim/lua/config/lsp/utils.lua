@@ -11,7 +11,7 @@ M.servers = {
   "flutter",
   "gopls",
   "jsonls",
-  "lua_lsp",
+  -- "lua_lsp",
   -- "marksman",
   "neodev",
   "prismals",
