@@ -258,12 +258,4 @@
     "return-type": "json",
     "exec": "~/.config/waybar/modules/network.sh"
   },
-  "custom/vpn": {
-    "interval": 5,
-    "tooltip": false,
-    "format": "{}",
-    "return-type": "json",
-    "exec": "/usr/local/bin/wbm_vpn zthnhknm5s"
-  }
 }
-// vim:ft=jsonc
