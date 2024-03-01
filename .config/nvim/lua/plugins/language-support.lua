@@ -2,13 +2,15 @@ return {
   -- Linter
   {
     "mfussenegger/nvim-lint",
-    setup = function()
+    config = function()
       require("lint").linters_by_ft = {
         dockerfile = { "hadolint" },
         gitcommit = { "commitlint" },
         go = { "golangcilint" },
         sh = { "shellcheck" },
+        bash = { "shellcheck" },
         sql = { "sqlfluff" },
+        yaml = { "yamllint" },
         zsh = { "zsh" },
       }
 
@@ -26,6 +28,17 @@ return {
       format_on_save = {
         timeout_ms = 500,
         lsp_fallback = true,
+      },
+      formatters = {
+        injected = {
+          options = {
+            ignore_errors = true,
+            lang_to_formatters = {
+              json = { "jq" },
+              sql = { "sqlfluff" },
+            },
+          },
+        },
       },
       formatters_by_ft = {
         javascript = { "prettierd" },

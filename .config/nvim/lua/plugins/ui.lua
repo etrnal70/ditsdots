@@ -626,15 +626,33 @@ return {
   },
   { "xiyaowong/virtcolumn.nvim", event = "VeryLazy" },
   {
-    "simrat39/symbols-outline.nvim",
-    cmd = "SymbolsOutline",
+    "hedyhli/outline.nvim",
+    lazy = true,
+    cmd = { "Outline", "OutlineOpen" },
     config = function()
-      require("symbols-outline").setup {
-        border = require("config.utils").transparent_border,
-        preview_bg_highlight = "NormalNC",
-        relative_width = false,
-        show_symbol_details = false,
-        width = 35,
+      require("outline").setup {
+        outline_window = {
+          wrap = true,
+          width = 35,
+          relative_width = false,
+          show_cursorline = true,
+          hide_cursor = true,
+        },
+        outline_items = {
+          show_symbol_details = true,
+        },
+        preview_window = {
+          auto_preview = true,
+          border = require("config.utils").transparent_border,
+          width = 30,
+          winhl = "NormalNC:",
+        },
+        symbol_folding = {
+          autofold_depth = 1,
+          auto_unfold = {
+            hovered = true,
+          },
+        },
       }
     end,
   },

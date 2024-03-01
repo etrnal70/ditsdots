@@ -58,4 +58,4 @@ map("n", "[c", function()
 end)
 
 -- symbols-outline
-map("n", "<leader>ss", ":SymbolsOutline<CR>")
+map("n", "<leader>ss", ":Outline<CR>")

@@ -20,16 +20,14 @@ return {
         "j-hui/fidget.nvim",
         opts = {
           progress = {
-            -- ignore_done_already = true,
-            poll_rate = 2,
-            ignore = { "null-ls" },
-            lsp = { progress_ringbuf_size = 1024 },
+            ignore_done_already = true,
             display = {
+              progress_ttl = 25,
               render_limit = 5,
             },
           },
           notification = {
-            filter = vim.log.levels.WARN,
+            -- filter = vim.log.levels.WARN,
             override_vim_notify = true,
             window = { winblend = 0, max_width = 75 },
           },
@@ -100,7 +98,18 @@ return {
       "yioneko/nvim-type-fmt",
       "p00f/clangd_extensions.nvim",
       "akinsho/flutter-tools.nvim",
-      "simrat39/rust-tools.nvim",
+      {
+        "mrcjkb/rustaceanvim",
+        ft = { "rust" },
+        init = function()
+          vim.g.rustaceanvim = {
+            tools = {
+              code_actions = { ui_select_fallback = true },
+              hover_actions = { replace_builtin_hover = false },
+            },
+          }
+        end,
+      },
       "mfussenegger/nvim-jdtls",
       "b0o/schemastore.nvim",
       "pmizio/typescript-tools.nvim",

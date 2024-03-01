@@ -19,7 +19,7 @@ M.servers = {
   -- "pylyzer",
   -- "pyright",
   -- "rome",
-  "rust_analyzer",
+  -- "rust_analyzer",
   -- "taplo",
   "texlab",
   "typst",
@@ -100,10 +100,6 @@ M.setup_autocmds = function()
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       local map = utils.keymap
 
-      if client.name == "null-ls" then
-        return
-      end
-
       -- LSP Keymapping
       map(bufnr, "n", "K", lsp.buf.hover)
       map(bufnr, "n", "gD", lsp.buf.declaration)
@@ -138,10 +134,10 @@ M.setup_autocmds = function()
 
       -- Code Lens
       if
-        client.supports_method "textDocument/codeLens"
-        -- TODO Remove once codelens support virtual lines
-        and client.name ~= "rust_analyzer"
-        and client.name ~= "jdtls"
+          client.supports_method "textDocument/codeLens"
+          -- TODO Remove once codelens support virtual lines
+          and client.name ~= "rust_analyzer"
+          and client.name ~= "jdtls"
       then
         vim.api.nvim_create_autocmd(
           { "BufEnter", "CursorHold", "InsertLeave" },
