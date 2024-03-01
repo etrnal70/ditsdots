@@ -2,3 +2,5 @@
 max_fps=60
 exec_before=swaync-client --inhibitor-add "xdg-desktop-portal-wlr"
 exec_after=swaync-client --inhibitor-remove "xdg-desktop-portal-wlr"
+chooser_type=dmenu
+chooser_cmd=wlopm -j | jq -r '.[] | .output' | fuzzel --dmenu
