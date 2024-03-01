@@ -1,17 +1,14 @@
 <?xml version="1.0"?>
-
 <labwc_config>
   <core>
     <gap>10</gap>
     <adaptiveSync>yes</adaptiveSync>
   </core>
-
   <theme>
-    <name>Qogir-Dark</name>
+    <name>GTK</name>
     <cornerRadius>8</cornerRadius>
-    <font name="sans" size="11" />
+    <font name="sans" size="11"/>
   </theme>
-
   <desktops>
     <popupTime>500</popupTime>
     <names>
@@ -27,59 +24,65 @@
       <name>0</name>
     </names>
   </desktops>
-
   <keyboard>
     <numlock>on</numlock>
     <repeatRate>50</repeatRate>
     <repeatDelay>350</repeatDelay>
-
     <keybind key="A-Return">
-      <action name="Execute" command="foot" />
+      <action name="Execute" command="foot"/>
     </keybind>
     <keybind key="A-S-C">
-      <action name="Execute" command="labwc --reconfigure" />
+      <action name="Execute" command="labwc --reconfigure"/>
     </keybind>
     <keybind key="A-Tab">
-      <action name="NextWindow" />
+      <action name="NextWindow"/>
     </keybind>
     <keybind key="A-q">
-      <action name="Close" />
+      <action name="Close"/>
     </keybind>
     <keybind key="A-f">
-      <action name="ToggleFullscreen" />
+      <action name="ToggleFullscreen"/>
     </keybind>
     <keybind key="A-m">
-      <action name="ToggleMaximize" />
+      <action name="ToggleMaximize"/>
     </keybind>
     <keybind key="A-S-m">
-      <action name="Iconify" />
+      <action name="Iconify"/>
     </keybind>
-
     <keybind key="A-d">
-      <action name="Execute" command="fuzzel -F name" />
+      <action name="Execute" command="fuzzel -F name"/>
     </keybind>
     <keybind key="A-Period">
-      <action name="Execute" command="~/.scripts/dmenu_toggle.sh" />
+      <action name="Execute" command="~/.scripts/dmenu_toggle.sh"/>
     </keybind>
-
     <keybind key="A-Backslash">
-      <action name="Execute" command="swaync-client -d" />
+      <action name="Execute" command="~/.scripts/dnd_toggle.sh"/>
     </keybind>
     <keybind key="A-Bar">
-      <action name="Execute" command="swaync-client -c" />
+      <action name="Execute" command="swaync-client -c"/>
     </keybind>
-
     <keybind key="A-h">
-      <action name="SnapToEdge" direction="left" />
+      <action name="SnapToEdge" direction="left"/>
     </keybind>
     <keybind key="A-j">
-      <action name="SnapToEdge" direction="down" />
+      <action name="SnapToEdge" direction="down"/>
     </keybind>
     <keybind key="A-k">
-      <action name="SnapToEdge" direction="up" />
+      <action name="SnapToEdge" direction="up"/>
     </keybind>
     <keybind key="A-l">
-      <action name="SnapToEdge" direction="right" />
+      <action name="SnapToEdge" direction="right"/>
+    </keybind>
+
+    <!-- Virtual Desktop -->
+    <keybind key="A-u">
+      <action name="VirtualOutputAdd" output_name="Headless"/>
+    </keybind>
+    <keybind key="A-S-U">
+      <action name="SendToDesktop" to="Headless" follow="false"/>
+    </keybind>
+    <keybind key="A-y">
+      <action name="VirtualOutputRemove"/>
     </keybind>
 
     <!-- Desktop -->
@@ -143,62 +146,59 @@
     <keybind key="A-S-0">
       <action name="SendToDesktop" to="0" follow="false"/>
     </keybind>
-
     <!-- Media -->
     <keybind key="XF86_AudioLowerVolume">
-      <action name="Execute" command="~/.scripts/volume.sh down" />
+      <action name="Execute" command="~/.scripts/volume.sh down"/>
     </keybind>
     <keybind key="XF86_AudioRaiseVolume">
-      <action name="Execute" command="~/.scripts/volume.sh up" />
+      <action name="Execute" command="~/.scripts/volume.sh up"/>
     </keybind>
     <keybind key="XF86_AudioMute">
-      <action name="Execute" command="~/.scripts/volume.sh mute" />
+      <action name="Execute" command="~/.scripts/volume.sh mute"/>
     </keybind>
     <keybind key="XF86_AudioMicMute">
-      <action name="Execute" command="pactl set-source-mute @DEFAULT_SOURCE@ toggle" />
+      <action name="Execute" command="pactl set-source-mute @DEFAULT_SOURCE@ toggle"/>
     </keybind>
     <keybind key="XF86_MonBrightnessUp">
-      <action name="Execute" command="~/.scripts/backlight.sh up" />
+      <action name="Execute" command="~/.scripts/backlight.sh up"/>
     </keybind>
     <keybind key="XF86_MonBrightnessDown">
-      <action name="Execute" command="~/.scripts/backlight.sh down" />
+      <action name="Execute" command="~/.scripts/backlight.sh down"/>
     </keybind>
     <keybind key="W-A-Up">
-      <action name="Execute" command="~/.scripts/volume.sh up" />
+      <action name="Execute" command="~/.scripts/volume.sh up"/>
     </keybind>
     <keybind key="W-A-Down">
-      <action name="Execute" command="~/.scripts/volume.sh down" />
+      <action name="Execute" command="~/.scripts/volume.sh down"/>
     </keybind>
     <keybind key="W-A-Left">
-      <action name="Execute" command="playerctl -p spotify previous" />
+      <action name="Execute" command="playerctl -p spotify previous"/>
     </keybind>
     <keybind key="W-A-Right">
-      <action name="Execute" command="playerctl -p spotify next" />
+      <action name="Execute" command="playerctl -p spotify next"/>
     </keybind>
   </keyboard>
-
   <mouse>
-    <default />
+    <default/>
     <!-- Show a custom menu on desktop right click -->
     <context name="Root">
       <mousebind button="Right" action="Press">
-        <action name="ShowMenu" menu="some-custom-menu" />
+        <action name="ShowMenu" menu="some-custom-menu"/>
       </mousebind>
     </context>
   </mouse>
-
   <libinput>
     <device category="MSFT0001:00 04F3:31B8 Touchpad">
       <naturalScroll>yes</naturalScroll>
-      <leftHanded></leftHanded>
-      <pointerSpeed></pointerSpeed>
-      <accelProfile></accelProfile>
+      <leftHanded/>
+      <pointerSpeed/>
+      <accelProfile/>
       <tap>yes</tap>
-      <tapButtonMap></tapButtonMap>
-      <tapAndDrag></tapAndDrag>
+      <tapButtonMap/>
+      <tapAndDrag/>
       <dragLock>yes</dragLock>
       <middleEmulation>yes</middleEmulation>
-      <disableWhileTyping></disableWhileTyping>
+      <disableWhileTyping/>
     </device>
   </libinput>
 </labwc_config>
