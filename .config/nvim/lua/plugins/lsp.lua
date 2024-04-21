@@ -112,8 +112,14 @@ return {
       },
       "mfussenegger/nvim-jdtls",
       "b0o/schemastore.nvim",
-      "pmizio/typescript-tools.nvim",
-      "yioneko/nvim-vtsls",
+      {
+        "pmizio/typescript-tools.nvim",
+        opts = {
+          settings = {
+            code_lens = "implementations_only",
+          },
+        },
+      },
       {
         "folke/neodev.nvim",
         opts = {},

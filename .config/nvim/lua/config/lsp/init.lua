@@ -8,4 +8,4 @@ for _, server in pairs(utils.servers) do
 end
 
 -- Java-only
-vim.api.nvim_create_user_command("JavaStart", require("config.lsp.server_configs.jdtls").setup, {})
+-- vim.api.nvim_create_user_command("JavaStart", require("config.lsp.server_configs.jdtls").setup, {})

@@ -41,11 +41,17 @@ return {
         },
       },
       formatters_by_ft = {
+        css = { "prettierd" },
+        html = { "prettierd" },
         javascript = { "prettierd" },
+        json = { "prettierd" },
         lua = { "stylua" },
+        markdown = { "prettierd" },
         python = { "isort", "black" },
+        sh = { "shfmt" },
         sql = { "sqlfluff" },
         toml = { "taplo" },
+        typescript = { "prettierd" },
         yaml = { "yamlfmt" },
       },
     },
@@ -92,4 +98,14 @@ return {
       "RainbowMultiDelim",
     },
   },
+  {
+    "https://gitlab.com/itaranto/plantuml.nvim",
+    version = "*",
+    opts = {
+      renderer = {
+        type = "imv",
+      },
+    },
+  },
+  { "aklt/plantuml-syntax", ft = "plantuml" },
 }

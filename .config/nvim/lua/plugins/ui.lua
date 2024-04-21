@@ -624,7 +624,7 @@ return {
     "stevearc/aerial.nvim",
     config = true,
   },
-  { "xiyaowong/virtcolumn.nvim", event = "VeryLazy" },
+  { "xiyaowong/virtcolumn.nvim",            event = "VeryLazy" },
   {
     "hedyhli/outline.nvim",
     lazy = true,

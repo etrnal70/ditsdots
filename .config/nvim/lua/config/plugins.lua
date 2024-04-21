@@ -15,8 +15,9 @@ require("lazy").setup {
   spec = {
     { import = "plugins" },
     -- stdlib
+    { "vhyrro/luarocks.nvim",  priority = 1000, config = true },
     { "nvim-lua/plenary.nvim", lazy = true },
-    { "MunifTanjim/nui.nvim", lazy = true },
+    { "MunifTanjim/nui.nvim",  lazy = true },
 
     -- Completion
     {
@@ -82,6 +83,7 @@ require("lazy").setup {
       "nvim-neotest/neotest",
       -- lazy = true,
       dependencies = {
+        "nvim-neotest/nvim-nio",
         "nvim-neotest/neotest-go",
         "nvim-neotest/neotest-python",
         "rouge8/neotest-rust",
@@ -115,6 +117,7 @@ require("lazy").setup {
     {
       "rest-nvim/rest.nvim",
       ft = "http",
+      dependencies = { "luarocks.nvim" },
       keys = {
         { "<leader>rr", "<Plug>RestNvim" },
         { "<leader>rp", "<Plug>RestNvimPreview" },
@@ -137,8 +140,8 @@ require("lazy").setup {
     },
 
     -- Lua development
-    { "rafcamlet/nvim-luapad", cmd = "Luapad" },
-    { "paretje/nvim-man", cmd = { "Man", "VMan" } },
+    { "rafcamlet/nvim-luapad",       cmd = "Luapad" },
+    { "paretje/nvim-man",            cmd = { "Man", "VMan" } },
   },
   change_detection = {
     enabled = false,

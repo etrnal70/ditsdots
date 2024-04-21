@@ -10,6 +10,7 @@ M.servers = {
   -- "dockerls",
   "flutter",
   "gopls",
+  "jdtls",
   "jsonls",
   -- "lua_lsp",
   -- "marksman",
@@ -23,7 +24,7 @@ M.servers = {
   -- "taplo",
   "texlab",
   "typst",
-  "vts",
+  -- "vts",
   "yamlls",
   "zls",
 }
@@ -98,6 +99,10 @@ M.setup_autocmds = function()
 
       local bufnr = args.buf
       local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if not client then
+        return
+      end
+
       local map = utils.keymap
 
       -- LSP Keymapping
@@ -149,16 +154,18 @@ M.setup_autocmds = function()
       -- Remove when dyanmicRegistration support semanticTokens
       if client.name == "gopls" and not client.server_capabilities.semanticTokensProvider then
         local semantic = client.config.capabilities.textDocument.semanticTokens
-        client.server_capabilities.semanticTokensProvider = {
-          full = true,
-          legend = { tokenModifiers = semantic.tokenModifiers, tokenTypes = semantic.tokenTypes },
-          range = true,
-        }
+        if semantic then
+          client.server_capabilities.semanticTokensProvider = {
+            full = true,
+            legend = { tokenModifiers = semantic.tokenModifiers, tokenTypes = semantic.tokenTypes },
+            range = true,
+          }
+        end
       end
 
       -- Inlay Hints
       if client.supports_method "textDocument/inlayHint" then
-        lsp.inlay_hint.enable(bufnr, true)
+        lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
 
       -- nvim-navic
