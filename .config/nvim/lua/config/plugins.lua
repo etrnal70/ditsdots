@@ -42,6 +42,7 @@ require("lazy").setup {
           "petertriho/cmp-git",
           config = true,
         },
+        "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-emoji",
         "hrsh7th/cmp-buffer",

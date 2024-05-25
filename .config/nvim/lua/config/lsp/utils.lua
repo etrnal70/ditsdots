@@ -115,7 +115,6 @@ M.setup_autocmds = function()
       map(bufnr, "n", "gy", ":Glance type_definitons<CR>")
       map(bufnr, "n", "gr", ":Glance references<CR>")
       map(bufnr, "n", "gs", lsp.buf.document_symbol)
-      -- map(bufnr, "n", "gw", lsp.buf.workspace_symbol)
       map(bufnr, { "n", "v" }, "ga", lsp.buf.code_action)
       map(bufnr, "n", "gw", telescope.lsp_dynamic_workspace_symbols)
       map(bufnr, "i", "<C-k>", lsp.buf.signature_help)
@@ -148,19 +147,6 @@ M.setup_autocmds = function()
           { "BufEnter", "CursorHold", "InsertLeave" },
           { buffer = bufnr, callback = lsp.codelens.refresh }
         )
-      end
-
-      -- TODO Workaround for gopls semantic tokens
-      -- Remove when dyanmicRegistration support semanticTokens
-      if client.name == "gopls" and not client.server_capabilities.semanticTokensProvider then
-        local semantic = client.config.capabilities.textDocument.semanticTokens
-        if semantic then
-          client.server_capabilities.semanticTokensProvider = {
-            full = true,
-            legend = { tokenModifiers = semantic.tokenModifiers, tokenTypes = semantic.tokenTypes },
-            range = true,
-          }
-        end
       end
 
       -- Inlay Hints

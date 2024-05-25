@@ -10,7 +10,7 @@ cmp.setup {
   enabled = function()
     local context = require "cmp.config.context"
     -- Disable completion on comment
-    return not context.in_treesitter_capture "comment" and not context.in_syntax_group "Comment"
+    return not (context.in_treesitter_capture "comment" or context.in_syntax_group "Comment")
   end,
   formatting = {
     format = function(_, vim_item)

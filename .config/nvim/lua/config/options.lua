@@ -1,10 +1,10 @@
 local opt = vim.opt
 
-opt.termguicolors = true -- Use GUI colors in terminal
-opt.hidden = true -- Hide unloaded buffer
+opt.termguicolors = true          -- Use GUI colors in terminal
+opt.hidden = true                 -- Hide unloaded buffer
 opt.lazyredraw = false
 opt.clipboard = { "unnamedplus" } -- Enable system-wide clipboard
-opt.mouse = "n" -- Mouse only on normal mode
+opt.mouse = "n"                   -- Mouse only on normal mode
 opt.updatetime = 100
 opt.ttimeoutlen = 0
 opt.showtabline = 2
@@ -14,7 +14,7 @@ opt.diffopt:append { "algorithm:histogram", "indent-heuristic", "linematch:60" }
 opt.cmdheight = 0
 opt.autoread = false
 
-opt.foldlevel = 99 -- Open folds when opening file
+opt.foldlevel = 99    -- Open folds when opening file
 opt.foldlevelstart = 99
 opt.foldenable = true -- Prevent folding upon opening file
 opt.foldcolumn = "0"
@@ -124,7 +124,7 @@ vim.g.tex_flavor = "latex"
 vim.diagnostic.config {
   float = {
     border = "solid",
-    source = "always",
+    source = true,
   },
   -- signs = {
   --   severity = { min = vim.diagnostic.severity.WARN },

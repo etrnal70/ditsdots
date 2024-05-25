@@ -1,5 +1,19 @@
 local cmp = require "cmp"
-local cmp_compare = require "cmp.config.compare"
+
+-- `:` cmdline setup.
+cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = "path" },
+  }, {
+    {
+      name = "cmdline",
+      option = {
+        ignore_cmds = { "Man", "!" },
+      },
+    },
+  }),
+})
 
 -- Markdown
 cmp.setup.filetype("markdown", {
@@ -44,10 +58,10 @@ cmp.setup.filetype("toml", {
 -- Gitcommit
 cmp.setup.filetype("gitcommit", {
   sources = {
-    { name = "luasnip", option = { show_autosnippets = true } },
+    { name = "luasnip",            option = { show_autosnippets = true } },
     { name = "conventionalcommits" },
     { name = "git" },
-    { name = "emoji", insert = true },
+    { name = "emoji",              insert = true },
   },
 })
 

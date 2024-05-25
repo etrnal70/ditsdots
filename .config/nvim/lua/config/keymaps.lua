@@ -4,6 +4,19 @@ local map = function(mode, l, r, opts)
   vim.keymap.set(mode, l, r, opts)
 end
 
+-- Resize window using Ctrl + Alt + <hjkl>
+-- if vim.fn.has "mac" == 1 then
+--   map("n", "<C->", ":resize +2<CR>")
+--   map("n", "<C-Ô>", ":resize -2<CR>")
+--   map("n", "<C-Ó>", ":vertical resize +2<CR>")
+--   map("n", "<C-Ò>", ":vertical resize -2<CR>")
+-- else
+map("n", "<C-A-k>", ":resize +2<CR>")
+map("n", "<C-A-j>", ":resize -2<CR>")
+map("n", "<C-A-h>", ":vertical resize +2<CR>")
+map("n", "<C-A-l>", ":vertical resize -2<CR>")
+-- end
+
 -- Switch active buffer with s + <hjkl>
 map("", "sh", "<C-w>h")
 map("", "sk", "<C-w>k")
@@ -18,12 +31,6 @@ map("n", "<leader>tc", ":tabclose<CR>")
 -- Move lines up and down
 map("v", "J", ":m '>+1<CR>gv=gv")
 map("v", "K", ":m '>-2<CR>gv=gv")
-
--- Resize window using Ctrl + Alt + <hjkl>
-map("n", "<C-A-k>", ":resize +2<CR>")
-map("n", "<C-A-j>", ":resize -2<CR>")
-map("n", "<C-A-h>", ":vertical resize +2<CR>")
-map("n", "<C-A-l>", ":vertical resize -2<CR>")
 
 -- Search in range
 map("x", "/", "<Esc>/\\%V")

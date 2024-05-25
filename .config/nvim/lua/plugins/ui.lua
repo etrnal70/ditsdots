@@ -253,7 +253,6 @@ return {
     config = function()
       local tele = require "telescope"
       local actions = require "telescope.actions"
-      local themes = require "telescope.themes"
 
       local default_ivy = {
         theme = "ivy",
@@ -591,7 +590,7 @@ return {
         bt_ignore = { "terminal", "nofile" },
         segments = {
           {
-            sign = { namespace = { "gitsigns_extmark_signs_" }, maxwidth = 1, colwidth = 1, auto = false },
+            sign = { namespace = { "gitsigns_signs_" }, maxwidth = 1, colwidth = 1, auto = false },
             click = "v:lua.ScSa",
           },
           {
@@ -674,16 +673,15 @@ return {
       }
     end,
   },
-  -- TODO Can this be replaced with neodim ?
   {
     "levouh/tint.nvim",
     event = "BufWinEnter",
     opts = {
-      tint = -20,
-      highlight_ignore_patterns = { "WinSeparator", "Status.*" },
+      tint = -35,
+      highlight_ignore_patterns = { "WinSeparator", "Status.*", "SymbolUsage.*" },
       window_ignore_function = function(winid)
         local buf = vim.api.nvim_win_get_buf(winid)
-        local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+        local ft = vim.api.nvim_get_option_value("ft", { buf = buf })
 
         if ft == "neo-tree" then
           return true
