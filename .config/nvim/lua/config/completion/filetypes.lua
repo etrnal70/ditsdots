@@ -65,19 +65,20 @@ cmp.setup.filetype("gitcommit", {
   },
 })
 
--- TelescopePrompt
-cmp.setup.filetype("TelescopePrompt", {
-  enabled = false,
-})
-
 -- SQL Family
 cmp.setup.filetype({ "sql", "msql", "plsql" }, {
   { name = "luasnip" },
   { name = "nvim_lsp" },
 })
 
+-- nvim-dap
 cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
   sources = {
     { name = "dap" },
   },
+})
+
+-- Blacklisted filetypes
+cmp.setup.filetype({ "TelescopePrompt", "neo-tree", "neo-tree-popup" }, {
+  enabled = false,
 })

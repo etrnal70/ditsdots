@@ -7,7 +7,7 @@ M.setup = function(capabilities)
       autostart = true,
       cmd = { "vtsls", "--stdio" },
       filetypes = { "typescript", "javascript" },
-      root_dir = vim.loop.cwd,
+      root_dir = vim.uv.cwd,
     },
   }
 

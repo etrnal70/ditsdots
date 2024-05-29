@@ -20,7 +20,7 @@ local spin = function()
   end
 end
 
-local timer = vim.loop.new_timer()
+local timer = vim.uv.new_timer()
 local start_loop = function()
   timer:start(0, 500, function()
     vim.defer_fn(spin, 500)

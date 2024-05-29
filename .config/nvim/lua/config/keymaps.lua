@@ -51,8 +51,12 @@ map("t", "<esc>", "<C-\\><C-n>")
 
 -- Diagnostics
 map("n", "<leader>e", vim.diagnostic.open_float)
-map("n", "[d", vim.diagnostic.goto_next)
-map("n", "]d", vim.diagnostic.goto_prev)
+map("n", "[d", function()
+  vim.diagnostic.jump { count = 1 }
+end)
+map("n", "]d", function()
+  vim.diagnostic.jump { count = -1 }
+end)
 
 -- Git-related
 map("n", "<leader>gL", ":Flogsplit<CR>")

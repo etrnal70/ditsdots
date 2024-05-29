@@ -213,18 +213,20 @@ return {
         -- end
 
         -- Diagnostics
-        local errors = vim.tbl_count(vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.ERROR }))
-        local warnings = vim.tbl_count(vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN }))
-        local hints = vim.tbl_count(vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.HINT }))
+        if vim.diagnostic.is_enabled then
+          local errors = vim.tbl_count(vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.ERROR }))
+          local warnings = vim.tbl_count(vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.WARN }))
+          local hints = vim.tbl_count(vim.diagnostic.get(nil, { severity = vim.diagnostic.severity.HINT }))
 
-        if errors ~= 0 then
-          f.add { "  " .. errors .. " ", fg = "#222222", bg = "#EC5F67" }
-        end
-        if warnings ~= 0 then
-          f.add { "  " .. warnings .. " ", fg = "#222222", bg = "#FABD2F" }
-        end
-        if hints ~= 0 then
-          f.add { " 󰌶 " .. hints .. " ", fg = "#222222", bg = "#A0B9D8" }
+          if errors ~= 0 then
+            f.add { "  " .. errors .. " ", fg = "#222222", bg = "#EC5F67" }
+          end
+          if warnings ~= 0 then
+            f.add { "  " .. warnings .. " ", fg = "#222222", bg = "#FABD2F" }
+          end
+          if hints ~= 0 then
+            f.add { " 󰌶 " .. hints .. " ", fg = "#222222", bg = "#A0B9D8" }
+          end
         end
 
         -- Git Branch
@@ -253,6 +255,13 @@ return {
     config = function()
       local tele = require "telescope"
       local actions = require "telescope.actions"
+      local action_state = require "telescope.actions.state"
+
+      local downward_strategy = {
+        "bottom_pane",
+        "cursor",
+        "horizontal",
+      }
 
       local default_ivy = {
         theme = "ivy",
@@ -290,8 +299,22 @@ return {
           },
           mappings = {
             i = {
-              ["<S-Tab>"] = actions.move_selection_previous,
-              ["<Tab>"] = actions.move_selection_next,
+              ["<S-Tab>"] = function(prompt_bufnr)
+                local current_picker = action_state.get_current_picker(prompt_bufnr)
+                if vim.tbl_contains(downward_strategy, current_picker.layout_strategy) then
+                  return actions.move_selection_previous(prompt_bufnr)
+                else
+                  return actions.move_selection_next(prompt_bufnr)
+                end
+              end,
+              ["<Tab>"] = function(prompt_bufnr)
+                local current_picker = action_state.get_current_picker(prompt_bufnr)
+                if vim.tbl_contains(downward_strategy, current_picker.layout_strategy) then
+                  return actions.move_selection_next(prompt_bufnr)
+                else
+                  return actions.move_selection_previous(prompt_bufnr)
+                end
+              end,
               ["<esc>"] = actions.close,
               ["<C-o>"] = actions.toggle_selection,
               ["<C-O>"] = actions.toggle_all,
@@ -453,17 +476,8 @@ return {
           event = "neo_tree_buffer_enter",
           handler = function()
             vim.opt_local.cursorline = true
-            -- vim.cmd "set cursorlineopt=both"
-            -- vim.cmd "hi Cursor blend=100"
           end,
         },
-        -- {
-        --   event = "neo_tree_buffer_leave",
-        --   handler = function()
-        --     vim.cmd "hi Cursor blend=0"
-        --     vim.cmd "set cursorlineopt=number"
-        --   end,
-        -- },
       },
       filesystem = {
         async_directory_scan = "always",
@@ -472,6 +486,18 @@ return {
           hide_by_name = {
             "node_modules",
             "__pycache__",
+          },
+          always_show = {
+            ".github",
+            ".kube",
+          },
+        },
+        window = {
+          fuzzy_finder_mappings = {
+            ["<down>"] = "move_cursor_down",
+            ["<C-j>"] = "move_cursor_down",
+            ["<up>"] = "move_cursor_up",
+            ["<C-k>"] = "move_cursor_up",
           },
         },
       },
