@@ -8,8 +8,6 @@ M.setup = function(capabilities)
         Lua = {
           workspace = {
             checkThirdParty = false,
-            -- library = vim.api.nvim_get_runtime_file("", true),
-            -- maxPreload = 2000,
           },
           completion = {
             workspaceWord = true,
@@ -22,6 +20,7 @@ M.setup = function(capabilities)
           },
           diagnostics = {
             globals = {
+              "_G",
               "vim",
               "describe",
               "pending",
@@ -51,14 +50,7 @@ M.setup = function(capabilities)
             },
             unusedLocalExclude = { "_*" },
           },
-          format = {
-            enable = false,
-            defaultConfig = {
-              indent_style = "space",
-              indent_size = "2",
-              continuation_indent_size = "2",
-            },
-          },
+          format = { enable = false },
         },
       },
     },

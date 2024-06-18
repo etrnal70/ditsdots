@@ -10,7 +10,11 @@ return {
         opts = {
           floating_window = false,
           always_trigger = true,
-          hint_prefix = " ",
+          hint_prefix = {
+            above = "↙ ",
+            current = "← ",
+            below = "↖ ",
+          },
           hint_inline = function()
             return false
           end,
@@ -27,7 +31,6 @@ return {
             },
           },
           notification = {
-            -- filter = vim.log.levels.WARN,
             override_vim_notify = true,
             window = { winblend = 0, max_width = 75 },
           },
@@ -42,7 +45,7 @@ return {
               enable = true,
               icon = "  •",
             },
-            preview_win_opts = { -- Configure preview window options
+            preview_win_opts = {
               cursorline = true,
               number = true,
               wrap = true,
@@ -192,7 +195,8 @@ return {
         },
       },
       {
-        "folke/neodev.nvim",
+        "folke/lazydev.nvim",
+        ft = "lua",
         opts = {},
       },
     },

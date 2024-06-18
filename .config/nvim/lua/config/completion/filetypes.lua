@@ -33,6 +33,15 @@ cmp.setup.filetype("tex", {
   },
 })
 
+-- Lua
+cmp.setup.filetype("lua", {
+  sources = {
+    { name = "lazydev", group_index = 0 },
+    { name = "luasnip", option = { show_autosnippets = true } },
+    { name = "path" },
+  },
+})
+
 -- Python
 -- cmp.setup.filetype("python", {
 --   sorting = {

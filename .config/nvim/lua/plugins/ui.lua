@@ -606,7 +606,6 @@ return {
   },
   {
     "luukvbaal/statuscol.nvim",
-    branch = "0.10",
     config = function()
       local builtin = require "statuscol.builtin"
       require("statuscol").setup {
@@ -645,22 +644,21 @@ return {
       },
     },
   },
-  {
-    "stevearc/aerial.nvim",
-    config = true,
-  },
   { "xiyaowong/virtcolumn.nvim",            event = "VeryLazy" },
   {
     "hedyhli/outline.nvim",
     lazy = true,
     cmd = { "Outline", "OutlineOpen" },
+    keys = {
+      { "<leader>ss", "<cmd>Outline<CR>", desc = "Toggle outline" },
+    },
     config = function()
       require("outline").setup {
         outline_window = {
           wrap = true,
           width = 35,
           relative_width = false,
-          show_cursorline = true,
+          show_cursorline = "focus_in_outline",
           hide_cursor = true,
         },
         outline_items = {
@@ -670,7 +668,7 @@ return {
           auto_preview = true,
           border = require("config.utils").transparent_border,
           width = 30,
-          winhl = "NormalNC:",
+          -- winhl = "NormalNC:",
         },
         symbol_folding = {
           autofold_depth = 1,
@@ -724,7 +722,7 @@ return {
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}
-        local suffix = ("  %d "):format(endLnum - lnum)
+        local suffix = (" ↙ %d "):format(endLnum - lnum)
         local sufWidth = vim.fn.strdisplaywidth(suffix)
         local targetWidth = width - sufWidth
         local curWidth = 0

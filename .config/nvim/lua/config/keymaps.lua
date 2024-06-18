@@ -67,6 +67,3 @@ map("n", "<leader>gcl", ":diffget //3<CR>")
 map("n", "[c", function()
   require("treesitter-context").go_to_context()
 end)
-
--- symbols-outline
-map("n", "<leader>ss", ":Outline<CR>")

@@ -21,9 +21,17 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Redraw tabline on diagnostic update
+-- Redraw statuscolumn and tabline on diagnostic update
 vim.api.nvim_create_autocmd("DiagnosticChanged", {
   callback = function(_)
-    vim.api.nvim__redraw { tabline = true }
+    vim.api.nvim__redraw { flush = true, tabline = true, statuscolumn = true }
+  end,
+})
+
+-- Redraw statuscolumn on gitsigns update
+vim.api.nvim_create_autocmd("User", {
+  pattern = "GitSignsUpdate",
+  callback = function(_)
+    vim.api.nvim__redraw { flush = true, statuscolumn = true }
   end,
 })

@@ -127,9 +127,6 @@ hl("LspCodeLensTextSign", { fg = "#777777" })
 hl("LspCodeLensSeparator", { fg = "#333333", bold = true })
 hl("LspCodeLensTextSeparator", { link = "LspCodeLensSeparator" })
 
--- symbols-outline
--- hl("FocusedSymbol", { link = "CursorLine" })
-
 -- local-highlight
 hl("LocalHighlight", { bg = "#29313D" })
 
