@@ -4,11 +4,12 @@ return {
     "mfussenegger/nvim-lint",
     config = function()
       require("lint").linters_by_ft = {
+        bash = { "shellcheck" },
         dockerfile = { "hadolint" },
         gitcommit = { "commitlint" },
         go = { "golangcilint" },
+        proto = { "protolint" },
         sh = { "shellcheck" },
-        bash = { "shellcheck" },
         sql = { "sqlfluff" },
         yaml = { "yamllint" },
         zsh = { "zsh" },

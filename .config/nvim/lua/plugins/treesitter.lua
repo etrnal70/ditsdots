@@ -92,7 +92,7 @@ return {
           }
         end,
       },
-      { "danymat/neogen", config = true },
+      { "danymat/neogen",         config = true },
       {
         "nvim-treesitter/nvim-treesitter-context",
         config = true,

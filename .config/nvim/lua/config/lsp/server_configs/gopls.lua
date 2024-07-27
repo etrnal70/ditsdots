@@ -5,7 +5,6 @@ M.setup = function(capabilities)
     cmd = { "gopls", "-remote=auto" },
     settings = {
       gopls = {
-        ["build.allowImplicitNetworkAccess"] = true,
         analyses = { unusedparams = true, unreachable = true },
         codelenses = {
           generate = true,
