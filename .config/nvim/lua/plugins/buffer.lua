@@ -27,17 +27,6 @@ return {
     end,
   },
   {
-    "NvChad/nvim-colorizer.lua",
-    ft = { "css", "dart", "lua" },
-    opts = {
-      filetypes = { "css", "dart", "lua" },
-      user_default_options = {
-        names = false,
-        mode = "virtualtext",
-      },
-    },
-  },
-  {
     "tzachar/local-highlight.nvim",
     event = "BufReadPre",
     opts = {

@@ -21,7 +21,9 @@ require("lazy").setup {
 
     -- Completion
     {
-      "hrsh7th/nvim-cmp",
+      -- "hrsh7th/nvim-cmp",
+      "yioneko/nvim-cmp",
+      branch = "perf",
       event = "InsertEnter",
       config = function()
         require "config.completion"
@@ -42,6 +44,7 @@ require("lazy").setup {
           "petertriho/cmp-git",
           config = true,
         },
+        "onsails/lspkind.nvim",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-emoji",

@@ -166,8 +166,12 @@ return {
         },
       },
       {
-        "lvimuser/document-color.nvim",
-        config = true,
+        -- "brenoprata10/nvim-highlight-colors",
+        dir = "~/.local/share/nvim/lazy/nvim-highlight-colors",
+        opts = {
+          render = "virtual",
+          virtual_symbol = "⏺",
+        },
       },
       "yioneko/nvim-type-fmt",
       "p00f/clangd_extensions.nvim",

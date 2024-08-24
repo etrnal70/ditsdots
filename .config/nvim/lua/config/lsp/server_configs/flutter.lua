@@ -17,7 +17,7 @@ M.setup = function(capabilities)
       enabled = true,
     },
     closing_tags = {
-      highlight = "Special",
+      highlight = "Comment",
       prefix = " ❱ ",
     },
     dev_log = {
@@ -32,11 +32,13 @@ M.setup = function(capabilities)
       auto_open = false,
     },
     lsp = {
-      on_attach = function(client, bufnr)
+      -- color = {
+      --   enabled = true,
+      -- },
+      on_attach = function(_, bufnr)
         local utils = require "config.utils"
-        require("document-color").buf_attach(bufnr)
         require("telescope").load_extension "flutter"
-        utils.buf_map(bufnr, "n", "<leader>Fl", ":Telescope flutter commands<CR>")
+        utils.keymap(bufnr, "n", "<leader>Fl", ":Telescope flutter commands<CR>")
       end,
       capabilities = capabilities,
     },

@@ -13,10 +13,19 @@ cmp.setup {
     return not (context.in_treesitter_capture "comment" or context.in_syntax_group "Comment")
   end,
   formatting = {
-    format = function(_, vim_item)
-      vim_item.kind = utils.item_kinds[vim_item.kind]
-      vim_item.abbr = utils.concat_str(vim_item.abbr)
-      return vim_item
+    fields = { "abbr", "kind", "menu" },
+    maxwidth = 50,
+    -- format = require("nvim-highlight-colors").format,
+    format = function(entry, item)
+      local color_item = require("nvim-highlight-colors").format(entry, { kind = item.kind })
+      item = require("lspkind").cmp_format { mode = "symbol" } (entry, item)
+      -- item.kind = utils.item_kinds[item.kind]
+      item.abbr = utils.concat_str(item.abbr)
+      if color_item.abbr_hl_group then
+        item.kind_hl_group = color_item.abbr_hl_group
+        item.kind = color_item.abbr
+      end
+      return item
     end,
   },
   mapping = cmp.mapping.preset.insert {

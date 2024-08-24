@@ -7,7 +7,7 @@ return {
         bash = { "shellcheck" },
         dockerfile = { "hadolint" },
         gitcommit = { "commitlint" },
-        go = { "golangcilint" },
+        -- go = { "golangcilint" },
         proto = { "protolint" },
         sh = { "shellcheck" },
         sql = { "sqlfluff" },
