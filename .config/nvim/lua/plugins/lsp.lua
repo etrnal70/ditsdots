@@ -166,8 +166,7 @@ return {
         },
       },
       {
-        -- "brenoprata10/nvim-highlight-colors",
-        dir = "~/.local/share/nvim/lazy/nvim-highlight-colors",
+        "brenoprata10/nvim-highlight-colors",
         opts = {
           render = "virtual",
           virtual_symbol = "⏺",

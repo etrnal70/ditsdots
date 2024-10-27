@@ -21,9 +21,7 @@ require("lazy").setup {
 
     -- Completion
     {
-      -- "hrsh7th/nvim-cmp",
-      "yioneko/nvim-cmp",
-      branch = "perf",
+      "hrsh7th/nvim-cmp",
       event = "InsertEnter",
       config = function()
         require "config.completion"

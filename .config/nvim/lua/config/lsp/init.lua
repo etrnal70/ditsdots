@@ -4,7 +4,7 @@ utils.override_handlers()
 utils.setup_autocmds()
 
 for _, server in pairs(utils.servers) do
-  require("config.lsp.server_configs." .. server).setup(utils.capabilities)
+  require("config.lsp.server_configs." .. server).setup(utils.make_capabilities())
 end
 
 -- Java-only

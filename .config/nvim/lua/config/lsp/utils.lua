@@ -45,50 +45,15 @@ M.override_handlers = function()
   lsp.handlers["workspace/symbol"] = telescope.lsp_workspace_symbols
 end
 
-M.capabilities = lsp.protocol.make_client_capabilities()
-M.capabilities.textDocument = {
-  completion = {
-    dynamicRegistration = false,
-    completionItem = {
-      snippetSupport = true,
-      commitCharactersSupport = true,
-      deprecatedSupport = true,
-      preselectSupport = true,
-      tagSupport = { valueSet = { 1 } },
-      insertReplaceSupport = true,
-      resolveSupport = {
-        properties = {
-          "documentation",
-          "detail",
-          "additionalTextEdits",
-          "sortText",
-          "filterText",
-          "insertText",
-          "textEdit",
-          "insertTextFormat",
-          "insertTextMode",
-        },
-      },
-      insertTextModeSupport = { valueSet = { 1, 2 } },
-      labelDetailsSupport = true,
-    },
-    contextSupport = true,
-    insertTextMode = 1,
-    completionList = {
-      itemDefaults = {
-        "commitCharacters",
-        "editRange",
-        "insertTextFormat",
-        "insertTextMode",
-        "data",
-      },
-    },
-  },
-  foldingRange = {
+M.make_capabilities = function()
+  local cap = lsp.protocol.make_client_capabilities()
+  cap.textDocument.foldingRange = {
     dynamicRegistration = false,
     lineFoldingOnly = true,
-  },
-}
+  }
+
+  return cap
+end
 
 M.setup_autocmds = function()
   vim.api.nvim_create_autocmd("LspAttach", {
