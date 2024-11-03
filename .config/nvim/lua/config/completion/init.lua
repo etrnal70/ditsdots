@@ -107,4 +107,5 @@ cmp.event:on("confirm_done", utils.append_space)
 -- Additional configs
 configs.load_autopairs()
 configs.load_luasnip()
+
 require "config.completion.filetypes"

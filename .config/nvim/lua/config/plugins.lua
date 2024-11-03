@@ -22,7 +22,7 @@ require("lazy").setup {
     -- Completion
     {
       "hrsh7th/nvim-cmp",
-      event = "InsertEnter",
+      event = { "InsertEnter", "CmdlineEnter" },
       config = function()
         require "config.completion"
       end,
