@@ -23,7 +23,7 @@ M.servers = {
   -- "rust_analyzer",
   -- "taplo",
   "texlab",
-  "typst",
+  "tinymist",
   -- "vts",
   "yamlls",
   "zls",

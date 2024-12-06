@@ -1,9 +1,9 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").typst_lsp.setup {
+  require("lspconfig").tinymist.setup {
     settings = {
-      exportPdf = "onSave",
+      single_file_support = true,
     },
     capabilities = capabilities,
   }

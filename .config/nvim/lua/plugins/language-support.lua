@@ -43,6 +43,7 @@ return {
       },
       formatters_by_ft = {
         css = { "prettierd" },
+        gitcommit = { "commitmsgfmt" },
         html = { "prettierd" },
         javascript = { "prettierd" },
         json = { "prettierd" },
