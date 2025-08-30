@@ -8,7 +8,7 @@ return {
           enable = true,
           use_languagetree = true,
           disable = function(_, buf)
-            fName = vim.api.nvim_buf_get_name(buf)
+            local fName = vim.api.nvim_buf_get_name(buf)
             -- Check filetype
             if vim.filetype.match { filename = fName } == "csv" then
               return true
@@ -66,7 +66,7 @@ return {
       {
         "chrisgrieser/nvim-various-textobjs",
         config = function()
-          require("various-textobjs").setup { useDefaultKeymaps = true }
+          require("various-textobjs").setup { keymaps = { useDefault = true } }
         end,
       },
       "nvim-treesitter/nvim-treesitter-refactor",

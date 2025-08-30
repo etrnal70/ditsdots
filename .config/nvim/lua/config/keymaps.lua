@@ -4,6 +4,10 @@ local map = function(mode, l, r, opts)
   vim.keymap.set(mode, l, r, opts)
 end
 
+-- Personal scripts
+-- Yank current buffer's filepath
+map("n", "yP", require("config.utils").get_current_filepath)
+
 -- Resize window using Ctrl + Alt + <hjkl>
 -- if vim.fn.has "mac" == 1 then
 --   map("n", "<C->", ":resize +2<CR>")

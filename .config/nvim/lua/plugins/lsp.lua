@@ -6,21 +6,6 @@ return {
     end,
     dependencies = {
       {
-        "ray-x/lsp_signature.nvim",
-        opts = {
-          floating_window = false,
-          always_trigger = true,
-          hint_prefix = {
-            above = "↙ ",
-            current = "← ",
-            below = "↖ ",
-          },
-          hint_inline = function()
-            return false
-          end,
-        },
-      },
-      {
         "j-hui/fidget.nvim",
         opts = {
           progress = {
@@ -32,7 +17,7 @@ return {
           },
           notification = {
             override_vim_notify = true,
-            window = { winblend = 0, max_width = 75 },
+            window = { max_width = 75 },
           },
         },
       },
@@ -194,6 +179,10 @@ return {
         opts = {
           settings = {
             code_lens = "implementations_only",
+            jsx_close_tag = {
+              enable = true,
+              filetypes = { "javascriptreact", "typescriptreact" },
+            },
           },
         },
       },

@@ -180,13 +180,6 @@ hl("DapLineBreakpointStopped", { bg = "#EC5F67", fg = nil })
 hl("DapStopped", { fg = "#99C794", bg = nil })
 hl("DapLineStopped", { bg = "#264323", fg = nil })
 
--- noice
-hl("NoiceMini", { link = "Normal" })
-hl("NoiceLspProgressTitle", { bg = nil, fg = "#AAAAAA" })
-hl("NotificationInfo", { fg = "#A5B4FC", bg = nil })
-hl("NotificationError", { fg = "#FCA5A5", bg = nil })
-hl("NotificationWarning", { fg = "#FBC19D", bg = nil })
-
 -- glance
 hl("GlancePreviewNormal", { link = "TelescopeResultsNormal" })
 hl("GlancePreviewMatch", { bg = "#503E16" })

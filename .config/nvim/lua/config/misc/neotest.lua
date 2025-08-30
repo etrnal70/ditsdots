@@ -6,8 +6,7 @@ function M.setup()
       require "neotest-dart" {
         command = "flutter",
       },
-      require "neotest-go",
-      -- require "neotest-rust",
+      require "neotest-golang",
       require "rustaceanvim.neotest",
       require "neotest-jest",
       require "neotest-vitest",

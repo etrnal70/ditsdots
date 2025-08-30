@@ -523,45 +523,6 @@ return {
     },
   },
   {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      cmdline = {
-        enabled = true,
-        view = "cmdline",
-      },
-      messages = { enabled = false },
-      popupmenu = { enabled = false },
-      notify = {
-        enabled = false,
-        view = "mini",
-        replace = true,
-      },
-      lsp = {
-        hover = {
-          opts = {
-            size = { max_height = 19, max_width = 60 },
-          },
-        },
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
-          ["vim.lsp.util.stylize_markdown"] = false,
-          ["cmp.entry.get_documentation"] = false,
-        },
-        progress = { enabled = false },
-        signature = { enabled = false },
-      },
-      health = { checker = false },
-      views = {
-        mini = {
-          win_options = {
-            winblend = 0,
-          },
-        },
-      },
-    },
-  },
-  {
     "stevearc/dressing.nvim",
     lazy = true,
     init = function()
@@ -576,6 +537,7 @@ return {
     end,
     opts = {
       input = {
+        enabled = true,
         border = "solid",
         win_options = { winhighlight = "NormalFloat:Normal" },
       },

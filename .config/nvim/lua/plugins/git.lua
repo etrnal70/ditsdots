@@ -106,14 +106,6 @@ return {
   },
   "rhysd/committia.vim",
   {
-    "akinsho/git-conflict.nvim",
-    event = "BufReadPre",
-    opts = {
-      default_mappings = true,
-      disable_diagnostics = true,
-    },
-  },
-  {
     "daliusd/ghlite.nvim",
     config = function()
       require("ghlite").setup {
@@ -138,5 +130,4 @@ return {
     cmd = "Octo",
     config = true,
   },
-  -- "ThePrimeagen/git-worktree.nvim",
 }

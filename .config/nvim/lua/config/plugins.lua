@@ -86,7 +86,7 @@ require("lazy").setup {
       -- lazy = true,
       dependencies = {
         "nvim-neotest/nvim-nio",
-        "nvim-neotest/neotest-go",
+        "fredrikaverpil/neotest-golang",
         "nvim-neotest/neotest-python",
         "rouge8/neotest-rust",
         "sidlatau/neotest-dart",

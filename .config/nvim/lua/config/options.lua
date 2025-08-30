@@ -145,6 +145,7 @@ vim.diagnostic.config {
   severity_sort = true,
   underline = true,
   update_in_insert = true,
+  virtual_lines = { current_line = true },
   virtual_text = {
     format = function(diag)
       if #diag > 1 then

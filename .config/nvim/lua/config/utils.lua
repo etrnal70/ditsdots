@@ -19,4 +19,9 @@ M.keymap = function(bufnr, mode, l, r, opts)
   vim.keymap.set(mode, l, r, opts)
 end
 
+M.get_current_filepath = function()
+  local filepath = vim.fn.expand "%:p"
+  vim.fn.setreg("+", '"' .. filepath .. '"')
+end
+
 return M

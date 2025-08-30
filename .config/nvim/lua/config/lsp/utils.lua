@@ -34,11 +34,6 @@ M.override_handlers = function()
   lsp.handlers["callHierarchy/outgoingCalls"] = telescope.lsp_outgoing_calls
   lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
   lsp.handlers["textDocument/documentSymbol"] = telescope.lsp_document_symbols
-  lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
-    border = "solid",
-    max_width = 60,
-    max_height = 19,
-  })
   lsp.handlers["textDocument/implementation"] = telescope.lsp_implementations
   lsp.handlers["textDocument/references"] = telescope.lsp_references
   lsp.handlers["textDocument/typeDefinition"] = telescope.lsp_type_definitions
@@ -71,7 +66,13 @@ M.setup_autocmds = function()
       local map = utils.keymap
 
       -- LSP Keymapping
-      map(bufnr, "n", "K", lsp.buf.hover)
+      map(bufnr, "n", "K", function()
+        lsp.buf.hover {
+          border = "solid",
+          max_width = math.floor(vim.o.columns * 0.3),
+          max_height = math.floor(vim.o.lines * 0.4),
+        }
+      end)
       map(bufnr, "n", "gD", lsp.buf.declaration)
       map(bufnr, "n", "gR", lsp.buf.rename)
       map(bufnr, "n", "gc", lsp.codelens.run)
@@ -82,7 +83,6 @@ M.setup_autocmds = function()
       map(bufnr, "n", "gs", lsp.buf.document_symbol)
       map(bufnr, { "n", "v" }, "ga", lsp.buf.code_action)
       map(bufnr, "n", "gw", telescope.lsp_dynamic_workspace_symbols)
-      map(bufnr, "i", "<C-k>", lsp.buf.signature_help)
       map(bufnr, "n", "<leader>wl", function()
         vim.notify(vim.inspect(lsp.buf.list_workspace_folders()))
       end)
@@ -92,7 +92,7 @@ M.setup_autocmds = function()
       map(bufnr, "n", "<leader>co", lsp.buf.outgoing_calls)
 
       -- Formatting (Autoformat on save)
-      if client.supports_method "textDocument/formatting" then
+      if client:supports_method("textDocument/formatting", bufnr) then
         vim.api.nvim_create_autocmd("BufWritePre", {
           buffer = bufnr,
           callback = function()
@@ -101,9 +101,27 @@ M.setup_autocmds = function()
         })
       end
 
+      -- Document color
+      if client:supports_method "textDocument/documentColor" then
+        vim.lsp.document_color.enable(true, args.buf, { style = "virtual" })
+      end
+
+      -- Set signature help
+      -- vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP", "InsertEnter" }, {
+      --   callback = function()
+      --     lsp.buf.signature_help {
+      --       border = "solid",
+      --       max_width = math.floor(vim.o.columns * 0.4),
+      --       max_height = math.floor(vim.o.lines * 0.5),
+      --       focus = false,
+      --       focusable = false,
+      --     }
+      --   end,
+      -- })
+
       -- Code Lens
       if
-          client.supports_method "textDocument/codeLens"
+          client:supports_method("textDocument/codeLens", bufnr)
           -- TODO Remove once codelens support virtual lines
           and client.name ~= "rust_analyzer"
           and client.name ~= "jdtls"
@@ -115,12 +133,12 @@ M.setup_autocmds = function()
       end
 
       -- Inlay Hints
-      if client.supports_method "textDocument/inlayHint" then
+      if client:supports_method("textDocument/inlayHint", bufnr) then
         lsp.inlay_hint.enable(true, { bufnr = bufnr })
       end
 
       -- nvim-navic
-      if client.supports_method "textDocument/documentSymbol" then
+      if client:supports_method("textDocument/documentSymbol", bufnr) then
         require("nvim-navic").attach(client, bufnr)
       end
 

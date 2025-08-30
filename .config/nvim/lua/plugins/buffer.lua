@@ -31,6 +31,7 @@ return {
     event = "BufReadPre",
     opts = {
       disable_file_types = { "Glance", "neo-tree" },
+      animate = { enabled = "false" },
     },
   },
   {
