@@ -35,3 +35,11 @@ vim.api.nvim_create_autocmd("User", {
     vim.api.nvim__redraw { flush = true, statuscolumn = true }
   end,
 })
+
+-- Redraw neogit buffer on status change
+vim.api.nvim_create_autocmd("User", {
+  pattern = "NeogitStatusRefreshed",
+  callback = function()
+    vim.cmd "set autoread | checktime"
+  end,
+})

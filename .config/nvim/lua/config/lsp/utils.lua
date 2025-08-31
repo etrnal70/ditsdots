@@ -41,12 +41,16 @@ M.override_handlers = function()
 end
 
 M.make_capabilities = function()
-  local cap = lsp.protocol.make_client_capabilities()
-  cap.textDocument.foldingRange = {
-    dynamicRegistration = false,
-    lineFoldingOnly = true,
+  local cap = {
+    textDocument = {
+      foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true,
+      },
+    },
   }
 
+  cap = require("blink.cmp").get_lsp_capabilities(cap)
   return cap
 end
 
@@ -106,19 +110,6 @@ M.setup_autocmds = function()
         vim.lsp.document_color.enable(true, args.buf, { style = "virtual" })
       end
 
-      -- Set signature help
-      -- vim.api.nvim_create_autocmd({ "TextChangedI", "TextChangedP", "InsertEnter" }, {
-      --   callback = function()
-      --     lsp.buf.signature_help {
-      --       border = "solid",
-      --       max_width = math.floor(vim.o.columns * 0.4),
-      --       max_height = math.floor(vim.o.lines * 0.5),
-      --       focus = false,
-      --       focusable = false,
-      --     }
-      --   end,
-      -- })
-
       -- Code Lens
       if
           client:supports_method("textDocument/codeLens", bufnr)
@@ -141,9 +132,6 @@ M.setup_autocmds = function()
       if client:supports_method("textDocument/documentSymbol", bufnr) then
         require("nvim-navic").attach(client, bufnr)
       end
-
-      -- Register nvim-cmp LSP source
-      require("cmp_nvim_lsp").setup()
     end,
   })
 end

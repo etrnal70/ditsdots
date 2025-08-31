@@ -438,11 +438,6 @@ return {
           symbol = "⏺",
         },
       },
-      -- TODO Remove once nerdfont 3.0 support is merged
-      -- icon = {
-      --   folder_empty = "󰜌",
-      --   folder_empty_open = "󰜌",
-      -- },
       document_symbols = {
         kinds = {
           File = { icon = "󰈙", hl = "Tag" },

@@ -21,38 +21,22 @@ require("lazy").setup {
 
     -- Completion
     {
-      "hrsh7th/nvim-cmp",
-      event = { "InsertEnter", "CmdlineEnter" },
+      "saghen/blink.cmp",
+      dependencies = {
+        "rafamadriz/friendly-snippets",
+        {
+          "nvim-mini/mini.nvim",
+          config = function()
+            require("mini.pairs").setup()
+          end,
+        },
+        "xzbdmw/colorful-menu.nvim",
+        "disrupted/blink-cmp-conventional-commits",
+      },
+      -- version = "1.*",
       config = function()
         require "config.completion"
       end,
-      dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
-        {
-          "saadparwaiz1/cmp_luasnip",
-          dependencies = {
-            {
-              "L3MON4D3/LuaSnip",
-              build = "make install_jsregexp",
-            },
-            "rafamadriz/friendly-snippets",
-          },
-        },
-        {
-          "petertriho/cmp-git",
-          config = true,
-        },
-        "onsails/lspkind.nvim",
-        "hrsh7th/cmp-cmdline",
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-emoji",
-        "hrsh7th/cmp-buffer",
-        "davidsierradz/cmp-conventionalcommits",
-        "kdheepak/cmp-latex-symbols",
-        "lukas-reineke/cmp-under-comparator",
-        "windwp/nvim-autopairs",
-        "rcarriga/cmp-dap",
-      },
     },
 
     -- Theme and Icons

@@ -1,38 +1,8 @@
 local M = {}
 
-local context = require("cmp.config.context")
-local kinds = require("cmp.types.lsp").CompletionItemKind
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-local handlers = require("nvim-autopairs.completion.handlers")
+local kinds = require("blink.cmp.types").CompletionItemKind
 
-M.item_kinds = {
-  Text = " Text",
-  Method = " Method",
-  Function = "ƒ Function",
-  Constructor = " Constructor",
-  Field = "󰓽Field",
-  Variable = " Variable",
-  Class = " Class",
-  Interface = "󰜰 Interface",
-  Module = "󰏗 Module",
-  Property = " Property",
-  Unit = " Unit",
-  Value = "󰎠 Value",
-  Enum = "󰒻Enum",
-  Keyword = "󰌆 Keyword",
-  Snippet = " Snippet",
-  Color = " Color",
-  File = " File",
-  Reference = "Reference",
-  Folder = " Folder",
-  Constant = " Constant",
-  Struct = " Struct",
-  Event = "󰥕Event",
-  Operator = "\u{03a8} Operator",
-  TypeParameter = "󰜢 TypeParameter",
-}
-
-M.allow_list = {
+local allow_list = {
   kinds.Constant,
   kinds.Enum,
   kinds.EnumMember,
@@ -46,7 +16,7 @@ M.allow_list = {
 }
 
 M.allow_append_space = function(entry_kind)
-  for _, val in ipairs(M.allow_list) do
+  for _, val in ipairs(allow_list) do
     if entry_kind == val then
       return true
     end
@@ -55,12 +25,10 @@ M.allow_append_space = function(entry_kind)
   return false
 end
 
-M.append_space = function()
+M.append_space = function(item)
   return function(e)
-    local ts_utils = require("nvim-treesitter.ts_utils")
+    local ts_utils = require "nvim-treesitter.ts_utils"
     local node = ts_utils.get_node_at_cursor(0)
-    local entry = e.entry
-    local item = entry:get_completion_item()
 
     -- Check if there are any char after cursor
     -- local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -84,8 +52,12 @@ M.append_space = function()
 end
 
 M.has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  local col = vim.api.nvim_win_get_cursor(0)[2]
+  if col == 0 then
+    return false
+  end
+  local line = vim.api.nvim_get_current_line()
+  return line:sub(col, col):match "%s" == nil
 end
 
 M.concat_str = function(str)
@@ -94,19 +66,5 @@ M.concat_str = function(str)
   end
   return str
 end
-
-M.on_confirm_done = cmp_autopairs.on_confirm_done({
-  filetypes = {
-    tex = {
-      ["{"] = {
-        kind = {
-          kinds.Function,
-          kinds.Method,
-        },
-        handler = handlers["*"],
-      },
-    },
-  },
-})
 
 return M
