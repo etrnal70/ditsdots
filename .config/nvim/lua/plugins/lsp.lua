@@ -157,7 +157,6 @@ return {
           virtual_symbol = "⏺",
         },
       },
-      "yioneko/nvim-type-fmt",
       "p00f/clangd_extensions.nvim",
       "akinsho/flutter-tools.nvim",
       {

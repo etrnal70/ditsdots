@@ -62,7 +62,8 @@ M.setup_autocmds = function()
       end
 
       local bufnr = args.buf
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      local client_id = args.data.client_id
+      local client = vim.lsp.get_client_by_id(client_id)
       if not client then
         return
       end
@@ -103,6 +104,10 @@ M.setup_autocmds = function()
             lsp.buf.format { bufnr = bufnr }
           end,
         })
+      end
+
+      if client:supports_method("textDocument/onTypeFormatting", bufnr) then
+        vim.lsp.on_type_formatting.enable(true, { client_id = client_id })
       end
 
       -- Document color
