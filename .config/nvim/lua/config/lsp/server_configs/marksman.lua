@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").marksman.setup({
+  vim.lsp.config("marksman", {
     capabilities = capabilities,
   })
 end

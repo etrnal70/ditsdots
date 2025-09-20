@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").pylsp.setup {
+  vim.lsp.config("pylsp", {
     capabilities = capabilities,
     settings = {
       pylsp = {
@@ -18,7 +18,7 @@ M.setup = function(capabilities)
         },
       },
     },
-  }
+  })
 end
 
 return M

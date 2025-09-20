@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").zls.setup({
+  vim.lsp.config("zls", {
     capabilities = capabilities,
   })
 end

@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").texlab.setup {
+  vim.lsp.config("texlab", {
     settings = {
       texlab = {
         auxDirectory = "build",
@@ -21,7 +21,7 @@ M.setup = function(capabilities)
       },
     },
     capabilities = capabilities,
-  }
+  })
 end
 
 return M

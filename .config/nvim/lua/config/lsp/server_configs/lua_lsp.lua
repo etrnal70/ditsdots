@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").lua_ls.setup {
+  vim.lsp.config("lua_ls", {
     settings = {
       single_file_support = true,
       settings = {
@@ -55,7 +55,7 @@ M.setup = function(capabilities)
       },
     },
     capabilities = capabilities,
-  }
+  })
 end
 
 return M

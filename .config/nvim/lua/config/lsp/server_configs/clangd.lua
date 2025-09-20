@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").clangd.setup {
+  vim.lsp.config("clangd", {
     filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
     extensions = { autoSetHints = false },
     server = {
@@ -12,7 +12,7 @@ M.setup = function(capabilities)
       },
       capabilities = capabilities,
     },
-  }
+  })
 end
 
 return M

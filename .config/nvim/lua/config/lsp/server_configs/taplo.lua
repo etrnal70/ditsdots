@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").taplo.setup({
+  vim.lsp.config("taplo", {
     capabilities = capabilities,
   })
 end

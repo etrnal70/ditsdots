@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").prismals.setup({
+  vim.lsp.config("prismals", {
     capabilities = capabilities,
   })
 end

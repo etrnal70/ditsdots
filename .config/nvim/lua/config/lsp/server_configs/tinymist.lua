@@ -1,12 +1,12 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").tinymist.setup {
+  vim.lsp.config("tinymist", {
     settings = {
       single_file_support = true,
     },
     capabilities = capabilities,
-  }
+  })
 end
 
 return M

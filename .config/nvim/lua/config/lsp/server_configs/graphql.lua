@@ -1,9 +1,9 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").graphql.setup {
+  vim.lsp.config("graphql", {
     capabilities = capabilities,
-  }
+  })
 end
 
 return M

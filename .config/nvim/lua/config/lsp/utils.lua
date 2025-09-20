@@ -6,7 +6,6 @@ local telescope = require "telescope.builtin"
 
 M.servers = {
   "clangd",
-  "denols",
   -- "dockerls",
   "flutter",
   "gopls",
@@ -17,14 +16,10 @@ M.servers = {
   -- "marksman",
   "prismals",
   "pylsp",
-  -- "pylyzer",
   -- "pyright",
-  -- "rome",
-  -- "rust_analyzer",
   -- "taplo",
   "texlab",
   "tinymist",
-  -- "vts",
   "yamlls",
   "zls",
 }
@@ -117,10 +112,10 @@ M.setup_autocmds = function()
 
       -- Code Lens
       if
-          client:supports_method("textDocument/codeLens", bufnr)
-          -- TODO Remove once codelens support virtual lines
-          and client.name ~= "rust_analyzer"
-          and client.name ~= "jdtls"
+        client:supports_method("textDocument/codeLens", bufnr)
+        -- TODO Remove once codelens support virtual lines
+        and client.name ~= "rust_analyzer"
+        and client.name ~= "jdtls"
       then
         vim.api.nvim_create_autocmd(
           { "BufEnter", "CursorHold", "InsertLeave" },
@@ -131,11 +126,6 @@ M.setup_autocmds = function()
       -- Inlay Hints
       if client:supports_method("textDocument/inlayHint", bufnr) then
         lsp.inlay_hint.enable(true, { bufnr = bufnr })
-      end
-
-      -- nvim-navic
-      if client:supports_method("textDocument/documentSymbol", bufnr) then
-        require("nvim-navic").attach(client, bufnr)
       end
     end,
   })

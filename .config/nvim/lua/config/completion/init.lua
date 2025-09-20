@@ -29,7 +29,7 @@ cmp.setup {
     },
   },
   signature = { enabled = true },
-  fuzzy = { prebuilt_binaries = { force_version = "1.6.0" }, implementation = "prefer_rust" },
+  fuzzy = { prebuilt_binaries = { force_version = "1.*" }, implementation = "prefer_rust" },
   completion = {
     list = { selection = { preselect = false, auto_insert = true } },
     documentation = { auto_show = true, auto_show_delay_ms = 50 },

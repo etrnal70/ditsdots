@@ -17,7 +17,7 @@ return {
           },
           notification = {
             override_vim_notify = true,
-            window = { max_width = math.floor(vim.o.columns * 0.3) },
+            window = { max_width = math.floor(vim.o.columns * 0.9) },
           },
         },
       },

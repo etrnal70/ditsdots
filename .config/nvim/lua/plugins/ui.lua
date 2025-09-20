@@ -101,9 +101,47 @@ return {
           component_separators = { left = " ", right = " " },
           section_separators = { left = " ", right = " " },
           always_divide_middle = true,
-          globalstatuus = false,
+          globalstatus = true,
         },
-        extensions = { "overseer", "aerial", "neo-tree", "toggleterm" },
+        extensions = { "overseer", "neo-tree", "toggleterm" },
+        winbar = {
+          lualine_a = {
+            {
+              "filetype",
+              colored = false,
+              icon_only = true,
+            },
+            {
+              "filename",
+              path = 1,
+              shorting_target = 60,
+              color = "WinBar",
+              symbols = {
+                modified = "⏺",
+                newfile = "✚",
+              },
+            },
+          },
+        },
+        inactive_winbar = {
+          lualine_a = {
+            {
+              "filetype",
+              colored = false,
+              icon_only = true,
+            },
+            {
+              "filename",
+              path = 1,
+              shorting_target = 60,
+              color = "WinBarNC",
+              symbols = {
+                modified = "⏺",
+                newfile = "✚",
+              },
+            },
+          },
+        },
         sections = {
           lualine_a = {
             {
@@ -196,7 +234,6 @@ return {
       render = function(f)
         f.make_tabs(function(info)
           f.add(" Tab " .. info.index .. " ")
-          f.add(info.modified and "⏺ ")
         end)
 
         -- Align to right
@@ -588,19 +625,19 @@ return {
       }
     end,
   },
-  {
-    "lewis6991/satellite.nvim",
-    opts = {
-      excluded_filetypes = { "neo-tree" },
-      winblend = 0, -- Workaround, winblend broken (black bg)
-      handlers = {
-        diagnostic = { enable = false },
-        gitsigns = { enable = false },
-        quickfix = { enable = false },
-        cursor = { enable = false },
-      },
-    },
-  },
+  -- {
+  --   "lewis6991/satellite.nvim",
+  --   opts = {
+  --     excluded_filetypes = { "neo-tree" },
+  --     winblend = 0, -- Workaround, winblend broken (black bg)
+  --     handlers = {
+  --       diagnostic = { enable = false },
+  --       gitsigns = { enable = false },
+  --       quickfix = { enable = false },
+  --       cursor = { enable = false },
+  --     },
+  --   },
+  -- },
   { "xiyaowong/virtcolumn.nvim",            event = "VeryLazy" },
   {
     "hedyhli/outline.nvim",

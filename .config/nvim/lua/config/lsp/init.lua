@@ -7,5 +7,7 @@ for _, server in pairs(utils.servers) do
   require("config.lsp.server_configs." .. server).setup(utils.make_capabilities())
 end
 
+vim.lsp.enable(utils.servers)
+
 -- Java-only
 -- vim.api.nvim_create_user_command("JavaStart", require("config.lsp.server_configs.jdtls").setup, {})

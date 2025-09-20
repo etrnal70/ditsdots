@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").yamlls.setup({
+  vim.lsp.config("yamlls", {
     settings = {
       yaml = {
         schemas = require("schemastore").json.schemas(),

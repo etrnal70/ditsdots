@@ -107,32 +107,4 @@ return {
       },
     },
   },
-  {
-    "utilyre/barbecue.nvim",
-    version = "*",
-    event = "BufWinEnter",
-    dependencies = { "SmiteshP/nvim-navic" },
-    init = function()
-      vim.api.nvim_create_autocmd({
-        "WinScrolled",
-        "BufWinEnter",
-        "CursorHold",
-        "InsertLeave",
-        "BufWritePost",
-        "TextChanged",
-        "TextChangedI",
-      }, {
-        group = vim.api.nvim_create_augroup("barbecue#create_autocmd", {}),
-        callback = function()
-          require("barbecue.ui").update()
-        end,
-      })
-    end,
-    opts = {
-      create_autocmd = false,
-      symbols = { separator = "❯" },
-      show_dirname = false,
-      context_follow_icon_color = false,
-    },
-  },
 }

@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function(capabilities)
-  require("lspconfig").dockerls.setup({
+  vim.lsp.config("dockerls", {
     capabilities = capabilities,
   })
 end
