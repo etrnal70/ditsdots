@@ -111,16 +111,8 @@ M.setup_autocmds = function()
       end
 
       -- Code Lens
-      if
-        client:supports_method("textDocument/codeLens", bufnr)
-        -- TODO Remove once codelens support virtual lines
-        and client.name ~= "rust_analyzer"
-        and client.name ~= "jdtls"
-      then
-        vim.api.nvim_create_autocmd(
-          { "BufEnter", "CursorHold", "InsertLeave" },
-          { buffer = bufnr, callback = lsp.codelens.refresh }
-        )
+      if client:supports_method("textDocument/codeLens", bufnr) then
+        vim.lsp.codelens.enable(true)
       end
 
       -- Inlay Hints
